@@ -4,6 +4,11 @@
 @source '../../storage/framework/views/*.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+        --color-primary: #2563EB;
+        --color-secondary: #1E3A8A;
+        --color-CTA: #E11D48;
+        --color-CTA-hover:#BE123C;
+        --color-background:#F4F7F6;
 }
