@@ -2,7 +2,6 @@
 @config '../../tailwind.config.js';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
 @source '../views/**/*.blade.php';
 
 @theme {
@@ -17,6 +16,15 @@
     --color-cta-600: #ea580c;
 }
 
-* {
+html {
     scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for Chrome, Safari, Opera and touch carousels */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
