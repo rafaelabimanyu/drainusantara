@@ -47,13 +47,27 @@ class PageController extends Controller
         OpenGraph::addProperty('locale', 'id_ID');
         OpenGraph::addProperty('site_name', 'Drainusantara');
 
-        // 3. Configure JsonLd (Rich Snippet Local Business)
-        JsonLd::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
+        // 3. Configure JsonLd (Rich Snippet Local Business - Plumber)
+        JsonLd::setTitle('DrainNusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
         JsonLd::setDescription('Jasa pelancaran saluran pipa mampet profesional, mesin rooter spiral, dan inspeksi kamera CCTV pipa bergaransi 30 hari.');
-        JsonLd::setType('HomeAndConstructionBusiness');
+        JsonLd::setType('Plumber');
         JsonLd::addValues([
             'telephone' => config('app.whatsapp_number', '+6281234567890'),
-            'priceRange' => 'Mulai Rp 400.000',
+            'priceRange' => 'Rp 400.000 - Rp 1.500.000',
+            'additionalType' => 'https://schema.org/HomeAndConstructionBusiness',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => 'Jl. Duren Sawit Raya No. 45',
+                'addressLocality' => 'Jakarta Timur',
+                'addressRegion' => 'DKI Jakarta',
+                'postalCode' => '13440',
+                'addressCountry' => 'ID',
+            ],
+            'geo' => [
+                '@type' => 'GeoCoordinates',
+                'latitude' => -6.225014,
+                'longitude' => 106.900447,
+            ],
         ]);
 
         // 4. Retrieve Services, Reviews, and Galleries from Database
