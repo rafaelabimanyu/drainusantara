@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoverageArea;
+use App\Models\Gallery;
 use App\Models\Review;
 use App\Models\Service;
+use App\Services\RegionService;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -49,8 +51,12 @@ class PageController extends Controller
         JsonLd::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
         JsonLd::setDescription('Jasa pelancaran saluran pipa mampet profesional, mesin rooter spiral, dan inspeksi kamera CCTV pipa bergaransi 30 hari.');
         JsonLd::setType('HomeAndConstructionBusiness');
+        JsonLd::addValues([
+            'telephone' => config('app.whatsapp_number', '+6281234567890'),
+            'priceRange' => 'Mulai Rp 400.000',
+        ]);
 
-        // 4. Retrieve Services and Reviews from Database
+        // 4. Retrieve Services, Reviews, and Galleries from Database
         $services = Service::where('is_active', true)
             ->orderBy('order')
             ->get();
@@ -60,11 +66,141 @@ class PageController extends Controller
             ->take(6)
             ->get();
 
-        return view('welcome', compact('services', 'reviews'));
+        $galleries = Gallery::where('is_active', true)
+            ->with('service')
+            ->orderBy('order')
+            ->take(4)
+            ->get();
+
+        return view('welcome', compact('services', 'reviews', 'galleries'));
     }
 
     /**
-     * Display coverage area SEO detail page.
+     * Display all provinces and cities coverage directory.
+     */
+    public function areasIndex(): View
+    {
+        SEOMeta::setTitle('Wilayah Jangkauan Layanan Pipa Mampet - Drainusantara');
+        SEOMeta::setDescription('Daftar lengkap cakupan posko teknisi pipa mampet Drainusantara di DKI Jakarta, Jawa Barat, Banten, Jawa Tengah, dan Lampung. Layanan cepat 24 jam bergaransi 30 hari.');
+        SEOMeta::setCanonical(url()->current());
+
+        OpenGraph::setTitle('Wilayah Jangkauan Layanan Pipa Mampet - Drainusantara');
+        OpenGraph::setDescription('Armada siaga teknisi pelancar saluran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.');
+        OpenGraph::setUrl(url()->current());
+
+        JsonLd::setTitle('Wilayah Jangkauan Layanan Drainusantara');
+        JsonLd::setType('HomeAndConstructionBusiness');
+
+        $provinces = RegionService::all();
+        $services = Service::where('is_active', true)->orderBy('order')->get();
+
+        return view('areas.index', compact('provinces', 'services'));
+    }
+
+    /**
+     * Display province-level coverage area page.
+     */
+    public function province(string $province): View
+    {
+        $provinceData = RegionService::findProvince($province);
+        if (! $provinceData) {
+            abort(404, 'Provinsi tidak ditemukan dalam cakupan armada kami.');
+        }
+
+        $title = "Jasa Saluran Pipa Mampet Provinsi {$provinceData['name']} - Drainusantara Bergaransi";
+        $description = "Layanan penanganan saluran pipa mampet tanpa bongkar keramik di Provinsi {$provinceData['name']}. Armada siaga tersebar di " . count($provinceData['cities']) . " wilayah dengan garansi 30 hari.";
+
+        SEOMeta::setTitle($title);
+        SEOMeta::setDescription($description);
+        SEOMeta::setCanonical(url()->current());
+        SEOMeta::addKeyword([
+            "jasa saluran mampet {$provinceData['name']}",
+            "pipa mampet {$provinceData['name']}",
+            "wastafel mampet {$provinceData['name']}",
+            "kloset mampet {$provinceData['name']}",
+            "tanpa bongkar keramik",
+            "garansi 30 hari",
+        ]);
+
+        OpenGraph::setTitle($title);
+        OpenGraph::setDescription($description);
+        OpenGraph::setUrl(url()->current());
+
+        JsonLd::setTitle($title);
+        JsonLd::setDescription($description);
+        JsonLd::setType('HomeAndConstructionBusiness');
+        JsonLd::addValues([
+            'name' => "Drainusantara Provinsi {$provinceData['name']}",
+            'areaServed' => $provinceData['name'],
+            'telephone' => config('app.whatsapp_number', '+6281234567890'),
+        ]);
+
+        $services = Service::where('is_active', true)->orderBy('order')->get();
+        $reviews = Review::where('is_active', true)->latest()->take(3)->get();
+
+        return view('areas.province', compact('provinceData', 'services', 'reviews'));
+    }
+
+    /**
+     * Display city/kabupaten level coverage area page.
+     */
+    public function city(string $city): View
+    {
+        $cityData = RegionService::findCity($city);
+
+        if (! $cityData) {
+            $cityFormatted = ucwords(str_replace('-', ' ', $city));
+            $cityData = [
+                'name' => $cityFormatted,
+                'slug' => Str::slug($city),
+                'type' => 'Kota / Wilayah',
+                'province_name' => 'Indonesia',
+                'province_slug' => 'dki-jakarta',
+                'posko_address' => "Posko Siaga {$cityFormatted}",
+                'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                'eta_minutes' => '30 - 45 Menit',
+                'districts' => ['Pusat Kota', 'Wilayah Sekitar'],
+            ];
+        }
+
+        $title = "Jasa Saluran Mampet di {$cityData['name']} - Tanpa Bongkar & Garansi 30 Hari";
+        $description = "Spesialis pelancaran pipa wastafel, toilet kloset, dan floor drain mampet di {$cityData['name']} ({$cityData['province_name']}). Armada siaga 24 jam dengan respon cepat {$cityData['eta_minutes']}.";
+
+        SEOMeta::setTitle($title);
+        SEOMeta::setDescription($description);
+        SEOMeta::setCanonical(url()->current());
+        SEOMeta::addKeyword([
+            "jasa saluran mampet {$cityData['name']}",
+            "pipa mampet {$cityData['name']}",
+            "wastafel mampet {$cityData['name']}",
+            "toilet mampet {$cityData['name']}",
+            "sedot lemak {$cityData['name']}",
+            "tanpa bongkar keramik",
+            "garansi 30 hari",
+        ]);
+
+        OpenGraph::setTitle($title);
+        OpenGraph::setDescription($description);
+        OpenGraph::setUrl(url()->current());
+
+        JsonLd::setTitle($title);
+        JsonLd::setDescription($description);
+        JsonLd::setType('HomeAndConstructionBusiness');
+        JsonLd::addValues([
+            'name' => "Drainusantara {$cityData['name']}",
+            'areaServed' => "{$cityData['name']}, {$cityData['province_name']}",
+            'telephone' => config('app.whatsapp_number', '+6281234567890'),
+            'priceRange' => 'Mulai Rp 400.000',
+        ]);
+
+        $services = Service::where('is_active', true)->orderBy('order')->get();
+        $reviews = Review::where('is_active', true)->latest()->take(4)->get();
+
+        return view('areas.city', compact('cityData', 'services', 'reviews'));
+    }
+
+    /**
+     * Display coverage area SEO detail page (Kecamatan level).
      */
     public function area(string $city, string $district): View
     {
@@ -145,10 +281,13 @@ class PageController extends Controller
             'name' => "Drainusantara - Area {$area->district}, {$area->city}",
             'areaServed' => "{$area->district}, {$area->city}",
             'telephone' => config('app.whatsapp_number', '+6281234567890'),
-            'priceRange' => 'Rp 400.000 - Rp 650.000',
+            'priceRange' => 'Mulai Rp 400.000',
         ]);
 
-        // 4. Fetch services for local recommendations
+        // 4. Fetch cityData from RegionService for breadcrumb & neighboring districts
+        $cityData = RegionService::findCity($city);
+
+        // 5. Fetch services for local recommendations
         $services = Service::where('is_active', true)
             ->orderBy('order')
             ->get();
@@ -158,7 +297,7 @@ class PageController extends Controller
             ->take(3)
             ->get();
 
-        return view('area', compact('area', 'services', 'reviews'));
+        return view('area', compact('area', 'services', 'reviews', 'cityData'));
     }
 
     /**

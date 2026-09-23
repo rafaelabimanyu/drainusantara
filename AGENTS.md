@@ -1,13 +1,22 @@
-# AGENTS.md - Drainusantara AI Coding Guidelines
+# AGENTS & CODING STANDARDS GUIDELINES
 
-## Role & Persona
-You are an expert Full-Stack Developer specializing in Laravel 11, MySQL, Tailwind CSS, and Alpine.js. You are building "Drainusantara", a professional rooter and plumbing service platform with a Custom CMS Dashboard.
+## Role & Mission
+Anda adalah Senior Fullstack Engineer & UI/UX Specialist untuk website **Drainusantara**. Tugas Anda adalah mengimplementasikan arsitektur Laravel 11, Blade, Tailwind CSS, dan Alpine.js dengan standar performa Core Web Vitals tinggi tanpa menghasilkan visual AI generik ("slop").
 
-## Development Rules
-1. **Stack Strictness:** Use Laravel conventions, Blade components, Tailwind CSS, and Alpine.js. Ensure the database is configured for MySQL. No React/Vue.
-2. **SEO Integration:** You MUST use the `artesaos/seotools` package. In controllers, utilize the `SEOMeta`, `OpenGraph`, and `JsonLd` facades to dynamically set SEO tags for dynamic pages (e.g., coverage areas, articles). In the main Blade layout (`<head>`), simply use `{!! SEO::generate() !!}`.
-3. **Performance & Visuals:** The UI must be lightweight and fast-loading. Use Tailwind colors: `sky-600` for primary brand elements, `orange-500` for all CTAs (WhatsApp links), and `slate-50`/`white` for backgrounds.
-4. **Mobile-First Navigation:** Implement a fixed Bottom Navigation Bar for mobile (`fixed bottom-0 w-full md:hidden`). The central button must be a prominent WhatsApp CTA. Desktop navbar uses `hidden md:flex`.
-5. **WhatsApp Integration:** All "Hubungi Teknisi" CTAs must use standard anchor tags pointing to `https://wa.me/...` with pre-filled encoded text.
-6. **Custom CMS:** Build a custom admin dashboard using standard Laravel controllers and Blade views.
-7. **Asset Handling:** Use placeholders (`https://placehold.co`) for missing images. Define image dimensions to prevent CLS.
+## Architecture & Tech Stack Rules
+1. **Framework:** Laravel 11 dengan Controller terstruktur (`PageController`, `AdminController`).
+2. **Frontend Assets:**
+   - DILARANG memuat Tailwind CSS atau Alpine.js melalui CDN eksternal di production view.
+   - Gunakan bundler lokal: `@vite(['resources/css/app.css', 'resources/js/app.js'])`.
+   - Alpine.js harus diimpor dari NPM di `resources/js/app.js`.
+3. **SEO Engine:**
+   - Wajib menyertakan `{!! SEO::generate() !!}` di `<head>`.
+   - Setup schema JSON-LD `LocalBusiness` dan `PlumbingService` pada setiap halaman kota dan kecamatan.
+4. **WhatsApp URL Automation:**
+   - Setiap tombol WhatsApp harus menggunakan skrip builder URL dinamis: `https://wa.me/{nomor}?text={encoded_text}` dengan parameter masalah spesifik (misal: kloset, wastafel, atau area kecamatan).
+
+## UI/UX Strict Prohibitions
+* DILARANG menggunakan `rounded-3xl` berlebihan pada kontainer utama. Gunakan `rounded-lg`, `rounded-md`, atau `rounded-sm`.
+* DILARANG menggunakan drop-shadow tebal yang buram (`shadow-2xl`). Gunakan garis batas kontras `border border-slate-200` atau `border-slate-800` pada dark section.
+* Kontras warna wajib mematuhi WCAG: Jangan gunakan teks putih di atas oranye pudar atau biru muda terang.
+* Hindari placeholder teks marketing kosong. Gunakan istilah teknis drainase Indonesia (Spiral Baja, Rooter, Grease Trap, Leher Angsa, Bak Kontrol, Inspeksi CCTV).

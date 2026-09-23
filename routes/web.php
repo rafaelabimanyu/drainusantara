@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 // Public Frontend Routes
 Route::get('/', [PageController::class, 'index'])->name('home');
+
+// Hierarchical Area Routes: Index -> Province -> City -> District
+Route::get('/area', [PageController::class, 'areasIndex'])->name('area.index');
+Route::get('/area/provinsi/{province}', [PageController::class, 'province'])->name('area.province');
+Route::get('/area/{city}', [PageController::class, 'city'])->name('area.city');
 Route::get('/area/{city}/{district}', [PageController::class, 'area'])->name('area.detail');
 
 // Galeri & Portofolio
@@ -25,6 +30,7 @@ Route::get('/galeri', [PageController::class, 'gallery'])->name('gallery');
 // Artikel & Edukasi Pengetahuan
 Route::get('/pengetahuan', [PageController::class, 'articles'])->name('articles.index');
 Route::get('/artikel', [PageController::class, 'articles'])->name('articles.legacy');
+Route::get('/articles', [PageController::class, 'articles'])->name('articles.en');
 Route::get('/artikel/{slug}', [PageController::class, 'articleDetail'])->name('articles.show');
 
 // Friendly redirects for navbar sections

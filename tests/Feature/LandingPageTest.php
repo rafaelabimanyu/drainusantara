@@ -45,6 +45,7 @@ class LandingPageTest extends TestCase
         $response->assertSee('Inspeksi CCTV 30M');
         $response->assertSee('Garansi 30 Hari');
         $response->assertSee('Frequently Asked Questions');
-        $response->assertSee('Solusi Cerdas: Kenapa Jangan Pakai Soda Api?');
+        $response->assertSee('Mengapa Jangan Menuang Soda Api ke Saluran Mampet?');
+        $response->assertSee('Mulai Rp 400.000');
     }
 }

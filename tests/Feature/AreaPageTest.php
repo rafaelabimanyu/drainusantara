@@ -35,8 +35,9 @@ class AreaPageTest extends TestCase
         $response->assertSee('Jasa Pipa & Saluran Mampet', false);
         $response->assertSee('Tebet');
         $response->assertSee('Jakarta Selatan');
-        $response->assertSee('Teknisi Siap Meluncur ke Tebet');
-        $response->assertSee('Sering Terjadi di Wilayah Tebet: Pipa Rusak Akibat Soda Api!');
+        $response->assertSee('Panggil Teknisi Tebet');
+        $response->assertSee('Sering Terjadi di Tebet: Pipa Rusak Akibat Soda Api!');
+        $response->assertSee('Mulai Rp 400.000');
     }
 
     public function test_area_page_creates_and_renders_dynamic_district_gracefully(): void
@@ -46,7 +47,8 @@ class AreaPageTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Banyumanik');
         $response->assertSee('Semarang');
-        $response->assertSee('Teknisi Siap Meluncur ke Banyumanik');
+        $response->assertSee('Panggil Teknisi Banyumanik');
+        $response->assertSee('Mulai Rp 400.000');
     }
 
     public function test_area_page_resolves_aliases_and_regions(): void

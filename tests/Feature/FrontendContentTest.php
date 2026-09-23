@@ -43,7 +43,7 @@ class FrontendContentTest extends TestCase
         $response = $this->get('/pengetahuan');
 
         $response->assertStatus(200);
-        $response->assertSee('Edukasi & Tips Seputar', false);
+        $response->assertSee('Panduan Perawatan & Tips', false);
         $response->assertSee('Bahaya Soda Api untuk Pipa');
     }
 
