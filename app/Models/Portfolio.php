@@ -13,6 +13,7 @@ class Portfolio extends Model
         'client_name',
         'client_type',
         'logo',
+        'image',
         'project_title',
         'description',
         'location',

@@ -42,7 +42,7 @@
                 <!-- Live Response Pill / Badge -->
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-800 shadow-2xs">
                     <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                    <span>Posko Siaga: Melayani Wilayah {{ $area->district }} &bull; Tiba 30-45 Mnt</span>
+                    <span>Posko Siaga: Melayani Wilayah {{ $area->district }} &bull; Respon WhatsApp Cepat</span>
                 </div>
 
                 <!-- Dynamic Main SEO Heading -->
@@ -64,8 +64,8 @@
                             </svg>
                         </div>
                         <div class="text-left">
-                            <div class="text-[11px] text-slate-500 font-medium">Estimasi Tiba</div>
-                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">30 - 45 Menit</div>
+                            <div class="text-[11px] text-slate-500 font-medium">Respon WhatsApp</div>
+                            <div class="text-xs sm:text-sm font-extrabold text-emerald-700">Sigap &amp; Cepat</div>
                         </div>
                     </div>
 
@@ -459,8 +459,8 @@
 
             <div class="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 hover:border-sky-300 hover:shadow-md transition-all text-center space-y-3 fade-up delay-200">
                 <div class="w-12 h-12 rounded-2xl bg-sky-700 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-xs">02</div>
-                <h4 class="font-bold text-slate-900 text-lg">Teknisi Meluncur</h4>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Teknisi berseragam rapi dari posko terdekat tiba di lokasi membawa mesin rooter spiral dalam 30–45 menit.</p>
+                <h4 class="font-bold text-slate-900 text-lg">Respon Cepat &amp; Meluncur</h4>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Admin dan teknisi siaga kami memberikan respon WhatsApp sigap dan cepat untuk penjadwalan kedatangan ke lokasi Anda.</p>
             </div>
 
             <div class="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 hover:border-sky-300 hover:shadow-md transition-all text-center space-y-3 fade-up delay-300">

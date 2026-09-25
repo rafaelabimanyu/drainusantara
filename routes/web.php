@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CoverageAreaController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,5 +52,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('services', ServiceController::class);
     Route::resource('coverage-areas', CoverageAreaController::class);
     Route::resource('galleries', GalleryController::class);
+    Route::resource('portfolios', PortfolioController::class);
     Route::resource('articles', ArticleController::class);
 });

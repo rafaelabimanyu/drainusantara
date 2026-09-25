@@ -70,8 +70,8 @@
                             <span class="font-bold text-slate-900">{{ count($provinceData['cities']) }} Kota / Kabupaten</span>
                         </div>
                         <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
-                            <span class="font-medium text-slate-500">Estimasi Tiba:</span>
-                            <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">30 - 45 Menit</span>
+                            <span class="font-medium text-slate-500">Respon WhatsApp:</span>
+                            <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Sigap &amp; Cepat</span>
                         </div>
                         <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
                             <span class="font-medium text-slate-500">Metode Kerja:</span>
@@ -174,7 +174,7 @@
             Saluran Pipa di Lokasi Anda Tersumbat Hari Ini?
         </h2>
         <p class="text-slate-400 text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
-            Teknisi kami siap meluncur ke seluruh penjuru {{ $provinceData['name'] }} dalam 30–45 menit. Bebas biaya bongkar dan dilindungi garansi 30 hari.
+            Tim kami siap memberikan respon WhatsApp sigap dan cepat ke seluruh penjuru {{ $provinceData['name'] }}. Bebas biaya bongkar dan dilindungi garansi 30 hari.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" 

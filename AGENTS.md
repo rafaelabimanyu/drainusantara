@@ -20,3 +20,16 @@ Anda adalah Senior Fullstack Engineer & UI/UX Specialist untuk website **Drainus
 * DILARANG menggunakan drop-shadow tebal yang buram (`shadow-2xl`). Gunakan garis batas kontras `border border-slate-200` atau `border-slate-800` pada dark section.
 * Kontras warna wajib mematuhi WCAG: Jangan gunakan teks putih di atas oranye pudar atau biru muda terang.
 * Hindari placeholder teks marketing kosong. Gunakan istilah teknis drainase Indonesia (Spiral Baja, Rooter, Grease Trap, Leher Angsa, Bak Kontrol, Inspeksi CCTV).
+
+<!-- antislop:start -->
+## antislop
+For UI, copy, people, mobile layout, or code comments work, load the antislop skill for the task:
+- Core filter, always on: `antislop`
+- UI / visual: `antislop-ui`
+- Copy & text: `antislop-copywriting`
+- People: `antislop-human`
+- Mobile / responsive: `antislop-layoutmobile`
+- Code comments: `antislop-code`
+Before starting, ask the user when antislop applies: during the work, or after it is done.
+To update antislop later: `npx antislop-ai --update`, or run `npx antislop-ai` and pick Overwrite them.
+<!-- antislop:end -->

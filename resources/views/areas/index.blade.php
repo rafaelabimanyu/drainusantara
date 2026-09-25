@@ -34,7 +34,7 @@
             </h1>
 
             <p class="text-base text-slate-600 leading-relaxed">
-                Pilih provinsi dan kota administrasi Anda di bawah untuk melihat posko siaga teknisi terdekat, daftar kecamatan yang dilayani, serta estimasi waktu tiba (30–45 menit).
+                Pilih provinsi dan kota administrasi Anda di bawah untuk melihat posko siaga teknisi terdekat, daftar kecamatan yang dilayani, serta layanan respon WhatsApp sigap dan cepat.
             </p>
 
             <!-- Quick Province Jump Pills -->

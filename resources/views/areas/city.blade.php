@@ -55,8 +55,8 @@
                             </svg>
                         </div>
                         <div class="text-left">
-                            <div class="text-[11px] text-slate-500 font-medium">Estimasi Tiba</div>
-                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">{{ $cityData['eta_minutes'] }}</div>
+                            <div class="text-[11px] text-slate-500 font-medium">Respon WhatsApp</div>
+                            <div class="text-xs sm:text-sm font-extrabold text-emerald-700">Sigap &amp; Cepat</div>
                         </div>
                     </div>
 
@@ -184,7 +184,7 @@
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">KECAMATAN</span>
                             <span class="text-[10px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                                30-45 MNT
+                                Respon Cepat
                             </span>
                         </div>
                         <h3 class="text-base font-bold text-slate-900 group-hover:text-sky-700 transition-colors tracking-tight">
@@ -288,7 +288,7 @@
             Butuh Bantuan Teknisi di {{ $cityData['name'] }}?
         </h2>
         <p class="text-slate-400 text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
-            Teknisi kami siap meluncur ke alamat Anda di {{ $cityData['name'] }} dalam 30–45 menit. Konsultasikan masalah saluran mampet sekarang juga.
+            Tim kami siap memberikan respon WhatsApp sigap dan cepat untuk penanganan saluran mampet di {{ $cityData['name'] }}. Konsultasikan masalah Anda sekarang juga.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="{{ $cityWaUrl }}" target="_blank" rel="noopener noreferrer" 

@@ -22,7 +22,7 @@ class PageController extends Controller
     {
         // 1. Configure SEOMeta for Drainusantara
         SEOMeta::setTitle('Jasa Saluran Pipa Mampet Tanpa Bongkar & Bergaransi 30 Hari');
-        SEOMeta::setDescription('Solusi ahli pipa mampet, wastafel, kloset, dan floor drain tanpa bongkar keramik di Jabodetabek, Semarang, & Bandar Lampung. Menggunakan mesin rooter spiral modern dan inspeksi CCTV pipa 30 meter dengan garansi 30 hari.');
+        SEOMeta::setDescription('Jasa pelancaran saluran pipa mampet wastafel, kloset & talang tanpa bongkar keramik di Jabodetabek, Semarang & Lampung. Bergaransi 30 hari, bayar saat lancar.');
         SEOMeta::setCanonical(url()->current());
         SEOMeta::addKeyword([
             'jasa saluran pipa mampet',
@@ -41,7 +41,7 @@ class PageController extends Controller
 
         // 2. Configure OpenGraph
         OpenGraph::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar & Bergaransi 30 Hari');
-        OpenGraph::setDescription('Layanan profesional pelancaran saluran pipa mampet dengan mesin spiral mekanis & kamera CCTV 30 meter. 100% tanpa bongkar lantai & bergaransi resmi 30 hari.');
+        OpenGraph::setDescription('Layanan pelancaran saluran pipa mampet dengan mesin spiral baja & kamera CCTV 30M. 100% tanpa bongkar keramik & bergaransi resmi 30 hari.');
         OpenGraph::setUrl(url()->current());
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
@@ -72,7 +72,17 @@ class PageController extends Controller
             ->take(4)
             ->get();
 
-        return view('welcome', compact('services', 'reviews', 'galleries'));
+        $articles = \App\Models\Article::where('is_published', true)
+            ->latest('published_at')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $portfolios = \App\Models\Portfolio::where('is_active', true)
+            ->orderBy('order')
+            ->get();
+
+        return view('welcome', compact('services', 'reviews', 'galleries', 'articles', 'portfolios'));
     }
 
     /**

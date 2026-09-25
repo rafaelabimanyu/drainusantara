@@ -148,7 +148,7 @@ Alpine.data('mobileCarousel', (totalSlides = 3, intervalMs = 4500) => ({
         const slides = container.children;
         if (slides[this.active]) {
             const slide = slides[this.active];
-            const targetLeft = slide.offsetLeft - container.offsetLeft - 16;
+            const targetLeft = Math.max(0, slide.offsetLeft - container.offsetLeft - 16);
             container.scrollTo({
                 left: targetLeft,
                 behavior: 'smooth'

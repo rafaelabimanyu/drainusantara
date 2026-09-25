@@ -397,7 +397,7 @@ class RegionService
                     'short_name' => $city['name'],
                     'subtitle' => $prov['name'] . ' &bull; ' . count($city['districts']) . ' Kecamatan Siaga',
                     'url' => route('area.city', ['city' => $citySlug]),
-                    'eta' => $city['eta_minutes'] ?? '30-45 MNT',
+                    'eta' => 'Respon Cepat',
                     'search' => strtolower($city['name'] . ' ' . $citySlug),
                 ];
 
@@ -411,7 +411,7 @@ class RegionService
                         'short_name' => $district,
                         'subtitle' => $city['name'] . ', ' . $prov['name'],
                         'url' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
-                        'eta' => '30-45 MNT',
+                        'eta' => 'Respon Cepat',
                         'search' => strtolower($district),
                     ];
                 }
