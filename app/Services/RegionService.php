@@ -26,7 +26,7 @@ class RegionService
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Jl. Duren Sawit Raya No. 45, Jakarta Timur',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Ciracas',
                             'Duren Sawit',
@@ -49,7 +49,7 @@ class RegionService
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Jl. Tebet Barat Dalam No. 18, Jakarta Selatan',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 40 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Tebet',
                             'Cilandak',
@@ -71,7 +71,7 @@ class RegionService
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Jl. Kebon Jeruk Raya No. 12, Jakarta Barat',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kebon Jeruk',
                             'Puri Kembangan',
@@ -91,7 +91,7 @@ class RegionService
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Jl. Boulevard Raya Blok PA, Kelapa Gading, Jakarta Utara',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kelapa Gading',
                             'Pantai Indah Kapuk',
@@ -112,7 +112,7 @@ class RegionService
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Jl. Benyamin Sueb No. 8, Kemayoran, Jakarta Pusat',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 40 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kemayoran',
                             'Cempaka Putih',
@@ -140,7 +140,7 @@ class RegionService
                         'province_slug' => 'jawa-barat',
                         'posko_address' => 'Jl. Raya Mayor Oking No. 23, Cibinong, Bogor',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 50 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cibinong',
                             'Sentul City',
@@ -160,7 +160,7 @@ class RegionService
                         'province_slug' => 'jawa-barat',
                         'posko_address' => 'Jl. Margonda Raya No. 102, Depok',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cinere',
                             'Margonda',
@@ -180,7 +180,7 @@ class RegionService
                         'province_slug' => 'jawa-barat',
                         'posko_address' => 'Jl. Ahmad Yani No. 55, Bekasi Barat',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 50 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cikarang Selatan',
                             'Cikarang Utara',
@@ -201,7 +201,7 @@ class RegionService
                         'province_slug' => 'jawa-barat',
                         'posko_address' => 'Jl. Buah Batu No. 88, Lengkong, Kota Bandung',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Buahbatu',
                             'Antapani',
@@ -231,7 +231,7 @@ class RegionService
                         'province_slug' => 'banten',
                         'posko_address' => 'Jl. KH Hasyim Ashari No. 34, Cipondoh, Tangerang Kota',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cipondoh',
                             'Karawaci',
@@ -252,7 +252,7 @@ class RegionService
                         'province_slug' => 'banten',
                         'posko_address' => 'Jl. Pahlawan Seribu No. 9, BSD City, Serpong',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 40 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Serpong',
                             'BSD City',
@@ -279,7 +279,7 @@ class RegionService
                         'province_slug' => 'jawa-tengah',
                         'posko_address' => 'Jl. Dr. Wahidin No. 70, Candisari, Kota Semarang',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Candisari',
                             'Banyumanik',
@@ -308,7 +308,7 @@ class RegionService
                         'province_slug' => 'lampung',
                         'posko_address' => 'Jl. ZA. Pagar Alam No. 42, Kedaton, Bandar Lampung',
                         'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kedaton',
                             'Tanjung Karang Pusat',

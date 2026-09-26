@@ -31,8 +31,10 @@ Route::get('/galeri', [PageController::class, 'gallery'])->name('gallery');
 // Artikel & Edukasi Pengetahuan
 Route::get('/pengetahuan', [PageController::class, 'articles'])->name('articles.index');
 Route::get('/artikel', [PageController::class, 'articles'])->name('articles.legacy');
-Route::get('/articles', [PageController::class, 'articles'])->name('articles.en');
 Route::get('/artikel/{slug}', [PageController::class, 'articleDetail'])->name('articles.show');
+
+// Dynamic XML Sitemap for SEO Crawlers
+Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 
 // Friendly redirects for navbar sections
 Route::get('/layanan', fn () => redirect('/#layanan'))->name('services.anchor');
@@ -49,7 +51,7 @@ Route::get('/admin/login', fn () => redirect()->route('login'));
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-    Route::resource('services', ServiceController::class);
+    Route::resource('services', ServiceController::class);  
     Route::resource('coverage-areas', CoverageAreaController::class);
     Route::resource('galleries', GalleryController::class);
     Route::resource('portfolios', PortfolioController::class);

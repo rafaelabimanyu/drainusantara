@@ -24,7 +24,6 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'price_unit' => '/ titik',
             'wa_text' => 'Halo Drainusantara, saya butuh penanganan untuk Wastafel & Bak Cuci Piring mampet. Mohon info jadwal teknisi terdekat.',
         ],
         [
@@ -43,7 +42,6 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'price_unit' => '/ titik',
             'wa_text' => 'Halo Drainusantara, saya butuh bantuan darurat untuk Kloset / Toilet tersumbat tanpa bongkar keramik. Mohon segera kirim teknisi.',
         ],
         [
@@ -62,7 +60,6 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'price_unit' => '/ titik',
             'wa_text' => 'Halo Drainusantara, saya butuh penanganan Floor Drain Kamar Mandi yang menggenang dan berbau got. Mohon info teknisi terdekat.',
         ],
         [
@@ -81,7 +78,6 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'price_unit' => '/ titik',
             'wa_text' => 'Halo Drainusantara, pipa talang rooftop kami tersumbat dedaunan dan meluap. Mohon info teknisi untuk penanganan.',
         ],
         [
@@ -100,7 +96,6 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'price_unit' => '/ unit',
             'wa_text' => 'Halo Drainusantara, kami ingin memesan pembersihan Grease Trap / Sedot Lemak untuk restoran/kafe kami. Mohon info penawaran.',
         ],
         [
@@ -119,7 +114,6 @@
                 'Disertai laporan hasil inspeksi teknis lengkap',
             ],
             'price' => 400000,
-            'price_unit' => '/ sesi',
             'wa_text' => 'Halo Drainusantara, saya ingin menjadwalkan Inspeksi Kamera CCTV Pipa 30M untuk diagnosa saluran yang sering mampet. Mohon info ketersediaan unit.',
         ],
     ];

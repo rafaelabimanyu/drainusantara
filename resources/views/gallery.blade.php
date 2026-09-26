@@ -9,9 +9,9 @@
 <div>
     <!-- Hero Banner -->
     <section class="relative bg-slate-50 border-b border-slate-200 pt-8 pb-12 lg:pt-12 lg:pb-16 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center reveal-soft">
             <!-- Breadcrumb -->
-            <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-6 font-medium" aria-label="Breadcrumb">
+            <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-4 font-medium" aria-label="Breadcrumb">
                 <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -22,112 +22,200 @@
                 <span class="text-sky-700 font-bold">Galeri Dokumentasi</span>
             </nav>
 
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-full uppercase tracking-wider mb-3 shadow-2xs">
-                DOKUMENTASI TEKNIS LAPANGAN
+            <span class="text-xs font-bold uppercase tracking-widest text-sky-700 block mb-2">
+                Dokumentasi Teknis Lapangan
             </span>
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight max-w-3xl mx-auto leading-tight">
                 Galeri Hasil Pengerjaan <span class="text-sky-700">Drainusantara</span>
             </h1>
             <p class="mt-3 text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                Bukti nyata dokumentasi foto sebelum & sesudah tim teknisi melancarkan saluran mampet menggunakan mesin rooter spiral baja dan kamera endoskopik CCTV 30 meter.
+                Dokumentasi otentik foto sebelum dan sesudah pelancaran pipa tersumbat oleh tim teknisi Drainusantara menggunakan mesin spiral baja rotary dan kamera inspeksi digital IP68.
             </p>
         </div>
     </section>
 
-    <!-- Gallery Grid Section -->
-    <section class="py-14 sm:py-20 bg-white border-b border-slate-200">
+    <!-- Gallery Grid Section with Interactive Alpine.js Filter -->
+    <section class="py-12 sm:py-16 bg-white border-b border-slate-200" x-data="{ activeFilter: 'all' }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Interactive Category Filter Tabs -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-10 reveal-soft">
+                <button type="button" @click="activeFilter = 'all'"
+                        :class="activeFilter === 'all' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
+                    Semua Proyek ({{ count($galleries) }})
+                </button>
+                <button type="button" @click="activeFilter = 'wastafel'"
+                        :class="activeFilter === 'wastafel' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
+                    Wastafel &amp; Sink
+                </button>
+                <button type="button" @click="activeFilter = 'kloset'"
+                        :class="activeFilter === 'kloset' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
+                    Kloset &amp; WC
+                </button>
+                <button type="button" @click="activeFilter = 'floordrain'"
+                        :class="activeFilter === 'floordrain' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
+                    Floor Drain
+                </button>
+                <button type="button" @click="activeFilter = 'cctv'"
+                        :class="activeFilter === 'cctv' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
+                    Inspeksi CCTV
+                </button>
+            </div>
+
+            <!-- Gallery Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 @forelse($galleries as $item)
-                <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-sm hover:shadow-md hover:border-sky-300 transition-all flex flex-col group fade-up delay-{{ min($loop->iteration * 100, 300) }}">
-                    <!-- Before / After Photos -->
-                    <div class="relative bg-slate-900 overflow-hidden border-b border-slate-100">
-                        @if($item->before_image && $item->after_image)
-                            <div class="grid grid-cols-2 gap-1 p-1 bg-slate-900">
-                                <div class="relative group/img overflow-hidden">
-                                    <img src="{{ $item->before_image }}" alt="Sebelum - {{ $item->title }}" width="400" height="250" loading="lazy" decoding="async" class="w-full h-48 sm:h-56 object-cover transform group-hover/img:scale-105 transition duration-300">
-                                    <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                        SEBELUM (MAMPET)
-                                    </span>
+                    @php
+                        // Derive filter category tag
+                        $categorySlug = 'other';
+                        $fullText = strtolower($item->title . ' ' . ($item->service ? $item->service->name : ''));
+                        if (str_contains($fullText, 'wastafel') || str_contains($fullText, 'sink') || str_contains($fullText, 'dapur')) {
+                            $categorySlug = 'wastafel';
+                        } elseif (str_contains($fullText, 'kloset') || str_contains($fullText, 'wc') || str_contains($fullText, 'toilet')) {
+                            $categorySlug = 'kloset';
+                        } elseif (str_contains($fullText, 'floor drain') || str_contains($fullText, 'kamar mandi')) {
+                            $categorySlug = 'floordrain';
+                        } elseif (str_contains($fullText, 'cctv') || str_contains($fullText, 'kamera') || str_contains($fullText, 'inspeksi')) {
+                            $categorySlug = 'cctv';
+                        }
+                    @endphp
+                    <div x-show="activeFilter === 'all' || activeFilter === '{{ $categorySlug }}'"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-98"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         class="bg-white rounded-xl border border-slate-200 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col group card-lift reveal-soft delay-{{ min($loop->iteration * 50, 300) }}">
+                        
+                        <!-- Before / After Photos Split -->
+                        <div class="relative bg-slate-950 overflow-hidden border-b border-slate-100">
+                            @if($item->before_image && $item->after_image)
+                                <div class="grid grid-cols-2 gap-1 p-1 bg-slate-900">
+                                    <!-- Foto Sebelum -->
+                                    <div class="relative overflow-hidden group/img">
+                                        <img src="{{ $item->before_image }}" 
+                                             alt="Sebelum - {{ $item->title }}" 
+                                             width="400" 
+                                             height="250" 
+                                             loading="lazy" 
+                                             decoding="async" 
+                                             class="w-full h-48 sm:h-56 object-cover transform group-hover/img:scale-105 transition-transform duration-300">
+                                        <div class="absolute top-2.5 left-2.5 bg-slate-900/85 backdrop-blur-xs border border-rose-500/40 text-rose-300 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+                                            SEBELUM
+                                        </div>
+                                    </div>
+                                    <!-- Foto Sesudah -->
+                                    <div class="relative overflow-hidden group/img">
+                                        <img src="{{ $item->after_image }}" 
+                                             alt="Sesudah - {{ $item->title }}" 
+                                             width="400" 
+                                             height="250" 
+                                             loading="lazy" 
+                                             decoding="async" 
+                                             class="w-full h-48 sm:h-56 object-cover transform group-hover/img:scale-105 transition-transform duration-300">
+                                        <div class="absolute top-2.5 right-2.5 bg-slate-900/85 backdrop-blur-xs border border-emerald-500/40 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+                                            SESUDAH
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="relative group/img overflow-hidden">
-                                    <img src="{{ $item->after_image }}" alt="Sesudah - {{ $item->title }}" width="400" height="250" loading="lazy" decoding="async" class="w-full h-48 sm:h-56 object-cover transform group-hover/img:scale-105 transition duration-300">
-                                    <span class="absolute top-2.5 right-2.5 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                        SESUDAH (PLONG)
-                                    </span>
+                            @elseif($item->image)
+                                <div class="relative overflow-hidden group/img">
+                                    <img src="{{ $item->image }}" 
+                                         alt="{{ $item->title }}" 
+                                         width="800" 
+                                         height="450" 
+                                         loading="lazy" 
+                                         decoding="async" 
+                                         class="w-full h-60 object-cover transform group-hover/img:scale-105 transition-transform duration-300">
+                                    <div class="absolute top-2.5 left-2.5 bg-slate-900/85 backdrop-blur-xs border border-sky-500/40 text-sky-300 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+                                        DOKUMENTASI LAPANGAN
+                                    </div>
                                 </div>
-                            </div>
-                        @elseif($item->image)
-                            <img src="{{ $item->image }}" alt="{{ $item->title }}" width="800" height="450" loading="lazy" decoding="async" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-300">
-                        @else
-                            <div class="w-full h-56 bg-slate-100 text-xs flex items-center justify-center text-slate-400 font-medium">
-                                Dokumentasi Lapangan Drainusantara
-                            </div>
-                        @endif
-                    </div>
-
-                    <!-- Content Details -->
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between gap-2 mb-2.5">
-                                <span class="px-2.5 py-0.5 text-xs font-bold bg-sky-50 text-sky-700 border border-sky-200 rounded-full">
-                                    {{ $item->service ? $item->service->name : 'Plumbing Spesialis' }}
-                                </span>
-                                <span class="text-xs font-bold text-emerald-700 flex items-center gap-1">
-                                    ✓ 100% Tanpa Bongkar
-                                </span>
-                            </div>
-
-                            <h3 class="text-xl font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug tracking-tight">
-                                {{ $item->title }}
-                            </h3>
-
-                            <p class="mt-2.5 text-slate-600 text-sm leading-relaxed">
-                                {{ $item->description }}
-                            </p>
+                            @else
+                                <div class="w-full h-56 bg-slate-100 flex flex-col items-center justify-center text-slate-400 gap-2 p-4 text-center">
+                                    <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span class="text-xs font-semibold">Foto Dokumentasi Lapangan Drainusantara</span>
+                                </div>
+                            @endif
                         </div>
 
-                        <!-- CTA WhatsApp Action -->
-                        @php
-                            $waMessage = urlencode("Halo Teknisi Drainusantara, saya tertarik dengan pengerjaan '{$item->title}'. Saluran pipa saya juga mengalami masalah serupa, mohon info estimasi biaya dan jadwal kunjungan.");
-                            $waUrl = "https://wa.me/{$whatsappNumber}?text={$waMessage}";
-                        @endphp
-                        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
-                            <span class="text-xs bg-amber-50 text-amber-900 px-2.5 py-1 rounded-full border border-amber-200 font-bold">
-                                Garansi 30 Hari
-                            </span>
-                            <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" 
-                               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-all">
-                                <span>Pesan Layanan Serupa &rarr;</span>
-                            </a>
+                        <!-- Content Details -->
+                        <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-3">
+                                    <span class="px-2.5 py-0.5 text-xs font-bold bg-sky-50 text-sky-800 border border-sky-200 rounded-md">
+                                        {{ $item->service ? $item->service->name : 'Plumbing Spesialis' }}
+                                    </span>
+                                    <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                        ✓ 100% Tanpa Bongkar
+                                    </span>
+                                </div>
+
+                                <h3 class="text-lg sm:text-xl font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug tracking-tight">
+                                    {{ $item->title }}
+                                </h3>
+
+                                <p class="mt-2.5 text-slate-600 text-xs sm:text-sm leading-relaxed">
+                                    {{ $item->description }}
+                                </p>
+                            </div>
+
+                            <!-- Action & Guarantee Footer -->
+                            @php
+                                $waMessage = urlencode("Halo Tim Drainusantara, saya tertarik dengan pengerjaan '{$item->title}'. Saluran pipa saya mengalami kendala serupa, mohon info estimasi biaya dan teknisi terdekat.");
+                                $waUrl = "https://wa.me/{$whatsappNumber}?text={$waMessage}";
+                            @endphp
+                            <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                                <span class="text-xs text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200/80 font-bold">
+                                    Garansi 30 Hari
+                                </span>
+                                <a href="{{ $waUrl }}" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer" 
+                                   class="btn-press inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs shadow-2xs transition-colors min-h-[44px]">
+                                    <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                                    </svg>
+                                    <span>Pesan Layanan Serupa</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @empty
-                <div class="col-span-2 py-16 text-center text-slate-500">
-                    Dokumentasi galeri sedang dipersiapkan.
-                </div>
+                    <div class="col-span-2 py-16 text-center text-slate-500">
+                        Dokumentasi galeri sedang dipersiapkan.
+                    </div>
                 @endforelse
             </div>
         </div>
     </section>
 
     <!-- Consultation CTA Section -->
-    <section class="py-14 lg:py-20 bg-slate-900 text-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-full uppercase tracking-wider mb-3">
-                KONSULTASI GRATIS
+    <section class="py-14 lg:py-20 bg-slate-900 text-white border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-soft">
+            <span class="text-xs font-bold uppercase tracking-widest text-sky-400 block mb-2">
+                Konsultasi Bebas Biaya
             </span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Saluran Pipa Rumah Anda Sedang Mampet?</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                Saluran Pipa Rumah Anda Sedang Mampet?
+            </h2>
             <p class="mt-3 text-slate-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-                Hindari risiko menuang soda api yang dapat merusak instalasi pipa PVC. Hubungi teknisi profesional Drainusantara sekarang juga!
+                Hindari risiko menuang soda api yang dapat merusak dan melengkungkan pipa PVC. Hubungi teknisi siaga Drainusantara untuk penanganan mekanis bebas bongkar.
             </p>
             <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="{{ $generalWaUrl }}" 
-                   target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all">
-                    <span>Hubungi Teknisi via WhatsApp (Gratis Konsultasi)</span>
-                    <span class="text-base">&rarr;</span>
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="btn-press inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm shadow-md transition-colors min-h-[48px]">
+                    <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                    </svg>
+                    <span>Hubungi Teknisi via WhatsApp (Konsultasi Gratis)</span>
                 </a>
             </div>
         </div>

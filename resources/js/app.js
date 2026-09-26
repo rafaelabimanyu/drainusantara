@@ -16,7 +16,7 @@ Alpine.data('layoutData', () => ({
             problem: 'Kerak minyak & lemak sisa masakan membatu di leher angsa sifon.',
             tool: 'Mesin Spiral Rotary K-50 Ridgid',
             cable: 'Spiral Fleksibel 16mm Khusus Sifon',
-            est: 'Mulai Rp 400.000 / titik',
+            est: 'Mulai Rp 400.000',
             msg: 'Halo Drainusantara, saya butuh penanganan darurat untuk Wastafel / Bak Cuci Piring mampet. Mohon info teknisi terdekat.'
         },
         toilet: {
@@ -24,7 +24,7 @@ Alpine.data('layoutData', () => ({
             problem: 'Sumbatan tisu basah, pembalut, atau benda keras di lekukan leher angsa keramik.',
             tool: 'Rooter Heavy Duty K-60 Rigid',
             cable: 'Spiral Torsi Tinggi Anti-Kinking',
-            est: 'Mulai Rp 400.000 / titik',
+            est: 'Mulai Rp 400.000',
             msg: 'Halo Drainusantara, saya butuh bantuan darurat untuk Kloset / Toilet tersumbat tanpa bongkar keramik. Mohon segera kirim teknisi.'
         },
         floordrain: {
@@ -32,7 +32,7 @@ Alpine.data('layoutData', () => ({
             problem: 'Jeratan rambut rontok dan kerak buih sabun padat yang menyumbat jalur pembuangan.',
             tool: 'Rooter Fleksibel 16mm Anti-Knee',
             cable: 'Spiral Baja Karbon Lentur',
-            est: 'Mulai Rp 400.000 / titik',
+            est: 'Mulai Rp 400.000',
             msg: 'Halo Drainusantara, saya butuh penanganan Floor Drain Kamar Mandi yang menggenang dan meluap. Mohon info teknisi terdekat.'
         },
         greasetrap: {
@@ -40,7 +40,7 @@ Alpine.data('layoutData', () => ({
             problem: 'Limbah minyak & kerak lemak padat restoran F&B berbau menyengat.',
             tool: 'Ekstraksi Vakum & Rotary Degreaser',
             cable: 'Pembersih Dinding Pipa Komersial',
-            est: 'Mulai Rp 400.000 / unit',
+            est: 'Mulai Rp 400.000',
             msg: 'Halo Drainusantara, kami ingin memesan pembersihan Grease Trap untuk restoran kami. Mohon info penawaran.'
         },
         talang: {
@@ -48,7 +48,7 @@ Alpine.data('layoutData', () => ({
             problem: 'Endapan lumut tebal, pasir atap, dan dedaunan kering di pipa vertikal.',
             tool: 'Spiral Baja Jangkauan Panjang 22mm',
             cable: 'Kabel Heavy Duty s/d 30 Meter',
-            est: 'Mulai Rp 400.000 / titik',
+            est: 'Mulai Rp 400.000',
             msg: 'Halo Drainusantara, pipa talang air rooftop kami tersumbat dan meluap. Mohon info jadwal teknisi.'
         },
         cctv: {
@@ -56,7 +56,7 @@ Alpine.data('layoutData', () => ({
             problem: 'Investigasi visual resolusi tinggi mendeteksi retak, sambungan lepas, atau akar.',
             tool: 'Endoscopic Push-Rod Camera IP68 HD',
             cable: 'Kabel Dorong Fiber Optic 30 Meter',
-            est: 'Mulai Rp 400.000 / inspeksi',
+            est: 'Mulai Rp 400.000',
             msg: 'Halo Drainusantara, saya ingin menjadwalkan Inspeksi Kamera CCTV Pipa 30M untuk diagnosa saluran. Mohon info ketersediaan unit.'
         }
     },
@@ -97,29 +97,50 @@ Alpine.data('mobileCarousel', (totalSlides = 3, intervalMs = 4500) => ({
     isInteracting: false,
     _scrollRaf: null,
     _observer: null,
+    _isProgrammatic: false,
+    _programmaticTimer: null,
+    _resumeTimer: null,
+    getContainer() {
+        return this.$refs.slider || this.$refs.container;
+    },
+    isCarouselMode() {
+        const container = this.getContainer();
+        if (!container) return false;
+        return container.scrollWidth > (container.clientWidth + 5);
+    },
     init() {
         if (typeof window === 'undefined') return;
 
-        // Auto scroll only when visible on mobile screen (zero idle CPU work when offscreen)
-        if ('IntersectionObserver' in window && this.$refs.slider) {
+        this.$nextTick(() => {
+            const container = this.getContainer();
+            if (container) {
+                const slides = Array.from(container.children).filter(el => el.nodeType === 1 && !el.classList.contains('hidden'));
+                if (slides.length > 0) {
+                    this.total = slides.length;
+                }
+            }
+        });
+
+        const container = this.getContainer();
+        if ('IntersectionObserver' in window && container) {
             this._observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting && window.innerWidth < 768) {
+                    if (entry.isIntersecting && this.isCarouselMode()) {
                         this.startAutoScroll();
                     } else {
                         this.stopAutoScroll();
                     }
                 });
             }, { threshold: 0.25 });
-            this._observer.observe(this.$refs.slider);
-        } else if (window.innerWidth < 768) {
+            this._observer.observe(container);
+        } else if (this.isCarouselMode()) {
             setTimeout(() => this.startAutoScroll(), 2500);
         }
     },
     startAutoScroll() {
         this.stopAutoScroll();
         this.timer = setInterval(() => {
-            if (!this.isInteracting && window.innerWidth < 768) {
+            if (!this.isInteracting && this.isCarouselMode()) {
                 this.next();
             }
         }, intervalMs);
@@ -139,35 +160,75 @@ Alpine.data('mobileCarousel', (totalSlides = 3, intervalMs = 4500) => ({
         this.scrollToActive();
     },
     goTo(index) {
-        this.active = index;
+        this.active = Math.max(0, Math.min(this.total - 1, index));
+        this.pause();
         this.scrollToActive();
+        this.resume();
     },
     scrollToActive() {
-        const container = this.$refs.slider;
+        const container = this.getContainer();
         if (!container) return;
-        const slides = container.children;
-        if (slides[this.active]) {
+        const slides = Array.from(container.children).filter(el => el.nodeType === 1 && !el.classList.contains('hidden'));
+        if (!slides.length || !slides[this.active]) return;
+
+        this._isProgrammatic = true;
+        clearTimeout(this._programmaticTimer);
+        this._programmaticTimer = setTimeout(() => {
+            this._isProgrammatic = false;
+        }, 600);
+
+        let targetLeft;
+        if (this.active === 0) {
+            targetLeft = 0;
+        } else if (this.active === slides.length - 1) {
+            targetLeft = container.scrollWidth - container.clientWidth;
+        } else {
             const slide = slides[this.active];
-            const targetLeft = Math.max(0, slide.offsetLeft - container.offsetLeft - 16);
-            container.scrollTo({
-                left: targetLeft,
-                behavior: 'smooth'
-            });
+            targetLeft = slide.offsetLeft - container.offsetLeft - (container.clientWidth - slide.clientWidth) / 2;
         }
+
+        container.scrollTo({
+            left: Math.max(0, targetLeft),
+            behavior: 'smooth'
+        });
     },
     onScroll() {
+        if (this._isProgrammatic) return;
         if (this._scrollRaf) return;
         this._scrollRaf = requestAnimationFrame(() => {
             this._scrollRaf = null;
-            const container = this.$refs.slider;
+            const container = this.getContainer();
             if (!container) return;
+            const slides = Array.from(container.children).filter(el => el.nodeType === 1 && !el.classList.contains('hidden'));
+            if (!slides.length) return;
+
             const scrollLeft = container.scrollLeft;
-            const slideWidth = container.clientWidth * 0.82;
-            if (slideWidth > 0) {
-                const newIndex = Math.min(this.total - 1, Math.max(0, Math.round(scrollLeft / slideWidth)));
-                if (this.active !== newIndex) {
-                    this.active = newIndex;
+            const maxScroll = container.scrollWidth - container.clientWidth;
+
+            if (scrollLeft <= 15) {
+                if (this.active !== 0) this.active = 0;
+                return;
+            }
+            if (scrollLeft >= maxScroll - 15) {
+                if (this.active !== slides.length - 1) this.active = slides.length - 1;
+                return;
+            }
+
+            const containerCenter = scrollLeft + (container.clientWidth / 2);
+            let closestIndex = 0;
+            let minDiff = Infinity;
+
+            slides.forEach((slide, index) => {
+                const slideCenter = (slide.offsetLeft - container.offsetLeft) + (slide.clientWidth / 2);
+                const diff = Math.abs(containerCenter - slideCenter);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestIndex = index;
                 }
+            });
+
+            if (closestIndex !== this.active && closestIndex < this.total) {
+                this.active = closestIndex;
             }
         });
     },
@@ -175,9 +236,10 @@ Alpine.data('mobileCarousel', (totalSlides = 3, intervalMs = 4500) => ({
         this.isInteracting = true;
     },
     resume() {
-        setTimeout(() => {
+        clearTimeout(this._resumeTimer);
+        this._resumeTimer = setTimeout(() => {
             this.isInteracting = false;
-        }, 2500);
+        }, 3000);
     }
 }));
 
