@@ -135,10 +135,9 @@
             <!-- Hero Left: Konten Esensial & Bernapas -->
             <div class="lg:col-span-7 space-y-6 text-left">
                 
-                <!-- Status Badge Tunggal & Elegan -->
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 reveal-fade">
-                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                    <span>Armada Siaga Jabodetabek, Semarang & Bandar Lampung</span>
+                <!-- Status Area Jangkauan -->
+                <div class="inline-flex items-center px-3 py-1 bg-slate-100 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 reveal-fade">
+                    <span>Armada Siaga: Jabodetabek, Semarang &amp; Bandar Lampung</span>
                 </div>
 
                 <!-- Headline Lugas & Faktual -->
@@ -222,8 +221,8 @@
                                 <span class="bg-emerald-700/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-sm shadow-xs">
                                     Bebas Bongkar Keramik
                                 </span>
-                                <span class="bg-slate-900/90 text-sky-300 text-[10px] font-mono font-bold px-2 py-0.5 rounded-sm border border-slate-700">
-                                    CCTV PIPA 30M
+                                <span class="bg-slate-900/90 text-sky-300 text-[10px] font-bold px-2 py-0.5 rounded-sm border border-slate-700 uppercase tracking-wide">
+                                    Inspeksi CCTV 30M
                                 </span>
                             </div>
                         </div>
@@ -256,8 +255,8 @@
         
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-full uppercase tracking-wider mb-2">
-                ALUR MUDAH & TRANSPARAN
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
+                Alur Penanganan
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 3 Langkah Cepat Saluran Kembali Plong
@@ -284,13 +283,13 @@
              class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-8 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
             
             <!-- Langkah 01 -->
-            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-2xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between card-lift reveal-soft stagger-1">
+            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between card-lift reveal-soft stagger-1">
                 <div>
                     <div class="flex items-center justify-between mb-6">
-                        <div class="w-12 h-12 rounded-2xl bg-sky-700 text-white font-extrabold text-lg flex items-center justify-center shadow-xs">
+                        <div class="w-11 h-11 rounded-lg bg-sky-700 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
                             01
                         </div>
-                        <span class="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-semibold">
+                        <span class="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 text-xs font-semibold">
                             Langkah Awal
                         </span>
                     </div>
@@ -303,20 +302,19 @@
                     </p>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-2 text-xs font-semibold text-sky-700">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    <span>Respon WhatsApp Sigap &amp; Cepat</span>
+                <div class="mt-6 pt-4 border-t border-slate-200/80 text-xs font-semibold text-sky-700">
+                    Respon WhatsApp Sigap &amp; Cepat
                 </div>
             </div>
 
             <!-- Langkah 02 -->
-            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-2xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between card-lift reveal-soft stagger-2">
+            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between card-lift reveal-soft stagger-2">
                 <div>
                     <div class="flex items-center justify-between mb-6">
-                        <div class="w-12 h-12 rounded-2xl bg-sky-700 text-white font-extrabold text-lg flex items-center justify-center shadow-xs">
+                        <div class="w-11 h-11 rounded-lg bg-sky-700 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
                             02
                         </div>
-                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+                        <span class="px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
                             Bebas Bongkar
                         </span>
                     </div>
@@ -329,20 +327,19 @@
                     </p>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-2 text-xs font-semibold text-emerald-700">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                    <span>Mesin Spiral Rotary & APD Steril</span>
+                <div class="mt-6 pt-4 border-t border-slate-200/80 text-xs font-semibold text-emerald-700">
+                    Mesin Spiral Rotary &amp; APD Steril
                 </div>
             </div>
 
             <!-- Langkah 03 -->
-            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-2xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between card-lift reveal-soft stagger-3">
+            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between card-lift reveal-soft stagger-3">
                 <div>
                     <div class="flex items-center justify-between mb-6">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-extrabold text-lg flex items-center justify-center shadow-xs">
+                        <div class="w-11 h-11 rounded-lg bg-emerald-600 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
                             03
                         </div>
-                        <span class="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
+                        <span class="px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
                             Garansi 30 Hari
                         </span>
                     </div>
@@ -355,9 +352,8 @@
                     </p>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-2 text-xs font-semibold text-amber-700">
-                    <span class="w-2 h-2 bg-amber-500 rounded-full"></span>
-                    <span>Jaminan Garansi Tuntas 30 Hari</span>
+                <div class="mt-6 pt-4 border-t border-slate-200/80 text-xs font-semibold text-amber-700">
+                    Jaminan Garansi Tuntas 30 Hari
                 </div>
             </div>
 
@@ -381,13 +377,16 @@
 <!-- ====================================================================
      3. KATALOG MASALAH BERORIENTASI KEBUTUHAN RUMAH (6 LAYANAN SPESIALIS)
 ==================================================================== -->
-<section id="layanan" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200" x-data="mobileCarousel({{ count($problemCatalogs) }}, 4000)">
+@php
+    $itemsLayanan = (isset($services) && $services->isNotEmpty()) ? $services : collect($problemCatalogs);
+@endphp
+<section id="layanan" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4000)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-full uppercase tracking-wider mb-2 shadow-2xs">
-                KATALOG SPESIALIS MASALAH
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
+                Katalog Spesialis Masalah
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 Layanan Penanganan Saluran Pipa Mampet
@@ -404,7 +403,7 @@
             </div>
         </div>
 
-        <!-- 6 Problem Cards Carousel on Mobile, Grid on Desktop -->
+        <!-- Problem Cards Carousel on Mobile, Grid on Desktop -->
         <div x-ref="slider"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
@@ -412,43 +411,85 @@
              @mouseenter="pause()"
              @mouseleave="resume()"
              class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
-            @foreach($problemCatalogs as $catalog)
+            @foreach($itemsLayanan as $catalog)
                 @php
-                    $specificWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($catalog['wa_text']);
+                    $isModel = $catalog instanceof \App\Models\Service;
+                    $title = $isModel ? $catalog->name : $catalog['title'];
+                    $slug = $isModel ? $catalog->slug : \Illuminate\Support\Str::slug($catalog['title']);
+                    $desc = $isModel ? ($catalog->short_description ?: ($catalog->description ?: 'Pelancaran saluran mampet tanpa bongkar keramik.')) : $catalog['problem_desc'];
+                    $price = $isModel ? ($catalog->price_starting_from ?: 400000) : $catalog['price'];
+                    $features = $isModel ? ($catalog->features ?: []) : ($catalog['specs'] ?? []);
+                    
+                    // Smart Category Badge
+                    $category = 'Layanan Spesialis';
+                    $lowerName = strtolower($title);
+                    if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
+                        $category = 'Dapur & Residensial';
+                    } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
+                        $category = 'Toilet & Kamar Mandi';
+                    } elseif (str_contains($lowerName, 'floor drain') || str_contains($lowerName, 'kamar mandi')) {
+                        $category = 'Kamar Mandi & Lantai';
+                    } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera')) {
+                        $category = 'Diagnostik IP68';
+                    } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'lemak') || str_contains($lowerName, 'resto')) {
+                        $category = 'F&B Komersial';
+                    } elseif (str_contains($lowerName, 'talang') || str_contains($lowerName, 'atap')) {
+                        $category = 'Talang & Saluran Atap';
+                    } elseif (!$isModel && isset($catalog['category'])) {
+                        $category = $catalog['category'];
+                    }
+
+                    $waMessage = $isModel 
+                        ? "Halo Drainusantara, saya butuh penanganan untuk {$title}. Mohon info jadwal teknisi terdekat."
+                        : ($catalog['wa_text'] ?? "Halo Drainusantara, saya butuh penanganan untuk {$title}.");
+                    $specificWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($waMessage);
                 @endphp
-                <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-xs hover:border-sky-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between p-5 sm:p-6 group card-lift reveal-soft delay-{{ min($loop->iteration * 50, 300) }}">
+                <div id="layanan-{{ $slug }}" class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-xs hover:border-sky-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between p-5 sm:p-6 group card-lift reveal-soft delay-{{ min($loop->iteration * 50, 300) }}">
                     <div>
                         <!-- Category Badge -->
                         <div class="flex items-center text-xs mb-3">
                             <span class="font-bold text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-md border border-sky-200">
-                                {{ $catalog['category'] }}
+                                {{ $category }}
                             </span>
                         </div>
 
                         <!-- Service Title -->
                         <h3 class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-sky-700 transition-colors mb-2">
-                            {{ $catalog['title'] }}
+                            {{ $title }}
                         </h3>
 
                         <!-- Penjelasan Singkat -->
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                            {{ $catalog['problem_desc'] }}
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+                            {{ $desc }}
                         </p>
+
+                        <!-- Features Specs (if available) -->
+                        @if(!empty($features) && is_array($features))
+                            <ul class="space-y-1.5 text-xs text-slate-600 mb-3 pt-2 border-t border-slate-100">
+                                @foreach(array_slice($features, 0, 3) as $feat)
+                                    <li class="flex items-center gap-1.5">
+                                        <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span>{{ $feat }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
 
-                    <!-- Footer: Harga (Mulai Rp 400.000 tanpa /titik atau /sesi) + Simple CTA -->
+                    <!-- Footer: Harga + Simple CTA -->
                     <div class="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between gap-3">
                         <div>
                             <span class="text-[11px] text-slate-500 block leading-none mb-1">Tarif Mulai:</span>
                             <div class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-                                Mulai Rp {{ number_format($catalog['price'], 0, ',', '.') }}
+                                Mulai Rp {{ number_format($price, 0, ',', '.') }}
                             </div>
                         </div>
 
                         <a href="{{ $specificWaUrl }}" target="_blank" rel="noopener noreferrer" 
-                           class="btn-press inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 min-h-[40px]">
+                           class="btn-press inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 min-h-[44px]">
                             <span>Pesan via WA</span>
-                            <span aria-hidden="true">&rarr;</span>
                         </a>
                     </div>
                 </div>
@@ -457,7 +498,7 @@
 
         <!-- Mobile Carousel Dots Indicator -->
         <div class="flex md:hidden justify-center items-center gap-1.5 mt-4">
-            @for($i = 0; $i < count($problemCatalogs); $i++)
+            @for($i = 0; $i < count($itemsLayanan); $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
                         class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
@@ -478,7 +519,7 @@
         
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-100 text-sky-800 border border-sky-200 text-xs font-semibold rounded-md uppercase tracking-wider mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Standar Teknologi &amp; Pelayanan
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
@@ -509,8 +550,7 @@
             <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-2 shrink-0 snap-center p-6 sm:p-8 rounded-xl bg-linear-to-br from-sky-50/70 via-white to-slate-50/60 border border-sky-200/80 hover:border-sky-400 card-lift reveal-soft stagger-1 flex flex-col justify-between shadow-xs">
                 <div>
                     <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-sky-600 text-white text-xs font-semibold rounded-md shadow-2xs">
-                            <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                        <span class="inline-flex items-center px-2.5 py-1 bg-sky-600 text-white text-xs font-semibold rounded-md shadow-2xs">
                             Rekayasa Mekanis Modern
                         </span>
                         <div class="w-11 h-11 rounded-lg bg-sky-100 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
@@ -548,11 +588,10 @@
             <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-slate-400 card-lift reveal-soft stagger-2 flex flex-col justify-between shadow-xs">
                 <div>
                     <div class="flex items-center justify-between mb-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-700 text-xs font-medium rounded-md">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span class="inline-flex items-center px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-700 text-xs font-medium rounded-md">
                             Kamera IP68
                         </span>
-                        <div class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center shrink-0">
+                        <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                             </svg>
@@ -571,14 +610,14 @@
                 </div>
             </div>
 
-            <!-- Card 3 (NEW & STANDOUT): Biaya Transparan Mulai Rp 400.000 -->
-            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-linear-to-b from-emerald-50/70 to-white border-2 border-emerald-500/40 hover:border-emerald-600 card-lift reveal-soft stagger-3 flex flex-col justify-between shadow-xs">
+            <!-- Card 3: Biaya Transparan Mulai Rp 400.000 -->
+            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-emerald-500 card-lift reveal-soft stagger-3 flex flex-col justify-between shadow-xs">
                 <div>
                     <div class="flex items-center justify-between mb-4">
-                        <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-md shadow-2xs">
+                        <span class="inline-flex items-center px-2.5 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-md shadow-2xs">
                             Biaya Pasti di Awal
                         </span>
-                        <div class="w-10 h-10 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-800 flex items-center justify-center shrink-0">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
@@ -598,13 +637,13 @@
             </div>
 
             <!-- Card 4: Garansi Resmi 30 Hari -->
-            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-amber-400 card-lift reveal-soft stagger-4 flex flex-col justify-between shadow-xs">
+            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-300 card-lift reveal-soft stagger-4 flex flex-col justify-between shadow-xs">
                 <div>
                     <div class="flex items-center justify-between mb-4">
-                        <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold rounded-md">
+                        <span class="inline-flex items-center px-2.5 py-1 bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold rounded-md">
                             Jaminan Tertulis
                         </span>
-                        <div class="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
+                        <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                             </svg>
@@ -624,13 +663,13 @@
             </div>
 
             <!-- Card 5: Kerja Higienis & APD Steril -->
-            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-teal-400 card-lift reveal-soft delay-250 flex flex-col justify-between shadow-xs">
+            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-300 card-lift reveal-soft delay-250 flex flex-col justify-between shadow-xs">
                 <div>
                     <div class="flex items-center justify-between mb-4">
-                        <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-teal-50 border border-teal-200 text-teal-900 text-xs font-semibold rounded-md">
+                        <span class="inline-flex items-center px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold rounded-md">
                             Standar Higienis
                         </span>
-                        <div class="w-10 h-10 rounded-lg bg-teal-50 border border-teal-200 text-teal-700 flex items-center justify-center shrink-0">
+                        <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
@@ -675,11 +714,11 @@
         <!-- Section Header -->
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-12 reveal-soft">
             <div>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-full uppercase tracking-wider mb-2 shadow-2xs">
-                    DOKUMENTASI HASIL KERJA NYATA
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
+                    Dokumentasi Pengerjaan
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                    Komparasi Sebelum & Sesudah Pengerjaan
+                    Komparasi Sebelum &amp; Sesudah Pengerjaan
                 </h2>
                 <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
                     Bukti nyata efektivitas mesin rooter mekanik spiral baja dan kamera inspeksi CCTV pipa Drainusantara di lapangan.
@@ -712,7 +751,7 @@
              class="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-8 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
             
             <!-- Komparasi 1: Pipa Wastafel Dapur -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-1 flex flex-col justify-between">
+            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-1 flex flex-col justify-between">
                 <div>
                     <div class="grid grid-cols-2 border-b border-slate-100">
                         <!-- Before -->
@@ -763,7 +802,7 @@
             </div>
 
             <!-- Komparasi 2: Toilet Kloset Duduk -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-2 flex flex-col justify-between">
+            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-2 flex flex-col justify-between">
                 <div>
                     <div class="grid grid-cols-2 border-b border-slate-100">
                         <!-- Before -->
@@ -814,7 +853,7 @@
             </div>
 
             <!-- Komparasi 3: Deteksi Kamera CCTV -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-3 flex flex-col justify-between">
+            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-3 flex flex-col justify-between">
                 <div>
                     <div class="grid grid-cols-2 border-b border-slate-100">
                         <!-- Before -->
@@ -1014,8 +1053,8 @@
         <!-- Section Header with Prev / Next Navigation -->
         <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-10 md:mb-12">
             <div class="reveal-soft">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-700 text-xs font-semibold rounded-md shadow-2xs uppercase tracking-wider mb-2.5">
-                    KLIEN B2B &amp; MITRA KOMERSIAL
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
+                    Layanan Komersial &amp; Gedung
                 </span>
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Dipercaya Perusahaan F&amp;B, Perhotelan &amp; Gedung Bertingkat
@@ -1159,8 +1198,8 @@
         
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2.5">
-                ARTIKEL &amp; PANDUAN TEKNIS
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
+                Panduan Teknis &amp; Sanitasi
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 Edukasi &amp; Tips Perawatan Saluran Pipa
@@ -1226,9 +1265,8 @@
 
                     <!-- Footer Link -->
                     <div class="p-6 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between text-xs">
-                        <a href="{{ route('articles.show', $article->slug) }}" class="font-bold text-sky-700 group-hover:text-sky-800 inline-flex items-center gap-1.5 transition-colors">
+                        <a href="{{ route('articles.show', $article->slug) }}" class="font-bold text-sky-700 group-hover:text-sky-800 inline-flex items-center transition-colors">
                             <span>Baca Selengkapnya</span>
-                            <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                         </a>
                         <span class="text-slate-400 text-[11px]">Tim Ahli Drainusantara</span>
                     </div>
@@ -1289,8 +1327,7 @@
                 </div>
             </div>
 
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-md text-xs font-bold text-slate-800 shadow-2xs">
-                <span class="w-2 h-2 bg-emerald-500 rounded-full inline-block"></span>
+            <div class="inline-flex items-center px-3.5 py-1.5 bg-white border border-slate-200 rounded-md text-xs font-bold text-slate-800 shadow-2xs">
                 <span>Armada Siaga 24 Jam</span>
             </div>
         </div>
@@ -1309,8 +1346,7 @@
                 <div>
                     <!-- Card Header -->
                     <div class="flex items-center justify-between gap-3 mb-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-semibold rounded-md">
-                            <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
+                        <span class="inline-flex items-center px-2.5 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-semibold rounded-md">
                             Posko Pusat Siaga 24 Jam
                         </span>
                         <div class="w-9 h-9 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
@@ -1449,8 +1485,7 @@
                 <div>
                     <!-- Card Header -->
                     <div class="flex items-center justify-between gap-3 mb-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-semibold rounded-md">
-                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                        <span class="inline-flex items-center px-2.5 py-1 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-semibold rounded-md">
                             Hub Jawa Tengah &amp; Sumatera
                         </span>
                         <div class="w-9 h-9 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center shrink-0">
@@ -1581,8 +1616,8 @@
         
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold rounded-md uppercase tracking-wider mb-2.5">
-                CERITA DARI LAPANGAN
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
+                Catatan Lapangan &amp; Pengalaman Pelanggan
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 Pengalaman Nyata Bersama Drainusantara
@@ -1658,8 +1693,8 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center mb-14 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-full uppercase tracking-wider mb-2 shadow-2xs">
-                TANYA JAWAB TEKNIS
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
+                Tanya Jawab Teknis
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 Tanya Jawab Seputar Saluran Pipa Mampet
@@ -1672,7 +1707,7 @@
         <!-- Alpine.js Accordion Component -->
         <div x-data="{ active: null }" class="space-y-3.5 reveal-soft delay-100">
             <!-- FAQ 1 -->
-            <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
+            <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
                     @click="active = (active === 1 ? null : 1)" 
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
@@ -1689,7 +1724,7 @@
             </div>
 
             <!-- FAQ 2 -->
-            <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
+            <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
                     @click="active = (active === 2 ? null : 2)" 
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
@@ -1706,7 +1741,7 @@
             </div>
 
             <!-- FAQ 3 -->
-            <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
+            <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
                     @click="active = (active === 3 ? null : 3)" 
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
@@ -1723,7 +1758,7 @@
             </div>
 
             <!-- FAQ 4 -->
-            <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
+            <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
                     @click="active = (active === 4 ? null : 4)" 
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
@@ -1740,7 +1775,7 @@
             </div>
 
             <!-- FAQ 5 -->
-            <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
+            <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
                     @click="active = (active === 5 ? null : 5)" 
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
@@ -1766,8 +1801,8 @@
 <section class="py-16 lg:py-20 bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950 text-white border-t border-slate-800 relative overflow-hidden reveal-soft">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center reveal-scale delay-100">
         
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-emerald-400 text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-            HOTLINE SIAGA 24 JAM &bull; SEJABODETABEK & KOTA LAIN
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-400 block mb-3">
+            Hotline Siaga 24 Jam &bull; Sejabodetabek &amp; Kota Lain
         </span>
 
         <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">

@@ -181,42 +181,220 @@
                 </a>
 
                 <!-- Desktop Navigation Items -->
-                <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-slate-600">
-                    <!-- Dropdown Trigger: Layanan (Smart Mega Menu) -->
-                    <button @click="activeMenu = (activeMenu === 'layanan' ? null : 'layanan')"
-                            type="button" 
-                            class="inline-flex items-center gap-1.5 py-2 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
-                            :class="{ 'text-sky-700 font-bold': activeMenu === 'layanan' }">
-                        <span>Layanan</span>
-                        <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-700': activeMenu === 'layanan' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-
-                    <!-- Nav Link: Cara Kerja (3 Langkah) -->
-                    <a href="{{ url('/#cara-kerja') }}" class="py-2 hover:text-sky-700 transition-colors">
-                        Cara Kerja
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5 text-sm font-semibold text-slate-600" aria-label="Navigasi Utama">
+                    <!-- 1. Beranda -->
+                    <a href="{{ route('home') }}" 
+                       class="px-3 py-2 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('area*') ? 'text-sky-700 font-bold bg-sky-50/70 border border-sky-100/60' : 'hover:text-sky-700 hover:bg-slate-50' }}">
+                        Beranda
                     </a>
 
-                    <!-- Nav Link: Bukti Kerja (Before-After) -->
-                    <a href="{{ url('/galeri') }}" class="py-2 hover:text-sky-700 transition-colors {{ request()->is('galeri*') ? 'text-sky-700 font-bold' : '' }}">
-                        Bukti Hasil Kerja
+                    <!-- 2. Tentang kami -->
+                    <a href="{{ url('/#keunggulan') }}" 
+                       class="px-3 py-2 rounded-lg hover:text-sky-700 hover:bg-slate-50 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                        Tentang kami
                     </a>
 
-                    <!-- Dropdown Trigger: Cakupan Wilayah (Quick Area Finder) -->
-                    <button @click="activeMenu = (activeMenu === 'wilayah' ? null : 'wilayah')"
-                            type="button" 
-                            class="inline-flex items-center gap-1.5 py-2 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
-                            :class="{ 'text-sky-700 font-bold': activeMenu === 'wilayah' }">
-                        <span>Area Jangkauan</span>
-                        <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-700': activeMenu === 'wilayah' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
+                    <!-- 3. Layanan (Hybrid Compact Popover) -->
+                    <div class="relative" @click.outside="activeMenu = (activeMenu === 'layanan' ? null : activeMenu)">
+                        <button @click="activeMenu = (activeMenu === 'layanan' ? null : 'layanan')"
+                                type="button" 
+                                class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-sky-700 hover:bg-slate-50 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 cursor-pointer"
+                                :class="{ 'text-sky-700 font-bold bg-sky-50/70': activeMenu === 'layanan' }"
+                                aria-expanded="activeMenu === 'layanan'"
+                                aria-haspopup="true">
+                            <span>Layanan</span>
+                            <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-700': activeMenu === 'layanan' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
 
-                    <!-- Nav Link: Edukasi Bebas Kimia -->
-                    <a href="{{ url('/#edukasi') }}" class="py-2 hover:text-sky-700 transition-colors">
-                        Edukasi Sanitasi
+                        <!-- Compact Popover Menu -->
+                        <div x-cloak 
+                             x-show="activeMenu === 'layanan'"
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 translate-y-1 scale-98"
+                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave="transition ease-in duration-100"
+                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave-end="opacity-0 translate-y-1 scale-98"
+                             class="absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-lg p-2 z-50">
+                            <div class="space-y-1 max-h-80 overflow-y-auto pr-1">
+                                @forelse($navServices ?? [] as $serviceItem)
+                                    @php
+                                        $badge = 'Layanan';
+                                        $badgeColor = 'bg-sky-100 text-sky-800';
+                                        $lowerName = strtolower($serviceItem->name);
+                                        if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
+                                            $badge = 'Residensial';
+                                            $badgeColor = 'bg-sky-100 text-sky-800';
+                                        } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
+                                            $badge = '24 Jam';
+                                            $badgeColor = 'bg-red-100 text-red-800';
+                                        } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'resto') || str_contains($lowerName, 'lemak')) {
+                                            $badge = 'F&B';
+                                            $badgeColor = 'bg-amber-100 text-amber-800';
+                                        } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera') || str_contains($lowerName, 'gedung') || str_contains($lowerName, 'jetting')) {
+                                            $badge = 'Gedung';
+                                            $badgeColor = 'bg-emerald-100 text-emerald-800';
+                                        }
+                                    @endphp
+                                    <a href="{{ url('/#layanan-' . $serviceItem->slug) }}" @click="activeMenu = null" class="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors group">
+                                        <div class="flex items-center justify-between mb-0.5">
+                                            <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700 truncate mr-2">{{ $serviceItem->name }}</span>
+                                            <span class="text-[9px] font-bold px-1.5 py-0.5 {{ $badgeColor }} rounded-md shrink-0">{{ $badge }}</span>
+                                        </div>
+                                        <p class="text-[11px] text-slate-500 leading-snug line-clamp-1">
+                                            {{ $serviceItem->short_description ?: ($serviceItem->description ?: 'Layanan pelancaran saluran tanpa bongkar keramik.') }}
+                                        </p>
+                                    </a>
+                                @empty
+                                    <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors group">
+                                        <div class="flex items-center justify-between mb-0.5">
+                                            <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">Saluran Domestik</span>
+                                            <span class="text-[9px] font-bold px-1.5 py-0.5 bg-sky-100 text-sky-800 rounded-md">Residensial</span>
+                                        </div>
+                                        <p class="text-[11px] text-slate-500 leading-snug">Wastafel dapur, floor drain, dan pipa talang air.</p>
+                                    </a>
+                                    <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors group">
+                                        <div class="flex items-center justify-between mb-0.5">
+                                            <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">Kloset &amp; WC Meluap</span>
+                                            <span class="text-[9px] font-bold px-1.5 py-0.5 bg-red-100 text-red-800 rounded-md">24 Jam</span>
+                                        </div>
+                                        <p class="text-[11px] text-slate-500 leading-snug">Pelancaran leher angsa keramik tanpa dibongkar.</p>
+                                    </a>
+                                @endforelse
+                            </div>
+                            <div class="pt-2 mt-2 border-t border-slate-100">
+                                <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="block text-center py-1.5 text-xs font-bold text-sky-700 hover:text-sky-800 hover:bg-sky-50 rounded-lg transition-colors">
+                                    Lihat Seluruh Layanan &amp; Spesifikasi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Hasil Kerja -->
+                    <a href="{{ route('gallery') }}" 
+                       class="px-3 py-2 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ request()->is('galeri*') ? 'text-sky-700 font-bold bg-sky-50/70 border border-sky-100/60' : 'hover:text-sky-700 hover:bg-slate-50' }}">
+                        Hasil Kerja
+                    </a>
+
+                    <!-- 5. Area Jangkauan (Direct Dropdown Popover) -->
+                    <div class="relative" @click.outside="activeMenu = (activeMenu === 'wilayah' ? null : activeMenu)">
+                        <button @click="activeMenu = (activeMenu === 'wilayah' ? null : 'wilayah')"
+                                type="button" 
+                                class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-sky-700 hover:bg-slate-50 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 cursor-pointer"
+                                :class="{ 'text-sky-700 font-bold bg-sky-50/70': activeMenu === 'wilayah' || {{ request()->is('area*') ? 'true' : 'false' }} }"
+                                aria-expanded="activeMenu === 'wilayah'"
+                                aria-haspopup="true">
+                            <span>Area Jangkauan</span>
+                            <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-700': activeMenu === 'wilayah' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Compact Popover Menu -->
+                        <div x-cloak 
+                             x-show="activeMenu === 'wilayah'"
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 translate-y-1 scale-98"
+                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave="transition ease-in duration-100"
+                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave-end="opacity-0 translate-y-1 scale-98"
+                             class="absolute top-full right-0 mt-2 w-[480px] bg-white border border-slate-200 rounded-xl shadow-lg p-3 z-50">
+                            
+                            <!-- Popover Header -->
+                            <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-100">
+                                <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">
+                                    Wilayah Jangkauan Armada
+                                </span>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-md">
+                                    Siaga 24 Jam
+                                </span>
+                            </div>
+
+                            <!-- 3 Clean Columns -->
+                            <div class="grid grid-cols-3 gap-2.5 text-xs">
+                                <!-- Col 1: DKI Jakarta -->
+                                <div>
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-sky-700 mb-1 px-2">
+                                        DKI Jakarta
+                                    </div>
+                                    <div class="space-y-0.5">
+                                        <a href="{{ url('/area/jakarta-selatan') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Jakarta Selatan
+                                        </a>
+                                        <a href="{{ url('/area/jakarta-timur') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Jakarta Timur
+                                        </a>
+                                        <a href="{{ url('/area/jakarta-barat') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Jakarta Barat
+                                        </a>
+                                        <a href="{{ url('/area/jakarta-utara') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Jakarta Utara
+                                        </a>
+                                        <a href="{{ url('/area/jakarta-pusat') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Jakarta Pusat
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Col 2: Bodetabek -->
+                                <div>
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-sky-700 mb-1 px-2">
+                                        BODETABEK
+                                    </div>
+                                    <div class="space-y-0.5">
+                                        <a href="{{ url('/area/bogor-sentul') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Bogor &amp; Sentul
+                                        </a>
+                                        <a href="{{ url('/area/depok-cinere') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Depok &amp; Cinere
+                                        </a>
+                                        <a href="{{ url('/area/tangerang-kota') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Tangerang Kota
+                                        </a>
+                                        <a href="{{ url('/area/tangerang-selatan') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Tangsel / BSD
+                                        </a>
+                                        <a href="{{ url('/area/bekasi-cikarang') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Bekasi &amp; Cikarang
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Col 3: Hub Regional & Posko -->
+                                <div>
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-sky-700 mb-1 px-2">
+                                        Hub Lainnya
+                                    </div>
+                                    <div class="space-y-0.5 mb-2">
+                                        <a href="{{ url('/area/semarang') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Kota Semarang
+                                        </a>
+                                        <a href="{{ url('/area/bandar-lampung') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            Bandar Lampung
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer Bar -->
+                            <div class="pt-2 mt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                                <a href="{{ url('/#area') }}" @click="activeMenu = null" class="text-sky-700 hover:text-sky-800 font-bold px-2 py-1 rounded-md hover:bg-sky-50 transition-colors">
+                                    Lihat Posko &amp; Peta Armada
+                                </a>
+                                <span class="text-[11px] text-slate-400 font-medium pr-2">
+                                    Garansi 30 Hari
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Artikel/Edukasi -->
+                    <a href="{{ route('articles.index') }}" 
+                       class="px-3 py-2 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ request()->is('artikel*') || request()->is('pengetahuan*') ? 'text-sky-700 font-bold bg-sky-50/70 border border-sky-100/60' : 'hover:text-sky-700 hover:bg-slate-50' }}">
+                        Artikel/Edukasi
                     </a>
                 </nav>
 
@@ -233,222 +411,6 @@
                     </a>
                 </div>
             </div>
-        </div>
-
-        <!-- ====================================================================
-             A. SMART MEGA MENU: LAYANAN (GRID 4 + INTERACTIVE DIAGNOSTIC WIDGET)
-        ==================================================================== -->
-        <div x-cloak 
-             x-show="activeMenu === 'layanan'"
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 -translate-y-2"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 translate-y-0"
-             x-transition:leave-end="opacity-0 -translate-y-2"
-             class="absolute top-full inset-x-0 bg-white/98 backdrop-blur-md border-b border-slate-200/90 shadow-xl py-6 hidden md:block rounded-b-2xl">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-12 gap-8 items-stretch">
-                    
-                    <!-- Sisi Kiri: Grid 4 Kategori Esensial -->
-                    <div class="col-span-7 pr-6 border-r border-slate-200">
-                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                            <span class="text-xs font-mono font-bold text-sky-700 uppercase tracking-wider">
-                                4 DIVISI SPESIALISASI DRAINASE
-                            </span>
-                            <span class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">100% Bebas Bongkar Keramik</span>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <!-- 1. Saluran Domestik -->
-                            <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="p-4 rounded-xl bg-slate-50 hover:bg-white border border-slate-200/80 hover:border-sky-300 hover:shadow-xs transition-all group">
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">1. Saluran Domestik</span>
-                                    <span class="text-[9px] font-mono font-bold px-2 py-0.5 bg-sky-100 text-sky-800 rounded-full">RESIDENSIAL</span>
-                                </div>
-                                <p class="text-[11px] text-slate-600 leading-relaxed">
-                                    Wastafel dapur, floor drain kamar mandi, kloset, dan pipa talang air dengan spiral lentur tanpa bongkar.
-                                </p>
-                            </a>
-
-                            <!-- 2. Sedot & Kuras Grease Trap -->
-                            <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="p-4 rounded-xl bg-slate-50 hover:bg-white border border-slate-200/80 hover:border-sky-300 hover:shadow-xs transition-all group">
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">2. Grease Trap Resto</span>
-                                    <span class="text-[9px] font-mono font-bold px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">F&B KOMERSIAL</span>
-                                </div>
-                                <p class="text-[11px] text-slate-600 leading-relaxed">
-                                    Pembersihan lemak jenuh & sisa minyak kafe/restoran dengan ekstraksi vakum & rotary degreaser bebas bau.
-                                </p>
-                            </a>
-
-                            <!-- 3. Inspeksi Digital CCTV 30M -->
-                            <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="p-4 rounded-xl bg-slate-50 hover:bg-white border border-slate-200/80 hover:border-sky-300 hover:shadow-xs transition-all group">
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">3. Inspeksi CCTV 30M</span>
-                                    <span class="text-[9px] font-mono font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">DIAGNOSTIK IP68</span>
-                                </div>
-                                <p class="text-[11px] text-slate-600 leading-relaxed">
-                                    Deteksi visual titik pipa retak, pecah, amblas, atau akar pohon dengan layar monitor HD & rekaman video.
-                                </p>
-                            </a>
-
-                            <!-- 4. Heavy-Duty Hydro-Jetting -->
-                            <a href="{{ url('/#b2b') }}" @click="activeMenu = null" class="p-4 rounded-xl bg-slate-50 hover:bg-white border border-slate-200/80 hover:border-sky-300 hover:shadow-xs transition-all group">
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">4. Hydro-Jetting Industri</span>
-                                    <span class="text-[9px] font-mono font-bold px-2 py-0.5 bg-slate-200 text-slate-800 rounded-full">PABRIK & GEDUNG</span>
-                                </div>
-                                <p class="text-[11px] text-slate-600 leading-relaxed">
-                                    Semburan air bertekanan tinggi merontokkan endapan semen dan kerak lumpur keras pada instalasi pipa diameter besar.
-                                </p>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Sisi Kanan: Inovasi "Interactive Diagnostic Widget" -->
-                    <div class="col-span-5 flex flex-col justify-between bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-md">
-                        <div>
-                            <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
-                                <span class="text-[11px] font-mono text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span>
-                                    INTERACTIVE DIAGNOSTIC WIDGET
-                                </span>
-                                <span class="text-[10px] font-mono text-slate-400">1-KLIK GENERATE WA</span>
-                            </div>
-
-                            <p class="text-xs text-slate-300 mb-3">
-                                Pilih jenis saluran bermasalah di bawah untuk melihat alat kerja & kirim teknisi:
-                            </p>
-
-                            <!-- Selector Pills (1-Klik) -->
-                            <div class="grid grid-cols-3 gap-2 mb-4">
-                                <button type="button" @click="diagProblem = 'wastafel'" 
-                                        :class="diagProblem === 'wastafel' ? 'bg-sky-600 text-white border-sky-400 font-bold' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'"
-                                        class="px-2.5 py-2 rounded-xl border text-[11px] font-semibold transition-all">
-                                    Wastafel
-                                </button>
-                                <button type="button" @click="diagProblem = 'toilet'" 
-                                        :class="diagProblem === 'toilet' ? 'bg-sky-600 text-white border-sky-400 font-bold' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'"
-                                        class="px-2.5 py-2 rounded-xl border text-[11px] font-semibold transition-all">
-                                    Kloset / WC
-                                </button>
-                                <button type="button" @click="diagProblem = 'floordrain'" 
-                                        :class="diagProblem === 'floordrain' ? 'bg-sky-600 text-white border-sky-400 font-bold' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'"
-                                        class="px-2.5 py-2 rounded-xl border text-[11px] font-semibold transition-all">
-                                    Floor Drain
-                                </button>
-                                <button type="button" @click="diagProblem = 'greasetrap'" 
-                                        :class="diagProblem === 'greasetrap' ? 'bg-sky-600 text-white border-sky-400 font-bold' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'"
-                                        class="px-2.5 py-2 rounded-xl border text-[11px] font-semibold transition-all">
-                                    Grease Trap
-                                </button>
-                                <button type="button" @click="diagProblem = 'talang'" 
-                                        :class="diagProblem === 'talang' ? 'bg-sky-600 text-white border-sky-400 font-bold' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'"
-                                        class="px-2.5 py-2 rounded-xl border text-[11px] font-semibold transition-all">
-                                    Talang Atap
-                                </button>
-                                <button type="button" @click="diagProblem = 'cctv'" 
-                                        :class="diagProblem === 'cctv' ? 'bg-sky-600 text-white border-sky-400 font-bold' : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'"
-                                        class="px-2.5 py-2 rounded-xl border text-[11px] font-semibold transition-all">
-                                    CCTV 30M
-                                </button>
-                            </div>
-
-                            <!-- Preview Box -->
-                            <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-xs space-y-2">
-                                <div class="flex items-center justify-between text-[11px] font-mono">
-                                    <span class="text-sky-400 font-bold" x-text="diagnostics[diagProblem].title"></span>
-                                    <span class="text-emerald-400 font-bold" x-text="diagnostics[diagProblem].est"></span>
-                                </div>
-                                <p class="text-slate-300 text-[11px] leading-relaxed" x-text="diagnostics[diagProblem].problem"></p>
-                                <div class="text-[10px] font-mono text-slate-400 pt-1.5 border-t border-slate-800/80">
-                                    ALAT: <span class="text-white font-bold" x-text="diagnostics[diagProblem].tool"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 1-Click WhatsApp Button Action -->
-                        <div class="mt-4 pt-3 border-t border-slate-800">
-                            <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(diagnostics[diagProblem].msg)"
-                               target="_blank" 
-                               rel="noopener noreferrer" 
-                               class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl border border-emerald-500 shadow-sm transition-colors">
-                                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
-                                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                                </svg>
-                                <span>Kirim Teknisi untuk Masalah Ini</span>
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <!-- ====================================================================
-             B. SMART MEGA MENU: CAKUPAN WILAYAH (QUICK AREA FINDER INTERAKTIF)
-        ==================================================================== -->
-        <div x-cloak 
-             x-show="activeMenu === 'wilayah'"
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 -translate-y-2"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-start="opacity-100 translate-y-0"
-             x-transition:leave-end="opacity-0 -translate-y-2"
-             class="absolute top-full inset-x-0 bg-white/98 backdrop-blur-md border-b border-slate-200/90 shadow-xl py-6 hidden md:block rounded-b-2xl">
-            <template x-if="activeMenu === 'wilayah'">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
-                        <div>
-                            <span class="text-xs font-mono font-bold text-sky-700 uppercase tracking-wider block">QUICK AREA FINDER</span>
-                            <span class="text-xs text-slate-500">Filter kota atau kecamatan secara instan untuk konfirmasi armada siaga:</span>
-                        </div>
-                        <!-- Mini Search Bar Input -->
-                        <div class="w-80 relative">
-                            <input type="text" 
-                                   x-model="areaSearch" 
-                                   placeholder="Ketik kota/kecamatan (contoh: Tebet, Serpong)..." 
-                                   class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-3 py-2 text-xs font-mono text-slate-800 focus:outline-hidden focus:border-sky-700 transition-colors">
-                            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <!-- Filtered Result Cards Grid -->
-                    <div class="grid grid-cols-4 gap-3 max-h-72 overflow-y-auto pr-1">
-                        <template x-for="area in areas" :key="area.url">
-                            <a :href="area.url" 
-                               @click="activeMenu = null"
-                               x-show="filterArea(area)"
-                               class="p-3.5 rounded-xl bg-slate-50 hover:bg-white border border-slate-200/80 hover:border-sky-400 hover:shadow-xs transition-all block group">
-                                <div class="flex items-center justify-between mb-1.5 gap-2">
-                                    <div class="flex items-center gap-1.5 min-w-0">
-                                        <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full shrink-0"
-                                              :class="{
-                                                  'bg-sky-100 text-sky-800 border border-sky-200': area.type === 'Provinsi',
-                                                  'bg-indigo-100 text-indigo-800 border border-indigo-200': area.type === 'Kota',
-                                                  'bg-emerald-100 text-emerald-800 border border-emerald-200': area.type === 'Kecamatan'
-                                              }"
-                                              x-text="area.badge"></span>
-                                        <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700 truncate" x-text="area.name"></span>
-                                    </div>
-                                    <span class="text-[9px] font-mono text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full shrink-0" x-text="area.eta"></span>
-                                </div>
-                                <p class="text-[11px] text-slate-500 line-clamp-1" x-html="area.subtitle"></p>
-                            </a>
-                        </template>
-                    </div>
-
-                    <!-- Empty State if search matches nothing -->
-                    <div x-show="areas.filter(a => filterArea(a)).length === 0" 
-                         class="py-6 text-center text-xs text-slate-500 font-mono">
-                        Wilayah tidak ditemukan dalam daftar cepat. Hubungi hotline kami untuk konfirmasi teknisi di area Anda.
-                    </div>
-                </div>
-            </template>
         </div>
     </header>
 
@@ -507,7 +469,7 @@
                         <input type="text"
                                x-model="areaSearch"
                                placeholder="Ketik nama kota atau kecamatan (contoh: Ciracas, Tebet)..."
-                               class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-10 py-2.5 text-xs font-mono text-slate-800 focus:outline-hidden focus:border-sky-700 transition-colors">
+                               class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-9 pr-10 py-2.5 text-xs text-slate-800 focus:outline-hidden focus:border-sky-700 transition-colors">
                         <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -526,12 +488,12 @@
                     <div class="mt-3 overflow-y-auto space-y-2 flex-1 max-h-[50vh] pr-1 pb-4">
                         <template x-for="area in areas" :key="area.url">
                             <a :href="area.url" 
-                               @click="mobileSearchOpen = false"
+                               @click="mobileSearchOpen = false" 
                                x-show="filterArea(area)"
                                class="block p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 hover:border-sky-400 hover:bg-white transition-all btn-press">
                                 <div class="flex items-center justify-between gap-2">
                                     <div class="flex items-center gap-2 min-w-0">
-                                        <span class="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full shrink-0"
+                                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-md shrink-0"
                                               :class="{
                                                   'bg-sky-100 text-sky-800 border border-sky-200': area.type === 'Provinsi',
                                                   'bg-indigo-100 text-indigo-800 border border-indigo-200': area.type === 'Kota',
@@ -540,13 +502,13 @@
                                               x-text="area.badge"></span>
                                         <span class="text-xs font-bold text-slate-900 truncate" x-text="area.name"></span>
                                     </div>
-                                    <span class="text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full shrink-0" x-text="area.eta"></span>
+                                    <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-md shrink-0" x-text="area.eta"></span>
                                 </div>
                                 <p class="text-[11px] text-slate-500 mt-1 line-clamp-1" x-html="area.subtitle"></p>
                             </a>
                         </template>
                         <div x-show="areas.filter(a => filterArea(a)).length === 0" 
-                             class="py-8 text-center text-xs text-slate-500 font-mono">
+                             class="py-8 text-center text-xs text-slate-500">
                             Wilayah tidak ditemukan. Hubungi hotline kami untuk konfirmasi teknisi di area Anda.
                         </div>
                     </div>
@@ -696,7 +658,7 @@
                 </a>
 
                 <div class="pt-3 pb-1 text-center">
-                    <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
+                    <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
                         Tanpa Bongkar Keramik &bull; Garansi 30 Hari
                     </span>
                 </div>
@@ -755,16 +717,15 @@
                     <div class="text-xs text-slate-400 space-y-1.5 pt-1">
                         <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider text-sky-400">Workshop &amp; Posko Pusat:</div>
                         <p class="leading-relaxed">Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440</p>
-                        <div class="flex items-center gap-2 pt-1 text-[11px]">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span class="text-emerald-400 font-semibold">Siaga 24 Jam Nonstop</span>
+                        <div class="pt-1 text-[11px] text-emerald-400 font-semibold">
+                            Siaga 24 Jam Nonstop
                         </div>
                     </div>
                 </div>
 
                 <!-- Kolom 2: Layanan Residensial (Rumah & Ruko) -->
                 <div>
-                    <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Layanan Residensial</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Layanan Residensial</h3>
                     <ul class="space-y-2 text-xs text-slate-400">
                         <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors">Wastafel &amp; Sink Cuci Piring</a></li>
                         <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors">Kloset &amp; Toilet Duduk/Jongkok</a></li>
@@ -778,7 +739,7 @@
 
                 <!-- Kolom 3: Solusi B2B & Komersial -->
                 <div>
-                    <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Solusi B2B &amp; Gedung</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Solusi B2B &amp; Gedung</h3>
                     <ul class="space-y-2 text-xs text-slate-400">
                         <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors">De-Greasing Grease Trap Restoran</a></li>
                         <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors">Pembersihan Manhole Komunal Tenant</a></li>
@@ -786,15 +747,15 @@
                         <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors">Saluran Limbah Dapur Industri</a></li>
                         <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors">Perawatan Berkala After-Hours</a></li>
                         <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors">e-Faktur Pajak &amp; Berita Acara (BAST)</a></li>
-                        <li class="pt-1"><a href="{{ url('/#portofolio-b2b') }}" class="text-sky-400 hover:text-sky-300 font-semibold inline-flex items-center gap-1">Portofolio Mitra B2B &rarr;</a></li>
+                        <li class="pt-1"><a href="{{ url('/#portofolio-b2b') }}" class="text-sky-400 hover:text-sky-300 font-semibold inline-flex items-center gap-1">Portofolio Mitra B2B</a></li>
                     </ul>
                 </div>
 
                 <!-- Kolom 4: Area Jangkauan Jabodetabek -->
                 <div>
-                    <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Posko Jabodetabek</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Posko Jabodetabek</h3>
                     <ul class="space-y-1.5 text-xs text-slate-400">
-                        <li><a href="{{ route('area.province', ['province' => 'dki-jakarta']) }}" class="hover:text-white font-semibold text-sky-300">Provinsi DKI Jakarta &rarr;</a></li>
+                        <li><a href="{{ route('area.province', ['province' => 'dki-jakarta']) }}" class="hover:text-white font-semibold text-sky-300">Provinsi DKI Jakarta</a></li>
                         <li><a href="{{ route('area.city', ['city' => 'jakarta-selatan']) }}" class="hover:text-white">Jakarta Selatan (Tebet &amp; Cilandak)</a></li>
                         <li><a href="{{ route('area.city', ['city' => 'jakarta-timur']) }}" class="hover:text-white">Jakarta Timur (Duren Sawit)</a></li>
                         <li><a href="{{ route('area.city', ['city' => 'jakarta-barat']) }}" class="hover:text-white">Jakarta Barat (Kebon Jeruk &amp; Puri)</a></li>
@@ -810,18 +771,18 @@
 
                 <!-- Kolom 5: Hub Luar Kota & Edukasi Sanitasi -->
                 <div>
-                    <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Hub Regional &amp; Edukasi</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Hub Regional &amp; Edukasi</h3>
                     <ul class="space-y-2 text-xs text-slate-400">
                         <li><a href="{{ route('area.province', ['province' => 'jawa-tengah']) }}" class="hover:text-white font-semibold text-sky-300">Provinsi Jawa Tengah</a></li>
                         <li><a href="{{ route('area.city', ['city' => 'semarang']) }}" class="hover:text-white">Kota Semarang (Candisari &amp; Tembalang)</a></li>
                         <li><a href="{{ route('area.province', ['province' => 'lampung']) }}" class="hover:text-white font-semibold text-sky-300">Provinsi Lampung</a></li>
                         <li><a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="hover:text-white">Bandar Lampung (Kedaton &amp; Tjg. Karang)</a></li>
                         <li><a href="{{ route('area.city', ['city' => 'bandung']) }}" class="hover:text-white">Kota Bandung (Jawa Barat)</a></li>
-                        <li class="pt-1"><a href="{{ route('articles.index') }}" class="hover:text-white font-semibold text-sky-300">Artikel &amp; Edukasi Sanitasi &rarr;</a></li>
+                        <li class="pt-1"><a href="{{ route('articles.index') }}" class="hover:text-white font-semibold text-sky-300">Artikel &amp; Edukasi Sanitasi</a></li>
                         <li><a href="{{ route('gallery') }}" class="hover:text-white">Galeri Bukti Before &amp; After</a></li>
                         <li class="pt-1">
-                            <a href="{{ route('area.index') }}" class="inline-flex items-center gap-1 text-[11px] font-mono text-sky-400 hover:text-sky-300 underline">
-                                Indeks Lengkap 38 Area &rarr;
+                            <a href="{{ route('area.index') }}" class="inline-flex items-center gap-1 text-[11px] text-sky-400 hover:text-sky-300 underline font-medium">
+                                Indeks Lengkap 38 Area
                             </a>
                         </li>
                     </ul>
@@ -829,7 +790,7 @@
 
                 <!-- Kolom 6: Standar Mutu, K3 & Legalitas -->
                 <div>
-                    <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Standar Mutu &amp; K3</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Standar Mutu &amp; K3</h3>
                     <div class="space-y-2.5 text-xs text-slate-400">
                         <div class="flex items-start gap-1.5">
                             <span class="text-emerald-400 font-bold select-none">[✓]</span>
@@ -870,11 +831,10 @@
                 <div class="lg:col-span-4 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-700/70 text-slate-200 text-xs font-semibold border border-slate-600">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-700/70 text-slate-200 text-xs font-semibold border border-slate-600">
                                 <span>Workshop &amp; Gudang Armada</span>
                             </span>
-                            <span class="text-[11px] font-mono text-slate-400">Jakarta Timur</span>
+                            <span class="text-[11px] font-semibold text-slate-400">Jakarta Timur</span>
                         </div>
                         <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[16/10] bg-slate-950 relative shadow-inner">
                             <iframe 
@@ -905,8 +865,7 @@
                             </h3>
                             <p class="text-xs text-slate-400 mt-0.5">Penugasan teknisi terdekat langsung dari posko siaga masing-masing kota untuk respon cepat.</p>
                         </div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/15 border border-emerald-500/30 rounded-md text-emerald-400 text-xs font-semibold shrink-0">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <div class="inline-flex items-center px-3 py-1 bg-emerald-500/15 border border-emerald-500/30 rounded-md text-emerald-400 text-xs font-semibold shrink-0">
                             <span>Siaga 24 Jam Nonstop</span>
                         </div>
                     </div>
@@ -930,7 +889,7 @@
                                     <li><strong class="text-white">Lampung:</strong> Kedaton &amp; Tjg. Karang, Bandar Lampung</li>
                                 </ul>
                             </div>
-                            <div class="mt-3 pt-2.5 border-t border-slate-800 text-[10px] text-slate-400 font-mono">
+                            <div class="mt-3 pt-2.5 border-t border-slate-800 text-[10px] text-slate-400 font-medium">
                                 Koordinasi Cepat via WhatsApp
                             </div>
                         </div>
@@ -952,7 +911,7 @@
                                     <li><strong class="text-white">Perlindungan APD:</strong> Sepatu pelindung &amp; sanitasi pasca pengerjaan</li>
                                 </ul>
                             </div>
-                            <div class="mt-3 pt-2.5 border-t border-slate-800 text-[10px] text-slate-400 font-mono">
+                            <div class="mt-3 pt-2.5 border-t border-slate-800 text-[10px] text-slate-400 font-medium">
                                 100% Mekanis Bebas Bahan Kimia
                             </div>
                         </div>
@@ -973,7 +932,7 @@
                                     <li><strong class="text-white">Kelengkapan B2B:</strong> Invoice resmi, e-Faktur Pajak PPN &amp; Berita Acara</li>
                                 </ul>
                             </div>
-                            <div class="mt-3 pt-2.5 border-t border-slate-800 text-[10px] text-slate-400 font-mono">
+                            <div class="mt-3 pt-2.5 border-t border-slate-800 text-[10px] text-slate-400 font-medium">
                                 Surat Garansi Resmi Bermeterai
                             </div>
                         </div>
@@ -1001,7 +960,7 @@
             </div>
 
             <!-- Footer Bottom Note -->
-            <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs text-slate-500 font-mono">
+            <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs text-slate-500">
                 <p>&copy; {{ date('Y') }} Drainusantara. Rooter &amp; Plumbing Engineering. 100% Tanpa Bongkar Keramik &amp; Tanpa Bahan Kimia Korosif.</p>
                 <div class="flex items-center gap-4 text-slate-400">
                     <span>Spiral Baja Elektrik</span>
