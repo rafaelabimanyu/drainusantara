@@ -12,6 +12,7 @@ class Gallery extends Model
 
     protected $fillable = [
         'title',
+        'category',
         'service_id',
         'before_image',
         'after_image',
@@ -32,5 +33,20 @@ class Gallery extends Model
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function getCategoryLabelAttribute(): string
+    {
+        return $this->category === 'b2b' ? 'B2B Komersial' : 'Rumahan Residensial';
+    }
+
+    public function isB2b(): bool
+    {
+        return $this->category === 'b2b';
+    }
+
+    public function isRumahan(): bool
+    {
+        return $this->category !== 'b2b';
     }
 }

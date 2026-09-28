@@ -35,8 +35,8 @@ class AreaPageTest extends TestCase
         $response->assertSee('Jasa Pipa & Saluran Mampet', false);
         $response->assertSee('Tebet');
         $response->assertSee('Jakarta Selatan');
-        $response->assertSee('Panggil Teknisi Tebet');
-        $response->assertSee('Sering Terjadi di Tebet: Pipa Rusak Akibat Soda Api!');
+        $response->assertSee('Panggil Teknisi Sekarang');
+        $response->assertSee('Bahaya Fatal Menggunakan Soda Api');
         $response->assertSee('Mulai Rp 400.000');
     }
 
@@ -47,7 +47,7 @@ class AreaPageTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Banyumanik');
         $response->assertSee('Semarang');
-        $response->assertSee('Panggil Teknisi Banyumanik');
+        $response->assertSee('Panggil Teknisi Sekarang');
         $response->assertSee('Mulai Rp 400.000');
     }
 

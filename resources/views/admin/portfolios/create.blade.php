@@ -82,7 +82,7 @@
                         <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Lokasi / Bangunan B2B</span>
                         <p class="text-[11px] text-slate-500 mt-0.5">Foto akan dijadikan latar kartu dengan efek blur halus di landing page.</p>
                     </div>
-                    <span class="text-[11px] text-sky-600 font-semibold bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">JPG, PNG, WEBP</span>
+                    <span class="text-[11px] text-sky-700 font-semibold bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">JPG, PNG, WEBP &bull; Disimpan utuh di public/images/portfolio</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">

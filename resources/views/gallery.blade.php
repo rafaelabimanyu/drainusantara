@@ -29,7 +29,7 @@
                 Galeri Hasil Pengerjaan <span class="text-sky-700">Drainusantara</span>
             </h1>
             <p class="mt-3 text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-                Dokumentasi otentik foto sebelum dan sesudah pelancaran pipa tersumbat oleh tim teknisi Drainusantara menggunakan mesin spiral baja rotary dan kamera inspeksi digital IP68.
+                Dokumentasi foto teknis pengerjaan pelancaran pipa tersumbat sektor residensial (rumahan) dan komersial (B2B) oleh tim teknisi Drainusantara menggunakan mesin spiral baja rotary dan kamera inspeksi digital IP68.
             </p>
         </div>
     </section>
@@ -38,110 +38,80 @@
     <section class="py-12 sm:py-16 bg-white border-b border-slate-200" x-data="{ activeFilter: 'all' }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Interactive Category Filter Tabs -->
+            @if(count($galleries) > 0)
+            <!-- Interactive Category Filter Tabs (Rumahan vs B2B) -->
             <div class="flex flex-wrap items-center justify-center gap-2 mb-10 reveal-soft">
                 <button type="button" @click="activeFilter = 'all'"
                         :class="activeFilter === 'all' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
-                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Semua Proyek ({{ count($galleries) }})
+                        class="px-5 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                    Semua Sektor ({{ count($galleries) }})
                 </button>
-                <button type="button" @click="activeFilter = 'wastafel'"
-                        :class="activeFilter === 'wastafel' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
-                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Wastafel &amp; Sink
+                <button type="button" @click="activeFilter = 'rumahan'"
+                        :class="activeFilter === 'rumahan' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                        class="px-5 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                    Rumahan / Residensial ({{ $galleries->where('category', 'rumahan')->count() }})
                 </button>
-                <button type="button" @click="activeFilter = 'kloset'"
-                        :class="activeFilter === 'kloset' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
-                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Kloset &amp; WC
-                </button>
-                <button type="button" @click="activeFilter = 'floordrain'"
-                        :class="activeFilter === 'floordrain' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
-                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Floor Drain
-                </button>
-                <button type="button" @click="activeFilter = 'cctv'"
-                        :class="activeFilter === 'cctv' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
-                        class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Inspeksi CCTV
+                <button type="button" @click="activeFilter = 'b2b'"
+                        :class="activeFilter === 'b2b' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
+                        class="px-5 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                    B2B / Komersial ({{ $galleries->where('category', 'b2b')->count() }})
                 </button>
             </div>
+            @endif
 
-            <!-- Gallery Cards Grid -->
+            <!-- Gallery Cards Grid (1 Single Photo per Documentation) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 @forelse($galleries as $item)
                     @php
-                        // Derive filter category tag
-                        $categorySlug = 'other';
-                        $fullText = strtolower($item->title . ' ' . ($item->service ? $item->service->name : ''));
-                        if (str_contains($fullText, 'wastafel') || str_contains($fullText, 'sink') || str_contains($fullText, 'dapur')) {
-                            $categorySlug = 'wastafel';
-                        } elseif (str_contains($fullText, 'kloset') || str_contains($fullText, 'wc') || str_contains($fullText, 'toilet')) {
-                            $categorySlug = 'kloset';
-                        } elseif (str_contains($fullText, 'floor drain') || str_contains($fullText, 'kamar mandi')) {
-                            $categorySlug = 'floordrain';
-                        } elseif (str_contains($fullText, 'cctv') || str_contains($fullText, 'kamera') || str_contains($fullText, 'inspeksi')) {
-                            $categorySlug = 'cctv';
-                        }
+                        $photoUrl = $item->image ?: ($item->after_image ?: $item->before_image);
+                        $isB2b = ($item->category ?? 'rumahan') === 'b2b';
                     @endphp
-                    <div x-show="activeFilter === 'all' || activeFilter === '{{ $categorySlug }}'"
+                    <div x-show="activeFilter === 'all' || activeFilter === '{{ $item->category ?? 'rumahan' }}'"
                          x-transition:enter="transition ease-out duration-200"
                          x-transition:enter-start="opacity-0 scale-98"
                          x-transition:enter-end="opacity-100 scale-100"
                          class="bg-white rounded-xl border border-slate-200 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col group card-lift reveal-soft delay-{{ min($loop->iteration * 50, 300) }}">
                         
-                        <!-- Before / After Photos Split -->
-                        <div class="relative bg-slate-950 overflow-hidden border-b border-slate-100">
-                            @if($item->before_image && $item->after_image)
-                                <div class="grid grid-cols-2 gap-1 p-1 bg-slate-900">
-                                    <!-- Foto Sebelum -->
-                                    <div class="relative overflow-hidden group/img">
-                                        <img src="{{ $item->before_image }}" 
-                                             alt="Sebelum - {{ $item->title }}" 
-                                             width="400" 
-                                             height="250" 
-                                             loading="lazy" 
-                                             decoding="async" 
-                                             class="w-full h-48 sm:h-56 object-cover transform group-hover/img:scale-105 transition-transform duration-300">
-                                        <div class="absolute top-2.5 left-2.5 bg-slate-900/85 backdrop-blur-xs border border-rose-500/40 text-rose-300 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                            SEBELUM
-                                        </div>
-                                    </div>
-                                    <!-- Foto Sesudah -->
-                                    <div class="relative overflow-hidden group/img">
-                                        <img src="{{ $item->after_image }}" 
-                                             alt="Sesudah - {{ $item->title }}" 
-                                             width="400" 
-                                             height="250" 
-                                             loading="lazy" 
-                                             decoding="async" 
-                                             class="w-full h-48 sm:h-56 object-cover transform group-hover/img:scale-105 transition-transform duration-300">
-                                        <div class="absolute top-2.5 right-2.5 bg-slate-900/85 backdrop-blur-xs border border-emerald-500/40 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                            SESUDAH
-                                        </div>
-                                    </div>
-                                </div>
-                            @elseif($item->image)
-                                <div class="relative overflow-hidden group/img">
-                                    <img src="{{ $item->image }}" 
-                                         alt="{{ $item->title }}" 
-                                         width="800" 
-                                         height="450" 
-                                         loading="lazy" 
-                                         decoding="async" 
-                                         class="w-full h-60 object-cover transform group-hover/img:scale-105 transition-transform duration-300">
-                                    <div class="absolute top-2.5 left-2.5 bg-slate-900/85 backdrop-blur-xs border border-sky-500/40 text-sky-300 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                        DOKUMENTASI LAPANGAN
-                                    </div>
-                                </div>
+                        <!-- Single Photo Header -->
+                        <div class="relative aspect-[16/10] bg-slate-950 overflow-hidden border-b border-slate-100 group/img">
+                            @if($photoUrl)
+                                <img src="{{ $photoUrl }}" 
+                                     alt="{{ $item->title }}" 
+                                     width="800" 
+                                     height="500" 
+                                     loading="lazy" 
+                                     decoding="async" 
+                                     class="w-full h-full object-cover transform group-hover/img:scale-105 transition-transform duration-300">
                             @else
-                                <div class="w-full h-56 bg-slate-100 flex flex-col items-center justify-center text-slate-400 gap-2 p-4 text-center">
+                                <div class="w-full h-full bg-slate-100 flex flex-col items-center justify-center text-slate-400 gap-2 p-4 text-center">
                                     <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
                                     <span class="text-xs font-semibold">Foto Dokumentasi Lapangan Drainusantara</span>
                                 </div>
                             @endif
+
+                            <!-- Sector Badge -->
+                            @if($isB2b)
+                                <div class="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-amber-500/40 text-amber-300 text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                                        <path d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h6v2H7V5zm6 4H7v2h6V9zm-6 4h6v2H7v-2z"/>
+                                    </svg>
+                                    B2B Komersial
+                                </div>
+                            @else
+                                <div class="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-sky-500/40 text-sky-300 text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                                    </svg>
+                                    Rumahan Residensial
+                                </div>
+                            @endif
+
+                            <!-- Status Plong Badge -->
+                            <div class="absolute top-3 right-3 bg-emerald-950/85 backdrop-blur-xs border border-emerald-500/40 text-emerald-300 text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs">
+                                ✓ Plong Lancar
+                            </div>
                         </div>
 
                         <!-- Content Details -->
@@ -187,8 +157,14 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-2 py-16 text-center text-slate-500">
-                        Dokumentasi galeri sedang dipersiapkan.
+                    <div class="col-span-full py-16 px-4 text-center bg-white rounded-xl border border-slate-200 text-slate-500 reveal-soft">
+                        <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">Dokumentasi Belum Tersedia</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Saat ini belum ada dokumentasi foto yang dipublikasikan. Foto pengerjaan akan tampil di sini setelah ditambahkan.</p>
                     </div>
                 @endforelse
             </div>

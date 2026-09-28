@@ -365,6 +365,14 @@
 </section>
 
 <!-- ====================================================================
+     PERALATAN STANDAR ARMADA DI KOTA INI
+==================================================================== -->
+@include('partials.equipment-section', [
+    'areaName' => $cityData['name'],
+    'bgColor' => 'bg-white'
+])
+
+<!-- ====================================================================
      BOTTOM CTA KOTA
 ==================================================================== -->
 <section class="py-14 lg:py-20 bg-slate-900 text-white relative overflow-hidden reveal-soft">

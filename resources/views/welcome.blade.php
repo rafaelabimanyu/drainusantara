@@ -119,11 +119,32 @@
     ];
 @endphp
 
+
+
 <!-- ====================================================================
      1. HERO SECTION (MINIMALIS, BERSIH, LEGA & HIGH-CONVERSION)
 ==================================================================== -->
-<section class="relative bg-white border-b border-slate-200 pt-10 pb-16 lg:pt-16 lg:pb-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="relative min-h-[calc(100vh-5rem)] flex items-center bg-white border-b border-slate-200 overflow-hidden py-12 lg:py-20">
+    
+    <!-- Background Gambar Hero dengan Overlay Kontras (Otomatis Sembunyi Jika File Belum Ada) -->
+  
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <img 
+               src="{{ asset('assets/banner/Drainusantara-jasa-saluran-mampet-profesional-desktop.webp') }}"
+                alt="Background Drainusantara" 
+                class="w-full h-full object-cover object-center"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+                onerror="this.style.display='none'"
+            >
+            <!-- Overlay Gradien Lembut: Menjamin Teks Tetap 100% Kontras & Tajam (WCAG AA) -->
+            <div class="absolute inset-0 bg-gradient-to-r from-gray-300 via-gray-300/60 to-gray-300/55"></div>
+            <div class="absolute inset-0 bg-slate-900/5"></div>
+        </div>
+
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             
             <!-- Hero Left: Konten Esensial & Bernapas -->
@@ -136,27 +157,25 @@
 
                 <!-- Headline Lugas & Faktual -->
                 <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight sm:leading-[1.12] reveal-soft">
-                    Jasa Saluran Mampet & Tukang Pipa Tersumbat <br>
+                    Jasa Saluran Mampet & Tukang Pipa Tersumbat <br>    
                     <span class="text-sky-700">Tanpa Bongkar Keramik & Bergaransi.</span>
                 </h1>
 
                 <!-- Sub-Headline: Jelas & Singkat -->
-                <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl reveal-soft delay-100">
+                <p class="text-base text-sm md:text-lg font-semibold text-slate-600 leading-relaxed max-w-2xl reveal-soft delay-100">
                     Jasa pelancaran saluran pipa mampet untuk rumah tinggal, ruko, dan resto di Jabodetabek, Semarang, dan Lampung. Mengatasi wastafel dapur berlemak, kloset meluap, serta floor drain buntu menggunakan mesin spiral baja Ridgid tanpa membongkar lantai keramik. Garansi tertulis 30 hari.
                 </p>
 
                 <!-- Value Checkpoints (Inline Minimalis Tanpa Box Tebal) -->
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-semibold text-slate-700 pt-1 reveal-soft delay-150">
                     <span class="flex items-center gap-1.5">
-                        <span class="text-emerald-700 font-bold select-none text-base">✓</span>
                         <span>Keramik Utuh</span>
                     </span>
                     <span class="flex items-center gap-1.5">
-                        <span class="text-sky-700 font-bold select-none text-base">✓</span>
-                        <span>Kamera CCTV Pipa 30M</span>
+                        <span>Inspeksi CCTV 30M</span>
                     </span>
                     <span class="flex items-center gap-1.5">
-                        <span class="text-emerald-700 font-bold select-none text-base">✓</span>
+                       
                         <span>Garansi 30 Hari</span>
                     </span>
                 </div>
@@ -182,58 +201,25 @@
                     </a>
                 </div>
 
-                <!-- Jaminan Ringkas Bawah CTA -->
-                <div class="text-xs text-slate-500 flex flex-wrap items-center gap-x-4 gap-y-1 font-medium pt-0.5 reveal-soft delay-200">
-                    <span>Bebas Asam / Soda Api Merusak</span>
-                    <span>&bull;</span>
-                    <span>Bayar Hanya Setelah Saluran Plong</span>
-                </div>
             </div>
 
-            <!-- Hero Right: Tampilan Foto Dokumentasi Rapi & Elegan -->
-            <div class="lg:col-span-5 reveal-soft delay-150">
+            <!-- Hero Right: Tampilan Foto Dokumentasi Rapi & Elegan (Khusus Desktop) -->
+            <div class="hidden lg:block lg:col-span-5 reveal-soft delay-150">
                 <div class="bg-white rounded-lg p-3 sm:p-4 border border-slate-200 shadow-sm space-y-3 card-lift">
                     
                     <!-- Foto Utama Kerja Teknisi & Mesin Rooter (LCP Optimized) -->
                     <div class="relative rounded-md overflow-hidden aspect-[16/11] bg-slate-900 border border-slate-200">
-                        <picture>
-                            <source media="(max-width: 640px)" srcset="{{ asset('images/hero-technician-mobile.webp') }}" type="image/webp">
-                            <source srcset="{{ asset('images/hero-technician.webp') }}" type="image/webp">
-                            <img 
-                                src="{{ asset('images/hero-technician.webp') }}" 
-                                alt="Teknisi Drainusantara Pelancaran Saluran Tanpa Bongkar" 
-                                width="800" 
-                                height="550" 
-                                loading="eager"
-                                fetchpriority="high"
-                                decoding="async"
-                                class="w-full h-full object-cover"
-                            >
-                        </picture>
-                        <div class="absolute inset-0 p-3 flex flex-col justify-between pointer-events-none">
-                            <div class="flex justify-between items-center">
-                                <span class="bg-emerald-700/95 text-white text-[11px] font-bold px-2.5 py-1 rounded-sm shadow-xs">
-                                    Bebas Bongkar Keramik
-                                </span>
-                                <span class="bg-slate-900/90 text-sky-300 text-[10px] font-bold px-2 py-0.5 rounded-sm border border-slate-700 uppercase tracking-wide">
-                                    Inspeksi CCTV 30M
-                                </span>
-                            </div>
-                        </div>
+                        <img 
+                            src="{{ asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp') }}" 
+                            alt="Teknisi Drainusantara Pelancaran Saluran Tanpa Bongkar" 
+                            width="800" 
+                            height="550" 
+                            loading="eager"
+                            fetchpriority="high"
+                            decoding="async"
+                            class="w-full h-full object-cover"
+                        >
                     </div>
-
-                    <!-- 2 Poin Penegasan Spesifikasi & Jaminan yang Ramping -->
-                    <div class="grid grid-cols-2 gap-2 text-xs">
-                        <div class="p-2.5 bg-slate-50 rounded-md border border-slate-200">
-                            <span class="text-slate-500 text-[11px] block">Peralatan:</span>
-                            <span class="font-bold text-slate-800">Mesin Spiral Rotary</span>
-                        </div>
-                        <div class="p-2.5 bg-slate-50 rounded-md border border-slate-200">
-                            <span class="text-slate-500 text-[11px] block">Jaminan:</span>
-                            <span class="font-bold text-emerald-700">Garansi 30 Hari</span>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
@@ -263,7 +249,7 @@
                 <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
-                <span>Geser kartu untuk melihat langkah &bull; Auto-scroll aktif</span>
+              
             </div>
         </div>
 
@@ -393,7 +379,7 @@
                 <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
-                <span>Geser untuk melihat opsi layanan &bull; Auto-scroll aktif</span>
+                
             </div>
         </div>
 
@@ -527,7 +513,7 @@
                 <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
-                <span>Geser untuk melihat 5 keunggulan &bull; Auto-scroll aktif</span>
+               
             </div>
         </div>
 
@@ -700,34 +686,28 @@
 </section>
 
 <!-- ====================================================================
-     5. KOMPARASI FOTO BEFORE & AFTER (BUKTI HASIL KERJA NYATA)
+     5. DOKUMENTASI PEKERJAAN LAPANGAN (RUMAHAN & B2B)
 ==================================================================== -->
-<section id="galeri-before-after" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200" x-data="mobileCarousel(3, 4500)">
+<section id="dokumentasi" class="relative py-16 lg:py-24 bg-slate-50 border-b border-slate-200" x-data="{ activeCategory: 'all' }">
+    <div id="galeri-before-after" class="absolute -top-16"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Section Header -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-12 reveal-soft">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-10 reveal-soft">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
-                    Dokumentasi Pengerjaan
+                    Dokumentasi Pekerjaan Lapangan
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                    Komparasi Sebelum &amp; Sesudah Pengerjaan
+                    Hasil Pengerjaan Teknisi Drainusantara
                 </h2>
                 <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
-                    Bukti nyata efektivitas mesin rooter mekanik spiral baja dan kamera inspeksi CCTV pipa Drainusantara di lapangan.
+                    Dokumentasi riil penanganan saluran pipa tersumbat di sektor hunian rumahan dan komersial B2B menggunakan mesin rooter spiral elektrik dan kamera inspeksi pipa.
                 </p>
-                <!-- Mobile Swipe Hint -->
-                <div class="flex lg:hidden items-center gap-1.5 text-xs text-sky-700 font-medium mt-3">
-                    <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                    </svg>
-                    <span>Geser untuk melihat bukti komparasi &bull; Auto-scroll aktif</span>
-                </div>
             </div>
             <div>
-                <a href="{{ url('/galeri') }}" class="inline-flex items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 bg-white hover:bg-sky-50 border border-slate-200 px-5 py-3 rounded-xl shadow-xs transition-colors btn-press">
-                    <span>Lihat Semua Dokumentasi</span>
+                <a href="{{ url('/galeri') }}" class="inline-flex items-center gap-2 text-sm font-bold text-sky-700 hover:text-sky-800 bg-white hover:bg-sky-50 border border-slate-200 px-5 py-3 rounded-xl shadow-xs transition-colors btn-press min-h-[44px]">
+                    <span>Lihat Semua Galeri</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                     </svg>
@@ -735,181 +715,131 @@
             </div>
         </div>
 
-        <!-- 3 Comparison Split Cards Carousel on Mobile, Grid on Desktop -->
-        <div x-ref="slider"
-             @scroll.passive="onScroll()"
-             @touchstart="pause()"
-             @touchend="resume()"
-             @mouseenter="pause()"
-             @mouseleave="resume()"
-             class="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-8 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
-            
-            <!-- Komparasi 1: Pipa Wastafel Dapur -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-1 flex flex-col justify-between">
-                <div>
-                    <div class="grid grid-cols-2 border-b border-slate-100">
-                        <!-- Before -->
-                        <div class="relative aspect-[4/3] bg-slate-900 overflow-hidden border-r border-slate-100">
-                            <img 
-                                src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=500&q=80" 
-                                alt="Sebelum: Pipa Wastafel Mampet Kerak Lemak" 
-                                class="w-full h-full object-cover grayscale contrast-125"
-                                width="500"
-                                height="375"
-                                loading="lazy"
-                                decoding="async"
-                            >
-                            <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                SEBELUM (MAMPET)
-                            </span>
-                        </div>
-                        <!-- After -->
-                        <div class="relative aspect-[4/3] bg-slate-900 overflow-hidden">
-                            <img 
-                                src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=500&q=80" 
-                                alt="Sesudah: Pipa Wastafel Bersih Plong" 
-                                class="w-full h-full object-cover contrast-110"
-                                width="500"
-                                height="375"
-                                loading="lazy"
-                                decoding="async"
-                            >
-                            <span class="absolute top-2.5 left-2.5 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                SESUDAH (PLONG)
-                            </span>
-                        </div>
-                    </div>
+        @php
+            $displayGalleries = ($galleries ?? collect())->take(3);
+            $countTotal = $displayGalleries->count();
+            $countRumahan = $displayGalleries->where('category', 'rumahan')->count();
+            $countB2b = $displayGalleries->where('category', 'b2b')->count();
+        @endphp
 
-                    <div class="p-6">
-                        <div class="text-xs text-sky-700 font-bold uppercase mb-1">KASUS: RESTO F&B JAKARTA UTARA</div>
-                        <h3 class="text-base font-bold text-slate-900 mb-2">Pelancaran Bak Cuci Piring dari Kerak Lemak Padat</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Endapan lemak sepanjang 10 meter dikikis tuntas dengan spiral fleksibel rotary tanpa membongkar keramik lantai dapur.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="p-6 pt-0 border-t border-slate-100 mt-4 text-xs text-slate-500 flex justify-between items-center bg-slate-50/50">
-                    <span>Durasi: 40 Menit</span>
-                    <span class="text-emerald-700 font-bold">Status: Plong Lancar</span>
-                </div>
-            </div>
-
-            <!-- Komparasi 2: Toilet Kloset Duduk -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-2 flex flex-col justify-between">
-                <div>
-                    <div class="grid grid-cols-2 border-b border-slate-100">
-                        <!-- Before -->
-                        <div class="relative aspect-[4/3] bg-slate-900 overflow-hidden border-r border-slate-100">
-                            <img 
-                                src="https://images.unsplash.com/photo-1584622781564-1d987f7333c1?auto=format&fit=crop&w=500&q=80" 
-                                alt="Sebelum: Toilet Meluap Tersumbat" 
-                                class="w-full h-full object-cover grayscale contrast-125"
-                                width="500"
-                                height="375"
-                                loading="lazy"
-                                decoding="async"
-                            >
-                            <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                SEBELUM (MELUAP)
-                            </span>
-                        </div>
-                        <!-- After -->
-                        <div class="relative aspect-[4/3] bg-slate-900 overflow-hidden">
-                            <img 
-                                src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=500&q=80" 
-                                alt="Sesudah: Toilet Duduk Lancar" 
-                                class="w-full h-full object-cover contrast-110"
-                                width="500"
-                                height="375"
-                                loading="lazy"
-                                decoding="async"
-                            >
-                            <span class="absolute top-2.5 left-2.5 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                SESUDAH (LANCAR)
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="p-6">
-                        <div class="text-xs text-sky-700 font-bold uppercase mb-1">KASUS: RUMAH TINGGAL TANGERANG SELATAN</div>
-                        <h3 class="text-base font-bold text-slate-900 mb-2">Penarikan Sumbatan Tisu di Leher Angsa Kloset</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Penarikan benda asing dari lekukan leher angsa porselen kloset duduk lantai 2 dalam waktu 35 menit tanpa mencopot kloset.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="p-6 pt-0 border-t border-slate-100 mt-4 text-xs text-slate-500 flex justify-between items-center bg-slate-50/50">
-                    <span>Durasi: 35 Menit</span>
-                    <span class="text-emerald-700 font-bold">Status: Bebas Bongkar</span>
-                </div>
-            </div>
-
-            <!-- Komparasi 3: Deteksi Kamera CCTV -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft stagger-3 flex flex-col justify-between">
-                <div>
-                    <div class="grid grid-cols-2 border-b border-slate-100">
-                        <!-- Before -->
-                        <div class="relative aspect-[4/3] bg-slate-900 overflow-hidden border-r border-slate-100">
-                            <img 
-                                src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=500&q=80" 
-                                alt="Sebelum: Intrusi Akar di Jalur Pipa" 
-                                class="w-full h-full object-cover grayscale contrast-125"
-                                width="500"
-                                height="375"
-                                loading="lazy"
-                                decoding="async"
-                            >
-                            <span class="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                CCTV: INTRUSI AKAR
-                            </span>
-                        </div>
-                        <!-- After -->
-                        <div class="relative aspect-[4/3] bg-slate-900 overflow-hidden">
-                            <img 
-                                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=500&q=80" 
-                                alt="Sesudah: Akar Terpotong Tuntas" 
-                                class="w-full h-full object-cover contrast-110"
-                                width="500"
-                                height="375"
-                                loading="lazy"
-                                decoding="async"
-                            >
-                            <span class="absolute top-2.5 left-2.5 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
-                                CCTV: BERSIH TUNTAS
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="p-6">
-                        <div class="text-xs text-sky-700 font-bold uppercase mb-1">KASUS: RUKO KANTOR KOTA SEMARANG</div>
-                        <h3 class="text-base font-bold text-slate-900 mb-2">Deteksi & Pemotongan Akar Pohon Penembus Pipa</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            Inspeksi kamera CCTV mendeteksi akar pohon menembus sambungan pipa bawah tanah. Dipotong tuntas dengan mata spiral baja pemotong.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="p-6 pt-0 border-t border-slate-100 mt-4 text-xs text-slate-500 flex justify-between items-center bg-slate-50/50">
-                    <span>Kedalaman: 18 Meter</span>
-                    <span class="text-emerald-700 font-bold">Status: Rekaman Lengkap</span>
-                </div>
-            </div>
-
+        @if($countTotal > 0)
+        <!-- Filter Buttons (Rumahan vs B2B) -->
+        <div class="flex flex-wrap items-center gap-2 mb-8 reveal-soft">
+            <button type="button" 
+                    @click="activeCategory = 'all'"
+                    :class="activeCategory === 'all' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
+                    class="px-4 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                Semua Sektor ({{ $countTotal }})
+            </button>
+            <button type="button" 
+                    @click="activeCategory = 'rumahan'"
+                    :class="activeCategory === 'rumahan' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
+                    class="px-4 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                Rumahan / Residensial ({{ $countRumahan }})
+            </button>
+            <button type="button" 
+                    @click="activeCategory = 'b2b'"
+                    :class="activeCategory === 'b2b' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
+                    class="px-4 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                B2B / Komersial ({{ $countB2b }})
+            </button>
         </div>
 
-        <!-- Mobile Carousel Dots Indicator -->
-        <div class="flex lg:hidden justify-center items-center gap-1.5 mt-4">
-            @for($i = 0; $i < 3; $i++)
-                <button type="button" 
-                        @click="goTo({{ $i }})"
-                        class="h-2 rounded-full transition-all duration-300 cursor-pointer"
-                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
-                        aria-label="Dokumentasi {{ $i + 1 }}">
-                </button>
-            @endfor
+        <!-- Documentation Grid (Single Photo per Card) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            @foreach($displayGalleries as $item)
+                @php
+                    $isB2b = ($item->category ?? 'rumahan') === 'b2b';
+                    $photo = $item->image ?: ($item->after_image ?: $item->before_image);
+                    $serviceTitle = is_object($item->service ?? null) ? $item->service->name : 'Pelancaran Pipa';
+                    $waText = urlencode("Halo Tim Drainusantara, saya melihat dokumentasi '{$item->title}'. Saluran pipa saya ada kendala serupa, mohon info estimasi biaya dan kedatangan teknisi.");
+                    $itemWaUrl = "https://wa.me/" . config('app.whatsapp_number', '6281234567890') . "?text={$waText}";
+                @endphp
+                <div x-show="activeCategory === 'all' || activeCategory === '{{ $item->category ?? 'rumahan' }}'"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 scale-98"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-xs hover:shadow-md transition-all card-lift reveal-soft flex flex-col justify-between">
+                    <div>
+                        <!-- Single Photo Container -->
+                        <div class="relative aspect-[16/10] bg-slate-900 overflow-hidden border-b border-slate-100">
+                            @if($photo)
+                                <img 
+                                    src="{{ $photo }}" 
+                                    alt="{{ $item->title }}" 
+                                    class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                                    width="600"
+                                    height="375"
+                                    loading="lazy"
+                                    decoding="async"
+                                >
+                            @else
+                                <div class="w-full h-full flex items-center justify-center bg-slate-100 text-slate-400 text-xs">
+                                    Foto Dokumentasi Lapangan
+                                </div>
+                            @endif
+
+                            <!-- Sector Badge -->
+                            @if($isB2b)
+                                <span class="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-amber-500/40 text-amber-300 text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                                        <path d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h6v2H7V5zm6 4H7v2h6V9zm-6 4h6v2H7v-2z"/>
+                                    </svg>
+                                    B2B Komersial
+                                </span>
+                            @else
+                                <span class="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-sky-500/40 text-sky-300 text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs flex items-center gap-1.5">
+                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
+                                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                                    </svg>
+                                    Rumahan Residensial
+                                </span>
+                            @endif
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-5 sm:p-6">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="px-2 py-0.5 text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200/80 rounded-md">
+                                    {{ $serviceTitle }}
+                                </span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900 mb-2 leading-snug line-clamp-2">
+                                {{ $item->title }}
+                            </h3>
+                            <p class="text-xs text-slate-600 leading-relaxed line-clamp-3">
+                                {{ $item->description }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="p-5 sm:p-6 pt-0 border-t border-slate-100 mt-2 text-xs text-slate-500 flex items-center justify-between gap-3 bg-slate-50/50">
+                        <span class="text-emerald-700 font-bold flex items-center gap-1">
+                            ✓ Bebas Bongkar Keramik
+                        </span>
+                        <a href="{{ $itemWaUrl }}" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="btn-press text-xs font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-[44px] inline-flex items-center">
+                            Konsultasi Kasus Ini &rarr;
+                        </a>
+                    </div>
+                </div>
+            @endforeach
         </div>
+        @else
+        <!-- Empty State jika galeri di DB kosong -->
+        <div class="py-14 px-6 text-center bg-white rounded-xl border border-slate-200 text-slate-500 reveal-soft">
+            <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            <h3 class="text-base font-bold text-slate-800 mb-1">Dokumentasi Belum Tersedia</h3>
+            <p class="text-xs text-slate-500 max-w-md mx-auto">Foto hasil pengerjaan lapangan teknisi akan otomatis tampil di sini setelah ditambahkan melalui panel admin.</p>
+        </div>
+        @endif
 
     </div>
 </section>
@@ -973,10 +903,11 @@
     $b2bWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode("Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran pipa & grease trap untuk perusahaan/gedung kami. Mohon info survey lokasi.");
 @endphp
 
-<section id="portofolio-b2b" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200" 
+<section id="portofolio-b2b" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-20 lg:scroll-mt-24" 
          x-data="{
-             active: 0,
-             total: {{ count($b2bProjects) }},
+             activePage: 0,
+             pageCount: {{ max(1, (int) ceil(count($b2bProjects) / 3)) }},
+             totalCards: {{ count($b2bProjects) }},
              timer: null,
              _observer: null,
              init() {
@@ -997,7 +928,7 @@
                  }
              },
              startAuto() {
-                 if (window.innerWidth >= 1024) return;
+                 if (this.pageCount <= 1 || window.innerWidth >= 1024) return;
                  this.pause();
                  this.timer = setInterval(() => { this.next(); }, 4500);
              },
@@ -1012,18 +943,19 @@
                  this.startAuto();
              },
              next() {
-                 this.goTo((this.active + 1) % this.total);
+                 this.goToPage((this.activePage + 1) % this.pageCount);
              },
              prev() {
-                 this.goTo((this.active - 1 + this.total) % this.total);
+                 this.goToPage((this.activePage - 1 + this.pageCount) % this.pageCount);
              },
-             goTo(index) {
-                 this.active = index;
+             goToPage(p) {
+                 this.activePage = p;
                  const slider = this.$refs.b2bSlider;
                  if (slider) {
                      const cards = slider.children;
-                     if (cards[index]) {
-                         const targetLeft = Math.max(0, cards[index].offsetLeft - slider.offsetLeft - 8);
+                     const targetIndex = Math.min(p * 3, this.totalCards - 1);
+                     if (cards[targetIndex]) {
+                         const targetLeft = Math.max(0, cards[targetIndex].offsetLeft - slider.offsetLeft - 8);
                          slider.scrollTo({ 
                              left: targetLeft, 
                              behavior: 'smooth' 
@@ -1035,10 +967,13 @@
                  if (!this.$refs.b2bSlider) return;
                  const slider = this.$refs.b2bSlider;
                  const scrollLeft = slider.scrollLeft;
-                 const cardWidth = slider.firstElementChild ? slider.firstElementChild.offsetWidth : 320;
-                 const newIndex = Math.round(scrollLeft / cardWidth);
-                 if (newIndex >= 0 && newIndex < this.total && newIndex !== this.active) {
-                     this.active = newIndex;
+                 const firstCard = slider.firstElementChild;
+                 if (!firstCard) return;
+                 const cardWidth = firstCard.offsetWidth + 20;
+                 const currentCardIndex = Math.round(scrollLeft / cardWidth);
+                 const newPage = Math.min(this.pageCount - 1, Math.max(0, Math.floor(currentCardIndex / 3)));
+                 if (newPage !== this.activePage) {
+                     this.activePage = newPage;
                  }
              }
          }">
@@ -1048,7 +983,7 @@
         <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-10 md:mb-12">
             <div class="reveal-soft">
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
-                    Layanan Komersial &amp; Gedung
+                    Perusahaan Yang Menggunakan Jasa Kami &bull; Layanan Komersial &amp; Gedung
                 </span>
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Dipercaya Perusahaan F&amp;B, Perhotelan &amp; Gedung Bertingkat
@@ -1147,17 +1082,22 @@
             @endforeach
         </div>
 
-        <!-- Carousel Dots Indicator -->
+        <!-- Carousel Dots Indicator (1 titik untuk setiap 3 card) -->
+        @php
+            $b2bDotCount = max(1, (int) ceil(count($b2bProjects) / 3));
+        @endphp
+        @if($b2bDotCount > 1)
         <div class="flex justify-center items-center gap-1.5 mt-5">
-            @for($i = 0; $i < count($b2bProjects); $i++)
+            @for($p = 0; $p < $b2bDotCount; $p++)
                 <button type="button" 
-                        @click="goTo({{ $i }})"
+                        @click="goToPage({{ $p }})"
                         class="h-2 rounded-full transition-all duration-300 cursor-pointer"
-                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
-                        aria-label="Proyek B2B {{ $i + 1 }}">
+                        :class="activePage === {{ $p }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                        aria-label="Halaman Portofolio {{ $p + 1 }}">
                 </button>
             @endfor
         </div>
+        @endif
 
         <!-- B2B Direct Consultation Banner -->
         <div class="mt-10 bg-white rounded-xl border border-slate-200 p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs reveal-soft">
@@ -1575,6 +1515,15 @@
 </section>
 
 <!-- ====================================================================
+     7.5. SHOWCASE PERALATAN PUBLIK ARMADA DI WILAYAH LAYANAN
+==================================================================== -->
+@include('partials.equipment-section', [
+    'title' => 'Peralatan Canggih Standar Armada di Seluruh Wilayah Layanan',
+    'description' => 'Seluruh armada teknisi Drainusantara yang ditugaskan ke perumahan, ruko, restoran, dan gedung Anda di Jabodetabek, Semarang, dan Lampung dibekali mesin drain cleaning berstandar internasional tanpa merusak pipa.',
+    'bgColor' => 'bg-white'
+])
+
+<!-- ====================================================================
      8. PENGALAMAN NYATA BERSAMA DRAINUSANTARA (CERITA DARI LAPANGAN)
 ==================================================================== -->
 @php
@@ -1683,7 +1632,7 @@
 <!-- ====================================================================
      9. FAQ (ACCORDION INTERAKTIF BERBASIS ALPINE.JS)
 ==================================================================== -->
-<section class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
+<section id="faq" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center mb-14 reveal-soft">

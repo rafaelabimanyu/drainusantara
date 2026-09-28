@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\CoverageArea;
+use App\Models\Equipment;
 use App\Models\Gallery;
 use App\Models\Portfolio;
 use App\Models\Review;
@@ -23,6 +24,7 @@ class AdminController extends Controller
             'total_coverage_areas' => CoverageArea::count(),
             'total_galleries' => Gallery::count(),
             'total_portfolios' => Portfolio::count(),
+            'total_equipments' => Equipment::count(),
             'total_gallery_portfolio' => Gallery::count() + Portfolio::count(),
             'total_articles' => Article::count(),
             'total_reviews' => Review::count(),

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CoverageAreaController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PortfolioController;
@@ -36,9 +37,17 @@ Route::get('/artikel/{slug}', [PageController::class, 'articleDetail'])->name('a
 // Dynamic XML Sitemap for SEO Crawlers
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 
-// Friendly redirects for navbar sections
-Route::get('/layanan', fn () => redirect('/#layanan'))->name('services.anchor');
-Route::get('/tentang-kami', fn () => redirect('/#keunggulan'))->name('about.anchor');
+// Corporate & About Sub-Pages
+Route::prefix('tentang-kami')->group(function () {
+    Route::get('/', [PageController::class, 'about'])->name('about');
+    Route::get('/profil', [PageController::class, 'aboutProfile'])->name('about.profile');
+    Route::get('/holding', [PageController::class, 'aboutHolding'])->name('about.holding');
+    Route::get('/sop-k3', [PageController::class, 'aboutK3'])->name('about.k3');
+    Route::get('/peralatan', [PageController::class, 'aboutEquipment'])->name('about.equipment');
+    Route::get('/portofolio', [PageController::class, 'aboutPortfolio'])->name('about.portfolio');
+    Route::get('/garansi', [PageController::class, 'aboutWarranty'])->name('about.warranty');
+    Route::get('/faq', [PageController::class, 'aboutFaq'])->name('about.faq');
+});
 Route::get('/area-layanan', fn () => redirect('/#area'))->name('areas.anchor');
 
 // CMS Authentication Routes
@@ -55,5 +64,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('coverage-areas', CoverageAreaController::class);
     Route::resource('galleries', GalleryController::class);
     Route::resource('portfolios', PortfolioController::class);
+    Route::resource('equipments', EquipmentController::class);
     Route::resource('articles', ArticleController::class);
 });

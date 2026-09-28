@@ -52,8 +52,8 @@
                 <!-- Live Response Pill / Badge -->
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 shadow-2xs reveal-fade delay-50">
                     <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                    <span class="sm:hidden">Posko {{ $area->district }} &bull; Respon Cepat</span>
-                    <span class="hidden sm:inline">Posko Siaga: Wilayah {{ $area->district }} &bull; Respon Cepat</span>
+                    <span class="sm:hidden">Posko Siaga &bull; Respon Cepat</span>
+                    <span class="hidden sm:inline">Posko Siaga Teknisi &bull; Respon Cepat Armada</span>
                 </div>
 
                 <!-- Dynamic Main SEO Heading -->
@@ -112,7 +112,7 @@
                         <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
                             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                         </svg>
-                        <span>Panggil Teknisi {{ $area->district }}</span>
+                        <span>Panggil Teknisi Sekarang</span>
                     </a>
 
                     <!-- Tombol Sekunder -->
@@ -236,11 +236,8 @@
 <section id="layanan-area" class="py-12 sm:py-18 bg-white border-b border-slate-200" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4000)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
-                SPESIFIKASI LAYANAN {{ strtoupper($area->district) }}
-            </span>
-            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-1 tracking-tight">
-                Layanan Pipa Mampet di {{ $area->district }}, {{ $area->city }}
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                Layanan Pipa Mampet Area {{ $area->district }}, {{ $area->city }}
             </h2>
             <p class="text-slate-600 text-xs sm:text-base mt-2 leading-relaxed">
                 Pengerjaan mekanis di lokasi oleh teknisi tersertifikasi tanpa bongkar keramik dan bergaransi 30 hari kalender.
@@ -374,15 +371,15 @@
                 <div class="h-full rounded-xl bg-red-50/60 border border-red-200 p-7 sm:p-8 flex flex-col justify-between shadow-xs card-lift">
                     <div>
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-700 text-white text-xs font-bold mb-4 shadow-2xs">
-                            <span>PERINGATAN TEKNISI {{ strtoupper($area->district) }}</span>
+                            <span>PERINGATAN TEKNIS DRAINASE</span>
                         </div>
 
                         <h3 class="text-xl font-bold text-slate-900 leading-snug tracking-tight mb-3">
-                            Sering Terjadi di {{ $area->district }}: Pipa Rusak Akibat Soda Api!
+                            Bahaya Fatal Menggunakan Soda Api pada Pipa Tersumbat
                         </h3>
 
                         <p class="text-sm text-slate-700 leading-relaxed mb-4">
-                            Banyak penghuni dan pengelola usaha di <strong>{{ $area->district }}, {{ $area->city }}</strong> menuangkan soda api saat saluran tersumbat. Reaksi kimia korosif seringkali merusak permanen:
+                            Menuangkan soda api atau cairan kimia korosif ke dalam saluran sering kali justru memperparah kerusakan secara permanen:
                         </p>
 
                         <div class="space-y-3 text-xs text-slate-700">
@@ -390,14 +387,14 @@
                                 <svg class="w-4 h-4 text-red-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                                 <div>
                                     <strong class="text-slate-900 block font-bold mb-0.5">Saponifikasi (Lemak Mengeras Menjadi Batu)</strong>
-                                    Di {{ $area->district }}, lemak dapur yang bereaksi dengan soda api akan mengkristal jadi sabun padat yang mengunci pipa secara permanen.
+                                    Lemak dapur yang bereaksi dengan soda api akan mengalami proses saponifikasi dan mengkristal jadi gumpalan sabun padat yang mengunci pipa secara permanen.
                                 </div>
                             </div>
                             <div class="p-3.5 bg-white rounded-xl border border-red-200 flex items-start gap-3">
                                 <svg class="w-4 h-4 text-red-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                                 <div>
                                     <strong class="text-slate-900 block font-bold mb-0.5">Panas >90°C Melelehkan Sambungan Paralon</strong>
-                                    Paralon PVC di bawah lantai melengkung dan lem sambungan knee lepas, memicu rembesan air limbah ke plafon lantai bawah.
+                                    Hawa panas ekstrem melunakkan paralon PVC dan melelehkan lem sambungan knee di bawah lantai, memicu kebocoran air limbah ke struktur bangunan.
                                 </div>
                             </div>
                         </div>
@@ -414,18 +411,22 @@
                 <div class="h-full rounded-xl bg-white border border-emerald-500 shadow-sm p-7 sm:p-8 flex flex-col justify-between card-lift">
                     <div>
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-emerald-700 text-white text-xs font-bold mb-4 shadow-2xs">
-                            <span>SOLUSI MODERN DRAINUSANTARA</span>
+                            <span>METODE MODERN</span>
                         </div>
                         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
-                            Penanganan Mekanis Tanpa Kimia untuk Warga {{ $area->district }}
+                            Solusi Mekanis Tanpa Merusak Pipa
                         </h2>
                         <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
-                            Drainusantara hadir di <strong>{{ $area->district }}, {{ $area->city }}</strong> dengan unit rooter spiral elektrik yang aman untuk seluruh instalasi pipa bangunan baru maupun bangunan lama.
+                            Armada Drainusantara hadir dengan unit rooter spiral baja elektrik dan kamera inspeksi yang aman untuk seluruh instalasi pipa bangunan baru maupun lama di wilayah {{ $area->city }}.
                         </p>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200">
-                                <div class="w-8 h-8 rounded-lg bg-sky-700 text-white flex items-center justify-center shrink-0 text-xs font-bold">01</div>
+                                <div class="w-9 h-9 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12c0-4.418 3.582-8 8-8s8 3.582 8 8c0 3.314-2.686 6-6 6s-6-2.686-6-6c0-2.209 1.791-4 4-4s4 1.791 4 4-1.791 4-4 4"/>
+                                    </svg>
+                                </div>
                                 <div>
                                     <h4 class="font-bold text-slate-900 text-sm">Kabel Spiral Baja Lentur</h4>
                                     <p class="text-xs text-slate-600 mt-0.5">Mengikuti belokan pipa knee tanpa menggores dinding sifon PVC.</p>
@@ -433,7 +434,11 @@
                             </div>
 
                             <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200">
-                                <div class="w-8 h-8 rounded-lg bg-sky-700 text-white flex items-center justify-center shrink-0 text-xs font-bold">02</div>
+                                <div class="w-9 h-9 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
                                 <div>
                                     <h4 class="font-bold text-slate-900 text-sm">Inspeksi Kamera Endoskopik</h4>
                                     <p class="text-xs text-slate-600 mt-0.5">Melihat kondisi dalam pipa secara langsung di monitor HD.</p>
@@ -441,7 +446,11 @@
                             </div>
 
                             <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200">
-                                <div class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center shrink-0 text-xs font-bold">03</div>
+                                <div class="w-9 h-9 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                    </svg>
+                                </div>
                                 <div>
                                     <h4 class="font-bold text-slate-900 text-sm">Garansi Resmi 30 Hari</h4>
                                     <p class="text-xs text-slate-600 mt-0.5">Mampet lagi di titik yang sama? Teknisi datang kembali gratis!</p>
@@ -449,7 +458,11 @@
                             </div>
 
                             <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 text-xs font-bold">04</div>
+                                <div class="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
                                 <div>
                                     <h4 class="font-bold text-slate-900 text-sm">Bebas Bahan Kimia</h4>
                                     <p class="text-xs text-slate-600 mt-0.5">Aman bagi anak-anak, hewan peliharaan, dan ramah lingkungan.</p>
@@ -468,7 +481,7 @@
                             <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
                                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                             </svg>
-                            <span>Panggil Teknisi {{ $area->district }}</span>
+                            <span>Panggil Teknisi Sekarang</span>
                         </a>
                     </div>
                 </div>
@@ -483,11 +496,8 @@
 <section class="py-12 sm:py-18 bg-white border-b border-slate-200" x-data="mobileCarousel(3, 4000)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
-                ALUR MUDAH
-            </span>
-            <h3 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Cara Pesan Teknisi di {{ $area->district }}</h3>
-            <p class="text-slate-600 text-xs sm:text-base mt-2">Cukup 3 langkah mudah, saluran mampet di hunian Anda langsung lancar kembali.</p>
+            <h3 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">3 Langkah Praktis Penanganan Saluran</h3>
+            <p class="text-slate-600 text-xs sm:text-base mt-2">Alur terstruktur dari konsultasi awal hingga aliran pipa lancar dan terproteksi garansi.</p>
             
             <!-- Mobile Swipe Hint -->
             <div class="flex md:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-2.5">
@@ -508,23 +518,35 @@
             
             <!-- Step 1 -->
             <div class="w-[82vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-md transition-all text-center space-y-3 card-lift reveal-soft stagger-1">
-                <div class="w-12 h-12 rounded-xl bg-sky-700 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-xs">01</div>
-                <h4 class="font-bold text-slate-900 text-base sm:text-lg">Hubungi WhatsApp</h4>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Klik tombol WhatsApp dan kirim alamat lengkap atau foto sumbatan Anda di {{ $area->district }}, {{ $area->city }}.</p>
+                <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto shadow-2xs">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                </div>
+                <h4 class="font-bold text-slate-900 text-base sm:text-lg">Konsultasi via WhatsApp</h4>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Kirimkan pesan WhatsApp mengenai titik mampet dan lokasi hunian Anda untuk estimasi awal serta kepastian armada.</p>
             </div>
 
             <!-- Step 2 -->
             <div class="w-[82vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-md transition-all text-center space-y-3 card-lift reveal-soft stagger-2">
-                <div class="w-12 h-12 rounded-xl bg-sky-700 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-xs">02</div>
-                <h4 class="font-bold text-slate-900 text-base sm:text-lg">Respon Cepat &amp; Meluncur</h4>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Admin dan teknisi siaga kami memberikan respon WhatsApp sigap dan cepat untuk penjadwalan kedatangan ke lokasi Anda.</p>
+                <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto shadow-2xs">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h4 class="font-bold text-slate-900 text-base sm:text-lg">Respon Cepat &amp; Armada Meluncur</h4>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Admin kami segera mengonfirmasi dan menjadwalkan teknisi terdekat untuk langsung menuju ke lokasi Anda.</p>
             </div>
 
             <!-- Step 3 -->
             <div class="w-[82vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-md transition-all text-center space-y-3 card-lift reveal-soft stagger-3">
-                <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-xs">03</div>
-                <h4 class="font-bold text-slate-900 text-base sm:text-lg">Tuntas & Bergaransi</h4>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Pengerjaan selesai tanpa bongkar keramik, aliran air dites bersama, dan diberikan nota garansi resmi 30 hari.</p>
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center mx-auto shadow-2xs">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h4 class="font-bold text-slate-900 text-base sm:text-lg">Pengerjaan Tuntas &amp; Bergaransi</h4>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Pengerjaan selesai tanpa bongkar keramik, aliran air dites bersama, dan dilindungi garansi resmi nota 30 hari.</p>
             </div>
         </div>
 
@@ -565,36 +587,76 @@
             <p class="text-xs sm:text-sm text-slate-600 mt-1">Teknisi kami juga siaga di seluruh wilayah Jabodetabek, Semarang, dan Lampung.</p>
         </div>
 
+        @php
+            $currentDistrict = $area->district;
+            $currentCitySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($area->city);
+            $cityName = $cityData['name'] ?? $area->city;
+            
+            // Neighboring districts in the current city (excluding current district)
+            $neighboringDistricts = collect($cityData['districts'] ?? [])
+                ->reject(fn($d) => strcasecmp($d, $currentDistrict) === 0);
+
+            // Other cities across all provinces (excluding current city)
+            $allProvinces = \App\Services\RegionService::all();
+            $otherCities = collect($allProvinces)
+                ->flatMap(fn($prov) => $prov['cities'])
+                ->reject(fn($c) => ($c['slug'] ?? '') === $currentCitySlug);
+        @endphp
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Jabodetabek -->
+            <!-- Card 1: Neighboring Districts in the same City -->
             <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm card-lift reveal-soft delay-100">
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-3 py-1 rounded-md border border-sky-200">JABODETABEK</span>
-                    <span class="text-xs text-slate-500 font-medium">10 Posko Siaga 24 Jam</span>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-3 py-1 rounded-md border border-sky-200">KECAMATAN SEKITAR</span>
+                        <span class="text-xs text-slate-500 font-medium">{{ $cityName }}</span>
+                    </div>
+                    <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">Armada Meluncur</span>
                 </div>
-                <div class="flex flex-wrap gap-2 text-xs">
-                    <a href="{{ url('/area/jakarta-selatan/tebet') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Jakarta Selatan (Tebet)</a>
-                    <a href="{{ url('/area/jakarta-timur/duren-sawit') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Jakarta Timur (Duren Sawit)</a>
-                    <a href="{{ url('/area/jakarta-utara/kelapa-gading') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Jakarta Utara (Kelapa Gading)</a>
-                    <a href="{{ url('/area/jakarta-pusat/kemayoran') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Jakarta Pusat (Kemayoran)</a>
-                    <a href="{{ url('/area/jakarta-barat/kebon-jeruk') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Jakarta Barat (Kebon Jeruk)</a>
-                    <a href="{{ url('/area/bogor/cibinong') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Bogor (Cibinong)</a>
-                    <a href="{{ url('/area/depok-cinere/cinere') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Depok & Cinere</a>
-                    <a href="{{ url('/area/tangerang-kota/cipondoh') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Tangerang Kota</a>
-                    <a href="{{ url('/area/tangerang-selatan/serpong') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Tangerang Selatan (Serpong)</a>
-                    <a href="{{ url('/area/bekasi-cikarang/cikarang-selatan') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Bekasi & Cikarang</a>
-                </div>
+                
+                @if($neighboringDistricts->isNotEmpty())
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        @foreach($neighboringDistricts as $neighbor)
+                            @php
+                                $neighborSlug = \Illuminate\Support\Str::slug($neighbor);
+                            @endphp
+                            <a href="{{ route('area.detail', ['city' => $currentCitySlug, 'district' => $neighborSlug]) }}" 
+                               class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                <span>{{ $neighbor }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-xs text-slate-500">Seluruh area kelurahan dan jalan utama di {{ $cityName }} dalam radius posko kami.</p>
+                @endif
             </div>
 
-            <!-- Semarang & Lampung -->
+            <!-- Card 2: Other Cities & Posko Armada -->
             <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm card-lift reveal-soft delay-200">
-                <div class="flex items-center gap-2 mb-4">
-                    <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-3 py-1 rounded-md border border-sky-200">SEMARANG & LAMPUNG</span>
-                    <span class="text-xs text-slate-500 font-medium">Kota Cabang Siaga</span>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-3 py-1 rounded-md border border-sky-200">POSKO KOTA LAIN</span>
+                        <span class="text-xs text-slate-500 font-medium">Jaringan Armada Siaga</span>
+                    </div>
+                    <a href="{{ route('area.index') }}" class="text-[11px] text-sky-700 hover:underline font-semibold flex items-center gap-1">
+                        <span>Semua Area</span>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
                 </div>
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <a href="{{ url('/area/semarang/candisari') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Kota Semarang (Candisari)</a>
-                    <a href="{{ url('/area/bandar-lampung/kedaton') }}" class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">Bandar Lampung (Kedaton)</a>
+                    @foreach($otherCities->take(10) as $otherCity)
+                        @php
+                            $firstDistrict = $otherCity['districts'][0] ?? null;
+                            $targetUrl = $firstDistrict 
+                                ? route('area.detail', ['city' => $otherCity['slug'], 'district' => \Illuminate\Support\Str::slug($firstDistrict)])
+                                : route('area.city', ['city' => $otherCity['slug']]);
+                        @endphp
+                        <a href="{{ $targetUrl }}" 
+                           class="px-3.5 py-2 rounded-lg bg-slate-50 hover:bg-white text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 hover:shadow-2xs transition-all btn-press">
+                            {{ $otherCity['name'] }}
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -610,10 +672,10 @@
             RESPON CEPAT WILAYAH {{ strtoupper($area->district) }}
         </span>
         <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight">
-            Saluran Air di {{ $area->district }} Mampet Hari Ini?
+            Saluran Air di Lokasi Anda Tersumbat Hari Ini?
         </h2>
         <p class="text-slate-400 text-xs sm:text-sm mt-2 max-w-lg mx-auto leading-relaxed">
-            Teknisi kami siap melayani area {{ $area->district }}, {{ $area->city }}. Tanpa bongkar keramik, cepat, dan bergaransi resmi 30 hari.
+            Teknisi siaga kami siap menuju titik lokasi Anda di {{ $area->district }}, {{ $area->city }}. 100% tanpa bongkar keramik dan dilindungi garansi resmi 30 hari.
         </p>
 
         <div class="mt-6 flex flex-col items-center justify-center gap-3">
@@ -622,7 +684,7 @@
                 <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                 </svg>
-                <span>Panggil Teknisi {{ $area->district }} Sekarang</span>
+                <span>Panggil Teknisi Sekarang</span>
             </a>
 
             <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-slate-400 text-[11px] sm:text-xs">

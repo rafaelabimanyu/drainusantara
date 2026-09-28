@@ -34,17 +34,12 @@
                 <tr class="hover:bg-slate-50/75 transition">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center gap-2">
-                            @if($gallery->before_image && $gallery->after_image)
-                                <div class="relative group">
-                                    <img src="{{ $gallery->before_image }}" alt="Sebelum" class="w-12 h-12 object-cover rounded-lg border border-slate-200 shadow-xs">
-                                    <span class="absolute bottom-0 right-0 bg-slate-800 text-[9px] text-white px-1 rounded-tl font-bold">SEBELUM</span>
-                                </div>
-                                <div class="relative group">
-                                    <img src="{{ $gallery->after_image }}" alt="Sesudah" class="w-12 h-12 object-cover rounded-lg border border-sky-300 shadow-xs">
-                                    <span class="absolute bottom-0 right-0 bg-sky-600 text-[9px] text-white px-1 rounded-tl font-bold">SESUDAH</span>
-                                </div>
-                            @elseif($gallery->image)
+                            @if($gallery->image)
                                 <img src="{{ $gallery->image }}" alt="{{ $gallery->title }}" class="w-16 h-12 object-cover rounded-lg border border-slate-200 shadow-xs">
+                            @elseif($gallery->after_image)
+                                <img src="{{ $gallery->after_image }}" alt="{{ $gallery->title }}" class="w-16 h-12 object-cover rounded-lg border border-slate-200 shadow-xs">
+                            @elseif($gallery->before_image)
+                                <img src="{{ $gallery->before_image }}" alt="{{ $gallery->title }}" class="w-16 h-12 object-cover rounded-lg border border-slate-200 shadow-xs">
                             @else
                                 <div class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400">
                                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,8 +51,14 @@
                     </td>
                     <td class="px-6 py-4">
                         <div class="font-bold text-slate-900">{{ $gallery->title }}</div>
-                        <div class="text-xs text-sky-600 font-medium mt-0.5">
-                            {{ $gallery->service ? $gallery->service->name : 'Layanan Umum' }}
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-md {{ $gallery->category === 'b2b' ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-sky-100 text-sky-800 border border-sky-200' }}">
+                                {{ $gallery->category === 'b2b' ? 'B2B Komersial' : 'Rumahan Residensial' }}
+                            </span>
+                            <span class="text-xs text-slate-500 font-medium">
+                                {{ $gallery->service ? $gallery->service->name : 'Layanan Umum' }}
+                            </span>
+                        </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 max-w-sm truncate text-slate-600 text-xs">

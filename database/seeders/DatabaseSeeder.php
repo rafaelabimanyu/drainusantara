@@ -295,42 +295,56 @@ class DatabaseSeeder extends Seeder
         $galleriesData = [
             [
                 'title' => 'Pelancaran Pipa Wastafel Dapur Restoran',
+                'category' => 'b2b',
                 'service_id' => $sinkService?->id,
-                'before_image' => 'https://placehold.co/600x400/334155/ffffff?text=Sebelum:+Kerak+Lemak+Penuh',
-                'after_image' => 'https://placehold.co/600x400/0284c7/ffffff?text=Sesudah:+Pipa+Bersih+Lancar',
-                'image' => 'https://placehold.co/600x400/0284c7/ffffff?text=Wastafel+Dapur+Restoran',
+                'image' => 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=800&q=80',
                 'description' => 'Pembersihan pipa pembuangan sink dapur sepanjang 12 meter dari endapan minyak beku menggunakan mesin rooter spiral baja tanpa membongkar keramik lantai.',
                 'order' => 1,
                 'is_active' => true,
             ],
             [
-                'title' => 'Ekstraksi Benda Asing dari Kloset Duduk',
+                'title' => 'Ekstraksi Benda Asing dari Kloset Duduk Hunian',
+                'category' => 'rumahan',
                 'service_id' => $toiletService?->id,
-                'before_image' => 'https://placehold.co/600x400/334155/ffffff?text=Sebelum:+Toilet+Meluap',
-                'after_image' => 'https://placehold.co/600x400/0284c7/ffffff?text=Sesudah:+Siram+Kencang',
-                'image' => 'https://placehold.co/600x400/0284c7/ffffff?text=Ekstraksi+Toilet+Duduk',
-                'description' => 'Pengambilan mainan dan gumpalan tisu yang menyumbat leher angsa toilet duduk rumah tinggal di Jakarta Selatan dalam 35 menit tanpa melepas kloset.',
+                'image' => 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=800&q=80',
+                'description' => 'Penarikan mainan dan gumpalan tisu yang menyumbat leher angsa toilet duduk rumah tinggal di Jakarta Selatan dalam 35 menit tanpa melepas kloset.',
                 'order' => 2,
                 'is_active' => true,
             ],
             [
                 'title' => 'Pelancaran Floor Drain Kamar Mandi Utama',
+                'category' => 'rumahan',
                 'service_id' => $floorDrainService?->id,
-                'before_image' => 'https://placehold.co/600x400/334155/ffffff?text=Sebelum:+Genangan+Buih+Sabun',
-                'after_image' => 'https://placehold.co/600x400/0284c7/ffffff?text=Sesudah:+Air+Surut+Cepat',
-                'image' => 'https://placehold.co/600x400/0284c7/ffffff?text=Floor+Drain+Lancar',
-                'description' => 'Penanganan saluran buang kamar mandi tersumbat gumpalan rambut dan kerak busa sabun tebal di apartemen BSD.',
+                'image' => 'https://images.unsplash.com/photo-1584622781564-1d987f7333c1?auto=format&fit=crop&w=800&q=80',
+                'description' => 'Penanganan saluran buang kamar mandi tersumbat gumpalan rambut dan kerak busa sabun tebal di perumahan BSD Tangerang Selatan.',
                 'order' => 3,
                 'is_active' => true,
             ],
             [
-                'title' => 'Inspeksi Kamera CCTV Pipa Pembuangan Bawah Tanah',
+                'title' => 'Inspeksi Kamera CCTV Pipa Bawah Tanah Ruko Kantor',
+                'category' => 'b2b',
                 'service_id' => $cctvService?->id,
-                'before_image' => 'https://placehold.co/600x400/334155/ffffff?text=Inspeksi+CCTV:+Titik+Patah',
-                'after_image' => 'https://placehold.co/600x400/0284c7/ffffff?text=CCTV:+Pipa+Sesudah+Dibersihkan',
-                'image' => 'https://placehold.co/600x400/0284c7/ffffff?text=Inspeksi+Kamera+Pipa',
+                'image' => 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80',
                 'description' => 'Deteksi visual pipa saluran air kotor sepanjang 20 meter di ruko perkantoran Semarang. Ditemukan akar pohon menembus sambungan pipa.',
                 'order' => 4,
+                'is_active' => true,
+            ],
+            [
+                'title' => 'Kuras Grease Trap & Sedot Lemak Kafe Komersial',
+                'category' => 'b2b',
+                'service_id' => $sinkService?->id,
+                'image' => 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80',
+                'description' => 'Pembersihan kerak minyak jenuh dan lumpur sisa olahan makanan pada bak perangkap lemak dapur kafe komersial di Kelapa Gading.',
+                'order' => 5,
+                'is_active' => true,
+            ],
+            [
+                'title' => 'Pelancaran Pipa Talang Air Hujan Rooftop Hunian',
+                'category' => 'rumahan',
+                'service_id' => $floorDrainService?->id,
+                'image' => 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80',
+                'description' => 'Penembusan kabel spiral baja lentur 22mm pada pipa talang tegak rumah tinggal yang tersumbat endapan lumut dan dedaunan kering di Tebet.',
+                'order' => 6,
                 'is_active' => true,
             ],
         ];
@@ -381,6 +395,74 @@ class DatabaseSeeder extends Seeder
 
         foreach ($articlesData as $art) {
             \App\Models\Article::updateOrCreate(['slug' => $art['slug']], $art);
+        }
+
+        // Seed Standar Equipments
+        $equipmentsData = [
+            [
+                'name' => 'Mesin Drain Rooter Spiral Baja Rotary Ridgid K-50 & K-60',
+                'category' => 'Mesin Utama',
+                'badge' => '100% Mekanis',
+                'image' => '/assets/TOOLKIT/mesin-spiral-rotary.webp',
+                'short_description' => 'Kabel spiral lentur berinti baja karbon berputar 400 RPM untuk meluncur di leher angsa dan mengikis endapan tanpa merusak pipa.',
+                'specs' => [
+                    'Jangkauan: Hingga 30 meter sambung modular',
+                    'Diameter Pipa: Efektif untuk pipa 1.5 sampai 6 inci',
+                    'Aksi Kerja: Mengikis lemak padat, menarik rambut, dan memotong akar',
+                    'Tenaga: Motor Listrik 220V 400 RPM Standard Industri'
+                ],
+                'order' => 1,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Kamera CCTV Endoskopi Pipa IP68 30 Meter',
+                'category' => 'Diagnosis Visual',
+                'badge' => 'Diagnosis Visual',
+                'image' => '/assets/TOOLKIT/kamera-cctv-pipa.webp',
+                'short_description' => 'Unit kamera industri tahan air beresolusi tinggi dengan lampu LED sorot adjustable dan kabel dorong fleksibel kaku untuk melihat langsung kondisi dalam pipa.',
+                'specs' => [
+                    'Jangkauan Inspeksi: Kabel push-rod fiberglass 30 meter',
+                    'Pencahayaan: 12 LED ultra-bright dengan lensa safir anti-gores',
+                    'Dokumentasi: Rekaman video MP4 & foto resolusi tinggi untuk klien',
+                    'Ketahanan: IP68 Submersible Tahan Tekanan Air'
+                ],
+                'order' => 2,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Unit Pembersih Saluran High Pressure Hydro Jetting',
+                'category' => 'Hydro Jetting',
+                'badge' => 'Tekanan Tinggi',
+                'image' => '/assets/TOOLKIT/hydro-jetting.webp',
+                'short_description' => 'Semburan air bertekanan tinggi 100-200 bar untuk mengikis dan membilas tumpukan minyak beku, kerak lumpur, dan lemak pada restoran dan industri.',
+                'specs' => [
+                    'Tekanan Air: 100 - 200 Bar nozel multifungsi',
+                    'Target Masalah: Grease trap, pipa dapur resto, sedimentasi pasir',
+                    'Hasil: Dinding pipa bersih total seperti baru dipasang',
+                    'Metode: 100% Eco-Friendly tanpa bahan kimia korosif'
+                ],
+                'order' => 3,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Set 4 Jenis Mata Pemotong Spiral Baja Modular',
+                'category' => 'Mata Cutter',
+                'badge' => '4 Tipe Cutter',
+                'image' => '/assets/TOOLKIT/cutter-mata-spiral.webp',
+                'short_description' => '4 mata cutter baja karbon tempa khusus: Bulb Auger (rambut/tisu), Grease Cutter (lemak), Spade Cutter (kerak lumpur), dan Sawtooth Root Cutter (akar).',
+                'specs' => [
+                    'Bulb Auger: Fleksibel meliuk leher angsa wastafel & kloset',
+                    'Grease Cutter: Mata pisau pengikis kerak minyak jenuh',
+                    'Spade Cutter: Pisau pipih mengikis semen, pasir & lumpur',
+                    'Root Cutter: Gigi gergaji melingkar pemotong akar pohon'
+                ],
+                'order' => 4,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($equipmentsData as $equip) {
+            \App\Models\Equipment::updateOrCreate(['name' => $equip['name']], $equip);
         }
     }
 }

@@ -26,25 +26,37 @@
                 @error('title') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <div>
-                <label for="service_id" class="block text-sm font-bold text-slate-700 mb-2">Kategori Layanan Terkait</label>
-                <select name="service_id" id="service_id" 
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 text-slate-800 text-sm outline-none transition bg-white">
-                    <option value="">-- Pilih Layanan (Opsional) --</option>
-                    @foreach($services as $service)
-                        <option value="{{ $service->id }}" {{ old('service_id', $gallery->service_id) == $service->id ? 'selected' : '' }}>
-                            {{ $service->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('service_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="category" class="block text-sm font-bold text-slate-700 mb-2">Sektor Kategori <span class="text-red-500">*</span></label>
+                    <select name="category" id="category" required
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 text-slate-800 text-sm outline-none transition bg-white">
+                        <option value="rumahan" {{ old('category', $gallery->category) == 'rumahan' ? 'selected' : '' }}>Rumahan (Residensial / Hunian / Apartemen)</option>
+                        <option value="b2b" {{ old('category', $gallery->category) == 'b2b' ? 'selected' : '' }}>B2B (Komersial / Restoran F&amp;B / Ruko / Kantor / Gedung)</option>
+                    </select>
+                    @error('category') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label for="service_id" class="block text-sm font-bold text-slate-700 mb-2">Kategori Layanan Terkait</label>
+                    <select name="service_id" id="service_id" 
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 text-slate-800 text-sm outline-none transition bg-white">
+                        <option value="">-- Pilih Layanan (Opsional) --</option>
+                        @foreach($services as $service)
+                            <option value="{{ $service->id }}" {{ old('service_id', $gallery->service_id) == $service->id ? 'selected' : '' }}>
+                                {{ $service->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('service_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
             </div>
 
             <!-- Upload Foto Sebelum & Sesudah (Before & After) -->
             <div class="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Komparasi: Sebelum & Sesudah</span>
-                    <span class="text-[11px] text-slate-500">Pilih file baru untuk memperbarui foto</span>
+                    <span class="text-[11px] text-sky-700 font-semibold bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">Disimpan utuh di public/images/dokumentasi</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">

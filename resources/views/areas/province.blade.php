@@ -113,23 +113,23 @@
             <!-- Stats Modern Card -->
             <div class="lg:col-span-4 reveal-soft delay-150">
                 <div class="bg-white p-4 sm:p-6 rounded-xl border border-slate-200 shadow-sm space-y-3 sm:space-y-4 card-lift">
-                    <span class="text-[11px] sm:text-xs uppercase tracking-wider text-sky-700 font-bold block">RINGKASAN CAKUPAN:</span>
+                    <span class="text-[11px] sm:text-xs uppercase tracking-wider text-sky-700 font-bold block">STANDAR OPERASIONAL ARMADA:</span>
                     <div class="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-slate-600">
                         <div class="flex justify-between items-center border-b border-slate-100 pb-2 sm:pb-2.5">
-                            <span class="font-medium text-slate-500">Jumlah Wilayah:</span>
+                            <span class="font-medium text-slate-500">Cakupan Wilayah:</span>
                             <span class="font-bold text-slate-900">{{ count($provinceData['cities']) }} Kota / Kabupaten</span>
                         </div>
                         <div class="flex justify-between items-center border-b border-slate-100 pb-2 sm:pb-2.5">
-                            <span class="font-medium text-slate-500">Respon WhatsApp:</span>
-                            <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">Respon Cepat</span>
+                            <span class="font-medium text-slate-500">Unit Alat Utama:</span>
+                            <span class="font-bold text-slate-900 text-right">Spiral Baja & CCTV 30M</span>
                         </div>
                         <div class="flex justify-between items-center border-b border-slate-100 pb-2 sm:pb-2.5">
-                            <span class="font-medium text-slate-500">Metode Kerja:</span>
-                            <span class="font-bold text-slate-900">Tanpa Bongkar</span>
+                            <span class="font-medium text-slate-500">Standar Kerja:</span>
+                            <span class="font-bold text-slate-900">100% Tanpa Bongkar</span>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span class="font-medium text-slate-500">Jaminan Garansi:</span>
-                            <span class="font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Garansi 30 Hari</span>
+                            <span class="font-medium text-slate-500">Proteksi Layanan:</span>
+                            <span class="font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Garansi Nota 30 Hari</span>
                         </div>
                     </div>
                 </div>
@@ -215,18 +215,26 @@
 </section>
 
 <!-- ====================================================================
+     PERALATAN STANDAR ARMADA DI PROVINSI INI
+==================================================================== -->
+@include('partials.equipment-section', [
+    'areaName' => 'Provinsi ' . $provinceData['name'],
+    'bgColor' => 'bg-slate-50'
+])
+
+<!-- ====================================================================
      BOTTOM CTA PROVINSI
 ==================================================================== -->
 <section class="py-14 lg:py-20 bg-slate-900 text-white relative overflow-hidden reveal-soft">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-scale delay-100">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-full uppercase tracking-wider mb-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
             RESPON CEPAT PROVINSI {{ strtoupper($provinceData['name']) }}
         </span>
         <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Saluran Pipa di Lokasi Anda Tersumbat Hari Ini?
         </h2>
         <p class="text-slate-400 text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
-            Tim kami siap memberikan respon WhatsApp sigap dan cepat ke seluruh penjuru {{ $provinceData['name'] }}. Bebas biaya bongkar dan dilindungi garansi 30 hari.
+            Tim teknisi kami siap merespon konsultasi dan menjadwalkan kedatangan armada ke seluruh penjuru {{ $provinceData['name'] }}. Pengerjaan mekanis tanpa bongkar lantai dan dilindungi garansi 30 hari.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" 

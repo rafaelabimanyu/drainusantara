@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Portfolio;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class PortfolioTest extends TestCase
@@ -168,5 +169,24 @@ class PortfolioTest extends TestCase
         $this->assertDatabaseMissing('portfolios', [
             'id' => $portfolio->id,
         ]);
+    }
+
+    public function test_admin_can_upload_portfolio_image_uncompressed(): void
+    {
+        $image = UploadedFile::fake()->image('dcost-resto-kemang.webp', 800, 500);
+
+        $response = $this->actingAs($this->admin)->post('/admin/portfolios', [
+            'client_name' => "D'Cost Kemang",
+            'image' => $image,
+        ]);
+
+        $response->assertRedirect('/admin/portfolios');
+        $portfolio = Portfolio::where('client_name', "D'Cost Kemang")->first();
+        $this->assertNotNull($portfolio);
+        $this->assertEquals('/images/portfolio/dcost-resto-kemang.webp', $portfolio->image);
+        $this->assertFileExists(public_path('images/portfolio/dcost-resto-kemang.webp'));
+
+        // Clean up test file
+        @unlink(public_path('images/portfolio/dcost-resto-kemang.webp'));
     }
 }

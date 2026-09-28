@@ -47,8 +47,8 @@ class PortfolioController extends Controller
 
         $imageUrl = $validated['image_url'] ?? null;
         if ($request->hasFile('image')) {
-            $request->validate(['image' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120']]);
-            $imageUrl = Storage::url($request->file('image')->store('portfolios', 'public'));
+            $request->validate(['image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
+            $imageUrl = $this->uploadPortfolioImage($request->file('image'));
         } elseif (is_string($request->input('image')) && !empty($request->input('image'))) {
             $imageUrl = $request->input('image');
         } elseif (!$imageUrl) {
@@ -97,8 +97,12 @@ class PortfolioController extends Controller
 
         $imageUrl = $portfolio->image;
         if ($request->hasFile('image')) {
-            $request->validate(['image' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120']]);
-            $imageUrl = Storage::url($request->file('image')->store('portfolios', 'public'));
+            $request->validate(['image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
+            $newImage = $this->uploadPortfolioImage($request->file('image'));
+            if ($portfolio->image && $portfolio->image !== $newImage) {
+                $this->deletePortfolioFile($portfolio->image, $portfolio->id);
+            }
+            $imageUrl = $newImage;
         } elseif (!empty($validated['image_url'])) {
             $imageUrl = $validated['image_url'];
         }
@@ -124,9 +128,66 @@ class PortfolioController extends Controller
     public function destroy(Portfolio $portfolio): RedirectResponse
     {
         $clientName = $portfolio->client_name;
+
+        // Hapus file fisik gambar yang tersimpan di public/images/portfolio
+        $this->deletePortfolioFile($portfolio->image, $portfolio->id);
+
         $portfolio->delete();
 
         return redirect()->route('admin.portfolios.index')
             ->with('success', "Klien B2B '{$clientName}' berhasil dihapus.");
+    }
+
+    /**
+     * Upload uncompressed image to public/images/portfolio preserving the original filename intact.
+     */
+    protected function uploadPortfolioImage($file): string
+    {
+        $targetDir = public_path('images/portfolio');
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0755, true);
+        }
+
+        $filename = basename($file->getClientOriginalName());
+        $file->move($targetDir, $filename);
+
+        return '/images/portfolio/' . $filename;
+    }
+
+    /**
+     * Delete physical image file from public/images/portfolio if it exists and not used elsewhere.
+     */
+    protected function deletePortfolioFile(?string $path, ?int $excludePortfolioId = null): void
+    {
+        if (empty($path)) {
+            return;
+        }
+
+        $parsedPath = parse_url($path, PHP_URL_PATH);
+        $relativePath = ltrim($parsedPath ?: $path, '/');
+
+        // Pastikan hanya menghapus file di dalam folder images/portfolio/
+        if (!str_starts_with($relativePath, 'images/portfolio/')) {
+            return;
+        }
+
+        // Cek apakah file ini masih digunakan oleh record portofolio lain
+        $isUsedElsewhere = Portfolio::query()
+            ->when($excludePortfolioId, fn ($q) => $q->where('id', '!=', $excludePortfolioId))
+            ->where(function ($q) use ($path, $relativePath) {
+                $q->where('image', $path)
+                    ->orWhere('image', '/' . $relativePath)
+                    ->orWhere('image', $relativePath);
+            })
+            ->exists();
+
+        if ($isUsedElsewhere) {
+            return;
+        }
+
+        $fullPath = public_path($relativePath);
+        if (file_exists($fullPath) && is_file($fullPath)) {
+            @unlink($fullPath);
+        }
     }
 }

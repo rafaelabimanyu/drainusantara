@@ -188,11 +188,82 @@
                         Beranda
                     </a>
 
-                    <!-- 2. Tentang kami -->
-                    <a href="{{ url('/#keunggulan') }}" 
-                       class="px-3 py-2 rounded-lg hover:text-sky-700 hover:bg-slate-50 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                        Tentang kami
-                    </a>
+                    <!-- 2. Tentang kami (Interactive Dropdown Popover) -->
+                    <div class="relative" @click.outside="activeMenu = (activeMenu === 'tentang' ? null : activeMenu)">
+                        <button @click="activeMenu = (activeMenu === 'tentang' ? null : 'tentang')"
+                                type="button" 
+                                class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-sky-700 hover:bg-slate-50 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 cursor-pointer"
+                                :class="{ 'text-sky-700 font-bold bg-sky-50/70 border border-sky-100/60': activeMenu === 'tentang' || {{ request()->is('tentang-kami*') ? 'true' : 'false' }} }"
+                                aria-expanded="activeMenu === 'tentang'"
+                                aria-haspopup="true">
+                            <span>Tentang kami</span>
+                            <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-700': activeMenu === 'tentang' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Compact Popover Menu (Clean, No Pills) -->
+                        <div x-cloak 
+                             x-show="activeMenu === 'tentang'"
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 translate-y-1 scale-98"
+                             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave="transition ease-in duration-100"
+                             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                             x-transition:leave-end="opacity-0 translate-y-1 scale-98"
+                             class="absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-lg p-2 z-50">
+                            
+                            <div class="pb-1.5 mb-1 border-b border-slate-100 px-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-sky-700">
+                                    Profil &amp; Standar Kerja
+                                </span>
+                            </div>
+
+                            <div class="space-y-0.5 max-h-[380px] overflow-y-auto pr-1">
+                                <!-- 1. Struktur Holding J&J Group -->
+                                <a href="{{ route('about.holding') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                    <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Struktur Holding J&amp;J Group</div>
+                                    <p class="text-[11px] text-slate-500 leading-snug">Induk perusahaan &amp; jaringan ekosistem sanitasi.</p>
+                                </a>
+
+                                <!-- 2. SOP K3 -->
+                                <a href="{{ route('about.k3') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                    <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">SOP K3</div>
+                                    <p class="text-[11px] text-slate-500 leading-snug">Standar APD teknisi, cover sepatu, &amp; sanitasi pasca kerja.</p>
+                                </a>
+
+                                <!-- 3. Profil Perusahaan -->
+                                <a href="{{ route('about.profile') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                    <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Profil Perusahaan</div>
+                                    <p class="text-[11px] text-slate-500 leading-snug">Visi, misi, dan komitmen spesialis pipa tanpa bongkar.</p>
+                                </a>
+
+                                <!-- 4. Peralatan & Teknologi -->
+                                <a href="{{ route('about.equipment') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                    <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Peralatan &amp; Teknologi</div>
+                                    <p class="text-[11px] text-slate-500 leading-snug">Mesin spiral rotary Ridgid &amp; kamera inspeksi CCTV IP68.</p>
+                                </a>
+
+                                <!-- 5. Klien / Portofolio (Perusahaan Yang Menggunakan Jasa Kami) -->
+                                <a href="{{ url('/#portofolio-b2b') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                    <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Perusahaan &amp; Portofolio Klien</div>
+                                    <p class="text-[11px] text-slate-500 leading-snug">Daftar perusahaan &amp; mitra B2B yang menggunakan jasa Drainusantara.</p>
+                                </a>
+
+                                <!-- 6. Ketentuan Garansi 30 Hari -->
+                                <a href="{{ route('about.warranty') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                    <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Ketentuan Garansi 30 Hari</div>
+                                    <p class="text-[11px] text-slate-500 leading-snug">Jaminan tertulis, No Cure No Pay, &amp; alur klaim re-visit gratis.</p>
+                                </a>
+
+                                <!-- 7. FAQ -->
+                                <a href="{{ route('about.faq') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                    <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">FAQ</div>
+                                    <p class="text-[11px] text-slate-500 leading-snug">Tanya jawab seputar metode tanpa bongkar, biaya, &amp; soda api.</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- 3. Layanan (Hybrid Compact Popover) -->
                     <div class="relative" @click.outside="activeMenu = (activeMenu === 'layanan' ? null : activeMenu)">
@@ -251,14 +322,14 @@
                                     <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors group">
                                         <div class="flex items-center justify-between mb-0.5">
                                             <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">Saluran Domestik</span>
-                                            <span class="text-[9px] font-bold px-1.5 py-0.5 bg-sky-100 text-sky-800 rounded-md">Residensial</span>
+                                            
                                         </div>
                                         <p class="text-[11px] text-slate-500 leading-snug">Wastafel dapur, floor drain, dan pipa talang air.</p>
                                     </a>
                                     <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors group">
                                         <div class="flex items-center justify-between mb-0.5">
                                             <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">Kloset &amp; WC Meluap</span>
-                                            <span class="text-[9px] font-bold px-1.5 py-0.5 bg-red-100 text-red-800 rounded-md">24 Jam</span>
+                                           
                                         </div>
                                         <p class="text-[11px] text-slate-500 leading-snug">Pelancaran leher angsa keramik tanpa dibongkar.</p>
                                     </a>
@@ -583,22 +654,78 @@
                     </svg>
                 </a>
 
-                <!-- 2. Tentang kami -->
-                <a href="{{ url('/#keunggulan') }}" 
-                   @click="sidebarOpen = false" 
-                   class="flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 transition-all btn-press min-h-[48px] border border-transparent">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100/60">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
+                <!-- 2. Tentang kami (Collapsible Accordion in Drawer) -->
+                <div class="rounded-xl border border-transparent transition-all"
+                     :class="{ 'bg-slate-50/80 border-slate-200/70 p-1': tentangDrawerOpen }">
+                    <button type="button" 
+                            @click="tentangDrawerOpen = !tentangDrawerOpen"
+                            class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 transition-all btn-press min-h-[48px] cursor-pointer"
+                            :class="{ 'text-sky-700 font-bold bg-sky-50/60': tentangDrawerOpen || {{ request()->routeIs('about') ? 'true' : 'false' }} }">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100/60">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                            </div>
+                            <span class="text-xs font-bold">Tentang kami</span>
                         </div>
-                        <span class="text-xs font-bold">Tentang kami</span>
+                        <svg class="w-4 h-4 text-slate-400 transition-transform duration-200" :class="{ 'rotate-180 text-sky-700': tentangDrawerOpen }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- Accordion Sub-items (Clean, No Pills) -->
+                    <div x-cloak x-show="tentangDrawerOpen" x-collapse class="pt-1 pb-1.5 pl-3 pr-1 space-y-1 border-t border-slate-200/60 mt-1">
+                        <!-- 1. Struktur Holding J&J Group -->
+                        <a href="{{ route('about.holding') }}" 
+                           @click="sidebarOpen = false" 
+                           class="flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-[44px] transition-colors">
+                            <span>Struktur Holding J&amp;J Group</span>
+                        </a>
+
+                        <!-- 2. SOP K3 -->
+                        <a href="{{ route('about.k3') }}" 
+                           @click="sidebarOpen = false" 
+                           class="flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-[44px] transition-colors">
+                            <span>SOP K3</span>
+                        </a>
+
+                        <!-- 3. Profil Perusahaan -->
+                        <a href="{{ route('about.profile') }}" 
+                           @click="sidebarOpen = false" 
+                           class="flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-[44px] transition-colors">
+                            <span>Profil Perusahaan</span>
+                        </a>
+
+                        <!-- 4. Peralatan & Teknologi -->
+                        <a href="{{ route('about.equipment') }}" 
+                           @click="sidebarOpen = false" 
+                           class="flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-[44px] transition-colors">
+                            <span>Peralatan &amp; Teknologi</span>
+                        </a>
+
+                        <!-- 5. Klien / Portofolio (Perusahaan Yang Menggunakan Jasa Kami) -->
+                        <a href="{{ url('/#portofolio-b2b') }}" 
+                           @click="sidebarOpen = false" 
+                           class="flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-[44px] transition-colors">
+                            <span>Perusahaan &amp; Portofolio Klien</span>
+                        </a>
+
+                        <!-- 6. Ketentuan Garansi 30 Hari -->
+                        <a href="{{ route('about.warranty') }}" 
+                           @click="sidebarOpen = false" 
+                           class="flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-[44px] transition-colors">
+                            <span>Ketentuan Garansi 30 Hari</span>
+                        </a>
+
+                        <!-- 7. FAQ -->
+                        <a href="{{ route('about.faq') }}" 
+                           @click="sidebarOpen = false" 
+                           class="flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-[44px] transition-colors">
+                            <span>FAQ</span>
+                        </a>
                     </div>
-                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
+                </div>
 
                 <!-- 3. Layanan -->
                 <a href="{{ url('/#layanan') }}" 

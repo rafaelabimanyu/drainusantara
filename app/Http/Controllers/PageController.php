@@ -86,7 +86,7 @@ class PageController extends Controller
         $galleries = Gallery::where('is_active', true)
             ->with('service')
             ->orderBy('order')
-            ->take(4)
+            ->take(3)
             ->get();
 
         $articles = \App\Models\Article::where('is_published', true)
@@ -372,11 +372,11 @@ class PageController extends Controller
     public function gallery(): View
     {
         SEOMeta::setTitle('Dokumentasi Hasil Pengerjaan Pipa Mampet');
-        SEOMeta::setDescription('Foto bukti sebelum & sesudah pelancaran wastafel, kloset, & floor drain tersumbat. Inspeksi visual kamera CCTV pipa 30 meter tanpa bongkar keramik.');
+        SEOMeta::setDescription('Dokumentasi foto teknis pelancaran saluran pipa tersumbat sektor rumahan dan komersial B2B. Inspeksi visual kamera CCTV pipa 30 meter tanpa bongkar keramik.');
         SEOMeta::setCanonical(url()->current());
 
         OpenGraph::setTitle('Dokumentasi Hasil Pengerjaan Pipa Mampet - Drainusantara');
-        OpenGraph::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis berstandar profesional. 100% tanpa bongkar keramik & bergaransi 30 hari.');
+        OpenGraph::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis berstandar profesional. 100% tanpa bongkar keramik dan bergaransi 30 hari.');
         OpenGraph::setUrl(url()->current());
         OpenGraph::addImage(asset('images/hero-technician.webp'));
 
@@ -493,6 +493,14 @@ class PageController extends Controller
 
         // 1. Static Core Landing & Directory Pages
         $urls[] = ['loc' => url('/'), 'lastmod' => $now, 'changefreq' => 'daily', 'priority' => '1.0'];
+        $urls[] = ['loc' => url('/tentang-kami'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.9'];
+        $urls[] = ['loc' => route('about.profile'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.holding'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.k3'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.equipment'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.warranty'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.faq'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => url('/area'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.9'];
         $urls[] = ['loc' => url('/galeri'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => $now, 'changefreq' => 'daily', 'priority' => '0.8'];
@@ -552,6 +560,185 @@ class PageController extends Controller
         $xml .= '</urlset>';
 
         return response($xml, 200)->header('Content-Type', 'application/xml');
+    }
+
+    /**
+     * Display the About Us main entry page (delegates to Profil Perusahaan).
+     */
+    public function about(): View
+    {
+        return $this->aboutProfile();
+    }
+
+    /**
+     * Sub-Page 1: Profil Perusahaan
+     */
+    public function aboutProfile(): View
+    {
+        SEOMeta::setTitle('Profil Perusahaan: Spesialis Pipa Tanpa Bongkar');
+        SEOMeta::setDescription('Profil resmi Drainusantara: spesialis pelancaran pipa mampet tanpa bongkar keramik berstandar mutu tinggi, integritas teknis, dan jaminan garansi 30 hari.');
+        SEOMeta::setCanonical(route('about.profile'));
+
+        OpenGraph::setTitle('Profil Perusahaan Drainusantara - Tanpa Bongkar Keramik');
+        OpenGraph::setDescription('Mengenal integritas, visi, misi, dan pilar keunggulan teknik Drainusantara dalam melayani perumahan dan komersial.');
+        OpenGraph::setUrl(route('about.profile'));
+        OpenGraph::addImage(asset('images/hero-technician.webp'));
+
+        TwitterCard::setTitle('Profil Perusahaan Drainusantara');
+        TwitterCard::setDescription('Spesialis pelancaran pipa mampet tanpa bongkar keramik bergaransi 30 hari.');
+        TwitterCard::setImage(asset('images/hero-technician.webp'));
+
+        JsonLdMulti::setTitle('Profil Perusahaan Drainusantara');
+        JsonLdMulti::setType('AboutPage');
+
+        return view('about.profile');
+    }
+
+    /**
+     * Sub-Page 2: Struktur Holding J&J Group
+     */
+    public function aboutHolding(): View
+    {
+        SEOMeta::setTitle('Struktur Ekosistem Holding J&J Group - Drainusantara');
+        SEOMeta::setDescription('Drainusantara bernaung di bawah ekosistem holding J&J Group. Sinergi rantai pasok mesin mekanik impor, kendali mutu, dan standarisasi operasional terpadu.');
+        SEOMeta::setCanonical(route('about.holding'));
+
+        OpenGraph::setTitle('Struktur Holding J&J Group - Induk Usaha Drainusantara');
+        OpenGraph::setDescription('Fondasi korporasi kokoh di bawah naungan J&J Group dengan jaringan logistik armada dan pengawasan mutu sanitasi.');
+        OpenGraph::setUrl(route('about.holding'));
+        OpenGraph::addImage(asset('images/hero-technician.webp'));
+
+        TwitterCard::setTitle('Struktur Holding J&J Group - Drainusantara');
+        TwitterCard::setDescription('Ekosistem holding sanitasi dan drainase modern di Indonesia.');
+        TwitterCard::setImage(asset('images/hero-technician.webp'));
+
+        JsonLdMulti::setTitle('Struktur Holding J&J Group - Drainusantara');
+        JsonLdMulti::setType('AboutPage');
+
+        return view('about.holding');
+    }
+
+    /**
+     * Sub-Page 3: Standar Operasional Prosedur (SOP) K3
+     */
+    public function aboutK3(): View
+    {
+        SEOMeta::setTitle('Standar SOP K3 & Higienitas Teknisi - Drainusantara');
+        SEOMeta::setDescription('Protokol K3 resmi teknisi Drainusantara: pemakaian APD steril, cover sepatu saat masuk hunian, keamanan kelistrikan GFCI, dan uji alir sanitasi.');
+        SEOMeta::setCanonical(route('about.k3'));
+
+        OpenGraph::setTitle('Standar SOP K3 Teknisi Pipa - Drainusantara');
+        OpenGraph::setDescription('Disiplin keselamatan kerja dan perlindungan sanitasi ruangan konsumen pada setiap penanganan pipa.');
+        OpenGraph::setUrl(route('about.k3'));
+        OpenGraph::addImage(asset('images/hero-technician.webp'));
+
+        TwitterCard::setTitle('Standar SOP K3 Teknisi - Drainusantara');
+        TwitterCard::setDescription('Protokol higienis, cover sepatu, sarung tangan nitril, dan keamanan kelistrikan.');
+        TwitterCard::setImage(asset('images/hero-technician.webp'));
+
+        JsonLdMulti::setTitle('Standar SOP K3 Teknisi - Drainusantara');
+        JsonLdMulti::setType('AboutPage');
+
+        return view('about.sop-k3');
+    }
+
+    /**
+     * Sub-Page 4: Peralatan & Teknologi
+     */
+    public function aboutEquipment(): View
+    {
+        SEOMeta::setTitle('Peralatan & Teknologi Mesin Pipa Modern - Drainusantara');
+        SEOMeta::setDescription('Spesifikasi mesin drain rooter Ridgid spiral baja rotary, kamera inspeksi visual CCTV IP68 jangkauan 30 meter, dan water jetting pembersih grease trap.');
+        SEOMeta::setCanonical(route('about.equipment'));
+
+        OpenGraph::setTitle('Peralatan & Teknologi Pipa Modern - Drainusantara');
+        OpenGraph::setDescription('Teknologi mekanis spiral baja elastis dan visualisasi kondisi internal pipa dengan kamera endoskopi digital.');
+        OpenGraph::setUrl(route('about.equipment'));
+        OpenGraph::addImage(asset('images/hero-technician.webp'));
+
+        TwitterCard::setTitle('Peralatan & Teknologi Pipa Modern - Drainusantara');
+        TwitterCard::setDescription('Mesin spiral Ridgid K-50/K-60 dan kamera pipa CCTV IP68.');
+        TwitterCard::setImage(asset('images/hero-technician.webp'));
+
+        $equipments = \App\Models\Equipment::where('is_active', true)->orderBy('order')->get();
+
+        return view('about.equipment', compact('equipments'));
+    }
+
+    /**
+     * Sub-Page 5: Klien & Portofolio Rekam Jejak
+     */
+    public function aboutPortfolio(): View
+    {
+        SEOMeta::setTitle('Klien & Portofolio Proyek B2B - Drainusantara');
+        SEOMeta::setDescription('Daftar portofolio klien komersial B2B dan hunian residensial Drainusantara: restoran F&B, hotel bintang, food court, ruko, dan gedung perkantoran.');
+        SEOMeta::setCanonical(route('about.portfolio'));
+
+        OpenGraph::setTitle('Klien & Portofolio Proyek - Drainusantara');
+        OpenGraph::setDescription('Kepercayaan puluhan entitas komersial F&B dan perhotelan terhadap solusi drainase tanpa bongkar keramik.');
+        OpenGraph::setUrl(route('about.portfolio'));
+        OpenGraph::addImage(asset('images/hero-technician.webp'));
+
+        TwitterCard::setTitle('Klien & Portofolio Proyek - Drainusantara');
+        TwitterCard::setDescription('Portofolio pembersihan pipa dan grease trap resto, hotel, dan gedung komersial.');
+        TwitterCard::setImage(asset('images/hero-technician.webp'));
+
+        JsonLdMulti::setTitle('Klien & Portofolio Proyek - Drainusantara');
+        JsonLdMulti::setType('AboutPage');
+
+        $portfolios = \App\Models\Portfolio::where('is_active', true)
+            ->orderBy('order')
+            ->get();
+
+        return view('about.portfolio', compact('portfolios'));
+    }
+
+    /**
+     * Sub-Page 6: Ketentuan Garansi 30 Hari
+     */
+    public function aboutWarranty(): View
+    {
+        SEOMeta::setTitle('Ketentuan Resmi Garansi 30 Hari Kalender - Drainusantara');
+        SEOMeta::setDescription('Syarat dan ketentuan resmi jaminan garansi 30 hari kalender Drainusantara, komitmen No Cure No Pay, serta alur klaim kunjungan ulang bebas biaya.');
+        SEOMeta::setCanonical(route('about.warranty'));
+
+        OpenGraph::setTitle('Ketentuan Resmi Garansi 30 Hari - Drainusantara');
+        OpenGraph::setDescription('Perlindungan purna jual nyata: nota digital resmi, komitmen No Cure No Pay, dan respon klaim prioritas.');
+        OpenGraph::setUrl(route('about.warranty'));
+        OpenGraph::addImage(asset('images/hero-technician.webp'));
+
+        TwitterCard::setTitle('Ketentuan Garansi 30 Hari - Drainusantara');
+        TwitterCard::setDescription('Jaminan garansi 30 hari kalender dan komitmen No Cure No Pay.');
+        TwitterCard::setImage(asset('images/hero-technician.webp'));
+
+        JsonLdMulti::setTitle('Ketentuan Resmi Garansi 30 Hari - Drainusantara');
+        JsonLdMulti::setType('AboutPage');
+
+        return view('about.warranty');
+    }
+
+    /**
+     * Sub-Page 7: FAQ (Tanya Jawab Seputar Layanan)
+     */
+    public function aboutFaq(): View
+    {
+        SEOMeta::setTitle('Tanya Jawab (FAQ) Pelancaran Pipa - Drainusantara');
+        SEOMeta::setDescription('Kumpulan tanya jawab teknis: mengapa soda api merusak pipa PVC, durasi pengerjaan rooter spiral, transparansi biaya, dan cara klaim garansi.');
+        SEOMeta::setCanonical(route('about.faq'));
+
+        OpenGraph::setTitle('Tanya Jawab (FAQ) Saluran Pipa - Drainusantara');
+        OpenGraph::setDescription('Informasi transparan seputar metode pengerjaan tanpa bongkar keramik, peralatan, dan jaminan keamanan sanitasi.');
+        OpenGraph::setUrl(route('about.faq'));
+        OpenGraph::addImage(asset('images/hero-technician.webp'));
+
+        TwitterCard::setTitle('Tanya Jawab (FAQ) - Drainusantara');
+        TwitterCard::setDescription('Tanya jawab teknis seputar pelancaran pipa tanpa bongkar keramik.');
+        TwitterCard::setImage(asset('images/hero-technician.webp'));
+
+        JsonLdMulti::setTitle('Tanya Jawab (FAQ) - Drainusantara');
+        JsonLdMulti::setType('AboutPage');
+
+        return view('about.faq');
     }
 }
 
