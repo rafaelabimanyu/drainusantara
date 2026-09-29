@@ -182,8 +182,13 @@ class PageController extends Controller
 
         $services = Service::where('is_active', true)->orderBy('order')->get();
         $reviews = Review::where('is_active', true)->latest()->take(3)->get();
+        $galleries = Gallery::where('is_active', true)
+            ->with('service')
+            ->orderBy('order')
+            ->take(3)
+            ->get();
 
-        return view('areas.province', compact('provinceData', 'services', 'reviews'));
+        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries'));
     }
 
     /**

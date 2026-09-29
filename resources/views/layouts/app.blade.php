@@ -245,7 +245,7 @@
                                 </a>
 
                                 <!-- 5. Klien / Portofolio (Perusahaan Yang Menggunakan Jasa Kami) -->
-                                <a href="{{ url('/#portofolio-b2b') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                <a href="{{ route('about.portfolio') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
                                     <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Perusahaan &amp; Portofolio Klien</div>
                                     <p class="text-[11px] text-slate-500 leading-snug">Daftar perusahaan &amp; mitra B2B yang menggunakan jasa Drainusantara.</p>
                                 </a>
@@ -705,7 +705,7 @@
                         </a>
 
                         <!-- 5. Klien / Portofolio (Perusahaan Yang Menggunakan Jasa Kami) -->
-                        <a href="{{ url('/#portofolio-b2b') }}" 
+                        <a href="{{ route('about.portfolio') }}" 
                            @click="sidebarOpen = false" 
                            class="flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-[44px] transition-colors">
                             <span>Perusahaan &amp; Portofolio Klien</span>
@@ -884,7 +884,7 @@
                         <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors">Saluran Limbah Dapur Industri</a></li>
                         <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors">Perawatan Berkala After-Hours</a></li>
                         <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors">e-Faktur Pajak &amp; Berita Acara (BAST)</a></li>
-                        <li class="pt-1"><a href="{{ url('/#portofolio-b2b') }}" class="text-sky-400 hover:text-sky-300 font-semibold inline-flex items-center gap-1">Portofolio Mitra B2B</a></li>
+                        <li class="pt-1"><a href="{{ route('about.portfolio') }}" class="text-sky-400 hover:text-sky-300 font-semibold inline-flex items-center gap-1">Portofolio Mitra B2B</a></li>
                     </ul>
                 </div>
 

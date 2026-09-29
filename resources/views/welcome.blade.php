@@ -139,7 +139,7 @@
                 onerror="this.style.display='none'"
             >
             <!-- Overlay Gradien Lembut: Menjamin Teks Tetap 100% Kontras & Tajam (WCAG AA) -->
-            <div class="absolute inset-0 bg-gradient-to-r from-gray-300 via-gray-300/60 to-gray-300/55"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#090D16] via-[#090D16]/60 to-[#090D16]/55"></div>
             <div class="absolute inset-0 bg-slate-900/5"></div>
         </div>
 
@@ -156,18 +156,18 @@
                 </div>
 
                 <!-- Headline Lugas & Faktual -->
-                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight sm:leading-[1.12] reveal-soft">
+                <h1 class="text-white text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight sm:leading-[1.12] reveal-soft">
                     Jasa Saluran Mampet & Tukang Pipa Tersumbat <br>    
-                    <span class="text-sky-700">Tanpa Bongkar Keramik & Bergaransi.</span>
+                    <span class="text-sky-500">Tanpa Bongkar Keramik & Bergaransi.</span>
                 </h1>
 
                 <!-- Sub-Headline: Jelas & Singkat -->
-                <p class="text-base text-sm md:text-lg font-semibold text-slate-600 leading-relaxed max-w-2xl reveal-soft delay-100">
+                <p class="text-base text-sm md:text-lg font-semibold text-white leading-relaxed max-w-2xl reveal-soft delay-100">
                     Jasa pelancaran saluran pipa mampet untuk rumah tinggal, ruko, dan resto di Jabodetabek, Semarang, dan Lampung. Mengatasi wastafel dapur berlemak, kloset meluap, serta floor drain buntu menggunakan mesin spiral baja Ridgid tanpa membongkar lantai keramik. Garansi tertulis 30 hari.
                 </p>
 
                 <!-- Value Checkpoints (Inline Minimalis Tanpa Box Tebal) -->
-                <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-semibold text-slate-700 pt-1 reveal-soft delay-150">
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-semibold text-white pt-1 reveal-soft delay-150">
                     <span class="flex items-center gap-1.5">
                         <span>Keramik Utuh</span>
                     </span>

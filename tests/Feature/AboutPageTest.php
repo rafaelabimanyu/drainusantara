@@ -14,27 +14,35 @@ class AboutPageTest extends TestCase
         // 1. Profil Perusahaan
         $resProfile = $this->get('/tentang-kami/profil');
         $resProfile->assertStatus(200);
-        $resProfile->assertSee('Dedikasi Pelayanan Sanitasi Higienis');
+        $resProfile->assertSee('Profil Resmi Drainusantara');
         $resProfile->assertSee('100% Non-Destruktif');
         $resProfile->assertSee('Bebas Bahan Kimia');
 
         // Main alias /tentang-kami
         $resMain = $this->get('/tentang-kami');
         $resMain->assertStatus(200);
-        $resMain->assertSee('Dedikasi Pelayanan Sanitasi Higienis');
+        $resMain->assertSee('Profil Resmi Drainusantara');
 
         // 2. Struktur Holding J&J Group
         $resHolding = $this->get('/tentang-kami/holding');
         $resHolding->assertStatus(200);
-        $resHolding->assertSee('Kekuatan Jaringan &amp; Tata Kelola J&amp;J Group', false);
-        $resHolding->assertSee('Logistik &amp; Armada Terpadu', false);
+        $resHolding->assertSee('Sinergi Ekosistem J&amp;J Group', false);
+        $resHolding->assertSee('Transparansi Harga Total');
+        $resHolding->assertSee('Formalitas Kelengkapan Administrasi &amp; Kemitraan Korporat', false);
+        $resHolding->assertSee('NIB (Nomor Induk Berusaha)');
+        $resHolding->assertSee('NPWP &amp; SPPKP Perusahaan', false);
+        $resHolding->assertSee('Faktur Pajak PPN 11%');
+
+        // Test alias redirect holding-jj-group
+        $resHoldingAlias = $this->get('/tentang-kami/holding-jj-group');
+        $resHoldingAlias->assertRedirect(route('about.holding'));
 
         // 3. SOP K3
         $resK3 = $this->get('/tentang-kami/sop-k3');
         $resK3->assertStatus(200);
-        $resK3->assertSee('Standar SOP K3 &amp; Higienitas Kerja Teknisi', false);
-        $resK3->assertSee('Cover Sepatu Steril');
-        $resK3->assertSee('GFCI / ELCB');
+        $resK3->assertSee('Perlengkapan APD K3 Teknisi Lapangan Drainusantara');
+        $resK3->assertSee('Protokol Desinfeksi Mesin Ridgid &amp; Hydro-Jetting', false);
+        $resK3->assertSee('Point Checklist Verifikasi Pasca Kerja');
 
         // 4. Peralatan & Teknologi
         $resEquip = $this->get('/tentang-kami/peralatan');
@@ -52,9 +60,10 @@ class AboutPageTest extends TestCase
         // 6. Ketentuan Garansi 30 Hari
         $resWarranty = $this->get('/tentang-kami/garansi');
         $resWarranty->assertStatus(200);
-        $resWarranty->assertSee('Ketentuan Resmi Garansi 30 Hari Kalender');
-        $resWarranty->assertSee('No Cure No Pay');
+        $resWarranty->assertSee('4 Pilar Jaminan Garansi Drainusantara');
         $resWarranty->assertSee('Alur Klaim 3 Langkah Cepat');
+        $resWarranty->assertSee('Syarat &amp; Ketentuan Klaim Garansi', false);
+        $resWarranty->assertSee('Cakupan Garansi');
 
         // 7. FAQ
         $resFaq = $this->get('/tentang-kami/faq');
@@ -84,7 +93,7 @@ class AboutPageTest extends TestCase
         $response->assertSee(route('about.k3'));
         $response->assertSee(route('about.profile'));
         $response->assertSee(route('about.equipment'));
-        $response->assertSee('/#portofolio-b2b');
+        $response->assertSee(route('about.portfolio'));
         $response->assertSee(route('about.warranty'));
         $response->assertSee(route('about.faq'));
 

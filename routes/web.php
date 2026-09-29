@@ -42,6 +42,7 @@ Route::prefix('tentang-kami')->group(function () {
     Route::get('/', [PageController::class, 'about'])->name('about');
     Route::get('/profil', [PageController::class, 'aboutProfile'])->name('about.profile');
     Route::get('/holding', [PageController::class, 'aboutHolding'])->name('about.holding');
+    Route::get('/holding-jj-group', fn () => redirect()->route('about.holding', [], 301));
     Route::get('/sop-k3', [PageController::class, 'aboutK3'])->name('about.k3');
     Route::get('/peralatan', [PageController::class, 'aboutEquipment'])->name('about.equipment');
     Route::get('/portofolio', [PageController::class, 'aboutPortfolio'])->name('about.portfolio');
