@@ -123,4 +123,11 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Drainusantara WhatsApp Hotline Configuration
+    |--------------------------------------------------------------------------
+    */
+    'whatsapp_number' => env('WHATSAPP_NUMBER', '6281234567890'),
+
 ];

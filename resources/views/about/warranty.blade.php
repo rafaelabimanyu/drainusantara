@@ -1,14 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-@include('about.partials.nav', [
-    'activeTitle' => 'Ketentuan Garansi',
-    'eyebrow' => 'Perlindungan Konsumen',
-    'heading' => 'Ketentuan Resmi Garansi 30 Hari',
-    'subheading' => 'Drainusantara memberikan kepastian hasil dengan uji alir debit air di depan pelanggan, invoice & sertifikat garansi digital resmi berstempel, serta kunjungan ulang tanpa biaya jika terjadi kendala pada titik yang sama selama masa garansi.'
-])
+<x-about.subnav 
+    active-title="Ketentuan Garansi"
+    eyebrow="Perlindungan Konsumen"
+    heading="Ketentuan Resmi Garansi 30 Hari"
+    subheading="Drainusantara memberikan kepastian hasil dengan uji alir debit air di depan pelanggan, invoice & sertifikat garansi digital resmi berstempel, serta kunjungan ulang tanpa biaya jika terjadi kendala pada titik yang sama selama masa garansi."
+/>
 
-<!-- Main Warranty Content -->
 <section id="garansi" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -86,7 +85,7 @@
                     <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
                         <span class="text-xs font-bold text-sky-700 block mb-1">Invoice & Stempel Resmi</span>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                           Setiap pengerjaan dilengkapi Digital Invoice resmi berstempel Rootera yang tersimpan aman di database sistem kami.
+                           Setiap pengerjaan dilengkapi Digital Invoice resmi berstempel Drainusantara yang tersimpan aman di database sistem kami.
                         </p>
                     </div>
                     <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
@@ -133,9 +132,7 @@
                         </div>
                         <div>
                             <span class="font-bold text-slate-900 block">Verifikasi Data Sistem</span>
-                            <p class="text-slate-600 text-xs mt-0.5">Tim dispatch Rootera memverifikasi tanggal pengerjaan & histori digital invoice Anda secara instan.
-
-</p>
+                            <p class="text-slate-600 text-xs mt-0.5">Tim dispatch Drainusantara memverifikasi tanggal pengerjaan &amp; histori digital invoice Anda secara instan.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
@@ -167,7 +164,6 @@
     </div>
 </section>
 
-<!-- Section 2: Syarat & Ketentuan Klaim Garansi (Anti-Slop Redesign: 3 Distinct Function Cards with Mobile Carousel) -->
 <section id="syarat-ketentuan-garansi" class="py-16 lg:py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl mb-12">
@@ -226,7 +222,6 @@
                  @mouseenter="pause()"
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
-                <!-- Card 1: Cakupan yang Dijamin (Coverage) -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">
@@ -255,36 +250,32 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Batasan & Pengecualian (Exclusions) -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">
-                            Prosedur Klaim
+                            Prosedur Klaim Cepat
                         </h3>
                         <p class="text-xs text-slate-500 mb-5 leading-relaxed">
-                            Kerusakan atau penyumbatan baru yang disebabkan oleh faktor eksternal di luar pengerjaan jasa.
+                            Tata cara pengajuan kunjungan teknisi ulang jika saluran kembali bermasalah dalam masa garansi.
                         </p>
 
                         <dl class="space-y-4 text-xs sm:text-sm">
                             <div class="border-t border-slate-200/80 pt-3">
-                                <dt class="font-bold text-slate-900 mb-0.5">Hubungi Customer Service WhatsApp resmi Rootera Plumbing.
-    </dt>
-                                <dd class="text-slate-600 leading-relaxed">Sampaikan kendala disertai foto atau video kondisi terkini serta tunjukkan bukti pembayaran Nota Jasa.</dd>
+                                <dt class="font-bold text-slate-900 mb-0.5">1. Hubungi WhatsApp Resmi</dt>
+                                <dd class="text-slate-600 leading-relaxed">Sampaikan kendala ke Customer Service WhatsApp resmi Drainusantara dengan melampirkan foto/video dan nomor nota invoice pengerjaan awal.</dd>
                             </div>
                             <div class="border-t border-slate-200/80 pt-3">
-                                <dt class="font-bold text-slate-900 mb-0.5">Sebutkan nomor WhatsApp yang terdaftar pada transaksi pemesanan awal.</dt>
-                                <dd class="text-slate-600 leading-relaxed">Prioritas verifikasi data pelanggan untuk memastikan keabsahan klaim garansi.</dd>
+                                <dt class="font-bold text-slate-900 mb-0.5">2. Verifikasi Data Pelanggan</dt>
+                                <dd class="text-slate-600 leading-relaxed">Tim dispatch Drainusantara memverifikasi riwayat tanggal pengerjaan dan titik saluran yang dijamin garansi.</dd>
                             </div>
                             <div class="border-t border-slate-200/80 pt-3">
-                                <dt class="font-bold text-slate-900 mb-0.5">Jadwal Peninjauan Teknis</dt>
-                                <dd class="text-slate-600 leading-relaxed">Tim admin akan memverifikasi digital invoice dan mendispatch teknisi sesuai jadwal kesepakatan.
-    </dd>
+                                <dt class="font-bold text-slate-900 mb-0.5">3. Jadwal Kunjungan Ulang</dt>
+                                <dd class="text-slate-600 leading-relaxed">Tim teknisi segera dijadwalkan ulang untuk kunjungan maksimal 1x24 jam tanpa biaya jasa maupun transportasi.</dd>
                             </div>
                         </dl>
                     </div>
                 </div>
 
-                <!-- Card 3: Ketentuan Administrasi & Validasi (Terms) -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">

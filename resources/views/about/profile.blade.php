@@ -7,24 +7,19 @@
     $profileWaUrl = "https://wa.me/{$whatsappNumber}?text={$profileWaText}";
 @endphp
 
-@include('about.partials.nav', [
-    'activeTitle' => 'Profil Perusahaan',
-    'eyebrow' => 'Profil Entitas',
-    'heading' => 'Profil Resmi Drainusantara',
-    'subheading' => 'Drainusantara merupakan entitas bisnis resmi yang beroperasi secara sah di bawah naungan J&J Group, didukung oleh kelengkapan legalitas dan ketaatan pada regulasi yang berlaku.',
-    // Foto 2: Background Halaman Profil Perusahaan
-    'bgImage' => asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp'),
-])
+<x-about.subnav 
+    active-title="Profil Perusahaan"
+    eyebrow="Profil Entitas"
+    heading="Profil Resmi Drainusantara"
+    subheading="Drainusantara merupakan entitas bisnis resmi yang beroperasi secara sah di bawah naungan J&J Group, didukung oleh kelengkapan legalitas dan ketaatan pada regulasi yang berlaku."
+    :bg-image="asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp')"
+/>
 
-<!-- ====================================================================
-     SECTION 1: PROFIL RESMI & RINGKASAN ENTITAS OPERASIONAL
-==================================================================== -->
 <section id="profil" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
-            <!-- Kolom Kiri: Uraian Profil & Pilar Keunggulan -->
             <div class="lg:col-span-7">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
                     PROFIL RESMI DRAINUSANTARA
@@ -207,9 +202,6 @@
     </div>
 </section>
 
-<!-- ====================================================================
-     SECTION 2: 4 STANDAR MUTU PELAYANAN TEKNISI DI LAPANGAN
-==================================================================== -->
 <section id="standar-pelayanan" class="py-16 lg:py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -368,9 +360,6 @@
     </div>
 </section>
 
-<!-- ====================================================================
-     SECTION 3: CALLOUT EKOSISTEM HOLDING & KEMITRAAN
-==================================================================== -->
 <section id="ekosistem" class="py-14 lg:py-16 bg-slate-900 text-white relative overflow-hidden reveal-soft">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">

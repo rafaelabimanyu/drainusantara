@@ -54,14 +54,14 @@
                     <!-- Container Gambar Peralatan -->
                     <div class="relative aspect-[16/10] bg-slate-900 overflow-hidden border-b border-slate-200 group">
                         <img 
-                            src="{{ $equip->image ?: asset('assets/TOOLKIT/mesin-spiral-rotary.svg') }}" 
+                            src="{{ $equip->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
                             alt="{{ $equip->name }}" 
                             width="600" 
                             height="375" 
                             loading="lazy" 
                             decoding="async" 
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-spiral-rotary.svg') }}';"
+                            onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';"
                         >
                         @if($equip->badge)
                         <div class="absolute top-2.5 left-2.5">

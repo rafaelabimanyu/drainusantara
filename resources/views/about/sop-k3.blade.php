@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-@include('about.partials.nav', [
-    'activeTitle' => 'SOP K3',
-    'eyebrow' => 'Keselamatan & Kesehatan Kerja',
-    'heading' => 'Perlengkapan APD K3 Teknisi Lapangan Drainusantara',
-    'subheading' => 'Standar perlindungan diri teknisi kami sebelum memasuki area kerja Anda, memastikan tidak ada risiko kontaminasi atau bahaya selama proses perbaikan pipa.'
-])
+<x-about.subnav 
+    active-title="SOP K3"
+    eyebrow="Keselamatan & Kesehatan Kerja"
+    heading="Perlengkapan APD K3 Teknisi Lapangan Drainusantara"
+    subheading="Standar perlindungan diri teknisi kami sebelum memasuki area kerja Anda, memastikan tidak ada risiko kontaminasi atau bahaya selama proses perbaikan pipa."
+/>
 
 <!-- Main SOP K3 Content -->
 <section id="sop-k3" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
@@ -20,7 +20,7 @@
                 4 Disiplin Utama Pelayanan Sanitasi Bersih
             </h2>
             <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
-               Sebelum menginjakkan kaki di lokasi pelanggan (hunian, restoran, hotel, atau pabrik), teknisi Rootera Plumbing diwajibkan menerapkan standar proteksi K3 lengkap.
+               Sebelum menginjakkan kaki di lokasi pelanggan (hunian, restoran, hotel, atau pabrik), teknisi Drainusantara diwajibkan menerapkan standar proteksi K3 lengkap.
             </p>
         </div>
 
@@ -70,7 +70,6 @@
                  @mouseenter="pause()"
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
-                <!-- SOP 1 -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
@@ -85,7 +84,6 @@
                     </div>
                 </div>
 
-                <!-- SOP 2 -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
@@ -100,7 +98,6 @@
                     </div>
                 </div>
 
-                <!-- SOP 3 -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
@@ -115,7 +112,6 @@
                     </div>
                 </div>
 
-                <!-- SOP 4 -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
@@ -205,7 +201,6 @@
                  @mouseenter="pause()"
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
-                <!-- Card 1: Kabel Spiral Rotary Ridgid -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
                         <div class="w-12 h-12 rounded-lg bg-sky-100 text-sky-800 border border-sky-200 flex items-center justify-center font-bold text-base mb-5">
@@ -225,7 +220,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Nozel & Selang Hydro-Jetting -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
                         <div class="w-12 h-12 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center justify-center font-bold text-base mb-5">
@@ -245,7 +239,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Kamera Inspeksi CCTV IP68 -->
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
                         <div class="w-12 h-12 rounded-lg bg-indigo-100 text-indigo-800 border border-indigo-200 flex items-center justify-center font-bold text-base mb-5">
@@ -299,7 +292,6 @@
         </div>
 
         <div class="bg-white rounded-xl border border-slate-200 divide-y divide-slate-200 shadow-xs mb-10">
-            <!-- Checklist Item 1 -->
             <div class="p-5 sm:p-6 flex items-start gap-4">
                 <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -319,7 +311,6 @@
                 </span>
             </div>
 
-            <!-- Checklist Item 2 -->
             <div class="p-5 sm:p-6 flex items-start gap-4">
                 <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -339,7 +330,6 @@
                 </span>
             </div>
 
-            <!-- Checklist Item 3 -->
             <div class="p-5 sm:p-6 flex items-start gap-4">
                 <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -359,7 +349,6 @@
                 </span>
             </div>
 
-            <!-- Checklist Item 4 -->
             <div class="p-5 sm:p-6 flex items-start gap-4">
                 <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -379,7 +368,6 @@
                 </span>
             </div>
 
-            <!-- Checklist Item 5 -->
             <div class="p-5 sm:p-6 flex items-start gap-4">
                 <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -400,7 +388,6 @@
             </div>
         </div>
 
-        <!-- Consultation Banner -->
         <div class="bg-slate-900 text-white p-6 sm:p-8 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div class="max-w-xl text-center sm:text-left">
                 <h4 class="text-lg font-bold text-white mb-1">
@@ -410,7 +397,11 @@
                     Kami melayani restoran mall, hotel berbintang, dan fasilitas komersial dengan standar SOP K3 higienis dan peralatan mekanis modern tanpa bongkar.
                 </p>
             </div>
-            <a href="https://wa.me/6282125400645?text={{ urlencode('Halo Rootera Plumbing, saya ingin konsultasi layanan saluran mampet dengan standar SOP K3.') }}"
+            @php
+                $sopWaNumber = config('app.whatsapp_number') ?: '6281234567890';
+                $sopWaText = urlencode('Halo Drainusantara, saya ingin konsultasi layanan saluran mampet dengan standar SOP K3.');
+            @endphp
+            <a href="https://wa.me/{{ $sopWaNumber }}?text={{ $sopWaText }}"
                target="_blank"
                rel="noopener noreferrer"
                class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-colors duration-150 shrink-0">

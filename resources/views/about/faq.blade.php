@@ -7,15 +7,14 @@
     $faqWaUrl = "https://wa.me/{$whatsappNumber}?text={$faqWaText}";
 @endphp
 
-@include('about.partials.nav', [
-    'activeTitle' => 'FAQ',
-    'eyebrow' => 'Pusat Bantuan & Konsultasi',
-    'heading' => 'Tanya Jawab Seputar Layanan & Prosedur Pengerjaan',
-    'subheading' => 'Keterbukaan informasi seputar metode mekanis tanpa bongkar, armada mesin Ridgid & Hydro-Jetting, estimasi biaya transparan, legalitas, serta jaminan garansi 30 hari.',
-    'bgImage' => asset('assets/banner/Drainusantara-jasa-saluran-mampet-profesional-desktop.webp')
-])
+<x-about.subnav 
+    active-title="FAQ"
+    eyebrow="Pusat Bantuan & Konsultasi"
+    heading="Tanya Jawab Seputar Layanan & Prosedur Pengerjaan"
+    subheading="Keterbukaan informasi seputar metode mekanis tanpa bongkar, armada mesin Ridgid & Hydro-Jetting, estimasi biaya transparan, legalitas, serta jaminan garansi 30 hari."
+    :bg-image="asset('assets/banner/Drainusantara-jasa-saluran-mampet-profesional-desktop.webp')"
+/>
 
-<!-- Main FAQ Content with Alpine Accordion -->
 <section id="faq-page" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200" x-data="{ openFaq: 1, activeCategory: 'all' }">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -84,7 +83,6 @@
             ];
         @endphp
 
-        <!-- Category Filter Tabs -->
         <div class="flex items-center justify-center gap-2 flex-wrap mb-8">
             <button type="button" 
                     @click="activeCategory = 'all'"
@@ -118,7 +116,6 @@
             </button>
         </div>
 
-        <!-- Accordion Item List -->
         <div class="space-y-3.5 mb-12">
             @foreach($faqs as $item)
                 <div x-show="activeCategory === 'all' || activeCategory === '{{ $item['category'] }}'"
@@ -142,7 +139,6 @@
             @endforeach
         </div>
 
-        <!-- Still have questions CTA -->
         <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div class="text-center sm:text-left max-w-xl">
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-1">

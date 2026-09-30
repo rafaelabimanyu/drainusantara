@@ -4,14 +4,25 @@
 @php
     $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
     $generalWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode("Halo Admin Drainusantara, saya ingin cek ketersediaan teknisi saluran mampet untuk wilayah saya.");
+
+    $heroBgImage = file_exists(public_path('images/areas/hero-area.webp'))
+        ? asset('images/areas/hero-area.webp')
+        : (file_exists(public_path('images/areas/provinces/dki-jakarta.webp'))
+            ? asset('images/areas/provinces/dki-jakarta.webp')
+            : null);
 @endphp
 
-<!-- ====================================================================
-     HERO & DIREKTORI WILAYAH UTAMA
-==================================================================== -->
 <section class="relative bg-slate-50 border-b border-slate-200 pt-8 pb-14 lg:pt-12 lg:pb-18 overflow-hidden">
+    @if(!empty($heroBgImage))
+        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+            <img src="{{ $heroBgImage }}" 
+                 alt="Wilayah Layanan Drainusantara" 
+                 class="w-full h-full object-cover object-center opacity-60 md:opacity-75 scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/85 to-slate-50/25"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-slate-50/30"></div>
+        </div>
+    @endif
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <!-- Breadcrumb -->
         <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap font-medium" aria-label="Breadcrumb">
             <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,8 +35,8 @@
         </nav>
 
         <div class="max-w-3xl space-y-4">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 shadow-2xs reveal-fade">
-                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs">
+                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
                 <span>Armada Siaga &bull; Jabodetabek, Jawa Tengah, Lampung</span>
             </div>
 
@@ -37,7 +48,6 @@
                 Pilih provinsi dan kota administrasi Anda di bawah untuk melihat posko siaga teknisi terdekat, daftar kecamatan yang dilayani, serta layanan respon cepat WhatsApp.
             </p>
 
-            <!-- Quick Province Jump Pills -->
             <div class="pt-2 flex flex-wrap gap-2 reveal-soft delay-300">
                 @foreach($provinces as $provSlug => $province)
                     <a href="#prov-{{ $provSlug }}" class="px-3.5 py-1.5 rounded-lg bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 text-xs font-semibold border border-slate-200 hover:border-sky-300 shadow-2xs transition-all flex items-center gap-1.5 btn-press">
@@ -50,14 +60,10 @@
     </div>
 </section>
 
-<!-- ====================================================================
-     DAFTAR PER PROVINSI & KOTA LAYANAN
-==================================================================== -->
 <section class="py-14 lg:py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         @foreach($provinces as $provSlug => $province)
             <div id="prov-{{ $provSlug }}" class="bg-slate-50 hover:bg-slate-50/80 rounded-xl p-6 sm:p-8 border border-slate-200 shadow-sm transition-all reveal-soft card-lift delay-{{ min(($loop->iteration - 1) * 100, 300) }}">
-                <!-- Province Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
                     <div>
                         <div class="flex items-center gap-2 mb-2">
@@ -151,9 +157,6 @@
     </div>
 </section>
 
-<!-- ====================================================================
-     BOTTOM CTA
-==================================================================== -->
 <section class="py-14 lg:py-20 bg-slate-900 text-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-fade">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-full uppercase tracking-wider mb-3">

@@ -7,10 +7,8 @@
 @endphp
 
 <div>
-    <!-- Hero Banner -->
     <section class="relative bg-slate-50 border-b border-slate-200 pt-8 pb-12 lg:pt-12 lg:pb-16 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center reveal-soft">
-            <!-- Breadcrumb -->
             <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-4 font-medium" aria-label="Breadcrumb">
                 <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,12 +32,10 @@
         </div>
     </section>
 
-    <!-- Gallery Grid Section with Interactive Alpine.js Filter -->
     <section class="py-12 sm:py-16 bg-white border-b border-slate-200" x-data="{ activeFilter: 'all' }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             @if(count($galleries) > 0)
-            <!-- Interactive Category Filter Tabs (Rumahan vs B2B) -->
             <div class="flex flex-wrap items-center justify-center gap-2 mb-10 reveal-soft">
                 <button type="button" @click="activeFilter = 'all'"
                         :class="activeFilter === 'all' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
@@ -59,7 +55,6 @@
             </div>
             @endif
 
-            <!-- Gallery Cards Grid (1 Single Photo per Documentation) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 @forelse($galleries as $item)
                     @php
@@ -72,7 +67,6 @@
                          x-transition:enter-end="opacity-100 scale-100"
                          class="bg-white rounded-xl border border-slate-200 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col group card-lift reveal-soft delay-{{ min($loop->iteration * 50, 300) }}">
                         
-                        <!-- Single Photo Header -->
                         <div class="relative aspect-[16/10] bg-slate-950 overflow-hidden border-b border-slate-100 group/img">
                             @if($photoUrl)
                                 <img src="{{ $photoUrl }}" 
@@ -171,7 +165,6 @@
         </div>
     </section>
 
-    <!-- Consultation CTA Section -->
     <section class="py-14 lg:py-20 bg-slate-900 text-white border-t border-slate-800">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-soft">
             <span class="text-xs font-bold uppercase tracking-widest text-sky-400 block mb-2">

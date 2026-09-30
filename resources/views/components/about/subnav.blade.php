@@ -1,3 +1,11 @@
+@props([
+    'activeTitle' => 'Profil',
+    'eyebrow' => 'Tentang Drainusantara',
+    'heading' => 'Profil Korporat & Standar Pelayanan Pipa',
+    'subheading' => 'Standar pengerjaan mekanis pipa mampet tanpa bongkar keramik bergaransi 30 hari kalender.',
+    'bgImage' => null
+])
+
 @php
     $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
     $generalWaText = urlencode("Halo Admin Drainusantara, saya ingin berkonsultasi mengenai layanan penanganan saluran pipa.");
@@ -41,14 +49,11 @@
         ],
     ];
 
-    // Pemilihan Foto Background Sesuai Halaman (Bisa disetel manual via 'bgImage' atau otomatis)
-    $resolvedBgImage = $bgImage ?? null;
+    $resolvedBgImage = $bgImage;
     if (!$resolvedBgImage) {
         if (request()->routeIs('about.holding')) {
-            // Foto 1: Halaman Struktur Holding J&J Group
             $resolvedBgImage = asset('assets/banner/Drainusantara-jasa-saluran-mampet-profesional-desktop.webp');
         } elseif (request()->routeIs('about.profile') || (request()->routeIs('about') && !request()->routeIs('about.*'))) {
-            // Foto 2: Halaman Profil Perusahaan
             $resolvedBgImage = asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp');
         } elseif (request()->routeIs('about.k3')) {
             $resolvedBgImage = asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-rootera.webp');
@@ -62,14 +67,11 @@
     }
 @endphp
 
-<!-- ====================================================================
-     BREADCRUMB & HEADER SECTION DENGAN BACKGROUND FOTO
-==================================================================== -->
 <section class="relative bg-slate-900 border-b border-slate-800 pt-8 pb-6 lg:pt-12 lg:pb-8 overflow-hidden text-white">
     @if(!empty($resolvedBgImage))
         <div class="absolute inset-0 z-0">
             <img src="{{ $resolvedBgImage }}" 
-                 alt="{{ $heading ?? 'Tentang Drainusantara' }}" 
+                 alt="{{ $heading }}" 
                  class="w-full h-full object-cover object-center filter brightness-90"
                  loading="eager"
                  decoding="async">
@@ -90,19 +92,19 @@
             <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
-            <span class="text-white font-semibold">{{ $activeTitle ?? 'Profil' }}</span>
+            <span class="text-white font-semibold">{{ $activeTitle }}</span>
         </nav>
 
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div class="max-w-3xl">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-950/80 border border-sky-500/40 text-sky-300 text-xs font-bold rounded-md uppercase tracking-wider mb-2.5">
-                    {{ $eyebrow ?? 'Tentang Drainusantara' }}
+                    {{ $eyebrow }}
                 </span>
                 <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                    {{ $heading ?? 'Profil Korporat & Standar Pelayanan Pipa' }}
+                    {{ $heading }}
                 </h1>
                 <p class="text-slate-300 text-sm sm:text-base mt-2.5 leading-relaxed">
-                    {{ $subheading ?? 'Standar pengerjaan mekanis pipa mampet tanpa bongkar keramik bergaransi 30 hari kalender.' }}
+                    {{ $subheading }}
                 </p>
             </div>
             <div class="shrink-0">

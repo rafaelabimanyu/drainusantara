@@ -22,7 +22,6 @@ class PageController extends Controller
      */
     public function index(): View
     {
-        // 1. Configure SEOMeta for Drainusantara
         SEOMeta::setTitle('Jasa Saluran Pipa Mampet Tanpa Bongkar');
         SEOMeta::setDescription('Jasa pelancar saluran pipa mampet wastafel & kloset tanpa bongkar keramik di Jabodetabek, Semarang & Lampung. Mesin spiral baja, garansi 30 hari.');
         SEOMeta::setCanonical(url()->current());
@@ -41,7 +40,6 @@ class PageController extends Controller
             'bandar lampung',
         ]);
 
-        // 2. Configure OpenGraph & Twitter
         OpenGraph::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
         OpenGraph::setDescription('Layanan pelancar pipa mampet wastafel & kloset pakai mesin spiral baja. 100% tanpa bongkar keramik, garansi nota 30 hari.');
         OpenGraph::setUrl(url()->current());
@@ -54,7 +52,6 @@ class PageController extends Controller
         TwitterCard::setDescription('Pelancar saluran wastafel & kloset tanpa bongkar keramik di Jabodetabek, Semarang & Lampung. Bergaransi 30 hari.');
         TwitterCard::setImage(asset('images/hero-technician.webp'));
 
-        // 3. Configure JsonLdMulti (Rich Snippet Local Business & PlumbingService)
         JsonLdMulti::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
         JsonLdMulti::setDescription('Jasa pelancaran saluran pipa mampet profesional, mesin rooter spiral baja, dan inspeksi kamera CCTV pipa bergaransi 30 hari.');
         JsonLdMulti::setType('PlumbingService');
@@ -73,7 +70,6 @@ class PageController extends Controller
             ],
         ]);
 
-        // 4. Retrieve Services, Reviews, and Galleries from Database
         $services = Service::where('is_active', true)
             ->orderBy('order')
             ->get();
@@ -180,6 +176,16 @@ class PageController extends Controller
             'openingHours' => 'Mo-Su 00:00-24:00',
         ]);
 
+        $breadcrumb = JsonLdMulti::newJsonLd();
+        $breadcrumb->setType('BreadcrumbList');
+        $breadcrumb->addValues([
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Area Layanan', 'item' => route('area.index')],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => $provinceData['name'], 'item' => route('area.province', ['province' => $province])],
+            ],
+        ]);
+
         $services = Service::where('is_active', true)->orderBy('order')->get();
         $reviews = Review::where('is_active', true)->latest()->take(3)->get();
         $galleries = Gallery::where('is_active', true)
@@ -256,6 +262,17 @@ class PageController extends Controller
             ],
         ]);
 
+        $breadcrumb = JsonLdMulti::newJsonLd();
+        $breadcrumb->setType('BreadcrumbList');
+        $breadcrumb->addValues([
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Area Layanan', 'item' => route('area.index')],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => $cityData['province_name'], 'item' => route('area.province', ['province' => $cityData['province_slug']])],
+                ['@type' => 'ListItem', 'position' => 4, 'name' => $cityData['name'], 'item' => route('area.city', ['city' => $cityData['slug']])],
+            ],
+        ]);
+
         $services = Service::where('is_active', true)->orderBy('order')->get();
         $reviews = Review::where('is_active', true)->latest()->take(4)->get();
 
@@ -283,7 +300,6 @@ class PageController extends Controller
         $districtFormatted = ucwords(str_replace('-', ' ', $district));
         $combinedSlug = Str::slug("{$cityFormatted}-{$districtFormatted}");
 
-        // Query CoverageArea based on slug or city and district names
         $area = CoverageArea::where('is_active', true)
             ->where(function ($query) use ($city, $district, $combinedSlug, $cityFormatted, $districtFormatted) {
                 $query->where('slug', $combinedSlug)
@@ -295,7 +311,7 @@ class PageController extends Controller
             })
             ->first();
 
-        // If not yet present in DB, create or retrieve to support all local SEO areas dynamically
+        // Fallback record for unseeded dynamic SEO landing areas
         if (! $area) {
             $area = CoverageArea::firstOrCreate(
                 ['slug' => $combinedSlug],
@@ -315,7 +331,6 @@ class PageController extends Controller
         $cleanTitle = preg_replace('/^Jasa Saluran Mampet di /i', 'Jasa Saluran Mampet ', $cleanTitle);
         $description = $area->meta_description ?: "Jasa pipa mampet wastafel, toilet, & talang air di {$area->district}, {$area->city}. 100% tanpa bongkar keramik pakai spiral baja, garansi nota 30 hari.";
 
-        // 1. Dynamic SEOMeta
         SEOMeta::setTitle($cleanTitle);
         SEOMeta::setDescription($description);
         SEOMeta::setCanonical(url()->current());
@@ -330,7 +345,6 @@ class PageController extends Controller
             "drainusantara",
         ]);
 
-        // 2. Dynamic OpenGraph & Twitter
         OpenGraph::setTitle("{$cleanTitle} - Drainusantara");
         OpenGraph::setDescription($description);
         OpenGraph::setUrl(url()->current());
@@ -343,7 +357,6 @@ class PageController extends Controller
         TwitterCard::setDescription($description);
         TwitterCard::setImage(asset('images/hero-technician.webp'));
 
-        // 3. Dynamic JsonLdMulti Local Business & PlumbingService Schema
         JsonLdMulti::setTitle("Drainusantara - Area {$area->district}, {$area->city}");
         JsonLdMulti::setDescription($description);
         JsonLdMulti::setType('PlumbingService');
@@ -355,10 +368,19 @@ class PageController extends Controller
             'openingHours' => 'Mo-Su 00:00-24:00',
         ]);
 
-        // 4. Fetch cityData from RegionService for breadcrumb & neighboring districts
+        $breadcrumb = JsonLdMulti::newJsonLd();
+        $breadcrumb->setType('BreadcrumbList');
+        $breadcrumb->addValues([
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Area Layanan', 'item' => route('area.index')],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => $area->city, 'item' => route('area.city', ['city' => Str::slug($city)])],
+                ['@type' => 'ListItem', 'position' => 4, 'name' => $area->district, 'item' => route('area.detail', ['city' => $city, 'district' => $district])],
+            ],
+        ]);
+
         $cityData = RegionService::findCity($city);
 
-        // 5. Fetch services for local recommendations
         $services = Service::where('is_active', true)
             ->orderBy('order')
             ->get();
@@ -368,7 +390,7 @@ class PageController extends Controller
             ->take(3)
             ->get();
 
-        return view('area', compact('area', 'services', 'reviews', 'cityData'));
+        return view('areas.district', compact('area', 'services', 'reviews', 'cityData'));
     }
 
     /**
@@ -496,7 +518,7 @@ class PageController extends Controller
         $urls = [];
         $now = now()->toAtomString();
 
-        // 1. Static Core Landing & Directory Pages
+        // Core static pages
         $urls[] = ['loc' => url('/'), 'lastmod' => $now, 'changefreq' => 'daily', 'priority' => '1.0'];
         $urls[] = ['loc' => url('/tentang-kami'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.9'];
         $urls[] = ['loc' => route('about.profile'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
@@ -510,7 +532,7 @@ class PageController extends Controller
         $urls[] = ['loc' => url('/galeri'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => $now, 'changefreq' => 'daily', 'priority' => '0.8'];
 
-        // 2. Dynamic Provinces, Cities & Districts
+        // Regional landing routes
         $provinces = RegionService::all();
         foreach ($provinces as $provSlug => $prov) {
             $urls[] = [
@@ -540,7 +562,7 @@ class PageController extends Controller
             }
         }
 
-        // 3. Dynamic Published Articles
+        // Published knowledge articles
         $articles = \App\Models\Article::where('is_published', true)->get();
         foreach ($articles as $article) {
             $urls[] = [
@@ -551,8 +573,8 @@ class PageController extends Controller
             ];
         }
 
-        // Build XML Output
         $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        $xml .= '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>' . "\n";
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
         foreach ($urls as $u) {
             $xml .= "  <url>\n";

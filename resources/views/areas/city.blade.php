@@ -5,14 +5,37 @@
     $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
     $cityWaMsg = urlencode("Halo teknisi Drainusantara, saya butuh layanan darurat pelancaran saluran pipa mampet di area {$cityData['name']}. Mohon info estimasi kedatangan teknisi terdekat.");
     $cityWaUrl = "https://wa.me/{$whatsappNumber}?text={$cityWaMsg}";
+
+    // Hero Background Resolution (Hierarchical Inheritance):
+    // Cukup taruh 1 foto provinsi di: public/images/areas/provinces/{province-slug}.webp
+    // Halaman kota otomatis mewarisi foto provinsi tersebut jika tidak ada foto khusus kota.
+    $customHeroBg = null;
+    $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($cityData['name']);
+    $provinceSlug = $cityData['province_slug'] ?? null;
+    $heroBgImage = $customHeroBg 
+        ?: (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
+            ? asset("images/areas/cities/{$citySlug}.webp")
+            : (file_exists(public_path("images/areas/cities/{$citySlug}.jpg"))
+                ? asset("images/areas/cities/{$citySlug}.jpg")
+                : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
+                    ? asset("images/areas/provinces/{$provinceSlug}.webp")
+                    : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
+                        ? asset("images/areas/provinces/{$provinceSlug}.jpg")
+                        : null))));
 @endphp
 
-<!-- ====================================================================
-     HERO SECTION KOTA / WILAYAH (CITY LEVEL)
-==================================================================== -->
 <section class="relative bg-slate-50 border-b border-slate-200 pt-5 pb-8 sm:pt-8 sm:pb-14 lg:pt-12 lg:pb-18 overflow-hidden">
+    @if(!empty($heroBgImage))
+        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+            <img src="{{ $heroBgImage }}" 
+                 alt="Latar Belakang {{ $cityData['name'] }}" 
+                 class="w-full h-full object-cover object-center opacity-55 md:opacity-70 scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/85 to-slate-50/25"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-slate-50/30"></div>
+        </div>
+    @endif
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <!-- Breadcrumb Navigation: Compact Backlink on Mobile, Full on Desktop -->
         <div class="sm:hidden mb-3 reveal-fade">
             <a href="{{ route('area.province', ['province' => $cityData['province_slug']]) }}" 
                class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-sky-700 transition-colors">
@@ -41,10 +64,9 @@
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
-            <!-- Left Info -->
             <div class="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-800 shadow-2xs reveal-fade delay-50">
-                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
                     <span class="sm:hidden">Posko {{ $cityData['name'] }} &bull; Respon Cepat</span>
                     <span class="hidden sm:inline">Posko Siaga: Wilayah {{ $cityData['name'] }} &bull; Respon Cepat</span>
                 </div>
@@ -57,7 +79,6 @@
                     Pelancaran wastafel, kloset toilet, dan saluran mampet di seluruh area <strong>{{ $cityData['name'] }}</strong> ({{ $cityData['province_name'] }}). Dikerjakan mekanis tanpa bongkar dan bergaransi 30 hari.
                 </p>
 
-                <!-- Estimasi Respon & Highlights: 3 Compact Pills on Mobile with Stagger Delays -->
                 <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
                     <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift reveal-soft stagger-1">
                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
@@ -96,7 +117,6 @@
                     </div>
                 </div>
 
-                <!-- CTA Actions -->
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1 reveal-soft delay-200">
                     <a href="{{ $cityWaUrl }}" target="_blank" rel="noopener noreferrer" 
                        class="min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-sm hover:shadow transition-all btn-press">
@@ -116,16 +136,15 @@
                 </div>
             </div>
 
-            <!-- Right Posko Card -->
             <div class="lg:col-span-5 reveal-soft delay-150">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 sm:p-7 space-y-3 sm:space-y-4 card-lift">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div>
-                            <span class="text-[11px] sm:text-xs uppercase tracking-wider text-sky-700 font-bold block">POSKO RESMI TEKNISI</span>
+                            <span class="text-[11px] sm:text-xs uppercase tracking-wider text-sky-700 font-bold block">POSKO ARMADA</span>
                             <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">{{ $cityData['name'] }}</h3>
                         </div>
                         <span class="px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] sm:text-xs font-bold rounded-md">
-                            STANDBY 24/7
+                            SIAGA 24 JAM
                         </span>
                     </div>
 
@@ -146,12 +165,12 @@
                         <div class="flex items-start gap-2.5 sm:gap-3">
                             <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0 mt-0.5">
                                 <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                             </div>
                             <div class="min-w-0">
-                                <strong class="text-slate-800 block font-semibold">Cakupan Kecamatan:</strong>
-                                <span class="leading-relaxed">Melayani total {{ count($cityData['districts']) }} kecamatan di seluruh wilayah {{ $cityData['name'] }}.</span>
+                                <strong class="text-slate-800 block font-semibold">Estimasi Tiba:</strong>
+                                <span class="leading-relaxed">{{ $cityData['eta_minutes'] }} (Kondisi Lalu Lintas Normal)</span>
                             </div>
                         </div>
 
@@ -173,9 +192,6 @@
     </div>
 </section>
 
-<!-- ====================================================================
-     DAFTAR LENGKAP KECAMATAN DI KOTA INI
-==================================================================== -->
 <section id="daftar-kecamatan" class="py-14 lg:py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mb-10 reveal-soft">
@@ -209,7 +225,6 @@
                         </p>
                     </div>
 
-                    <!-- Footer CTA: Detail Area Saja -->
                     <div class="mt-3.5 pt-2.5 border-t border-slate-200">
                         <a href="{{ $districtUrl }}" 
                            class="w-full min-h-[36px] text-[11px] sm:text-xs font-bold text-sky-700 group-hover:text-white bg-sky-50 group-hover:bg-sky-700 border border-sky-200 group-hover:border-sky-700 py-1.5 px-3 rounded-lg inline-flex items-center justify-center gap-1.5 transition-all btn-press">
@@ -225,47 +240,44 @@
     </div>
 </section>
 
-<!-- ====================================================================
-     LAYANAN YANG TERSEDIA DI KOTA INI (DYNAMIC & CAROUSEL ON MOBILE)
-==================================================================== -->
 @php
     $defaultCityServices = [
         [
             'name' => 'Bak Cuci Piring Tersumbat',
             'slug' => 'wastafel-cuci-piring',
-            'category' => '01. WASTAFEL DAPUR',
-            'short_description' => "Pengikisan kerak lemak beku & minyak tanpa membongkar sifon kitchen sink dapur Anda di {$cityData['name']}.",
-            'price_starting_from' => 400000,
-            'features' => ['Tanpa bongkar pipa', 'Lemak beku rontok', 'Garansi Resmi 30 Hari'],
+            'category' => 'DAPUR & RESIDENSIAL',
+            'desc' => 'Pembersihan pipa wastafel tersumbat minyak beku menggunakan spiral baja elektrik tanpa merusak sifon PVC.',
+            'price' => 400000,
+            'features' => ['Tanpa bongkar sifon PVC', 'Kerak lemak rontok tuntas', 'Garansi nota 30 hari'],
         ],
         [
-            'name' => 'Kloset WC Meluap',
+            'name' => 'Kloset & Toilet Meluap',
             'slug' => 'kloset-wc',
-            'category' => '02. KLOSET TOILET',
-            'short_description' => "Penarikan sumbatan pembalut, tisu basah & benda keras leher angsa porselen tanpa membongkar kloset di {$cityData['name']}.",
-            'price_starting_from' => 400000,
-            'features' => ['Tanpa bongkar kloset', 'Bebas bau & steril', 'Garansi Resmi 30 Hari'],
+            'category' => 'TOILET & KLOSET',
+            'desc' => 'Penanganan kloset duduk/jongkok tersumbat pembalut atau tisu tanpa membongkar porselen keramik.',
+            'price' => 400000,
+            'features' => ['100% tanpa cabut kloset', 'Teknisi APD steril higienis', 'Garansi nota 30 hari'],
         ],
         [
-            'name' => 'Saluran Mandi Mampet',
+            'name' => 'Floor Drain Kamar Mandi',
             'slug' => 'floor-drain-kamar-mandi',
-            'category' => '03. FLOOR DRAIN',
-            'short_description' => "Pembersihan jalinan rambut & kerak busa sabun dengan kabel spiral lentur anti-knee di {$cityData['name']}.",
-            'price_starting_from' => 400000,
-            'features' => ['Kabel spiral rotary', 'Air lancar seketika', 'Garansi Resmi 30 Hari'],
+            'category' => 'SALURAN LANTAI',
+            'desc' => 'Mengatasi genangan air lantai kamar mandi akibat jalinan rambut dan residu busa sabun yang menebal.',
+            'price' => 400000,
+            'features' => ['Tarik gumpalan rambut', 'Hilangkan bau got menguap', 'Garansi nota 30 hari'],
         ],
         [
-            'name' => 'Inspeksi Kamera Endoskopi',
+            'name' => 'Inspeksi Kamera CCTV Pipa',
             'slug' => 'inspeksi-cctv-30m',
-            'category' => '04. CCTV PIPA 30M',
-            'short_description' => "Deteksi visual mendalam titik pipa retak, pecah, atau akar pohon dengan rekaman video monitor HD di {$cityData['name']}.",
-            'price_starting_from' => 400000,
-            'features' => ['Kabel kamera 30 meter', 'Diagnosa Monitor HD', 'Garansi Resmi 30 Hari'],
+            'category' => 'DIAGNOSTIK DIGITAL',
+            'desc' => 'Pemeriksaan visual kondisi jalur pipa dengan monitor HD hingga 30 meter untuk kepastian titik masalah.',
+            'price' => 500000,
+            'features' => ['Kamera anti-air IP68', 'Jangkauan kabel 30 meter', 'Bukti visual langsung'],
         ],
     ];
     $itemsCityServices = (isset($services) && $services->isNotEmpty()) ? $services : collect($defaultCityServices);
 @endphp
-<section class="py-12 sm:py-18 bg-slate-50 border-b border-slate-200" x-data="mobileCarousel({{ count($itemsCityServices) }}, 4000)">
+<section id="layanan-kota" class="py-12 sm:py-18 bg-slate-50 border-b border-slate-200" x-data="mobileCarousel({{ count($itemsCityServices) }}, 4500)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12 reveal-soft">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2 shadow-2xs">
@@ -278,9 +290,8 @@
                 Dikerjakan oleh teknisi ahli menggunakan mesin spiral torsi tinggi dan kamera CCTV pipa bergaransi 30 hari.
             </p>
 
-            <!-- Mobile Swipe Hint -->
             <div class="flex lg:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-2.5">
-                <svg class="w-4 h-4 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
                 <span>Geser untuk layanan lainnya</span>
@@ -298,47 +309,44 @@
                 @php
                     $isModel = is_object($item);
                     $title = $isModel ? $item->name : $item['name'];
-                    $desc = $isModel ? ($item->short_description ?? $item->description) : $item['short_description'];
-                    $category = $isModel ? ($item->category ?? 'LAYANAN TERBAIK') : ($item['category'] ?? 'SPESIALIS PIPA');
-                    $features = $isModel ? ($item->features ?? []) : ($item['features'] ?? []);
-                    if (!is_array($features)) {
-                        $features = json_decode($features, true) ?? [];
-                    }
-                    $serviceWaMsg = urlencode("Halo teknisi Drainusantara, saya butuh perbaikan {$title} di area {$cityData['name']}. Mohon info estimasi kedatangan teknisi terdekat.");
+                    $slug = $isModel ? $item->slug : $item['slug'];
+                    $desc = $isModel ? ($item->short_description ?: $item->description) : $item['desc'];
+                    $price = $isModel ? $item->price_starting_from : $item['price'];
+                    $features = $isModel ? ($item->features ?: ['Tanpa bongkar keramik', 'Garansi nota 30 hari']) : $item['features'];
+                    $category = $isModel ? ($item->category ?? 'LAYANAN UTAMA') : $item['category'];
+
+                    $waServiceMsg = urlencode("Halo teknisi Drainusantara, saya butuh penanganan {$title} di area {$cityData['name']}. Mohon info estimasi biaya.");
+                    $waServiceUrl = "https://wa.me/{$whatsappNumber}?text={$waServiceMsg}";
                 @endphp
-                <div class="w-[82vw] sm:w-[320px] lg:w-auto shrink-0 snap-center bg-white p-5 sm:p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between group card-lift reveal-soft delay-{{ min($loop->iteration * 60, 240) }}">
+                <div class="w-[82vw] sm:w-[280px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-5 sm:p-6 flex flex-col justify-between shadow-2xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft delay-{{ min(($index + 1) * 75, 300) }}">
                     <div>
-                        <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-md border border-sky-200 block w-fit mb-3">
+                        <span class="text-[10px] font-bold text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-md border border-sky-200 inline-block mb-3">
                             {{ $category }}
                         </span>
-                        <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-2 tracking-tight group-hover:text-sky-700 transition-colors">
+                        <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight mb-2">
                             {{ $title }}
                         </h3>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                        <p class="text-xs text-slate-600 leading-relaxed line-clamp-3 mb-4">
                             {{ $desc }}
                         </p>
-                        @if(!empty($features))
-                            <ul class="mt-3.5 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-700 font-medium">
-                                @foreach(array_slice($features, 0, 3) as $feat)
-                                    <li class="flex items-center gap-2">
-                                        <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                                        </svg>
-                                        <span class="truncate">{{ $feat }}</span>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
+
+                        <ul class="space-y-1.5 text-xs text-slate-700 border-t border-slate-100 pt-3 mb-4">
+                            @foreach(array_slice($features, 0, 3) as $feature)
+                                <li class="flex items-center gap-1.5 text-slate-600">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0"></span>
+                                    <span class="truncate">{{ $feature }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-                    <div class="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
-                        <div class="text-xs text-emerald-700 font-semibold flex items-center gap-1.5">
-                            <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            <span>Garansi 30 Hari</span>
+
+                    <div class="pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block font-medium">Mulai Dari</span>
+                            <span class="text-xs sm:text-sm font-extrabold text-slate-900">Rp {{ number_format($price, 0, ',', '.') }}</span>
                         </div>
-                        <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $serviceWaMsg }}" target="_blank" rel="noopener noreferrer" 
-                           class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 py-2 px-3 rounded-lg transition-colors btn-press shrink-0" 
+                        <a href="{{ $waServiceUrl }}" target="_blank" rel="noopener noreferrer" 
+                           class="btn-press min-h-[38px] inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 py-1.5 px-3 rounded-lg shadow-2xs transition-colors shrink-0"
                            aria-label="Pesan {{ $title }} via WhatsApp">
                             <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24">
                                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
@@ -350,7 +358,6 @@
             @endforeach
         </div>
 
-        <!-- Mobile Carousel Dots Indicator -->
         <div class="flex lg:hidden justify-center items-center gap-1.5 mt-3">
             @for($i = 0; $i < count($itemsCityServices); $i++)
                 <button type="button" 
@@ -364,17 +371,11 @@
     </div>
 </section>
 
-<!-- ====================================================================
-     PERALATAN STANDAR ARMADA DI KOTA INI
-==================================================================== -->
-@include('partials.equipment-section', [
-    'areaName' => $cityData['name'],
-    'bgColor' => 'bg-white'
-])
+<x-area.equipment-section 
+    :area-name="$cityData['name']"
+    bg-color="bg-white"
+/>
 
-<!-- ====================================================================
-     BOTTOM CTA KOTA
-==================================================================== -->
 <section class="py-14 lg:py-20 bg-slate-900 text-white relative overflow-hidden reveal-soft">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-scale delay-100">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-full uppercase tracking-wider mb-3">

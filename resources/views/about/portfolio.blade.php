@@ -11,13 +11,13 @@
     
 @endphp
 
-@include('about.partials.nav', [
-    'activeTitle' => 'Klien & Portofolio',
-    'eyebrow' => 'Perusahaan Yang Menggunakan Jasa Kami',
-    'heading' => 'Dipercaya Restoran F&B, Perhotelan & Gedung Komersial',
-    'subheading' => 'Bukti nyata penanganan profesional pembersihan pipa pembuangan dan grease trap bagi mitra bisnis tanpa mengganggu jam operasional.',
-    'bgImage' => asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp')
-])
+<x-about.subnav 
+    active-title="Klien & Portofolio"
+    eyebrow="Perusahaan Yang Menggunakan Jasa Kami"
+    heading="Dipercaya Restoran F&B, Perhotelan & Gedung Komersial"
+    subheading="Bukti nyata penanganan profesional pembersihan pipa pembuangan dan grease trap bagi mitra bisnis tanpa mengganggu jam operasional."
+    :bg-image="asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp')"
+/>
 
 <!-- Main Portfolio Content -->
 <section id="portofolio-page" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200" x-data="{ activeCategory: 'all' }">
@@ -32,12 +32,12 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-sm sm:text-base font-bold text-slate-900">Showcase Interaktif di Beranda</h3>
-                    <p class="text-xs text-slate-600 mt-0.5">Lihat slider carousel rekam jejak B2B dan penanganan pipa komersial yang terhubung langsung dengan sistem beranda.</p>
+                    <h3 class="text-sm sm:text-base font-bold text-slate-900">Ringkasan Portofolio B2B di Beranda</h3>
+                    <p class="text-xs text-slate-600 mt-0.5">Tinjau rekam jejak pembersihan pipa restoran F&amp;B, hotel, dan fasilitas komersial mitra Drainusantara.</p>
                 </div>
             </div>
             <a href="{{ url('/#portofolio-b2b') }}" class="btn-press shrink-0 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-sky-700 hover:bg-sky-800 text-white text-xs font-bold rounded-lg transition-colors shadow-2xs min-h-[44px]">
-                <span>Buka Bagian B2B di Beranda</span>
+                <span>Lihat Ringkasan di Beranda</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
@@ -46,7 +46,7 @@
 
         <div class="max-w-3xl mb-10">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
-                CMS Portofolio Resmi
+                Rekam Jejak Proyek &amp; Klien
             </span>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Portofolio Penanganan Saluran Komersial &amp; Residensial
@@ -121,6 +121,8 @@
                         <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                             <img src="{{ $project->image ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80' }}" 
                                  alt="{{ $project->client_name }}" 
+                                 width="800"
+                                 height="500"
                                  loading="lazy"
                                  decoding="async"
                                  class="w-full h-full object-cover blur-[1px] scale-105 brightness-[0.92] group-hover:scale-110 transition-transform duration-700"
@@ -129,9 +131,7 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 via-55% to-slate-950/25"></div>
                         </div>
 
-                        <!-- Content Relative z-10 -->
                         <div class="relative z-10">
-                            <!-- Top Meta: Sector Badge & Location -->
                             <div class="flex items-center justify-between gap-2 mb-4">
                                 <span class="inline-flex items-center px-2.5 py-1 bg-slate-900/85 backdrop-blur-xs text-sky-300 text-[11px] font-bold rounded-md border border-slate-700/70">
                                     {{ $project->client_type ?? 'Komersial B2B' }}
@@ -147,23 +147,19 @@
                                 @endif
                             </div>
 
-                            <!-- Client Name -->
                             <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight line-clamp-1 mb-1 group-hover:text-sky-300 transition-colors drop-shadow-xs">
                                 {{ $project->client_name }}
                             </h3>
 
-                            <!-- Project Title -->
                             <div class="text-xs font-semibold text-sky-400/90 mb-3 drop-shadow-2xs">
                                 {{ $project->project_title }}
                             </div>
 
-                            <!-- Description -->
                             <p class="text-xs sm:text-sm text-slate-200/90 leading-relaxed line-clamp-3">
                                 {{ $project->description }}
                             </p>
                         </div>
 
-                        <!-- Bottom Bar: Guarantee & WhatsApp Action -->
                         <div class="relative z-10 mt-5 pt-3.5 border-t border-white/15 flex items-center justify-between gap-3 text-xs">
                             <span class="inline-flex items-center gap-1.5 font-bold text-emerald-400">
                                 <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
@@ -175,7 +171,7 @@
                                target="_blank" 
                                rel="noopener noreferrer" 
                                class="btn-press text-[11px] font-semibold text-white bg-sky-600/90 hover:bg-sky-500 px-2.5 py-1.5 rounded border border-sky-400/40 inline-flex items-center gap-1 transition-colors min-h-[36px]">
-                                <span>Tanya Kasus</span>
+                                <span>Konsultasi Kasus Serupa</span>
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                                 </svg>

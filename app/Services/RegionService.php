@@ -376,7 +376,6 @@ class RegionService
         $items = [];
 
         foreach (self::all() as $provSlug => $prov) {
-            // 1. Province entry
             $items[] = [
                 'type' => 'Provinsi',
                 'badge' => 'PROVINSI',
@@ -388,7 +387,6 @@ class RegionService
                 'search' => strtolower('provinsi ' . $prov['name'] . ' ' . $prov['slug']),
             ];
 
-            // 2. City entries
             foreach ($prov['cities'] as $citySlug => $city) {
                 $items[] = [
                     'type' => 'Kota',
@@ -401,7 +399,6 @@ class RegionService
                     'search' => strtolower($city['name'] . ' ' . $citySlug),
                 ];
 
-                // 3. District entries
                 foreach ($city['districts'] as $district) {
                     $districtSlug = Str::slug($district);
                     $items[] = [

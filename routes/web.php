@@ -8,6 +8,7 @@ use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
@@ -67,4 +68,5 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('portfolios', PortfolioController::class);
     Route::resource('equipments', EquipmentController::class);
     Route::resource('articles', ArticleController::class);
+    Route::resource('reviews', ReviewController::class);
 });
