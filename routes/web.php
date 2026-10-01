@@ -10,6 +10,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +43,7 @@ Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 Route::prefix('tentang-kami')->group(function () {
     Route::get('/', [PageController::class, 'about'])->name('about');
     Route::get('/profil', [PageController::class, 'aboutProfile'])->name('about.profile');
+    Route::get('/staff', fn () => redirect('/tentang-kami/profil#staff-kami', 301))->name('about.staff');
     Route::get('/holding', [PageController::class, 'aboutHolding'])->name('about.holding');
     Route::get('/holding-jj-group', fn () => redirect()->route('about.holding', [], 301));
     Route::get('/sop-k3', [PageController::class, 'aboutK3'])->name('about.k3');
@@ -66,6 +68,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('coverage-areas', CoverageAreaController::class);
     Route::resource('galleries', GalleryController::class);
     Route::resource('portfolios', PortfolioController::class);
+    Route::resource('staff', StaffController::class);
     Route::resource('equipments', EquipmentController::class);
     Route::resource('articles', ArticleController::class);
     Route::resource('reviews', ReviewController::class);

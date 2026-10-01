@@ -100,12 +100,6 @@
                                  loading="lazy" 
                                  onerror="this.onerror=null; this.src='{{ $fallbackImage }}';"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out">
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-60"></div>
-                            <div class="absolute top-2.5 left-2.5">
-                                <span class="text-[11px] font-bold text-sky-900 bg-white/95 backdrop-blur-xs px-2.5 py-0.5 rounded-md border border-slate-200/80 shadow-2xs">
-                                    {{ $category }}
-                                </span>
-                            </div>
                         </div>
 
                         <h3 class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-sky-700 transition-colors mb-2">

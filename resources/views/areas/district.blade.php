@@ -323,12 +323,6 @@
                                      loading="lazy" 
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
                                      onerror="this.onerror=null; this.src='{{ asset('images/services/wastafel-cuci-piring-mampet.webp') }}';">
-                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-60"></div>
-                                <div class="absolute top-2.5 left-2.5">
-                                    <span class="text-[10px] font-bold text-sky-900 bg-white/95 backdrop-blur-xs px-2.5 py-0.5 rounded-md border border-slate-200/80 shadow-2xs">
-                                        {{ $category }}
-                                    </span>
-                                </div>
                             </div>
                             <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight group-hover:text-sky-700 transition-colors">
                                 {{ $title }}

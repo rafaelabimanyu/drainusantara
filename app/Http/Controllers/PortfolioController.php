@@ -25,7 +25,9 @@ class PortfolioController extends Controller
      */
     public function create(): View
     {
-        return view('admin.portfolios.create');
+        $nextOrder = Portfolio::getNextAvailableOrder();
+
+        return view('admin.portfolios.create', compact('nextOrder'));
     }
 
     /**
@@ -41,7 +43,7 @@ class PortfolioController extends Controller
             'description' => ['nullable', 'string', 'max:1000'],
             'image' => ['nullable'],
             'image_url' => ['nullable', 'string', 'max:500'],
-            'order' => ['nullable', 'integer', 'min:0'],
+            'order' => ['nullable', 'integer', 'min:1'],
             'is_active' => ['nullable', 'boolean'],
         ]);
 
@@ -57,17 +59,17 @@ class PortfolioController extends Controller
 
         Portfolio::create([
             'client_name' => $validated['client_name'],
-            'client_type' => $validated['client_type'] ?? 'Komersial & B2B',
+            'client_type' => $validated['client_type'] ?? 'Restoran & F&B',
             'location' => $validated['location'] ?? 'Jabodetabek',
             'image' => $imageUrl,
-            'project_title' => $validated['project_title'] ?? 'Pemeliharaan Saluran Pipa Komersial',
-            'description' => $validated['description'] ?? 'Penanganan dan pemeliharaan saluran pipa limbah dan grease trap tanpa merusak lantai.',
-            'order' => $validated['order'] ?? 0,
+            'project_title' => $validated['project_title'] ?? null,
+            'description' => $validated['description'] ?? null,
+            'order' => !empty($validated['order']) ? (int) $validated['order'] : Portfolio::getNextAvailableOrder(),
             'is_active' => $request->boolean('is_active', true),
         ]);
 
         return redirect()->route('admin.portfolios.index')
-            ->with('success', "Klien B2B '{$validated['client_name']}' berhasil ditambahkan!");
+            ->with('success', "Portofolio '{$validated['client_name']}' berhasil ditambahkan!");
     }
 
     /**

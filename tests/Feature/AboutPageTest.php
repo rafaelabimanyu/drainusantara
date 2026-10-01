@@ -17,6 +17,9 @@ class AboutPageTest extends TestCase
         $resProfile->assertSee('Profil Resmi Drainusantara');
         $resProfile->assertSee('100% Non-Destruktif');
         $resProfile->assertSee('Bebas Bahan Kimia');
+        $resProfile->assertSee('Staff &amp; Teknisi Lapangan Siaga', false);
+        $resProfile->assertSee('Agus Santoso');
+        $resProfile->assertSee('Bambang Wijaya');
 
         // Main alias /tentang-kami
         $resMain = $this->get('/tentang-kami');

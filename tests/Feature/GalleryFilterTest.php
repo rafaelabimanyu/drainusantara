@@ -70,7 +70,7 @@ class GalleryFilterTest extends TestCase
         $response->assertDontSee('SESUDAH (PLONG)');
     }
 
-    public function test_landing_page_renders_single_photo_documentation_with_category_filters(): void
+    public function test_landing_page_renders_single_photo_documentation_without_category_filters(): void
     {
         Gallery::create([
             'title' => 'Proyek Khusus Dapur Kafe Komersial',
@@ -86,13 +86,8 @@ class GalleryFilterTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('id="dokumentasi"', false);
-        $response->assertSee('id="galeri-before-after"', false);
         $response->assertSee('Hasil Pengerjaan Teknisi Drainusantara');
-        $response->assertSee('Semua Sektor');
-        $response->assertSee('Rumahan / Residensial');
-        $response->assertSee('B2B / Komersial');
         $response->assertSee('Proyek Khusus Dapur Kafe Komersial');
-        $response->assertSee('B2B Komersial');
     }
 
     public function test_admin_can_create_gallery_with_rumahan_or_b2b_category(): void
@@ -178,7 +173,7 @@ class GalleryFilterTest extends TestCase
         $response->assertSee('Proyek Dokumentasi 1');
         $response->assertSee('Proyek Dokumentasi 2');
         $response->assertSee('Proyek Dokumentasi 3');
-        $response->assertDontSee('Proyek Dokumentasi 4');
+        $response->assertSee('Proyek Dokumentasi 4');
         $response->assertDontSee('Proyek Dokumentasi 5');
     }
 

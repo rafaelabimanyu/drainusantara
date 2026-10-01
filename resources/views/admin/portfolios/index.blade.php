@@ -1,21 +1,21 @@
 @extends('layouts.admin')
 
-@section('title', 'Kelola Portofolio Klien B2B')
-@section('page-title', 'Portofolio Klien B2B & Komersial')
+@section('title', 'Kelola Portofolio')
+@section('page-title', 'Portofolio Restoran & Klien')
 
 @section('content')
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Portofolio Klien B2B &amp; Gedung Komersial</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftar klien korporat, restoran, perhotelan, dan gedung bertingkat yang telah ditangani.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Portofolio Restoran &amp; Klien</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftar portofolio restoran, tempat usaha, dan klien komersial yang telah ditangani.</p>
         </div>
         <a href="{{ route('admin.portfolios.create') }}" 
            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm rounded-lg transition-colors shadow-2xs">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-            <span>Tambah Klien B2B</span>
+            <span>Tambah Portofolio</span>
         </a>
     </div>
 
@@ -24,9 +24,9 @@
             <table class="w-full text-left text-xs sm:text-sm text-slate-700">
                 <thead class="bg-slate-50/75 text-xs uppercase font-bold text-slate-700 border-b border-slate-200 tracking-wider">
                     <tr>
-                        <th class="px-5 py-3.5">Foto Lokasi</th>
-                        <th class="px-5 py-3.5">Nama Perusahaan</th>
-                        <th class="px-5 py-3.5">Pengerjaan &amp; Lokasi</th>
+                        <th class="px-5 py-3.5">Foto</th>
+                        <th class="px-5 py-3.5">Nama Restoran / Klien</th>
+                        <th class="px-5 py-3.5">Lokasi &amp; Kategori</th>
                         <th class="px-5 py-3.5">Status &amp; Urutan</th>
                         <th class="px-5 py-3.5 text-right">Aksi</th>
                     </tr>
@@ -43,20 +43,22 @@
                         </td>
                         <td class="px-5 py-3.5">
                             <div class="font-bold text-slate-900 text-sm">{{ $portfolio->client_name }}</div>
-                            <div class="inline-flex items-center px-1.5 py-0.5 mt-1 rounded text-[10px] font-semibold bg-sky-50 text-sky-700 border border-sky-200">
-                                {{ $portfolio->client_type ?? 'Komersial & B2B' }}
+                            <div class="text-[11px] text-slate-500 mt-0.5">
+                                ID: #{{ $portfolio->id }}
                             </div>
                         </td>
                         <td class="px-5 py-3.5 max-w-xs">
-                            <div class="text-xs font-semibold text-slate-800 line-clamp-1">
-                                {{ $portfolio->project_title ?? '-' }}
-                            </div>
-                            <div class="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                            <div class="text-xs text-slate-700 font-medium flex items-center gap-1">
                                 <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
-                                <span class="truncate">{{ $portfolio->location ?? '-' }}</span>
+                                <span class="truncate">{{ $portfolio->location ?? 'Jabodetabek' }}</span>
+                            </div>
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-sky-50 text-sky-700 border border-sky-200">
+                                    {{ $portfolio->client_type ?? 'Restoran & F&B' }}
+                                </span>
                             </div>
                         </td>
                         <td class="px-5 py-3.5 whitespace-nowrap">
@@ -83,7 +85,7 @@
                                 <span>Edit</span>
                             </a>
                             <form action="{{ route('admin.portfolios.destroy', $portfolio) }}" method="POST" class="inline-block"
-                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus portofolio klien \'{{ $portfolio->client_name }}\'?');">
+                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus portofolio \'{{ $portfolio->client_name }}\'?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="inline-flex items-center gap-1 text-rose-700 hover:bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-md transition-colors text-xs font-semibold cursor-pointer" title="Hapus Portofolio">
@@ -98,7 +100,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-6 py-12 text-center text-slate-500 text-xs">
-                            Belum ada portofolio klien B2B tersimpan.
+                            Belum ada portofolio tersimpan.
                         </td>
                     </tr>
                     @endforelse

@@ -284,7 +284,7 @@
                                 loading="eager" 
                                 decoding="async" 
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-rootera.webp') }}';"
+                                onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-drainusantara.webp') }}';"
                             >
                             <div class="absolute top-2.5 left-2.5">
                                 <span class="inline-flex items-center px-2 py-0.5 rounded bg-sky-950/85 backdrop-blur-xs text-[11px] font-bold text-sky-300 border border-sky-700">

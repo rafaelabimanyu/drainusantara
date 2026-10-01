@@ -113,71 +113,44 @@
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
                 @foreach($portfolioList as $project)
                     @php
-                        $waText = urlencode("Halo Tim Drainusantara, saya tertarik dengan portofolio '{$project->project_title}' untuk tempat usaha saya ({$project->client_name}). Mohon informasi konsultasi B2B.");
+                        $waText = urlencode("Halo Tim Drainusantara, saya tertarik dengan portofolio penanganan di '{$project->client_name}'. Mohon info konsultasi dan survei lokasi.");
                         $waUrl = "https://wa.me/{$whatsappNumber}?text={$waText}";
                     @endphp
-                    <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center relative rounded-xl border border-slate-700/50 overflow-hidden min-h-[360px] sm:min-h-[380px] flex flex-col justify-between p-6 group transition-all duration-300 hover:border-sky-400/80 shadow-md card-lift">
-                        <!-- Background Photo with Subtle Blur & Clear Visibility -->
-                        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                            <img src="{{ $project->image ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80' }}" 
+                    <a href="{{ $waUrl }}" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600"
+                       title="Konsultasi penanganan {{ $project->client_name }}">
+                        <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
+                        <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
+                            <img src="{{ $project->image ?: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80' }}" 
                                  alt="{{ $project->client_name }}" 
                                  width="800"
                                  height="500"
                                  loading="lazy"
                                  decoding="async"
-                                 class="w-full h-full object-cover blur-[1px] scale-105 brightness-[0.92] group-hover:scale-110 transition-transform duration-700"
-                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80';">
-                            <!-- Gradient Overlay: Transparent at top so the photo is recognizable, dark at bottom for crisp text contrast -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 via-55% to-slate-950/25"></div>
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80';">
                         </div>
 
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-between gap-2 mb-4">
-                                <span class="inline-flex items-center px-2.5 py-1 bg-slate-900/85 backdrop-blur-xs text-sky-300 text-[11px] font-bold rounded-md border border-slate-700/70">
-                                    {{ $project->client_type ?? 'Komersial B2B' }}
-                                </span>
-                                @if(!empty($project->location))
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-900/85 backdrop-blur-xs text-slate-200 text-[11px] font-medium rounded-md border border-slate-700/70 truncate max-w-[170px]">
-                                    <svg class="w-3 h-3 text-sky-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <!-- Informasi Restoran / Klien Bersih -->
+                        <div class="p-5 flex flex-col justify-between flex-1">
+                            <div>
+                                <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight line-clamp-1 group-hover:text-sky-700 transition-colors">
+                                    {{ $project->client_name }}
+                                </h3>
+                                @if(!empty($project->location) || !empty($project->client_type))
+                                <p class="text-xs text-slate-500 mt-1.5 flex items-center gap-1.5 truncate">
+                                    <svg class="w-3.5 h-3.5 text-sky-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
-                                    <span class="truncate">{{ $project->location }}</span>
-                                </span>
+                                    <span class="truncate">{{ $project->location ?? $project->client_type }}</span>
+                                </p>
                                 @endif
                             </div>
-
-                            <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight line-clamp-1 mb-1 group-hover:text-sky-300 transition-colors drop-shadow-xs">
-                                {{ $project->client_name }}
-                            </h3>
-
-                            <div class="text-xs font-semibold text-sky-400/90 mb-3 drop-shadow-2xs">
-                                {{ $project->project_title }}
-                            </div>
-
-                            <p class="text-xs sm:text-sm text-slate-200/90 leading-relaxed line-clamp-3">
-                                {{ $project->description }}
-                            </p>
                         </div>
-
-                        <div class="relative z-10 mt-5 pt-3.5 border-t border-white/15 flex items-center justify-between gap-3 text-xs">
-                            <span class="inline-flex items-center gap-1.5 font-bold text-emerald-400">
-                                <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                </svg>
-                                <span>{{ $project->guarantee ?? 'Garansi Resmi 30 Hari' }}</span>
-                            </span>
-                            <a href="{{ $waUrl }}" 
-                               target="_blank" 
-                               rel="noopener noreferrer" 
-                               class="btn-press text-[11px] font-semibold text-white bg-sky-600/90 hover:bg-sky-500 px-2.5 py-1.5 rounded border border-sky-400/40 inline-flex items-center gap-1 transition-colors min-h-[36px]">
-                                <span>Konsultasi Kasus Serupa</span>
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
 

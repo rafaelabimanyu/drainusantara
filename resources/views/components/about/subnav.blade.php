@@ -56,7 +56,7 @@
         } elseif (request()->routeIs('about.profile') || (request()->routeIs('about') && !request()->routeIs('about.*'))) {
             $resolvedBgImage = asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp');
         } elseif (request()->routeIs('about.k3')) {
-            $resolvedBgImage = asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-rootera.webp');
+            $resolvedBgImage = asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-drainusantara.webp');
         } elseif (request()->routeIs('about.equipment')) {
             $resolvedBgImage = asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp');
         } elseif (request()->routeIs('about.portfolio')) {

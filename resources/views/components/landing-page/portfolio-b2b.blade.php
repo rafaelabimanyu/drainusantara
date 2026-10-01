@@ -10,50 +10,36 @@
             'client_type' => 'Restoran & F&B Komersial',
             'location' => 'Mall Kelapa Gading, Jakarta Utara',
             'image' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
-            'project_title' => 'Pengurasan & De-Greasing Grease Trap 800 Liter',
-            'description' => 'Pembersihan kerak minyak jenuh dan lumpur lemak pada bak perangkap lemak dapur komersial sepanjang 25 meter. Dikerjakan malam hari (after-hours) tanpa mengganggu operasional restoran.',
-            'specs' => ['Mesin Rooter Spiral K-60', 'After-Hours Service', 'Faktur Pajak B2B & BAST'],
-            'guarantee' => 'Garansi Resmi 30 Hari'
+        ],
+        (object)[
+            'client_name' => 'Restoran Pagi Sore',
+            'client_type' => 'Restoran Masakan Minang',
+            'location' => 'Cilandak, Jakarta Selatan',
+            'image' => 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
         ],
         (object)[
             'client_name' => 'The Alana Hotel & Conference Center',
             'client_type' => 'Perhotelan Bintang 4',
             'location' => 'Sentul City, Bogor',
             'image' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-            'project_title' => 'Pelancaran Saluran Pembuangan Kamar Mandi 42 Kamar',
-            'description' => 'Pembersihan endapan busa sabun dan gumpalan rambut pada jalur pipa vertikal kamar mandi tamu. Teknisi ber-APD higienis, pengerjaan cepat dan hening tanpa keluhan dari tamu menginap.',
-            'specs' => ['Spiral Baja Lentur 16mm', 'Bebas Suara Bising', 'APD Steril & Rapi'],
-            'guarantee' => 'Garansi Resmi 30 Hari'
         ],
         (object)[
-            'client_name' => 'Food Court Living World',
-            'client_type' => 'Pusat Kuliner Komersial',
-            'location' => 'Alam Sutera, Tangerang Selatan',
-            'image' => 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
-            'project_title' => 'Inspeksi CCTV & Pelancaran Manhole Utama 16 Tenant',
-            'description' => 'Penanganan pipa buang komunal grease trap yang meluap ke area servis. Deteksi koordinat endapan lemak beku dengan kamera CCTV pipa 30 meter dan pembersihan mekanis tuntas.',
-            'specs' => ['Kamera CCTV IP68 30M', 'Spiral Heavy Duty 22mm', '100% Tanpa Bongkar'],
-            'guarantee' => 'Garansi Resmi 30 Hari'
+            'client_name' => 'Hanamasa Restaurant',
+            'client_type' => 'Restoran Japanese Grill & Shabu',
+            'location' => 'Simpang Lima, Semarang',
+            'image' => 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
         ],
         (object)[
-            'client_name' => 'Gedung Menara Sudirman',
-            'client_type' => 'Gedung Perkantoran Bertingkat',
-            'location' => 'SCBD, Jakarta Selatan',
-            'image' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
-            'project_title' => 'Pelancaran Saluran Pipa Talang Rooftop Vertikal 18 Lantai',
-            'description' => 'Ekstraksi endapan lumpur dak beton, lumut, dan dedaunan yang menyumbat jalur pembuangan air hujan utama menjelang musim penghujan agar terhindar dari rembesan ke plafon tenant.',
-            'specs' => ['Rooter Baja Jangkauan Panjang', 'Sertifikasi K3 Ketinggian', 'Dokumentasi Video CCTV'],
-            'guarantee' => 'Garansi Resmi 30 Hari'
+            'client_name' => 'Kwetiau Sapi Mangga Besar',
+            'client_type' => 'Restoran Kuliner Nusantara',
+            'location' => 'Mangga Besar, Jakarta Barat',
+            'image' => 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=800&q=80',
         ],
         (object)[
-            'client_name' => 'PT Indofood CBP Sukses Makmur',
-            'client_type' => 'Fasilitas Manufaktur & Industri',
-            'location' => 'Kawasan Industri Cikarang, Bekasi',
-            'image' => 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
-            'project_title' => 'Pembersihan Jalur Limbah Domestik Kantin Kapasitas 1.200 Porsi',
-            'description' => 'Pengerukan kerak lemak dan residu sisa makanan pada bak kontrol utama kantin pabrik. Menggunakan mesin spiral torsi tinggi bebas bahan kimia berbahaya sehingga aman bagi lingkungan.',
-            'specs' => ['Rotary Cleaner Industri', 'Metode Ramah Lingkungan', 'Dokumen BAST Lengkap'],
-            'guarantee' => 'Garansi Resmi 30 Hari'
+            'client_name' => 'Kopi Kenangan Heritage',
+            'client_type' => 'Kafe & Resto Modern',
+            'location' => 'Grand Indonesia, Jakarta Pusat',
+            'image' => 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
         ],
     ]);
     $b2bWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode("Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran pipa & grease trap untuk perusahaan/gedung kami. Mohon info survey lokasi.");
@@ -179,62 +165,44 @@
              @mouseleave="resume()"
              class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-1 -mx-1 sm:mx-0 sm:px-0">
             @foreach($b2bProjects as $project)
-                <div class="w-[85vw] sm:w-[350px] lg:w-[calc(33.333%-1rem)] shrink-0 snap-center relative rounded-xl border border-slate-700/50 overflow-hidden min-h-[320px] sm:min-h-[340px] flex flex-col justify-between p-6 group transition-all duration-300 hover:border-sky-400/80 shadow-md card-lift">
-                    <!-- Background Photo with Subtle Blur & Clear Visibility -->
-                    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                        <img src="{{ $project->image ?? 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80' }}" 
+                @php
+                    $itemWaText = urlencode("Halo Tim Drainusantara, saya tertarik dengan portofolio penanganan di '{$project->client_name}'. Mohon info konsultasi dan survei lokasi.");
+                    $itemWaUrl = "https://wa.me/{$whatsappNumber}?text={$itemWaText}";
+                @endphp
+                <a href="{{ $itemWaUrl }}" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="w-[85vw] sm:w-[350px] lg:w-[calc(33.333%-1rem)] shrink-0 snap-center bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600"
+                   title="Konsultasi penanganan {{ $project->client_name }}">
+                    <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
+                    <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
+                        <img src="{{ $project->image ?? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80' }}" 
                              alt="{{ $project->client_name }}" 
                              loading="lazy"
-                             class="w-full h-full object-cover blur-[1px] scale-105 brightness-[0.92] group-hover:scale-110 transition-transform duration-700">
-                        <!-- Gradient Overlay: Transparent at top so the photo is clearly recognizable, dark at bottom for crisp text contrast -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 via-55% to-transparent"></div>
+                             width="800"
+                             height="500"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80';">
                     </div>
 
-                    <!-- Content Relative z-10 -->
-                    <div class="relative z-10">
-                        <!-- Top Meta: Sector Badge & Location -->
-                        <div class="flex items-center justify-between gap-2 mb-4">
-                            <span class="inline-flex items-center px-2.5 py-1 bg-slate-900/80 backdrop-blur-xs text-sky-300 text-[11px] font-bold rounded-md border border-slate-700/70">
-                                {{ $project->client_type }}
-                            </span>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-900/80 backdrop-blur-xs text-slate-200 text-[11px] font-medium rounded-md border border-slate-700/70 truncate max-w-[150px]">
-                                <svg class="w-3 h-3 text-sky-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <!-- Informasi Restoran / Klien Bersih -->
+                    <div class="p-5 flex flex-col justify-between flex-1">
+                        <div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight line-clamp-1 group-hover:text-sky-700 transition-colors">
+                                {{ $project->client_name }}
+                            </h3>
+                            @if(!empty($project->location) || !empty($project->client_type))
+                            <p class="text-xs text-slate-500 mt-1.5 flex items-center gap-1.5 truncate">
+                                <svg class="w-3.5 h-3.5 text-sky-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 </svg>
-                                <span class="truncate">{{ $project->location }}</span>
-                            </span>
+                                <span class="truncate">{{ $project->location ?? $project->client_type }}</span>
+                            </p>
+                            @endif
                         </div>
-
-                        <!-- Client Name -->
-                        <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight line-clamp-1 mb-1 group-hover:text-sky-300 transition-colors drop-shadow-xs">
-                            {{ $project->client_name }}
-                        </h3>
-
-                        <!-- Project Title -->
-                        <div class="text-xs font-semibold text-sky-400/90 mb-3 drop-shadow-2xs">
-                            {{ $project->project_title }}
-                        </div>
-
-                        <!-- Simplified Description -->
-                        <p class="text-xs sm:text-sm text-slate-200/90 leading-relaxed line-clamp-3">
-                            {{ $project->description }}
-                        </p>
                     </div>
-
-                    <!-- Bottom Bar: Guarantee & Tag -->
-                    <div class="relative z-10 mt-5 pt-3.5 border-t border-white/15 flex items-center justify-between text-xs">
-                        <span class="inline-flex items-center gap-1.5 font-bold text-emerald-400">
-                            <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>{{ $project->guarantee ?? 'Garansi Resmi 30 Hari' }}</span>
-                        </span>
-                        <span class="text-[11px] font-semibold text-slate-300 bg-white/10 px-2 py-0.5 rounded border border-white/10">
-                            Bebas Bongkar
-                        </span>
-                    </div>
-                </div>
+                </a>
             @endforeach
         </div>
 

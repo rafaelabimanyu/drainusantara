@@ -320,9 +320,6 @@
                 @endphp
                 <div class="w-[82vw] sm:w-[280px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-5 sm:p-6 flex flex-col justify-between shadow-2xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft delay-{{ min(($index + 1) * 75, 300) }}">
                     <div>
-                        <span class="text-[10px] font-bold text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-md border border-sky-200 inline-block mb-3">
-                            {{ $category }}
-                        </span>
                         <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight mb-2">
                             {{ $title }}
                         </h3>

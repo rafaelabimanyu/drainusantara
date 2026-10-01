@@ -360,6 +360,168 @@
     </div>
 </section>
 
+<!-- Subsection: Staff Kami -->
+<section id="staff-kami" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="max-w-3xl mb-10 reveal-soft">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
+                TIM &amp; TEKNISI KAMI
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Staff &amp; Teknisi Lapangan Siaga
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base mt-2.5 leading-relaxed">
+                Tenaga kerja profesional dan berdedikasi tinggi yang siap melayani penanganan saluran pipa mampet Anda dengan respon cepat dan standar kerja higienis.
+            </p>
+        </div>
+
+        @php
+            if (!isset($staffMembers) || (is_countable($staffMembers) && count($staffMembers) === 0)) {
+                $staffMembers = [
+                    (object)[
+                        'name' => 'Agus Santoso',
+                        'role' => 'Teknisi Senior Rooter Spiral',
+                        'initials' => 'AS',
+                        'photo' => null,
+                    ],
+                    (object)[
+                        'name' => 'Bambang Wijaya',
+                        'role' => 'Spesialis Inspeksi CCTV Pipa',
+                        'initials' => 'BW',
+                        'photo' => null,
+                    ],
+                    (object)[
+                        'name' => 'Rian Pratama',
+                        'role' => 'Teknisi Pelancar Kloset & Floor Drain',
+                        'initials' => 'RP',
+                        'photo' => null,
+                    ],
+                    (object)[
+                        'name' => 'Hendra Kusuma',
+                        'role' => 'Teknisi Grease Trap & Restoran',
+                        'initials' => 'HK',
+                        'photo' => null,
+                    ],
+                    (object)[
+                        'name' => 'Dedi Kurniawan',
+                        'role' => 'Teknisi Saluran Talang & Pipa Atap',
+                        'initials' => 'DK',
+                        'photo' => null,
+                    ],
+                    (object)[
+                        'name' => 'Fajar Nugraha',
+                        'role' => 'Teknisi Hydro Jetting Komersial',
+                        'initials' => 'FN',
+                        'photo' => null,
+                    ],
+                ];
+            }
+        @endphp
+
+        <!-- Staff Cards Grid & Mobile Carousel -->
+        <div x-data="{
+                 active: 0,
+                 total: {{ count($staffMembers) }},
+                 timer: null,
+                 init() {
+                     if (typeof window === 'undefined') return;
+                     if (window.innerWidth < 640) this.startAuto();
+                 },
+                 startAuto() {
+                     if (window.innerWidth >= 640) return;
+                     this.pause();
+                     this.timer = setInterval(() => { this.next(); }, 4000);
+                 },
+                 pause() {
+                     if (this.timer) {
+                         clearInterval(this.timer);
+                         this.timer = null;
+                     }
+                 },
+                 resume() {
+                     if (window.innerWidth >= 640) return;
+                     this.startAuto();
+                 },
+                 next() {
+                     this.goTo((this.active + 1) % this.total);
+                 },
+                 goTo(idx) {
+                     this.active = idx;
+                     const slider = this.$refs.staffSlider;
+                     if (slider && slider.children[idx]) {
+                         slider.scrollTo({
+                             left: slider.children[idx].offsetLeft - slider.offsetLeft,
+                             behavior: 'smooth'
+                         });
+                     }
+                 },
+                 onScroll() {
+                     const slider = this.$refs.staffSlider;
+                     if (!slider || !slider.firstElementChild) return;
+                     const cardWidth = slider.firstElementChild.offsetWidth + 16;
+                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
+                 }
+             }">
+            <div x-ref="staffSlider"
+                 @scroll.passive="onScroll()"
+                 @touchstart="pause()"
+                 @touchend="resume()"
+                 @mouseenter="pause()"
+                 @mouseleave="resume()"
+                 class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 lg:grid-cols-6 sm:overflow-visible sm:pb-0">
+                @foreach($staffMembers as $member)
+                    @php
+                        $mName = is_object($member) ? $member->name : ($member['name'] ?? '');
+                        $mRole = is_object($member) ? ($member->role ?? 'Teknisi Lapangan Siaga') : ($member['role'] ?? 'Teknisi Lapangan Siaga');
+                        $mPhoto = is_object($member) ? $member->photo : ($member['photo'] ?? null);
+                        $mInitials = is_object($member) ? $member->initials : ($member['initials'] ?? 'ST');
+                    @endphp
+                    <div class="w-[58vw] sm:w-auto shrink-0 snap-center bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col items-center text-center group card-lift h-full">
+                        <!-- Foto / Avatar Staf -->
+                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 mb-3.5 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                            @if(!empty($mPhoto))
+                                <img src="{{ $mPhoto }}" alt="{{ $mName }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-sky-50 to-slate-100 text-sky-800">
+                                    <svg class="w-12 h-12 text-sky-700/80 mb-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">{{ $mInitials }}</span>
+                                </div>
+                            @endif
+                            <span class="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white" title="Siaga Aktif"></span>
+                        </div>
+                        
+                        <!-- Nama Staf -->
+                        <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-tight group-hover:text-sky-700 transition-colors line-clamp-1">
+                            {{ $mName }}
+                        </h3>
+
+                        <!-- Spesialisasi / Peran -->
+                        <p class="text-[11px] font-medium text-slate-600 leading-snug mt-1 line-clamp-2">
+                            {{ $mRole }}
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Mobile Carousel Dots Indicator -->
+            <div class="flex items-center justify-center gap-1.5 mt-5 sm:hidden">
+                @foreach($staffMembers as $idx => $m)
+                    <button type="button" 
+                            @click="goTo({{ $idx }})"
+                            class="h-2 rounded-full transition-all duration-300 cursor-pointer"
+                            :class="active === {{ $idx }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                            aria-label="Staff {{ $idx + 1 }}">
+                    </button>
+                @endforeach
+            </div>
+        </div>
+
+    </div>
+</section>
+
 <section id="ekosistem" class="py-14 lg:py-16 bg-slate-900 text-white relative overflow-hidden reveal-soft">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">

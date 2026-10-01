@@ -61,6 +61,17 @@
                     </a>
                 </li>
 
+                <!-- 6. Staff & Teknisi -->
+                <li>
+                    <a href="{{ route('admin.staff.index') }}" 
+                       class="group flex items-center gap-x-3 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold transition-colors {{ request()->routeIs('admin.staff*') ? 'bg-sky-700 text-white shadow-2xs' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-4 h-4 shrink-0 {{ request()->routeIs('admin.staff*') ? 'text-white' : 'text-slate-400 group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span>Staff &amp; Teknisi</span>
+                    </a>
+                </li>
+
                 <!-- 6. Peralatan & Mesin -->
                 <li>
                     <a href="{{ route('admin.equipments.index') }}" 

@@ -24,7 +24,9 @@ class EquipmentController extends Controller
      */
     public function create(): View
     {
-        return view('admin.equipments.create');
+        $nextOrder = Equipment::getNextAvailableOrder();
+
+        return view('admin.equipments.create', compact('nextOrder'));
     }
 
     /**
@@ -40,7 +42,7 @@ class EquipmentController extends Controller
             'image_url' => ['nullable', 'string', 'max:500'],
             'short_description' => ['nullable', 'string'],
             'specs' => ['nullable', 'string'],
-            'order' => ['nullable', 'integer', 'min:0'],
+            'order' => ['nullable', 'integer', 'min:1'],
             'is_active' => ['nullable', 'boolean'],
         ]);
 
@@ -61,7 +63,7 @@ class EquipmentController extends Controller
             'image' => $imageUrl,
             'short_description' => $validated['short_description'] ?? null,
             'specs' => $specsArray,
-            'order' => $validated['order'] ?? 0,
+            'order' => !empty($validated['order']) ? (int) $validated['order'] : Equipment::getNextAvailableOrder(),
             'is_active' => $request->boolean('is_active', true),
         ]);
 

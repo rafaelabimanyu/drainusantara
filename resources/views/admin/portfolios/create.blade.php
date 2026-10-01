@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Klien B2B')
-@section('page-title', 'Tambah Portofolio Klien B2B')
+@section('title', 'Tambah Portofolio')
+@section('page-title', 'Tambah Portofolio Restoran & Klien')
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Tambah Klien B2B &amp; Proyek</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftarkan portofolio perusahaan, perhotelan, atau restoran komersial.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Tambah Portofolio Restoran &amp; Klien</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Tambahkan foto dan nama tempat usaha/restoran untuk ditampilkan pada kartu portofolio.</p>
         </div>
         <a href="{{ route('admin.portfolios.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -22,71 +22,49 @@
         @csrf
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <!-- Nama Perusahaan / Klien -->
+            <!-- Nama Restoran / Klien -->
             <div class="sm:col-span-2">
                 <label for="client_name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Nama Perusahaan / Klien B2B *
+                    Nama Restoran / Tempat Usaha *
                 </label>
                 <input type="text" name="client_name" id="client_name" value="{{ old('client_name') }}" required
-                       placeholder="Misal: D'Cost Seafood, The Alana Hotel, PT Indofood CBP"
+                       placeholder="Misal: D'Cost Seafood, Restoran Pagi Sore, The Alana Hotel"
                        class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
                 @error('client_name') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <!-- Sektor / Jenis Bisnis -->
-            <div>
-                <label for="client_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Kategori / Sektor Usaha
-                </label>
-                <input type="text" name="client_type" id="client_type" value="{{ old('client_type', 'Restoran & F&B Komersial') }}"
-                       placeholder="Misal: Perhotelan, Gedung Perkantoran, Restoran"
-                       class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
-                @error('client_type') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-            </div>
-
-            <!-- Lokasi Proyek -->
+            <!-- Lokasi / Cabang / Kota -->
             <div>
                 <label for="location" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Lokasi Proyek / Cabang
+                    Lokasi / Cabang / Kota
                 </label>
                 <input type="text" name="location" id="location" value="{{ old('location') }}"
-                       placeholder="Misal: SCBD Jakarta Selatan / Cikarang Bekasi"
+                       placeholder="Misal: Mall Kelapa Gading, Jakarta Utara"
                        class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
                 @error('location') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
-        </div>
 
-        <!-- Judul Pengerjaan -->
-        <div>
-            <label for="project_title" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Judul Pengerjaan / Proyek
-            </label>
-            <input type="text" name="project_title" id="project_title" value="{{ old('project_title') }}"
-                   placeholder="Misal: De-Greasing Grease Trap 800 Liter & Pelancaran Manhole"
-                   class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
-            @error('project_title') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        <!-- Deskripsi Singkat Penanganan -->
-        <div>
-            <label for="description" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Deskripsi Ringkas Penanganan
-            </label>
-            <textarea name="description" id="description" rows="3"
-                      placeholder="Jelaskan ringkas metode pengerjaan (misal: pengerukan kerak lemak pipa after-hours tanpa merusak lantai atau operasional)."
-                      class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">{{ old('description') }}</textarea>
-            @error('description') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+            <!-- Kategori / Sektor Usaha -->
+            <div>
+                <label for="client_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Kategori / Jenis Usaha
+                </label>
+                <input type="text" name="client_type" id="client_type" value="{{ old('client_type', 'Restoran & F&B Komersial') }}"
+                       placeholder="Misal: Restoran F&B, Kafe, Perhotelan"
+                       class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
+                @error('client_type') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
         </div>
 
         <!-- Upload Foto Lokasi / Perusahaan -->
         <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ preview: null }">
             <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Bangunan / Lokasi B2B</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Restoran / Tempat Usaha</span>
                 <span class="text-[11px] text-sky-700 font-semibold bg-sky-50 px-2 py-0.5 rounded border border-sky-200">JPG, PNG, WEBP</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-                <div class="w-full h-28 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden relative shadow-2xs">
+                <div class="w-full h-32 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden relative shadow-2xs">
                     <template x-if="preview">
                         <img :src="preview" class="w-full h-full object-cover">
                     </template>
@@ -127,8 +105,9 @@
                 <label for="order" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     Urutan Tampilan (Angka Kecil Tampil Lebih Dulu)
                 </label>
-                <input type="number" name="order" id="order" value="{{ old('order', 0) }}" min="0"
+                <input type="number" name="order" id="order" value="{{ old('order', $nextOrder) }}" min="1"
                        class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
+                <p class="text-[11px] text-slate-500 mt-1">Otomatis mengisi slot urutan berikutnya (#{{ $nextOrder }}). Dapat diubah manual jika perlu.</p>
                 @error('order') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
@@ -136,7 +115,7 @@
                 <label class="flex items-center gap-2.5 cursor-pointer">
                     <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}
                            class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
-                    <span class="text-xs sm:text-sm font-medium text-slate-700">Tampilkan di Beranda (Carousel B2B)</span>
+                    <span class="text-xs sm:text-sm font-medium text-slate-700">Tampilkan di Portofolio</span>
                 </label>
             </div>
         </div>

@@ -26,7 +26,9 @@ class ServiceController extends Controller
      */
     public function create(): View
     {
-        return view('admin.services.create');
+        $nextOrder = Service::getNextAvailableOrder();
+
+        return view('admin.services.create', compact('nextOrder'));
     }
 
     /**
@@ -41,7 +43,7 @@ class ServiceController extends Controller
             'description' => ['nullable', 'string'],
             'features_text' => ['nullable', 'string'],
             'is_active' => ['nullable', 'boolean'],
-            'order' => ['nullable', 'integer'],
+            'order' => ['nullable', 'integer', 'min:1'],
             'image' => ['nullable'],
             'image_url' => ['nullable', 'string', 'max:500'],
         ]);
@@ -81,7 +83,7 @@ class ServiceController extends Controller
             'description' => $validated['description'] ?? ($validated['short_description'] ?? null),
             'features' => $features,
             'is_active' => $request->boolean('is_active', true),
-            'order' => $validated['order'] ?? (Service::max('order') + 1),
+            'order' => !empty($validated['order']) ? (int) $validated['order'] : Service::getNextAvailableOrder(),
             'image' => $imageUrl,
         ]);
 

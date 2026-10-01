@@ -6,6 +6,7 @@ use App\Models\CoverageArea;
 use App\Models\Gallery;
 use App\Models\Review;
 use App\Models\Service;
+use App\Models\Staff;
 use App\Services\RegionService;
 use Artesaos\SEOTools\Facades\JsonLdMulti;
 use Artesaos\SEOTools\Facades\OpenGraph;
@@ -82,7 +83,7 @@ class PageController extends Controller
         $galleries = Gallery::where('is_active', true)
             ->with('service')
             ->orderBy('order')
-            ->take(3)
+            ->take(4)
             ->get();
 
         $articles = \App\Models\Article::where('is_published', true)
@@ -618,7 +619,12 @@ class PageController extends Controller
         JsonLdMulti::setTitle('Profil Perusahaan Drainusantara');
         JsonLdMulti::setType('AboutPage');
 
-        return view('about.profile');
+        $staffMembers = Staff::where('is_active', true)
+            ->orderBy('order')
+            ->latest('id')
+            ->get();
+
+        return view('about.profile', compact('staffMembers'));
     }
 
     /**

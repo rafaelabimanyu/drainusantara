@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasAutoOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Equipment extends Model
 {
-    use HasFactory;
+    use HasAutoOrder, HasFactory;
 
     protected $table = 'equipments';
 

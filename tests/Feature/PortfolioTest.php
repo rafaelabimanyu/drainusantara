@@ -43,8 +43,7 @@ class PortfolioTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Dipercaya Perusahaan F&amp;B, Perhotelan &amp; Gedung Bertingkat', false);
         $response->assertSee('D&#039;Cost Seafood', false);
-        $response->assertSee('blur-[1px]', false);
-        $response->assertSee('Bebas Bongkar');
+        $response->assertSee('Mall Kelapa Gading');
     }
 
     public function test_unauthenticated_user_cannot_access_admin_portfolios(): void
@@ -69,9 +68,9 @@ class PortfolioTest extends TestCase
         $response = $this->actingAs($this->admin)->get('/admin/portfolios');
 
         $response->assertStatus(200);
-        $response->assertSee('Portofolio Klien B2B &amp; Komersial', false);
+        $response->assertSee('Portofolio Restoran &amp; Klien', false);
         $response->assertSee('The Alana Hotel');
-        $response->assertSee('Tambah Klien B2B');
+        $response->assertSee('Tambah Portofolio');
     }
 
     public function test_admin_can_view_create_form(): void
@@ -79,7 +78,7 @@ class PortfolioTest extends TestCase
         $response = $this->actingAs($this->admin)->get('/admin/portfolios/create');
 
         $response->assertStatus(200);
-        $response->assertSee('Tambah Portofolio Klien B2B');
+        $response->assertSee('Tambah Portofolio Restoran &amp; Klien', false);
         $response->assertSee('client_name');
     }
 
@@ -119,7 +118,7 @@ class PortfolioTest extends TestCase
         $response = $this->actingAs($this->admin)->get("/admin/portfolios/{$portfolio->id}/edit");
 
         $response->assertStatus(200);
-        $response->assertSee('Edit Portofolio Klien B2B');
+        $response->assertSee('Edit Portofolio Restoran &amp; Klien', false);
         $response->assertSee('Living World Mall');
     }
 
