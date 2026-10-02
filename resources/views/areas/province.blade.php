@@ -111,6 +111,8 @@
             <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
                 <img src="{{ $heroBgImage }}" 
                      alt="Latar Belakang Wilayah {{ $provinceData['name'] }}" 
+                     loading="eager"
+                     decoding="async"
                      class="w-full h-full object-cover object-center opacity-60 md:opacity-75 scale-105 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/85 to-slate-50/20"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-slate-50/30"></div>
@@ -118,7 +120,7 @@
         @endif
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap font-medium" aria-label="Breadcrumb">
+            <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap font-medium reveal-fade" aria-label="Breadcrumb">
                 <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 rounded-sm">
                     <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -135,20 +137,20 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 <div class="lg:col-span-8 space-y-5 sm:space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
                         <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
                         <span>Posko Wilayah Resmi: Provinsi {{ $provinceData['name'] }}</span>
                     </div>
 
-                    <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-tight">
+                    <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-tight reveal-soft">
                         Jasa Saluran Pipa Mampet <span class="text-sky-700">Provinsi {{ $provinceData['name'] }}</span>
                     </h1>
 
-                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl reveal-soft delay-100">
                         Pelancaran pipa wastafel tersumbat minyak, kloset meluap, dan floor drain berbau got di seluruh kota dan kabupaten <strong>Provinsi {{ $provinceData['name'] }}</strong>. Dikerjakan mekanis menggunakan mesin spiral rotary baja elastis, 100% tanpa membongkar keramik lantai, dan dilindungi garansi resmi 30 hari kalender.
                     </p>
 
-                    <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5 pt-1">
+                    <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5 pt-1 reveal-soft delay-150">
                         <div class="bg-white p-3 sm:p-4 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-3 text-center sm:text-left">
                             <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -186,9 +188,9 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 reveal-soft delay-200">
                         <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" 
-                           class="min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-xs hover:shadow transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
+                           class="min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-xs hover:shadow transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 btn-press">
                             <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                             </svg>
@@ -196,7 +198,7 @@
                         </a>
                         
                         <a href="#wilayah-layanan" 
-                           class="min-h-[48px] inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm px-5 py-3 rounded-lg border border-slate-300 shadow-2xs transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                           class="min-h-[48px] inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm px-5 py-3 rounded-lg border border-slate-300 shadow-2xs transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 btn-press">
                             <span>Pilih Kota &amp; Kecamatan ({{ count($provinceData['cities']) }})</span>
                             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -206,7 +208,7 @@
                 </div>
 
                 <div class="lg:col-span-4">
-                    <div class="bg-white p-5 sm:p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
+                    <div class="bg-white p-5 sm:p-6 rounded-xl border border-slate-200 shadow-xs space-y-4 reveal-soft delay-150">
                         <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                             <span class="text-xs uppercase tracking-wider text-sky-800 font-bold">STANDAR OPERASIONAL ARMADA</span>
                             <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
@@ -244,7 +246,7 @@
         </div>
     </section>
 
-    <section id="layanan" class="py-14 lg:py-20 bg-white border-b border-slate-200">
+    <section id="layanan" class="py-14 lg:py-20 bg-white border-b border-slate-200" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4500)">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
@@ -256,9 +258,21 @@
                 <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
                     Pembersihan kerak minyak masakan, endapan busa sabun, dan sumbatan kotoran menggunakan mesin spiral rotary baja elastis. Dikerjakan langsung dari lubang pipa eksisting tanpa merusak keramik lantai maupun dinding.
                 </p>
+                <div class="flex md:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                    <span>Geser untuk layanan lainnya &bull; Auto-scroll aktif</span>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div x-ref="slider"
+                 @scroll.passive="onScroll()"
+                 @touchstart="pause()"
+                 @touchend="resume()"
+                 @mouseenter="pause()"
+                 @mouseleave="resume()"
+                 class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
                 @foreach($itemsLayanan as $catalog)
                     @php
                         $isModel = $catalog instanceof \App\Models\Service;
@@ -309,12 +323,15 @@
                         $waMessage = "Halo Drainusantara, saya butuh penanganan untuk {$title} di Provinsi {$provinceData['name']}. Mohon info estimasi biaya dan kedatangan teknisi.";
                         $itemWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($waMessage);
                     @endphp
-                    <div class="bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-sky-300 hover:shadow-xs transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group">
+                    <div class="w-[84vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-sky-300 hover:shadow-xs transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                         <div>
                             <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                                 <img src="{{ $imageSrc }}" 
                                      alt="{{ $title }}" 
+                                     width="600"
+                                     height="375"
                                      loading="lazy" 
+                                     decoding="async"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
                                      onerror="this.onerror=null; this.src='{{ asset('images/services/wastafel-cuci-piring-mampet.webp') }}';">
                             </div>
@@ -356,6 +373,17 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+
+            <div class="flex md:hidden justify-center items-center gap-1.5 mt-4">
+                @for($i = 0; $i < count($itemsLayanan); $i++)
+                    <button type="button" 
+                            @click="goTo({{ $i }})"
+                            class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
+                            :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                            aria-label="Layanan {{ $i + 1 }}">
+                    </button>
+                @endfor
             </div>
         </div>
     </section>
@@ -417,7 +445,7 @@
                             $itemWaUrl = "https://wa.me/{$whatsappNumber}?text={$waText}";
                         @endphp
                         <div x-show="activeCategory === 'all' || activeCategory === '{{ $item->category ?? 'rumahan' }}'"
-                             class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
+                             class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                             <div>
                                 <div class="relative aspect-[16/10] bg-slate-900 overflow-hidden border-b border-slate-100">
                                     @if($photo)
@@ -462,24 +490,21 @@
                                     <h3 class="text-base font-bold text-slate-900 mb-2 leading-snug line-clamp-2">
                                         {{ $item->title }}
                                     </h3>
-                                    <p class="text-xs text-slate-600 leading-relaxed line-clamp-3">
+                                    <p class="text-sm text-slate-600 leading-relaxed line-clamp-3">
                                         {{ $item->description }}
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="p-5 sm:p-6 pt-0 border-t border-slate-100 mt-2 text-xs text-slate-500 flex items-center justify-between gap-3 bg-slate-50/50">
-                                <span class="text-emerald-800 font-bold flex items-center gap-1">
-                                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    Bebas Bongkar Keramik
-                                </span>
+                            <div class="p-5 sm:p-6 pt-3 border-t border-slate-100 flex items-center justify-end bg-slate-50/50">
                                 <a href="{{ $itemWaUrl }}" 
                                    target="_blank" 
                                    rel="noopener noreferrer" 
-                                   class="text-xs font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-[44px] inline-flex items-center">
-                                    Konsultasi Kasus Ini
+                                   class="text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-[36px] inline-flex items-center gap-1 group/btn">
+                                    <span>Konsultasi Kasus Ini</span>
+                                    <svg class="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                    </svg>
                                 </a>
                             </div>
                         </div>
@@ -526,7 +551,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 @foreach($provinceData['cities'] as $citySlug => $city)
-                    <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-7 hover:border-sky-300 transition-all flex flex-col justify-between shadow-2xs">
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-7 hover:border-sky-300 transition-all flex flex-col justify-between shadow-2xs card-lift reveal-soft stagger-{{ ($loop->iteration % 2) + 1 }}">
                         <div>
                             <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-5 border-b border-slate-100">
                                 <div>

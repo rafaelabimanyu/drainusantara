@@ -13,9 +13,10 @@
         : "Setiap armada teknisi Drainusantara yang ditugaskan ke lokasi Anda dilengkapi unit mesin drain cleaner berstandar internasional. Menuntaskan saluran mampet secara mekanis, aman untuk dinding pipa PVC, dan bergaransi.");
 
     $dbEquipments = \App\Models\Equipment::where('is_active', true)->orderBy('order')->get();
+    $equipCount = $dbEquipments->count();
 @endphp
 
-<section id="peralatan-armada" class="py-16 lg:py-20 {{ $bgColor }} border-b border-slate-200">
+<section id="peralatan-armada" class="py-16 lg:py-20 {{ $bgColor }} border-b border-slate-200" @if($equipCount > 0) x-data="mobileCarousel({{ $equipCount }}, 4500)" @endif>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header Section -->
@@ -34,6 +35,14 @@
                 <p class="text-slate-600 text-sm sm:text-base mt-2.5 leading-relaxed">
                     {{ $resolvedDesc }}
                 </p>
+                @if($equipCount > 0)
+                <div class="flex md:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                    <span>Geser katalog peralatan &bull; Auto-scroll aktif</span>
+                </div>
+                @endif
             </div>
 
             <a href="{{ route('about.equipment') }}" 
@@ -46,10 +55,16 @@
         </div>
 
         @if($dbEquipments->isNotEmpty())
-        <!-- Grid Dynamic Equipment from CMS Database -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Responsive Grid on Desktop / Mobile Carousel -->
+        <div x-ref="slider"
+             @scroll.passive="onScroll()"
+             @touchstart="pause()"
+             @touchend="resume()"
+             @mouseenter="pause()"
+             @mouseleave="resume()"
+             class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-6 pb-4 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
             @foreach($dbEquipments as $index => $equip)
-            <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col justify-between card-lift reveal-soft delay-{{ min(($index + 1) * 75, 300) }}">
+            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col justify-between card-lift reveal-soft stagger-{{ ($index % 4) + 1 }}">
                 <div>
                     <!-- Container Gambar Peralatan -->
                     <div class="relative aspect-[16/10] bg-slate-900 overflow-hidden border-b border-slate-200 group">
@@ -104,6 +119,17 @@
                 </div>
             </div>
             @endforeach
+        </div>
+
+        <div class="flex md:hidden justify-center items-center gap-1.5 mt-4">
+            @for($i = 0; $i < $equipCount; $i++)
+                <button type="button" 
+                        @click="goTo({{ $i }})"
+                        class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
+                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                        aria-label="Peralatan {{ $i + 1 }}">
+                </button>
+            @endfor
         </div>
         @else
         <!-- Fallback if empty in DB -->

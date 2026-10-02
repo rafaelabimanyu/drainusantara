@@ -31,7 +31,7 @@ class PortfolioTest extends TestCase
             'client_name' => "D'Cost Seafood",
             'client_type' => 'Restoran & F&B Komersial',
             'location' => 'Mall Kelapa Gading',
-            'image' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4',
+            'image' => '/images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
             'project_title' => 'Pengurasan Grease Trap',
             'description' => 'Pembersihan pipa lemak tanpa bongkar.',
             'order' => 1,
@@ -43,7 +43,7 @@ class PortfolioTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Dipercaya Perusahaan F&amp;B, Perhotelan &amp; Gedung Bertingkat', false);
         $response->assertSee('D&#039;Cost Seafood', false);
-        $response->assertSee('Mall Kelapa Gading');
+        $response->assertSee('Restoran &amp; F&amp;B Komersial', false);
     }
 
     public function test_unauthenticated_user_cannot_access_admin_portfolios(): void
@@ -58,7 +58,7 @@ class PortfolioTest extends TestCase
             'client_name' => 'The Alana Hotel',
             'client_type' => 'Perhotelan',
             'location' => 'Sentul City',
-            'image' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945',
+            'image' => '/images/portfolio/kfc-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
             'project_title' => 'Pelancaran Saluran Kamar Mandi',
             'description' => 'Pengerjaan hening bergaransi.',
             'order' => 1,
@@ -90,7 +90,7 @@ class PortfolioTest extends TestCase
             'location' => 'Grand Indonesia, Jakarta Pusat',
             'project_title' => 'Pelancaran Pipa Wastafel Barista',
             'description' => 'Pembersihan endapan ampas kopi dan lemak susu.',
-            'image_url' => 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb',
+            'image_url' => '/images/portfolio/mcd-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
             'order' => 2,
             'is_active' => 1,
         ];

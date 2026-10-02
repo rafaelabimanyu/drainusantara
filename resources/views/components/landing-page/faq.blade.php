@@ -13,7 +13,7 @@
             </p>
         </div>
 
-        <div x-data="{ active: null }" class="space-y-3.5 reveal-soft delay-100">
+        <div x-data="{ active: null }" class="space-y-3.5 reveal-soft">
             <!-- FAQ 1 -->
             <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 

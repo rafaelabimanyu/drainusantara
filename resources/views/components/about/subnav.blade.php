@@ -52,17 +52,17 @@
     $resolvedBgImage = $bgImage;
     if (!$resolvedBgImage) {
         if (request()->routeIs('about.holding')) {
-            $resolvedBgImage = asset('assets/banner/Drainusantara-jasa-saluran-mampet-profesional-desktop.webp');
+            $resolvedBgImage = asset('assets/banner/hero-JnJ-drainusantara.webp');
         } elseif (request()->routeIs('about.profile') || (request()->routeIs('about') && !request()->routeIs('about.*'))) {
-            $resolvedBgImage = asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp');
+            $resolvedBgImage = asset('assets/banner/hero-profil-perusahaan-drainusantara.webp');
         } elseif (request()->routeIs('about.k3')) {
-            $resolvedBgImage = asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-drainusantara.webp');
+            $resolvedBgImage = asset('assets/banner/hero-k3-drainusantara.webp');
         } elseif (request()->routeIs('about.equipment')) {
-            $resolvedBgImage = asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp');
+            $resolvedBgImage = asset('assets/banner/hero-peralatan-drainusantara.webp');
         } elseif (request()->routeIs('about.portfolio')) {
-            $resolvedBgImage = asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp');
+            $resolvedBgImage = asset('assets/banner/hero-portofolio.webp');
         } else {
-            $resolvedBgImage = asset('assets/banner/Drainusantara-jasa-saluran-mampet-profesional-desktop.webp');
+            $resolvedBgImage = asset('assets/banner/hero-profil-perusahaan-drainusantara.webp');
         }
     }
 @endphp
@@ -83,7 +83,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <!-- Breadcrumb Nav -->
-        <nav class="flex items-center gap-2 text-xs text-slate-300 mb-4 font-medium" aria-label="Breadcrumb">
+        <nav class="flex items-center gap-2 text-xs text-slate-300 mb-4 font-medium reveal-fade" aria-label="Breadcrumb">
             <a href="{{ route('home') }}" class="hover:text-white transition-colors">Beranda</a>
             <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -97,17 +97,17 @@
 
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div class="max-w-3xl">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-950/80 border border-sky-500/40 text-sky-300 text-xs font-bold rounded-md uppercase tracking-wider mb-2.5">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-950/80 border border-sky-500/40 text-sky-300 text-xs font-bold rounded-md uppercase tracking-wider mb-2.5 reveal-fade">
                     {{ $eyebrow }}
                 </span>
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight reveal-soft">
                     {{ $heading }}
                 </h1>
-                <p class="text-slate-300 text-sm sm:text-base mt-2.5 leading-relaxed">
+                <p class="text-slate-300 text-sm sm:text-base mt-2.5 leading-relaxed reveal-soft delay-100">
                     {{ $subheading }}
                 </p>
             </div>
-            <div class="shrink-0">
+            <div class="shrink-0 reveal-soft delay-150">
                 <a href="{{ $generalWaUrl }}" 
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -121,7 +121,7 @@
         </div>
 
         <!-- Secondary Sub-Navigation Tabs (Dark Style with High Contrast) -->
-        <div class="mt-6 pt-4 border-t border-slate-800/80">
+        <div class="mt-6 pt-4 border-t border-slate-800/80 reveal-soft delay-150">
             <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs">
                 @foreach($tabs as $tab)
                     <a href="{{ $tab['url'] }}" 

@@ -11,7 +11,7 @@
 <section id="garansi" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="max-w-3xl mb-12">
+        <div class="max-w-3xl mb-12 reveal-soft">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Jaminan Kualitas
             </span>
@@ -70,25 +70,25 @@
                      @mouseenter="pause()"
                      @mouseleave="resume()"
                      class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 lg:flex-col lg:space-y-4 lg:gap-0 lg:overflow-visible lg:pb-0">
-                    <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                    <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-1">
                         <span class="text-xs font-bold text-sky-700 block mb-1">100% No Result No Pay</span>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                            Jika saluran air tidak lancar sempurna sesuai standar uji alir debit air di depan Anda, Anda bebas biaya pengerjaan sama sekali.
                         </p>
                     </div>
-                    <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                    <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-2">
                         <span class="text-xs font-bold text-sky-700 block mb-1">Masa Proteksi 30 Hari</span>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                           Jaminan pelancaran ulang gratis tanpa biaya tambahan jika saluran yang sama kembali mampet dalam masa garansi resmi 30 hari.
                         </p>
                     </div>
-                    <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                    <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-3">
                         <span class="text-xs font-bold text-sky-700 block mb-1">Invoice & Stempel Resmi</span>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                            Setiap pengerjaan dilengkapi Digital Invoice resmi berstempel Drainusantara yang tersimpan aman di database sistem kami.
                         </p>
                     </div>
-                    <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+                    <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-4">
                         <span class="text-xs font-bold text-sky-700 block mb-1">Respon Klaim &lt; 24 Jam</span>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             Prosedur klaim mudah tanpa birokrasi rumit. Tim teknisi dispatch segera dijadwalkan ulang dalam kurun waktu kurang dari 24 jam.
@@ -110,7 +110,7 @@
             </div>
 
             <!-- Right: 3 Langkah Klaim Garansi -->
-            <div class="lg:col-span-5 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
+            <div class="lg:col-span-5 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs card-lift reveal-soft delay-150">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block mb-4">
                     Alur Klaim 3 Langkah Cepat
                 </span>
@@ -166,7 +166,7 @@
 
 <section id="syarat-ketentuan-garansi" class="py-16 lg:py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mb-12">
+        <div class="max-w-3xl mb-12 reveal-soft">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Pedoman Transparansi Layanan
             </span>
@@ -222,7 +222,7 @@
                  @mouseenter="pause()"
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">
                             Cakupan Garansi
@@ -250,7 +250,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between card-lift reveal-soft stagger-2">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">
                             Prosedur Klaim Cepat
@@ -276,7 +276,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between card-lift reveal-soft stagger-3">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900 mb-2">
                             Pengecualian / Batasan Klaim

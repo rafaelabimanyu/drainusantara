@@ -29,6 +29,8 @@
         <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
             <img src="{{ $heroBgImage }}" 
                  alt="Latar Belakang {{ $cityData['name'] }}" 
+                 loading="eager"
+                 decoding="async"
                  class="w-full h-full object-cover object-center opacity-55 md:opacity-70 scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/85 to-slate-50/25"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-slate-50/30"></div>
@@ -65,22 +67,22 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
             <div class="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
                     <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
                     <span class="sm:hidden">Posko {{ $cityData['name'] }} &bull; Respon Cepat</span>
                     <span class="hidden sm:inline">Posko Siaga: Wilayah {{ $cityData['name'] }} &bull; Respon Cepat</span>
                 </div>
 
-                <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight reveal-soft delay-100">
+                <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight reveal-soft">
                     Jasa Saluran Mampet di <span class="text-sky-700">{{ $cityData['name'] }}</span>
                 </h1>
 
-                <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl reveal-soft delay-150">
+                <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl reveal-soft delay-100">
                     Pelancaran wastafel, kloset toilet, dan saluran mampet di seluruh area <strong>{{ $cityData['name'] }}</strong> ({{ $cityData['province_name'] }}). Dikerjakan mekanis tanpa bongkar dan bergaransi 30 hari.
                 </p>
 
-                <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
-                    <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift reveal-soft stagger-1">
+                <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-1 reveal-soft delay-150">
+                    <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift">
                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -92,7 +94,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift reveal-soft stagger-2">
+                    <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift">
                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
@@ -104,7 +106,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift reveal-soft stagger-3">
+                    <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift">
                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
@@ -136,8 +138,8 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-5 reveal-soft delay-150">
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 sm:p-7 space-y-3 sm:space-y-4 card-lift">
+            <div class="lg:col-span-5">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 sm:p-7 space-y-3 sm:space-y-4 card-lift reveal-soft delay-150">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div>
                             <span class="text-[11px] sm:text-xs uppercase tracking-wider text-sky-700 font-bold block">POSKO ARMADA</span>
@@ -212,7 +214,7 @@
                     $districtSlug = \Illuminate\Support\Str::slug($district);
                     $districtUrl = route('area.detail', ['city' => $cityData['slug'], 'district' => $districtSlug]);
                 @endphp
-                <div class="bg-slate-50 hover:bg-white rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-sm p-3 sm:p-4.5 transition-all flex flex-col justify-between group card-lift reveal-soft delay-{{ min(($loop->iteration % 4) * 60, 240) }}">
+                <div class="bg-slate-50 hover:bg-white rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-sm p-3 sm:p-4.5 transition-all flex flex-col justify-between group card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }}">
                     <div>
                         <span class="text-[10px] sm:text-[11px] text-slate-400 font-bold uppercase tracking-wider block mb-1">Kecamatan</span>
                         <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-sky-700 transition-colors tracking-tight leading-snug">
@@ -315,11 +317,42 @@
                     $features = $isModel ? ($item->features ?: ['Tanpa bongkar keramik', 'Garansi nota 30 hari']) : $item['features'];
                     $category = $isModel ? ($item->category ?? 'LAYANAN UTAMA') : $item['category'];
 
+                    $rawImage = $isModel ? $item->image : ($item['image'] ?? null);
+                    $imageSrc = $rawImage;
+                    $lowerName = strtolower($title);
+                    if (empty($imageSrc) || str_contains($imageSrc, 'placehold.co') || str_contains($imageSrc, 'unsplash.com')) {
+                        if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
+                            $imageSrc = asset('images/services/wastafel-cuci-piring-mampet.webp');
+                        } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
+                            $imageSrc = asset('images/services/kloset-wc-mampet.webp');
+                        } elseif (str_contains($lowerName, 'floor drain') || str_contains($lowerName, 'kamar mandi')) {
+                            $imageSrc = asset('images/services/floor-drain-kamar-mandi.webp');
+                        } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera')) {
+                            $imageSrc = asset('images/services/inspeksi-kamera-cctv-pipa.webp');
+                        } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'lemak') || str_contains($lowerName, 'resto')) {
+                            $imageSrc = asset('images/services/kuras-grease-trap-lemak.webp');
+                        } elseif (str_contains($lowerName, 'talang') || str_contains($lowerName, 'atap')) {
+                            $imageSrc = asset('images/services/talang-rooftop-pipa-atap.webp');
+                        } else {
+                            $imageSrc = asset('images/services/wastafel-cuci-piring-mampet.webp');
+                        }
+                    }
+
                     $waServiceMsg = urlencode("Halo teknisi Drainusantara, saya butuh penanganan {$title} di area {$cityData['name']}. Mohon info estimasi biaya.");
                     $waServiceUrl = "https://wa.me/{$whatsappNumber}?text={$waServiceMsg}";
                 @endphp
-                <div class="w-[82vw] sm:w-[280px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-5 sm:p-6 flex flex-col justify-between shadow-2xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft delay-{{ min(($index + 1) * 75, 300) }}">
+                <div class="w-[82vw] sm:w-[280px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-{{ ($index % 4) + 1 }}">
                     <div>
+                        <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-3.5 border border-slate-100">
+                            <img src="{{ $imageSrc }}" 
+                                 alt="{{ $title }}" 
+                                 width="600"
+                                 height="375"
+                                 loading="lazy" 
+                                 decoding="async"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
+                                 onerror="this.onerror=null; this.src='{{ asset('images/services/wastafel-cuci-piring-mampet.webp') }}';">
+                        </div>
                         <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight mb-2">
                             {{ $title }}
                         </h3>
@@ -374,7 +407,7 @@
 />
 
 <section class="py-14 lg:py-20 bg-slate-900 text-white relative overflow-hidden reveal-soft">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-scale delay-100">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-full uppercase tracking-wider mb-3">
             RESPON CEPAT {{ strtoupper($cityData['name']) }}
         </span>

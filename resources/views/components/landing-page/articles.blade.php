@@ -16,7 +16,7 @@
                 Pelajari langkah pencegahan pipa mampet, bahaya bahan kimia korosif, dan standar pemeliharaan sanitasi hunian Anda.
             </p>
             <div class="flex lg:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
-                <svg class="w-4 h-4 subtle-shift-x shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
                 <span>Geser artikel &bull; Auto-scroll aktif</span>
@@ -31,7 +31,7 @@
              @mouseleave="resume()"
              class="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-8 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
             @forelse($articles as $article)
-                <article class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden hover:border-sky-300 hover:shadow-md transition-all flex flex-col justify-between group card-lift reveal-soft delay-{{ min($loop->iteration * 75, 300) }}">
+                <article class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden hover:border-sky-300 hover:shadow-md transition-all flex flex-col justify-between group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                     <div>
                         <div class="relative aspect-[16/10] bg-slate-100 overflow-hidden border-b border-slate-100">
                             <img 

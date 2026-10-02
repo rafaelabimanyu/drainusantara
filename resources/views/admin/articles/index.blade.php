@@ -37,6 +37,10 @@
                         <td class="px-5 py-3.5 whitespace-nowrap">
                             <img src="{{ $article->thumbnail ?: 'https://placehold.co/100x70/0284c7/ffffff?text=Artikel' }}" 
                                  alt="{{ $article->title }}" 
+                                 width="64"
+                                 height="44"
+                                 loading="lazy"
+                                 decoding="async"
                                  class="w-16 h-11 object-cover rounded-md border border-slate-200 shadow-2xs">
                         </td>
                         <td class="px-5 py-3.5">

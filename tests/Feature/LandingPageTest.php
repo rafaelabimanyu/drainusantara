@@ -106,5 +106,51 @@ class LandingPageTest extends TestCase
         $response->assertSee('Hubungi Teknisi Siaga 24 Jam', false);
         $response->assertSee('h-12', false);
     }
+
+    public function test_documentation_and_equipment_sections_have_mobile_carousel_structure(): void
+    {
+        $service = \App\Models\Service::first() ?? \App\Models\Service::create([
+            'name' => 'Pelancaran Pipa Wastafel',
+            'slug' => 'wastafel-mampet',
+            'description' => 'Layanan pelancaran wastafel mampet.',
+            'is_active' => true,
+        ]);
+
+        \App\Models\Gallery::create([
+            'title' => 'Pelancaran Saluran Gutter Kafe',
+            'category' => 'b2b',
+            'service_id' => $service->id,
+            'image' => '/images/dokumentasi/pelancar-saluran-gutter-resto-jakarta.webp',
+            'description' => 'Pembersihan pipa tanpa bongkar.',
+            'is_active' => true,
+            'order' => 1,
+        ]);
+
+        \App\Models\Equipment::create([
+            'name' => 'Mesin Spiral Elektrik K-50',
+            'category' => 'Mesin Utama',
+            'badge' => 'Standar Armada',
+            'short_description' => 'Pembersih pipa diameter 3/4 hingga 4 inch.',
+            'image' => '/images/equipment/k50.webp',
+            'specs' => ['Jangkauan 30 Meter', 'Motor 590 RPM'],
+            'is_active' => true,
+            'order' => 1,
+        ]);
+
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+
+        // Documentation mobile carousel assertions
+        $response->assertSee('id="dokumentasi"', false);
+        $response->assertSee('Geser foto dokumentasi &bull; Auto-scroll aktif', false);
+        $response->assertSee('aria-label="Dokumentasi 1"', false);
+
+        // Equipment mobile carousel assertions
+        $response->assertSee('id="peralatan-armada"', false);
+        $response->assertSee('Geser katalog peralatan &bull; Auto-scroll aktif', false);
+        $response->assertSee('aria-label="Peralatan 1"', false);
+    }
 }
+
 

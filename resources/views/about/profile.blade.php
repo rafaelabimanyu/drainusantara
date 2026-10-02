@@ -12,7 +12,7 @@
     eyebrow="Profil Entitas"
     heading="Profil Resmi Drainusantara"
     subheading="Drainusantara merupakan entitas bisnis resmi yang beroperasi secara sah di bawah naungan J&J Group, didukung oleh kelengkapan legalitas dan ketaatan pada regulasi yang berlaku."
-    :bg-image="asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp')"
+    :bg-image="asset('assets/banner/hero-profil-perusahaan-drainusantara.webp')"
 />
 
 <section id="profil" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
@@ -20,7 +20,7 @@
         
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
-            <div class="lg:col-span-7">
+            <div class="lg:col-span-7 reveal-soft">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
                     PROFIL RESMI DRAINUSANTARA
                 </span>
@@ -92,7 +92,7 @@
                          @mouseleave="resume()"
                          class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-3 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0">
                         
-                        <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft delay-50">
+                        <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-1">
                             <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 font-extrabold text-xs flex items-center justify-center mb-3 border border-sky-100">
                                 01
                             </div>
@@ -102,7 +102,7 @@
                             </p>
                         </div>
 
-                        <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft delay-100">
+                        <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-2">
                             <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 font-extrabold text-xs flex items-center justify-center mb-3 border border-emerald-100">
                                 02
                             </div>
@@ -112,7 +112,7 @@
                             </p>
                         </div>
 
-                        <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft delay-150">
+                        <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-3">
                             <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 font-extrabold text-xs flex items-center justify-center mb-3 border border-amber-100">
                                 03
                             </div>
@@ -138,7 +138,7 @@
             </div>
 
             <!-- Kolom Kanan: Fact Sheet Entitas Operasional -->
-            <div class="lg:col-span-5 bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs card-lift reveal-soft delay-100">
+            <div class="lg:col-span-5 bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs card-lift reveal-soft">
                 <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-700">
                         DATA ENTITAS BISNIS &amp; OPERASIONAL
@@ -270,7 +270,7 @@
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0">
                 
                 <!-- Standar 01 -->
-                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-white hover:shadow-xs transition-all card-lift reveal-soft delay-50 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-white hover:shadow-xs transition-all card-lift reveal-soft stagger-1 flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 text-sky-700 flex items-center justify-center mb-4 shadow-2xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -288,7 +288,7 @@
                 </div>
 
                 <!-- Standar 02 -->
-                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-white hover:shadow-xs transition-all card-lift reveal-soft delay-100 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-white hover:shadow-xs transition-all card-lift reveal-soft stagger-2 flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 text-sky-700 flex items-center justify-center mb-4 shadow-2xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -307,7 +307,7 @@
                 </div>
 
                 <!-- Standar 03 -->
-                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-white hover:shadow-xs transition-all card-lift reveal-soft delay-150 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-white hover:shadow-xs transition-all card-lift reveal-soft stagger-3 flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 text-sky-700 flex items-center justify-center mb-4 shadow-2xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -325,7 +325,7 @@
                 </div>
 
                 <!-- Standar 04 -->
-                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-white hover:shadow-xs transition-all card-lift reveal-soft delay-200 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-white hover:shadow-xs transition-all card-lift reveal-soft stagger-4 flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 text-sky-700 flex items-center justify-center mb-4 shadow-2xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -477,11 +477,11 @@
                         $mPhoto = is_object($member) ? $member->photo : ($member['photo'] ?? null);
                         $mInitials = is_object($member) ? $member->initials : ($member['initials'] ?? 'ST');
                     @endphp
-                    <div class="w-[58vw] sm:w-auto shrink-0 snap-center bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col items-center text-center group card-lift h-full">
+                    <div class="w-[58vw] sm:w-auto shrink-0 snap-center bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col items-center text-center group card-lift h-full reveal-soft stagger-{{ ($loop->iteration % 6) + 1 }}">
                         <!-- Foto / Avatar Staf -->
                         <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 mb-3.5 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                             @if(!empty($mPhoto))
-                                <img src="{{ $mPhoto }}" alt="{{ $mName }}" class="w-full h-full object-cover">
+                                <img src="{{ $mPhoto }}" alt="{{ $mName }}" width="112" height="112" loading="lazy" decoding="async" class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-sky-50 to-slate-100 text-sky-800">
                                     <svg class="w-12 h-12 text-sky-700/80 mb-0.5" fill="currentColor" viewBox="0 0 24 24">

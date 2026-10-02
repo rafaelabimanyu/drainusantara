@@ -4,7 +4,7 @@
 <div class="py-8 sm:py-14 bg-slate-50 border-b border-slate-200">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Breadcrumbs -->
-        <nav class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-6 overflow-x-auto reveal-soft" aria-label="Breadcrumb">
+        <nav class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-6 overflow-x-auto reveal-fade" aria-label="Breadcrumb">
             <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5 shrink-0">
                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -166,7 +166,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 @foreach($recentArticles as $related)
                 <a href="{{ route('articles.show', $related->slug) }}" 
-                   class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs hover:border-sky-300 hover:shadow-md transition-all block group card-lift reveal-soft delay-{{ min($loop->iteration * 50, 300) }}">
+                   class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs hover:border-sky-300 hover:shadow-md transition-all block group card-lift reveal-soft stagger-{{ $loop->iteration }}">
                     <span class="text-xs font-bold text-sky-800 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-200">{{ $related->category ?? 'Tips' }}</span>
                     <h3 class="font-bold text-slate-900 group-hover:text-sky-700 transition-colors text-sm sm:text-base mt-2.5 leading-snug tracking-tight">
                         {{ $related->title }}

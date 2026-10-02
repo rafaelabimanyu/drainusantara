@@ -37,11 +37,11 @@
                         <td class="px-5 py-3.5 whitespace-nowrap">
                             <div class="flex items-center gap-2">
                                 @if($gallery->image)
-                                    <img src="{{ $gallery->image }}" alt="{{ $gallery->title }}" class="w-14 h-11 object-cover rounded-md border border-slate-200 shadow-2xs">
+                                    <img src="{{ $gallery->image }}" alt="{{ $gallery->title }}" width="56" height="44" loading="lazy" decoding="async" class="w-14 h-11 object-cover rounded-md border border-slate-200 shadow-2xs">
                                 @elseif($gallery->after_image)
-                                    <img src="{{ $gallery->after_image }}" alt="{{ $gallery->title }}" class="w-14 h-11 object-cover rounded-md border border-slate-200 shadow-2xs">
+                                    <img src="{{ $gallery->after_image }}" alt="{{ $gallery->title }}" width="56" height="44" loading="lazy" decoding="async" class="w-14 h-11 object-cover rounded-md border border-slate-200 shadow-2xs">
                                 @elseif($gallery->before_image)
-                                    <img src="{{ $gallery->before_image }}" alt="{{ $gallery->title }}" class="w-14 h-11 object-cover rounded-md border border-slate-200 shadow-2xs">
+                                    <img src="{{ $gallery->before_image }}" alt="{{ $gallery->title }}" width="56" height="44" loading="lazy" decoding="async" class="w-14 h-11 object-cover rounded-md border border-slate-200 shadow-2xs">
                                 @else
                                     <div class="w-11 h-11 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400">
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

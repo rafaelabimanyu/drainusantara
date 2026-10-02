@@ -6,6 +6,7 @@
     eyebrow="Spesifikasi Peralatan"
     heading="Peralatan Mekanis Spiral Baja & Kamera Inspeksi CCTV"
     subheading="Peralatan berstandar industri internasional untuk menembus, mengikis, dan menarik sumbatan tanpa merusak dinding pipa PVC."
+    :bg-image="asset('assets/banner/hero-peralatan-drainusantara.webp')"
 />
 
 @php
@@ -20,7 +21,7 @@
 <section id="peralatan" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="max-w-3xl mb-12">
+        <div class="max-w-3xl mb-12 reveal-soft">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Teknologi Tanpa Bongkar
             </span>
@@ -87,7 +88,7 @@
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0">
                 @foreach($mainMachines as $machine)
-                <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift">
+                <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                     <div>
                         <div class="relative aspect-[16/10] bg-slate-900 rounded-lg overflow-hidden border border-slate-200 mb-6 group">
                             <img 
@@ -219,7 +220,7 @@
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0">
                 
-                <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift">
+                <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
                         <div class="relative aspect-[16/10] bg-slate-900 rounded-lg overflow-hidden border border-slate-200 mb-6 group">
                             <img 
@@ -227,7 +228,7 @@
                                 alt="Mesin Drain Rooter Spiral Baja Rotary Ridgid K-50 &amp; K-60" 
                                 width="800" 
                                 height="500" 
-                                loading="eager" 
+                                loading="lazy" 
                                 decoding="async" 
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';"
@@ -281,7 +282,7 @@
                                 alt="Kamera Inspeksi Endoskopi CCTV Pipa IP68 30 Meter" 
                                 width="800" 
                                 height="500" 
-                                loading="eager" 
+                                loading="lazy" 
                                 decoding="async" 
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-drainusantara.webp') }}';"

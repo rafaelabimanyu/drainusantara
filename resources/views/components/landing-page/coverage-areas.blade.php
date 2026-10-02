@@ -37,8 +37,18 @@
              class="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-1 -mx-1 sm:mx-0 sm:px-0 items-stretch">
             
             <!-- Card 1: DKI JAKARTA -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-xs transition-all flex flex-col justify-between card-lift reveal-soft stagger-1">
-                <div>
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-1">
+                <!-- Card Background Image Layer -->
+                <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-jakarta-indonesia-city-jakarta-drainusantara.webp') }}"
+                         alt="Wilayah DKI Jakarta"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/55 via-white/70 to-white/55"></div>
+                </div>
+
+                <div class="relative z-10">
                     <div class="flex items-center justify-between gap-3 mb-4">
                         <span class="inline-flex items-center px-2.5 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-semibold rounded-md">
                             Posko Pusat Siaga 24 Jam
@@ -61,23 +71,23 @@
                             Area Layanan Utama:
                         </span>
                         <div class="grid grid-cols-2 gap-2">
-                            <a href="{{ route('area.city', ['city' => 'jakarta-selatan']) }}" class="group p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'jakarta-selatan']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Jakarta Selatan</div>
                                 <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Kebayoran, Kemang, Tebet</div>
                             </a>
-                            <a href="{{ route('area.city', ['city' => 'jakarta-barat']) }}" class="group p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'jakarta-barat']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Jakarta Barat</div>
                                 <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Kebon Jeruk, Puri, Grogol</div>
                             </a>
-                            <a href="{{ route('area.city', ['city' => 'jakarta-timur']) }}" class="group p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'jakarta-timur']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Jakarta Timur</div>
                                 <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Duren Sawit, Cakung, Ciracas</div>
                             </a>
-                            <a href="{{ route('area.city', ['city' => 'jakarta-utara']) }}" class="group p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'jakarta-utara']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Jakarta Utara</div>
                                 <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Kelapa Gading, PIK, Sunter</div>
                             </a>
-                            <a href="{{ route('area.city', ['city' => 'jakarta-pusat']) }}" class="group col-span-2 p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex items-center justify-between">
+                            <a href="{{ route('area.city', ['city' => 'jakarta-pusat']) }}" class="group col-span-2 p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex items-center justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors">Jakarta Pusat</div>
                                 <div class="text-[11px] text-slate-500">Menteng, Cempaka Putih, Kemayoran</div>
                             </a>
@@ -85,7 +95,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                <div class="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
                     <a href="{{ route('area.province', ['province' => 'dki-jakarta']) }}" class="text-xs font-bold text-sky-700 hover:text-sky-800 hover:underline">
                         Lihat 44 Kecamatan &rarr;
                     </a>
@@ -103,8 +113,18 @@
             </div>
 
             <!-- Card 2: BODETABEK -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-xs transition-all flex flex-col justify-between card-lift reveal-soft stagger-2">
-                <div>
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-2">
+                <!-- Card Background Image Layer -->
+                <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-kota-bekasi-jawa-barat-drainusantara.webp') }}"
+                         alt="Wilayah Bodetabek"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/55 via-white/70 to-white/55"></div>
+                </div>
+
+                <div class="relative z-10">
                     <div class="flex items-center justify-between gap-3 mb-4">
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-md">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
@@ -128,23 +148,23 @@
                             Area Layanan Utama:
                         </span>
                         <div class="grid grid-cols-2 gap-2">
-                            <a href="{{ route('area.city', ['city' => 'bogor']) }}" class="group p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'bogor']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Bogor &amp; Sentul</div>
                                 <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Sentul City, Cibinong, Bogor Kota</div>
                             </a>
-                            <a href="{{ route('area.city', ['city' => 'depok-cinere']) }}" class="group p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'depok-cinere']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Depok &amp; Cinere</div>
                                 <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Margonda, Sawangan, Cinere</div>
                             </a>
-                            <a href="{{ route('area.city', ['city' => 'tangerang-kota']) }}" class="group p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'tangerang-kota']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Tangerang Kota</div>
                                 <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Cipondoh, Karawaci, Ciledug</div>
                             </a>
-                            <a href="{{ route('area.city', ['city' => 'tangerang-selatan']) }}" class="group p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'tangerang-selatan']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Tangsel</div>
                                 <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">BSD City, Bintaro, Serpong</div>
                             </a>
-                            <a href="{{ route('area.city', ['city' => 'bekasi-cikarang']) }}" class="group col-span-2 p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex items-center justify-between">
+                            <a href="{{ route('area.city', ['city' => 'bekasi-cikarang']) }}" class="group col-span-2 p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex items-center justify-between">
                                 <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors">Bekasi &amp; Cikarang</div>
                                 <div class="text-[11px] text-slate-500">Bekasi Barat, Harapan Indah, Cikarang</div>
                             </a>
@@ -152,7 +172,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                <div class="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
                     <span class="text-xs text-slate-500 font-medium">Banten &amp; Jabar</span>
                     @php
                         $waBodetabekText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area Bodetabek. Mohon info teknisi terdekat.");
@@ -168,8 +188,18 @@
             </div>
 
             <!-- Card 3: SEMARANG & BANDAR LAMPUNG -->
-            <div class="w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-xs transition-all flex flex-col justify-between card-lift reveal-soft stagger-3">
-                <div>
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-3">
+                <!-- Card Background Image Layer -->
+                <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-semarang-lampung-drainusantara.webp') }}"
+                         alt="Wilayah Semarang & Bandar Lampung"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/55 via-white/70 to-white/55"></div>
+                </div>
+
+                <div class="relative z-10">
                     <div class="flex items-center justify-between gap-3 mb-4">
                         <span class="inline-flex items-center px-2.5 py-1 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-semibold rounded-md">
                             Hub Jawa Tengah &amp; Sumatera
@@ -193,7 +223,7 @@
                         </span>
                         <div class="grid grid-cols-2 gap-2">
                             <!-- Semarang -->
-                            <a href="{{ route('area.city', ['city' => 'semarang']) }}" class="group p-3 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'semarang']) }}" class="group p-3 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div>
                                     <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kota Semarang</div>
                                     <span class="text-[10px] text-sky-700 font-bold bg-sky-50 px-1.5 py-0.5 rounded border border-sky-200 inline-block mt-1">Jawa Tengah</span>
@@ -202,7 +232,7 @@
                             </a>
 
                             <!-- Bandar Lampung -->
-                            <a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="group p-3 rounded-lg bg-slate-50 hover:bg-slate-100/90 border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="group p-3 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div>
                                     <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Bandar Lampung</div>
                                     <span class="text-[10px] text-indigo-700 font-bold bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 inline-block mt-1">Sumatera</span>
@@ -213,7 +243,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                <div class="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2 text-xs font-bold">
                         <a href="{{ route('area.province', ['province' => 'jawa-tengah']) }}" class="text-sky-700 hover:underline">Jateng</a>
                         <span class="text-slate-300">&bull;</span>

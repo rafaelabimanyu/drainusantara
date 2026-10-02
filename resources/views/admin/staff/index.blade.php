@@ -39,6 +39,10 @@
                                 @if(!empty($staff->photo))
                                     <img src="{{ $staff->photo }}" 
                                          alt="{{ $staff->name }}" 
+                                         width="48"
+                                         height="48"
+                                         loading="lazy"
+                                         decoding="async"
                                          class="w-full h-full object-cover">
                                 @else
                                     <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-sky-50 to-slate-100 text-sky-800">

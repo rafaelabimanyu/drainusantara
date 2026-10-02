@@ -54,7 +54,7 @@
              @mouseleave="resume()"
              class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0 items-stretch">
             @foreach($displayStories as $story)
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50/70 hover:bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-slate-300 transition-all flex flex-col justify-between shadow-2xs card-lift reveal-soft delay-{{ min($loop->iteration * 100, 300) }}">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50/70 hover:bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-slate-300 transition-all flex flex-col justify-between shadow-2xs card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                     <div>
                         <div class="flex items-center justify-between gap-2 mb-4">
                             <span class="inline-flex items-center px-2.5 py-1 bg-white border border-slate-200 text-slate-700 text-xs font-semibold rounded-md shadow-2xs">

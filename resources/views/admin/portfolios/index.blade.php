@@ -36,8 +36,12 @@
                     <tr class="hover:bg-slate-50/80 transition-colors">
                         <td class="px-5 py-3.5 whitespace-nowrap">
                             <div class="w-14 h-11 rounded-md overflow-hidden border border-slate-200 bg-slate-100 relative shadow-2xs">
-                                <img src="{{ $portfolio->image ?: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80' }}" 
+                                <img src="{{ $portfolio->image ?: asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp') }}" 
                                      alt="{{ $portfolio->client_name }}" 
+                                     width="56"
+                                     height="44"
+                                     loading="lazy"
+                                     decoding="async"
                                      class="w-full h-full object-cover">
                             </div>
                         </td>

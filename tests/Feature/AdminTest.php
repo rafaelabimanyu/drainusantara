@@ -210,9 +210,8 @@ class AdminTest extends TestCase
     public function test_admin_service_image_upload(): void
     {
         $this->actingAs($this->adminUser);
-        Storage::fake('public');
 
-        $file = UploadedFile::fake()->image('wastafel.jpg', 600, 400);
+        $file = UploadedFile::fake()->image('wastafel-test.jpg', 600, 400);
 
         $response = $this->post('/admin/services', [
             'name' => 'Wastafel Dapur Mampet',
@@ -223,8 +222,13 @@ class AdminTest extends TestCase
         $response->assertRedirect('/admin/services');
         $service = Service::where('slug', 'wastafel-dapur-mampet')->first();
         $this->assertNotNull($service);
-        $this->assertStringContainsString('/storage/services/', $service->image);
-        Storage::disk('public')->assertExists(str_replace('/storage/', '', $service->image));
+        $this->assertStringContainsString('/images/services/', $service->image);
+        $savedPath = public_path(ltrim($service->image, '/'));
+        $this->assertFileExists($savedPath);
+
+        if (file_exists($savedPath)) {
+            @unlink($savedPath);
+        }
     }
 
     public function test_admin_gallery_image_upload(): void

@@ -94,7 +94,7 @@
                     <div>
                         <label for="image_url" class="block text-xs font-bold text-slate-700 mb-1">Atau Ubah Link URL Foto Luar</label>
                         <input type="url" name="image_url" id="image_url" value="{{ old('image_url') }}"
-                               placeholder="https://images.unsplash.com/photo-..."
+                               placeholder="https://domain.com/foto-restoran.webp atau URL gambar"
                                @input="if ($event.target.value) { preview = $event.target.value; }"
                                class="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:border-sky-700 focus:ring-1 focus:ring-sky-700 outline-hidden">
                         @error('image_url') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror

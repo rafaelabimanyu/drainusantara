@@ -93,7 +93,7 @@
                     <div>
                         <label for="photo_url" class="block text-xs font-bold text-slate-700 mb-1">Atau Gunakan Link URL Foto</label>
                         <input type="url" name="photo_url" id="photo_url" value="{{ old('photo_url') }}"
-                               placeholder="https://images.unsplash.com/..."
+                               placeholder="https://domain.com/foto-staff.webp atau URL gambar"
                                @input="if ($event.target.value) { preview = $event.target.value; }"
                                class="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:border-sky-700 focus:ring-1 focus:ring-sky-700 outline-hidden">
                         @error('photo_url') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror

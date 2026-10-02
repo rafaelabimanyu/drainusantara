@@ -6,40 +6,58 @@
 @php
     $b2bProjects = (isset($portfolios) && $portfolios->isNotEmpty()) ? $portfolios : collect([
         (object)[
-            'client_name' => "D'Cost Seafood Restaurant",
+            'client_name' => 'Mie Gacoan',
             'client_type' => 'Restoran & F&B Komersial',
-            'location' => 'Mall Kelapa Gading, Jakarta Utara',
-            'image' => 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+            'location' => 'Jabodetabek & Jawa Tengah',
+            'image' => '/images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
         ],
         (object)[
-            'client_name' => 'Restoran Pagi Sore',
-            'client_type' => 'Restoran Masakan Minang',
-            'location' => 'Cilandak, Jakarta Selatan',
-            'image' => 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
+            'client_name' => 'KFC Indonesia',
+            'client_type' => 'Restoran Cepat Saji',
+            'location' => 'Jabodetabek',
+            'image' => '/images/portfolio/kfc-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
         ],
         (object)[
-            'client_name' => 'The Alana Hotel & Conference Center',
-            'client_type' => 'Perhotelan Bintang 4',
-            'location' => 'Sentul City, Bogor',
-            'image' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+            'client_name' => "McDonald's Indonesia",
+            'client_type' => 'Restoran Cepat Saji',
+            'location' => 'Jabodetabek',
+            'image' => '/images/portfolio/mcd-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
         ],
         (object)[
-            'client_name' => 'Hanamasa Restaurant',
-            'client_type' => 'Restoran Japanese Grill & Shabu',
-            'location' => 'Simpang Lima, Semarang',
-            'image' => 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+            'client_name' => 'Richeese Factory',
+            'client_type' => 'Restoran Cepat Saji & Kafe',
+            'location' => 'Jabodetabek',
+            'image' => '/images/portfolio/richeese-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
         ],
         (object)[
-            'client_name' => 'Kwetiau Sapi Mangga Besar',
-            'client_type' => 'Restoran Kuliner Nusantara',
-            'location' => 'Mangga Besar, Jakarta Barat',
-            'image' => 'https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&w=800&q=80',
+            'client_name' => 'Sushi Tei',
+            'client_type' => 'Restoran Kuliner Jepang',
+            'location' => 'Mall & Gedung Komersial',
+            'image' => '/images/portfolio/sushi-tei-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
         ],
         (object)[
-            'client_name' => 'Kopi Kenangan Heritage',
-            'client_type' => 'Kafe & Resto Modern',
-            'location' => 'Grand Indonesia, Jakarta Pusat',
-            'image' => 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+            'client_name' => 'Super Indo Supermarket',
+            'client_type' => 'Supermarket & Retail Komersial',
+            'location' => 'Jabodetabek & Jawa Tengah',
+            'image' => '/images/portfolio/superindo-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
+        ],
+        (object)[
+            'client_name' => 'SPBU Pertamina Sunter',
+            'client_type' => 'Fasilitas SPBU & Komersial',
+            'location' => 'Sunter, Jakarta Utara',
+            'image' => '/images/portfolio/pertamina-sunter-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
+        ],
+        (object)[
+            'client_name' => 'Stasiun KAI Lempuyangan',
+            'client_type' => 'Fasilitas Publik & Transportasi',
+            'location' => 'Yogyakarta & Jawa Tengah',
+            'image' => '/images/portfolio/stasiun-kai-lempuyangan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
+        ],
+        (object)[
+            'client_name' => 'Haka Dimsum',
+            'client_type' => 'Restoran & Kafe 24 Jam',
+            'location' => 'Kemang & BSD City',
+            'image' => '/images/portfolio/testimoni-restoran-haka-dimsum-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
         ],
     ]);
     $b2bWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode("Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran pipa & grease trap untuk perusahaan/gedung kami. Mohon info survey lokasi.");
@@ -52,6 +70,8 @@
              totalCards: {{ count($b2bProjects) }},
              timer: null,
              _observer: null,
+             _isProgrammatic: false,
+             _programmaticTimeout: null,
              init() {
                  if (typeof window === 'undefined') return;
                  if ('IntersectionObserver' in window && this.$refs.b2bSlider) {
@@ -92,28 +112,64 @@
              },
              goToPage(p) {
                  this.activePage = p;
+                 this._isProgrammatic = true;
+                 clearTimeout(this._programmaticTimeout);
+
                  const slider = this.$refs.b2bSlider;
                  if (slider) {
                      const cards = slider.children;
                      const targetIndex = Math.min(p * 3, this.totalCards - 1);
                      if (cards[targetIndex]) {
-                         const targetLeft = Math.max(0, cards[targetIndex].offsetLeft - slider.offsetLeft - 8);
+                         const targetLeft = cards[targetIndex].offsetLeft - slider.offsetLeft;
                          slider.scrollTo({ 
-                             left: targetLeft, 
+                             left: Math.max(0, targetLeft), 
                              behavior: 'smooth' 
                          });
                      }
                  }
+
+                 this._programmaticTimeout = setTimeout(() => {
+                     this._isProgrammatic = false;
+                 }, 450);
              },
              onScroll() {
-                 if (!this.$refs.b2bSlider) return;
+                 if (this._isProgrammatic) return;
                  const slider = this.$refs.b2bSlider;
+                 if (!slider) return;
+
                  const scrollLeft = slider.scrollLeft;
-                 const firstCard = slider.firstElementChild;
-                 if (!firstCard) return;
-                 const cardWidth = firstCard.offsetWidth + 20;
-                 const currentCardIndex = Math.round(scrollLeft / cardWidth);
-                 const newPage = Math.min(this.pageCount - 1, Math.max(0, Math.floor(currentCardIndex / 3)));
+                 const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+                 // Di posisi awal scroll track
+                 if (scrollLeft <= 15) {
+                     this.activePage = 0;
+                     return;
+                 }
+
+                 // Di posisi ujung akhir scroll track
+                 if (maxScroll > 0 && scrollLeft >= maxScroll - 15) {
+                     this.activePage = this.pageCount - 1;
+                     return;
+                 }
+
+                 const cards = slider.children;
+                 if (!cards || cards.length === 0) return;
+
+                 // Jarak horizontal per card yang presisi (lebar card + gap)
+                 const cardStep = cards.length > 1 
+                     ? (cards[1].offsetLeft - cards[0].offsetLeft) 
+                     : (cards[0].offsetWidth + 24);
+
+                 // 1 dot = tepat melewati 3 card
+                 const pageStep = cardStep * 3;
+
+                 // Pindah dot HANYA setiap kali sudah melewati 3 card
+                 // Toleransi 0.15 * cardStep agar dot berpindah tepat saat card ketiga terlewati
+                 const newPage = Math.min(
+                     this.pageCount - 1, 
+                     Math.max(0, Math.floor((scrollLeft + cardStep * 0.15) / pageStep))
+                 );
+
                  if (newPage !== this.activePage) {
                      this.activePage = newPage;
                  }
@@ -136,7 +192,7 @@
             </div>
 
             <!-- Desktop Carousel Controls -->
-            <div class="hidden sm:flex items-center gap-2 shrink-0 reveal-soft delay-100">
+            <div class="hidden sm:flex items-center gap-2 shrink-0">
                 <button type="button" 
                         @click="prev()" 
                         class="w-10 h-10 rounded-xl bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200/90 hover:border-sky-300 transition-all shadow-2xs flex items-center justify-center cursor-pointer btn-press"
@@ -172,17 +228,22 @@
                 <a href="{{ $itemWaUrl }}" 
                    target="_blank" 
                    rel="noopener noreferrer" 
-                   class="w-[85vw] sm:w-[350px] lg:w-[calc(33.333%-1rem)] shrink-0 snap-center bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600"
+                   class="w-[85vw] sm:w-[350px] lg:w-[calc(33.333%-1rem)] shrink-0 snap-center lg:snap-start bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600"
                    title="Konsultasi penanganan {{ $project->client_name }}">
                     <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
                     <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
-                        <img src="{{ $project->image ?? 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80' }}" 
+                        @php
+                            $projectImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp');
+                            $defaultFallback = asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp');
+                        @endphp
+                        <img src="{{ $projectImg }}" 
                              alt="{{ $project->client_name }}" 
                              loading="lazy"
+                             decoding="async"
                              width="800"
                              height="500"
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80';">
+                             onerror="this.onerror=null; this.src='{{ $defaultFallback }}';">
                     </div>
 
                     <!-- Informasi Restoran / Klien Bersih -->
@@ -191,13 +252,12 @@
                             <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight line-clamp-1 group-hover:text-sky-700 transition-colors">
                                 {{ $project->client_name }}
                             </h3>
-                            @if(!empty($project->location) || !empty($project->client_type))
+                            @if(!empty($project->client_type))
                             <p class="text-xs text-slate-500 mt-1.5 flex items-center gap-1.5 truncate">
                                 <svg class="w-3.5 h-3.5 text-sky-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                 </svg>
-                                <span class="truncate">{{ $project->location ?? $project->client_type }}</span>
+                                <span class="truncate">{{ $project->client_type }}</span>
                             </p>
                             @endif
                         </div>

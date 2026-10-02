@@ -18,7 +18,7 @@
 <section id="faq-page" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200" x-data="{ openFaq: 1, activeCategory: 'all' }">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-2xl mx-auto mb-12">
+        <div class="text-center max-w-2xl mx-auto mb-12 reveal-soft">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Informasi Transparan
             </span>
@@ -83,7 +83,7 @@
             ];
         @endphp
 
-        <div class="flex items-center justify-center gap-2 flex-wrap mb-8">
+        <div class="flex items-center justify-center gap-2 flex-wrap mb-8 reveal-soft delay-100">
             <button type="button" 
                     @click="activeCategory = 'all'"
                     :class="activeCategory === 'all' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'"
@@ -119,7 +119,7 @@
         <div class="space-y-3.5 mb-12">
             @foreach($faqs as $item)
                 <div x-show="activeCategory === 'all' || activeCategory === '{{ $item['category'] }}'"
-                     class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs transition-all">
+                     class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs transition-all card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }}">
                     <button type="button" 
                             @click="openFaq = (openFaq === {{ $item['id'] }} ? null : {{ $item['id'] }})"
                             class="w-full flex items-center justify-between p-4 sm:p-5 text-left text-xs sm:text-sm font-bold text-slate-900 hover:text-sky-700 transition-colors cursor-pointer min-h-[48px]">
@@ -139,7 +139,7 @@
             @endforeach
         </div>
 
-        <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6 reveal-soft">
             <div class="text-center sm:text-left max-w-xl">
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-1">
                     Layanan Konsultasi Bebas Biaya

@@ -40,7 +40,7 @@
         [x-cloak] { display: none !important; }
 
         @media (prefers-reduced-motion: reduce) {
-            .reveal-soft, .reveal-fade, .reveal-scale, .fade-up, .fade-in, .zoom-in, .card-lift, .btn-press, .subtle-shift-x, .pulse-ring-emerald, .mobile-nav-dock {
+            .reveal-soft, .reveal-fade, .reveal-scale, .fade-up, .fade-in, .zoom-in, .card-lift, .btn-press, .mobile-nav-dock {
                 opacity: 1 !important;
                 transform: none !important;
                 transition: none !important;
@@ -75,7 +75,7 @@
 
     @stack('scripts')
 
-    <!-- Scroll Visibility Observer (Lightweight, Single-Pass) -->
+    <!-- Scroll Visibility Observer (Smooth & Dynamic Entrance) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.reveal-soft, .reveal-fade, .reveal-scale, .fade-up, .fade-in, .zoom-in');
@@ -89,10 +89,16 @@
                     });
                 }, {
                     root: null,
-                    rootMargin: '0px 0px -20px 0px',
+                    rootMargin: '0px 0px -30px 0px',
                     threshold: 0.05
                 });
-                animatedElements.forEach(el => observer.observe(el));
+
+                // Frame tick ensures browser renders initial state then smoothly transitions in-view elements
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        animatedElements.forEach(el => observer.observe(el));
+                    }, 40);
+                });
             } else {
                 animatedElements.forEach(el => el.classList.add('is-visible'));
             }

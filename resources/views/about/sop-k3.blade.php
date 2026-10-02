@@ -6,13 +6,14 @@
     eyebrow="Keselamatan & Kesehatan Kerja"
     heading="Perlengkapan APD K3 Teknisi Lapangan Drainusantara"
     subheading="Standar perlindungan diri teknisi kami sebelum memasuki area kerja Anda, memastikan tidak ada risiko kontaminasi atau bahaya selama proses perbaikan pipa."
+    :bg-image="asset('assets/banner/hero-k3-drainusantara.webp')"
 />
 
 <!-- Main SOP K3 Content -->
 <section id="sop-k3" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="max-w-3xl mb-12">
+        <div class="max-w-3xl mb-12 reveal-soft">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Protokol Higienitas Lapangan
             </span>
@@ -70,7 +71,7 @@
                  @mouseenter="pause()"
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-sm shrink-0">
@@ -84,7 +85,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between card-lift reveal-soft stagger-2">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center font-bold text-sm shrink-0">
@@ -98,7 +99,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between card-lift reveal-soft stagger-3">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-10 h-10 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center font-bold text-sm shrink-0">
@@ -112,7 +113,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between card-lift reveal-soft stagger-4">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
                             <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center font-bold text-sm shrink-0">
@@ -145,7 +146,7 @@
 <!-- Section 2: Protokol Desinfeksi Mesin Ridgid & Hydro-Jetting (3 Cards with Mobile Carousel) -->
 <section id="protokol-desinfeksi" class="py-16 lg:py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mb-12">
+        <div class="max-w-3xl mb-12 reveal-soft">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Dekontaminasi Alat Kerja
             </span>
@@ -201,7 +202,7 @@
                  @mouseenter="pause()"
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
                         <div class="w-12 h-12 rounded-lg bg-sky-100 text-sky-800 border border-sky-200 flex items-center justify-center font-bold text-base mb-5">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -220,7 +221,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between card-lift reveal-soft stagger-2">
                     <div>
                         <div class="w-12 h-12 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center justify-center font-bold text-base mb-5">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,7 +240,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between card-lift reveal-soft stagger-3">
                     <div>
                         <div class="w-12 h-12 rounded-lg bg-indigo-100 text-indigo-800 border border-indigo-200 flex items-center justify-center font-bold text-base mb-5">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -279,7 +280,7 @@
 <!-- Section 3: Point Checklist Verifikasi Pasca Kerja -->
 <section id="verifikasi-pasca-kerja" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mb-12">
+        <div class="max-w-3xl mb-12 reveal-soft">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Quality Assurance Mandiri
             </span>
@@ -291,7 +292,7 @@
             </p>
         </div>
 
-        <div class="bg-white rounded-xl border border-slate-200 divide-y divide-slate-200 shadow-xs mb-10">
+        <div class="bg-white rounded-xl border border-slate-200 divide-y divide-slate-200 shadow-xs mb-10 reveal-soft">
             <div class="p-5 sm:p-6 flex items-start gap-4">
                 <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -388,7 +389,7 @@
             </div>
         </div>
 
-        <div class="bg-slate-900 text-white p-6 sm:p-8 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div class="bg-slate-900 text-white p-6 sm:p-8 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6 reveal-soft">
             <div class="max-w-xl text-center sm:text-left">
                 <h4 class="text-lg font-bold text-white mb-1">
                     Butuh Standar Sanitasi Ketat di Tempat Usaha Anda?

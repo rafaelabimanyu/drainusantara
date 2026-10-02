@@ -54,8 +54,7 @@ class ServiceController extends Controller
             $request->validate([
                 'image' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120'],
             ]);
-            $path = $request->file('image')->store('services', 'public');
-            $imageUrl = Storage::url($path);
+            $imageUrl = $this->uploadServiceImage($request->file('image'));
         } elseif (!empty($validated['image_url'])) {
             $imageUrl = $validated['image_url'];
         }
@@ -121,8 +120,9 @@ class ServiceController extends Controller
             $request->validate([
                 'image' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120'],
             ]);
-            $path = $request->file('image')->store('services', 'public');
-            $imageUrl = Storage::url($path);
+            $oldImage = $service->image;
+            $imageUrl = $this->uploadServiceImage($request->file('image'));
+            $this->deleteServiceFile($oldImage, $service->id);
         } elseif (!empty($validated['image_url'])) {
             $imageUrl = $validated['image_url'];
         }
@@ -152,10 +152,79 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service): RedirectResponse
     {
+        $oldImage = $service->image;
         $name = $service->name;
         $service->delete();
+        $this->deleteServiceFile($oldImage);
 
         return redirect()->route('admin.services.index')
             ->with('success', "Layanan '{$name}' berhasil dihapus.");
+    }
+
+    /**
+     * Upload uncompressed service image directly to public/images/services preserving original filename.
+     */
+    protected function uploadServiceImage($file): string
+    {
+        $targetDir = public_path('images/services');
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0755, true);
+        }
+
+        $filename = basename($file->getClientOriginalName());
+        $file->move($targetDir, $filename);
+
+        return '/images/services/' . $filename;
+    }
+
+    /**
+     * Delete physical image file from public/images/services if it exists and not used elsewhere.
+     */
+    protected function deleteServiceFile(?string $path, ?int $excludeServiceId = null): void
+    {
+        if (empty($path)) {
+            return;
+        }
+
+        $parsedPath = parse_url($path, PHP_URL_PATH);
+        $relativePath = ltrim($parsedPath ?: $path, '/');
+
+        // Pastikan hanya menghapus file di dalam folder images/services/
+        if (!str_starts_with($relativePath, 'images/services/')) {
+            return;
+        }
+
+        // Lindungi aset default/seeder agar tidak terhapus tidak sengaja
+        $protectedDefaults = [
+            'images/services/wastafel-cuci-piring-mampet.webp',
+            'images/services/kloset-wc-mampet.webp',
+            'images/services/floor-drain-kamar-mandi.webp',
+            'images/services/talang-rooftop-pipa-atap.webp',
+            'images/services/kuras-grease-trap-lemak.webp',
+            'images/services/inspeksi-kamera-cctv-pipa.webp',
+        ];
+
+        if (in_array($relativePath, $protectedDefaults, true)) {
+            return;
+        }
+
+        // Cek apakah file ini masih digunakan oleh record layanan lain
+        $isUsedElsewhere = Service::query()
+            ->when($excludeServiceId, fn ($q) => $q->where('id', '!=', $excludeServiceId))
+            ->where(function ($q) use ($path, $relativePath) {
+                $q->where('image', $path)
+                    ->orWhere('image', '/' . $relativePath)
+                    ->orWhere('image', $relativePath);
+            })
+            ->exists();
+
+        if ($isUsedElsewhere) {
+            return;
+        }
+
+        $fullPath = public_path($relativePath);
+        if (file_exists($fullPath) && is_file($fullPath)) {
+            @unlink($fullPath);
+        }
     }
 }

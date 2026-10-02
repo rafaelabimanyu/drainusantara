@@ -17,13 +17,15 @@
         <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
             <img src="{{ $heroBgImage }}" 
                  alt="Wilayah Layanan Drainusantara" 
+                 loading="eager"
+                 decoding="async"
                  class="w-full h-full object-cover object-center opacity-60 md:opacity-75 scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/85 to-slate-50/25"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-slate-50/30"></div>
         </div>
     @endif
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap font-medium" aria-label="Breadcrumb">
+        <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap font-medium reveal-fade" aria-label="Breadcrumb">
             <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -35,20 +37,20 @@
         </nav>
 
         <div class="max-w-3xl space-y-4">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
                 <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
                 <span>Armada Siaga &bull; Jabodetabek, Jawa Tengah, Lampung</span>
             </div>
 
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight reveal-soft delay-100">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight reveal-soft">
                 Pusat Jangkauan Layanan Drainusantara
             </h1>
 
-            <p class="text-base text-slate-600 leading-relaxed reveal-soft delay-200">
+            <p class="text-base text-slate-600 leading-relaxed reveal-soft delay-100">
                 Pilih provinsi dan kota administrasi Anda di bawah untuk melihat posko siaga teknisi terdekat, daftar kecamatan yang dilayani, serta layanan respon cepat WhatsApp.
             </p>
 
-            <div class="pt-2 flex flex-wrap gap-2 reveal-soft delay-300">
+            <div class="pt-2 flex flex-wrap gap-2 reveal-soft delay-150">
                 @foreach($provinces as $provSlug => $province)
                     <a href="#prov-{{ $provSlug }}" class="px-3.5 py-1.5 rounded-lg bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 text-xs font-semibold border border-slate-200 hover:border-sky-300 shadow-2xs transition-all flex items-center gap-1.5 btn-press">
                         <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
@@ -63,7 +65,7 @@
 <section class="py-14 lg:py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         @foreach($provinces as $provSlug => $province)
-            <div id="prov-{{ $provSlug }}" class="bg-slate-50 hover:bg-slate-50/80 rounded-xl p-6 sm:p-8 border border-slate-200 shadow-sm transition-all reveal-soft card-lift delay-{{ min(($loop->iteration - 1) * 100, 300) }}">
+            <div id="prov-{{ $provSlug }}" class="bg-slate-50 hover:bg-slate-50/80 rounded-xl p-6 sm:p-8 border border-slate-200 shadow-sm transition-all reveal-soft card-lift">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
                     <div>
                         <div class="flex items-center gap-2 mb-2">
@@ -94,7 +96,7 @@
                 <!-- Cities in this Province -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
                     @foreach($province['cities'] as $citySlug => $city)
-                        <div class="bg-white rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-md p-6 transition-all flex flex-col justify-between group card-lift">
+                        <div class="bg-white rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-md p-6 transition-all flex flex-col justify-between group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                             <div>
                                 <div class="flex items-center justify-between mb-3">
                                     <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-md border border-sky-200">

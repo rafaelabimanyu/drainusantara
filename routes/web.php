@@ -73,3 +73,4 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('articles', ArticleController::class);
     Route::resource('reviews', ReviewController::class);
 });
+

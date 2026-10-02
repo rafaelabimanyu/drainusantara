@@ -38,6 +38,10 @@
                             <div class="w-16 h-12 rounded-md overflow-hidden border border-slate-200 bg-slate-900 relative shadow-2xs">
                                 <img src="{{ $equipment->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
                                      alt="{{ $equipment->name }}" 
+                                     width="64"
+                                     height="48"
+                                     loading="lazy"
+                                     decoding="async"
                                      class="w-full h-full object-cover"
                                      onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
                             </div>

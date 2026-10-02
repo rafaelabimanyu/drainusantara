@@ -12,6 +12,7 @@
     eyebrow="Tata Kelola & Ekosistem Korporat"
     heading="Sinergi Ekosistem J&J Group"
     subheading="Drainusantara beroperasi sebagai unit spesialis pelancaran pipa mekanis terpadu di bawah naungan ekosistem J&J Group, memadukan keandalan teknis lapangan dengan tata kelola administrasi korporat yang akuntabel."
+    :bg-image="asset('assets/banner/hero-JnJ-drainusantara.webp')"
 />
 
 <section id="holding" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
@@ -84,7 +85,7 @@
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-6 sm:overflow-visible sm:pb-0">
                 
-                <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between card-lift reveal-soft delay-50">
+                <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-sm mb-4 border border-sky-100">
                             01
@@ -96,7 +97,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between card-lift reveal-soft delay-100">
+                <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-2">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-sm mb-4 border border-sky-100">
                             02
@@ -108,7 +109,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between card-lift reveal-soft delay-150">
+                <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-3">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-sm mb-4 border border-sky-100">
                             03
@@ -120,7 +121,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between card-lift reveal-soft delay-200">
+                <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-4">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center font-bold text-sm mb-4 border border-sky-100">
                             04
@@ -216,7 +217,7 @@
                  @mouseleave="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
                 
-                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 hover:bg-white p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-xs transition-all card-lift reveal-soft delay-50 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 hover:bg-white p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-xs transition-all card-lift reveal-soft stagger-1 flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 text-sky-700 flex items-center justify-center mb-4 shadow-2xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,7 +231,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 hover:bg-white p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-xs transition-all card-lift reveal-soft delay-100 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 hover:bg-white p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-xs transition-all card-lift reveal-soft stagger-2 flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 text-sky-700 flex items-center justify-center mb-4 shadow-2xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +245,7 @@
                     </div>
                 </div>
 
-                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 hover:bg-white p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-xs transition-all card-lift reveal-soft delay-150 flex flex-col justify-between">
+                <div class="w-[85vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-slate-50 hover:bg-white p-6 rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-xs transition-all card-lift reveal-soft stagger-3 flex flex-col justify-between">
                     <div>
                         <div class="w-10 h-10 rounded-lg bg-white border border-slate-200 text-sky-700 flex items-center justify-center mb-4 shadow-2xs">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

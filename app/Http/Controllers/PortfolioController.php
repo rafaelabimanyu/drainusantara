@@ -54,7 +54,7 @@ class PortfolioController extends Controller
         } elseif (is_string($request->input('image')) && !empty($request->input('image'))) {
             $imageUrl = $request->input('image');
         } elseif (!$imageUrl) {
-            $imageUrl = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80';
+            $imageUrl = '/images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp';
         }
 
         Portfolio::create([

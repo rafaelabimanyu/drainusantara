@@ -2,7 +2,12 @@
     'galleries' => null,
 ])
 
-<section id="dokumentasi" class="relative py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
+@php
+    $displayGalleries = ($galleries ?? collect())->take(4);
+    $countTotal = $displayGalleries->count();
+@endphp
+
+<section id="dokumentasi" class="relative py-16 lg:py-20 bg-slate-50 border-b border-slate-200" @if($countTotal > 0) x-data="mobileCarousel({{ $countTotal }}, 4500)" @endif>
     <div id="galeri-before-after" class="absolute -top-16"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -17,6 +22,14 @@
                 <p class="text-slate-600 text-xs sm:text-sm mt-2 max-w-2xl leading-relaxed">
                     Dokumentasi riil penanganan saluran pipa tersumbat menggunakan mesin rooter spiral elektrik dan kamera inspeksi endoskopi pipa tanpa bongkar keramik.
                 </p>
+                @if($countTotal > 0)
+                <div class="flex md:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                    <span>Geser foto dokumentasi &bull; Auto-scroll aktif</span>
+                </div>
+                @endif
             </div>
             <div class="shrink-0">
                 <a href="{{ url('/galeri') }}" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 bg-white hover:bg-sky-50 border border-slate-200 px-4 py-2.5 rounded-lg shadow-2xs transition-colors btn-press min-h-[40px]">
@@ -28,14 +41,15 @@
             </div>
         </div>
 
-        @php
-            $displayGalleries = ($galleries ?? collect())->take(4);
-            $countTotal = $displayGalleries->count();
-        @endphp
-
         @if($countTotal > 0)
-        <!-- 4-Card Responsive Grid (1 col mobile, 2 col tablet, 4 col desktop) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <!-- Responsive Grid on Desktop / Mobile Carousel -->
+        <div x-ref="slider"
+             @scroll.passive="onScroll()"
+             @touchstart="pause()"
+             @touchend="resume()"
+             @mouseenter="pause()"
+             @mouseleave="resume()"
+             class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
             @foreach($displayGalleries as $item)
                 @php
                     $photo = $item->image ?: ($item->after_image ?: $item->before_image);
@@ -43,7 +57,7 @@
                     $waText = urlencode("Halo Tim Drainusantara, saya melihat dokumentasi '{$item->title}'. Saluran pipa saya ada kendala serupa, mohon info estimasi biaya dan kedatangan teknisi.");
                     $itemWaUrl = "https://wa.me/" . config('app.whatsapp_number', '6281234567890') . "?text={$waText}";
                 @endphp
-                <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 card-lift reveal-soft flex flex-col justify-between group">
+                <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }} flex flex-col justify-between group">
                     <div>
                         <!-- Foto Dokumentasi Tajam (Tanpa Badge Kategori) -->
                         <div class="relative aspect-16/10 bg-slate-900 overflow-hidden border-b border-slate-100">
@@ -65,32 +79,45 @@
                         </div>
 
                         <!-- Keterangan Pekerjaan -->
-                        <div class="p-4 sm:p-5">
-                            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-1.5 leading-snug line-clamp-2 group-hover:text-sky-700 transition-colors">
-                                {{ $item->title }}
-                            </h3>
-                            @if(!empty($item->description))
-                            <p class="text-xs text-slate-600 leading-relaxed line-clamp-2">
-                                {{ $item->description }}
-                            </p>
-                            @endif
+                        <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2 leading-snug line-clamp-2 group-hover:text-sky-700 transition-colors">
+                                    {{ $item->title }}
+                                </h3>
+                                @if(!empty($item->description))
+                                <p class="text-sm text-slate-600 leading-relaxed line-clamp-3">
+                                    {{ $item->description }}
+                                </p>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
                     <!-- Action Bar -->
-                    <div class="p-4 sm:p-5 pt-0 border-t border-slate-100 mt-2 text-xs text-slate-500 flex items-center justify-between gap-2 bg-slate-50/50">
-                        <span class="text-emerald-700 font-bold flex items-center gap-1 text-[11px]">
-                            ✓ Bebas Bongkar
-                        </span>
+                    <div class="p-4 sm:p-5 pt-3 border-t border-slate-100 flex items-center justify-end bg-slate-50/50">
                         <a href="{{ $itemWaUrl }}" 
                            target="_blank" 
                            rel="noopener noreferrer" 
-                           class="btn-press text-xs font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-[36px] inline-flex items-center">
-                            Konsultasi &rarr;
+                           class="btn-press text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-[36px] inline-flex items-center gap-1 group/btn">
+                            <span>Konsultasi</span>
+                            <svg class="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
                         </a>
                     </div>
                 </div>
             @endforeach
+        </div>
+
+        <div class="flex md:hidden justify-center items-center gap-1.5 mt-4">
+            @for($i = 0; $i < $countTotal; $i++)
+                <button type="button" 
+                        @click="goTo({{ $i }})"
+                        class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
+                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                        aria-label="Dokumentasi {{ $i + 1 }}">
+                </button>
+            @endfor
         </div>
         @else
         <div class="py-14 px-6 text-center bg-white rounded-xl border border-slate-200 text-slate-500 reveal-soft">

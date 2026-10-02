@@ -22,7 +22,7 @@
                 Pembersihan kerak pipa buangan wastafel, kloset duduk, floor drain, talang, dan grease trap menggunakan mesin spiral baja rotary. Dikerjakan dari lubang pipa eksisting tanpa merusak lantai keramik.
             </p>
             <div class="flex md:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
-                <svg class="w-4 h-4 subtle-shift-x shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
                 <span>Geser katalog titik saluran</span>
@@ -92,12 +92,15 @@
                         : ($catalog['wa_text'] ?? "Halo Drainusantara, saya butuh penanganan untuk {$title}.");
                     $specificWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($waMessage);
                 @endphp
-                <div id="layanan-{{ $slug }}" class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-xs hover:border-sky-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft delay-{{ min($loop->iteration * 50, 300) }}">
+                <div id="layanan-{{ $slug }}" class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-xs hover:border-sky-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                     <div>
                         <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                             <img src="{{ $imageSrc }}" 
                                  alt="{{ $title }}" 
+                                 width="600"
+                                 height="375"
                                  loading="lazy" 
+                                 decoding="async"
                                  onerror="this.onerror=null; this.src='{{ $fallbackImage }}';"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out">
                         </div>

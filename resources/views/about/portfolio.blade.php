@@ -16,7 +16,7 @@
     eyebrow="Perusahaan Yang Menggunakan Jasa Kami"
     heading="Dipercaya Restoran F&B, Perhotelan & Gedung Komersial"
     subheading="Bukti nyata penanganan profesional pembersihan pipa pembuangan dan grease trap bagi mitra bisnis tanpa mengganggu jam operasional."
-    :bg-image="asset('images/dokumentasi/proses-pelancaran-gutter-restoran-jakarta.webp')"
+    :bg-image="asset('assets/banner/hero-portofolio.webp')"
 />
 
 <!-- Main Portfolio Content -->
@@ -44,7 +44,7 @@
             </a>
         </div>
 
-        <div class="max-w-3xl mb-10">
+        <div class="max-w-3xl mb-10 reveal-soft">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
                 Rekam Jejak Proyek &amp; Klien
             </span>
@@ -119,18 +119,22 @@
                     <a href="{{ $waUrl }}" 
                        target="_blank" 
                        rel="noopener noreferrer" 
-                       class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600"
+                       class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}"
                        title="Konsultasi penanganan {{ $project->client_name }}">
                         <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
                         <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
-                            <img src="{{ $project->image ?: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80' }}" 
+                            @php
+                                $aboutProjImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp');
+                                $aboutDefaultFallback = asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp');
+                            @endphp
+                            <img src="{{ $aboutProjImg }}" 
                                  alt="{{ $project->client_name }}" 
                                  width="800"
                                  height="500"
                                  loading="lazy"
                                  decoding="async"
                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80';">
+                                 onerror="this.onerror=null; this.src='{{ $aboutDefaultFallback }}';">
                         </div>
 
                         <!-- Informasi Restoran / Klien Bersih -->
@@ -139,13 +143,12 @@
                                 <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight line-clamp-1 group-hover:text-sky-700 transition-colors">
                                     {{ $project->client_name }}
                                 </h3>
-                                @if(!empty($project->location) || !empty($project->client_type))
+                                @if(!empty($project->client_type))
                                 <p class="text-xs text-slate-500 mt-1.5 flex items-center gap-1.5 truncate">
                                     <svg class="w-3.5 h-3.5 text-sky-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                     </svg>
-                                    <span class="truncate">{{ $project->location ?? $project->client_type }}</span>
+                                    <span class="truncate">{{ $project->client_type }}</span>
                                 </p>
                                 @endif
                             </div>

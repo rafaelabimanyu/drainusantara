@@ -12,7 +12,7 @@
                 Kombinasi mesin drain cleaner mekanis modern, transparansi biaya di awal, dan jaminan garansi resmi untuk menuntaskan masalah pipa hunian Anda.
             </p>
             <div class="flex md:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
-                <svg class="w-4 h-4 subtle-shift-x shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
                 <span>Geser keunggulan armada</span>
@@ -117,7 +117,7 @@
             </div>
 
             <!-- Card 4: Garansi Resmi 30 Hari -->
-            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-300 card-lift reveal-soft stagger-4 flex flex-col justify-between shadow-xs">
+            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-300 card-lift reveal-soft stagger-2 flex flex-col justify-between shadow-xs">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="inline-flex items-center px-2.5 py-1 bg-amber-50 border border-amber-200 text-amber-900 text-xs font-semibold rounded-md">
@@ -143,7 +143,7 @@
             </div>
 
             <!-- Card 5: Kerja Higienis & APD Steril -->
-            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-300 card-lift reveal-soft delay-250 flex flex-col justify-between shadow-xs">
+            <div class="w-[85vw] sm:w-[340px] md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-300 card-lift reveal-soft stagger-3 flex flex-col justify-between shadow-xs">
                 <div>
                     <div class="flex items-center justify-between mb-4">
                         <span class="inline-flex items-center px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold rounded-md">
