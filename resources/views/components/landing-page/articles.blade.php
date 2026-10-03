@@ -2,7 +2,7 @@
     'articles' => [],
 ])
 
-<section id="edukasi" class="py-16 lg:py-24 bg-white border-b border-slate-200" x-data="mobileCarousel({{ max(1, count($articles)) }}, 4500)">
+<section id="edukasi" class="py-16 lg:py-24 bg-white border-b border-slate-200 content-auto" x-data="mobileCarousel({{ max(1, count($articles)) }}, 4500)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
@@ -82,13 +82,14 @@
         </div>
 
         @if(count($articles) > 1)
-        <div class="flex lg:hidden justify-center items-center gap-1.5 mt-5">
+        <div class="flex lg:hidden justify-center items-center gap-1 mt-5">
             @for($i = 0; $i < count($articles); $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="h-2 rounded-full transition-all duration-300 cursor-pointer"
-                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Artikel {{ $i + 1 }}">
+                    <span class="h-2 rounded-full transition-all duration-300 block"
+                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
                 </button>
             @endfor
         </div>

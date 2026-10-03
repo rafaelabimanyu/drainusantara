@@ -22,10 +22,6 @@
                     <p class="text-xs sm:text-sm text-slate-600 mt-1">Posko teknisi siaga di seluruh Jabodetabek, Semarang, dan Lampung dengan respon WhatsApp sigap &amp; cepat.</p>
                 </div>
             </div>
-
-            <div class="inline-flex items-center px-3.5 py-1.5 bg-white border border-slate-200 rounded-md text-xs font-bold text-slate-800 shadow-2xs">
-                <span>Armada Siaga 24 Jam</span>
-            </div>
         </div>
 
         <div x-ref="slider"
@@ -49,10 +45,7 @@
                 </div>
 
                 <div class="relative z-10">
-                    <div class="flex items-center justify-between gap-3 mb-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-semibold rounded-md">
-                            Posko Pusat Siaga 24 Jam
-                        </span>
+                    <div class="mb-4">
                         <div class="w-9 h-9 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
@@ -103,7 +96,7 @@
                         $waJktText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area DKI Jakarta. Mohon info jadwal kedatangan.");
                     @endphp
                     <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $waJktText }}" target="_blank" rel="noopener noreferrer"
-                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
                         <span>Panggil Teknisi</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -125,11 +118,7 @@
                 </div>
 
                 <div class="relative z-10">
-                    <div class="flex items-center justify-between gap-3 mb-4">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-md">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                            Kawasan Penyangga Ibu Kota
-                        </span>
+                    <div class="mb-4">
                         <div class="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -178,7 +167,7 @@
                         $waBodetabekText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area Bodetabek. Mohon info teknisi terdekat.");
                     @endphp
                     <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $waBodetabekText }}" target="_blank" rel="noopener noreferrer"
-                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
                         <span>Panggil Teknisi</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -200,10 +189,7 @@
                 </div>
 
                 <div class="relative z-10">
-                    <div class="flex items-center justify-between gap-3 mb-4">
-                        <span class="inline-flex items-center px-2.5 py-1 bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-semibold rounded-md">
-                            Hub Jawa Tengah &amp; Sumatera
-                        </span>
+                    <div class="mb-4">
                         <div class="w-9 h-9 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -226,7 +212,7 @@
                             <a href="{{ route('area.city', ['city' => 'semarang']) }}" class="group p-3 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div>
                                     <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kota Semarang</div>
-                                    <span class="text-[10px] text-sky-700 font-bold bg-sky-50 px-1.5 py-0.5 rounded border border-sky-200 inline-block mt-1">Jawa Tengah</span>
+                                    <span class="text-[11px] text-slate-500 font-medium inline-block mt-0.5">Jawa Tengah</span>
                                 </div>
                                 <div class="text-[11px] text-slate-500 mt-2 line-clamp-2">Candisari, Banyumanik, Simpang Lima, Tembalang, Ngaliyan</div>
                             </a>
@@ -235,7 +221,7 @@
                             <a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="group p-3 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
                                 <div>
                                     <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Bandar Lampung</div>
-                                    <span class="text-[10px] text-indigo-700 font-bold bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 inline-block mt-1">Sumatera</span>
+                                    <span class="text-[11px] text-slate-500 font-medium inline-block mt-0.5">Sumatera</span>
                                 </div>
                                 <div class="text-[11px] text-slate-500 mt-2 line-clamp-2">Kedaton, Tanjung Karang, Way Halim, Teluk Betung, Rajabasa</div>
                             </a>
@@ -253,7 +239,7 @@
                         $waRegionalText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area Semarang / Bandar Lampung. Mohon info jadwal kedatangan.");
                     @endphp
                     <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $waRegionalText }}" target="_blank" rel="noopener noreferrer"
-                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
                         <span>Panggil Teknisi</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -264,13 +250,14 @@
 
         </div>
 
-        <div class="flex lg:hidden justify-center items-center gap-1.5 mt-5">
+        <div class="flex lg:hidden justify-center items-center gap-1 mt-5">
             @for($i = 0; $i < 3; $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="h-2 rounded-full transition-all duration-300 cursor-pointer"
-                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Wilayah {{ $i + 1 }}">
+                    <span class="h-2 rounded-full transition-all duration-300 block"
+                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
                 </button>
             @endfor
         </div>

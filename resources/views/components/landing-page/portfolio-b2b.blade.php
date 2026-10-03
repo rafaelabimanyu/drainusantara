@@ -63,7 +63,7 @@
     $b2bWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode("Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran pipa & grease trap untuk perusahaan/gedung kami. Mohon info survey lokasi.");
 @endphp
 
-<section id="portofolio-b2b" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-20 lg:scroll-mt-24" 
+<section id="portofolio-b2b" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-20 lg:scroll-mt-24 content-auto" 
          x-data="{
              activePage: 0,
              pageCount: {{ max(1, (int) ceil(count($b2bProjects) / 3)) }},
@@ -271,13 +271,14 @@
             $b2bDotCount = max(1, (int) ceil(count($b2bProjects) / 3));
         @endphp
         @if($b2bDotCount > 1)
-        <div class="flex justify-center items-center gap-1.5 mt-5">
+        <div class="flex justify-center items-center gap-1 mt-5">
             @for($p = 0; $p < $b2bDotCount; $p++)
                 <button type="button" 
                         @click="goToPage({{ $p }})"
-                        class="h-2 rounded-full transition-all duration-300 cursor-pointer"
-                        :class="activePage === {{ $p }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Halaman Portofolio {{ $p + 1 }}">
+                    <span class="h-2 rounded-full transition-all duration-300 block"
+                          :class="activePage === {{ $p }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
                 </button>
             @endfor
         </div>
@@ -297,7 +298,7 @@
                 </div>
             </div>
             <a href="{{ $b2bWaUrl }}" target="_blank" rel="noopener noreferrer" 
-               class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold transition-colors shadow-2xs btn-press">
+               class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs sm:text-sm font-bold transition-colors shadow-2xs btn-press">
                 <span>Konsultasi B2B via WhatsApp</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>

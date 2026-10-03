@@ -14,6 +14,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class PageController extends Controller
@@ -772,6 +773,27 @@ class PageController extends Controller
         JsonLdMulti::setType('AboutPage');
 
         return view('about.faq');
+    }
+
+    /**
+     * Plain-text llms.txt (llmstxt.org) for AI crawlers.
+     */
+    public function llms(): Response
+    {
+        $body = Cache::remember('llms.txt', 600, function (): string {
+            $services = Service::where('is_active', true)
+                ->orderBy('order')
+                ->get(['name', 'slug', 'short_description', 'price_starting_from']);
+
+            return view('llms', [
+                'services' => $services,
+                'whatsappNumber' => config('app.whatsapp_number') ?: '6281234567890',
+            ])->render();
+        });
+
+        return response($body, 200)
+            ->header('Content-Type', 'text/plain; charset=utf-8')
+            ->header('Cache-Control', 'public, max-age=600');
     }
 }
 

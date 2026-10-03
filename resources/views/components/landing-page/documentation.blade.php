@@ -7,7 +7,7 @@
     $countTotal = $displayGalleries->count();
 @endphp
 
-<section id="dokumentasi" class="relative py-16 lg:py-20 bg-slate-50 border-b border-slate-200" @if($countTotal > 0) x-data="mobileCarousel({{ $countTotal }}, 4500)" @endif>
+<section id="dokumentasi" class="relative py-16 lg:py-20 bg-slate-50 border-b border-slate-200 content-auto" @if($countTotal > 0) x-data="mobileCarousel({{ $countTotal }}, 4500)" @endif>
     <div id="galeri-before-after" class="absolute -top-16"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -109,13 +109,14 @@
             @endforeach
         </div>
 
-        <div class="flex md:hidden justify-center items-center gap-1.5 mt-4">
+        <div class="flex md:hidden justify-center items-center gap-1 mt-4">
             @for($i = 0; $i < $countTotal; $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Dokumentasi {{ $i + 1 }}">
+                    <span class="h-2 rounded-full transition-all duration-300 block"
+                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>
                 </button>
             @endfor
         </div>

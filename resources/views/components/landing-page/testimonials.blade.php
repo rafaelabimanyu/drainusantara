@@ -5,28 +5,25 @@
 @php
     $displayStories = collect([
         (object)[
-            'case_badge' => 'Wastafel Dapur',
-            'status' => 'Bebas Bongkar',
             'comment' => 'Awalnya panik wastafel dapur meluap pas lagi siap-siap masak. Takut banget kalau harus bobok keramik kitchen set. Mas teknisi datang cepat bawa mesin spiral, sekitar 35 menit leher angsa bersih, air langsung lancar dan dapur ditinggal dalam kondisi rapi.',
             'customer_name' => 'Ibu Ratna Dewi',
             'customer_role_or_location' => 'Duren Sawit, Jakarta Timur',
-            'initial' => 'R'
+            'initial' => 'R',
+            'rating' => 5,
         ],
         (object)[
-            'case_badge' => 'Kloset Lantai 2',
-            'status' => 'Bebas Bongkar',
             'comment' => 'Kloset duduk lantai atas mampet airnya meluap hampir ke kamar. Sempat mikir bakal dicopot klosetnya, ternyata dikerjakan lewat pipa pakai spiral khusus tanpa dibongkar sama sekali. Masalah beres, langsung dikasih nota garansi tertulis 30 hari.',
             'customer_name' => 'Bpk. Hendra Wijaya',
             'customer_role_or_location' => 'BSD City, Tangerang Selatan',
-            'initial' => 'H'
+            'initial' => 'H',
+            'rating' => 5,
         ],
         (object)[
-            'case_badge' => 'Grease Trap Resto',
-            'status' => 'Bebas Bongkar',
             'comment' => 'Saluran grease trap resto kami di Kelapa Gading mampet oleh lemak jenuh pas jam sibuk. Drainusantara datang malam hari, kerak lemaknya dibersihkan tuntas sampai ke bak kontrol tanpa bau mengganggu pelanggan besok paginya.',
             'customer_name' => 'Chef Adrian',
             'customer_role_or_location' => 'Resto F&B Kelapa Gading, Jakarta Utara',
-            'initial' => 'A'
+            'initial' => 'A',
+            'rating' => 5,
         ],
     ]);
 @endphp
@@ -56,16 +53,12 @@
             @foreach($displayStories as $story)
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50/70 hover:bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-slate-300 transition-all flex flex-col justify-between shadow-2xs card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                     <div>
-                        <div class="flex items-center justify-between gap-2 mb-4">
-                            <span class="inline-flex items-center px-2.5 py-1 bg-white border border-slate-200 text-slate-700 text-xs font-semibold rounded-md shadow-2xs">
-                                {{ $story->case_badge }}
-                            </span>
-                            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                                <svg class="w-3.5 h-3.5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        <div role="img" class="flex items-center gap-1 mb-4 text-amber-400" aria-label="Rating {{ $story->rating ?? 5 }} Bintang">
+                            @for($s = 1; $s <= 5; $s++)
+                                <svg class="w-4 h-4 {{ $s <= ($story->rating ?? 5) ? 'fill-current' : 'text-slate-200 fill-current' }}" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                 </svg>
-                                <span>{{ $story->status }}</span>
-                            </span>
+                            @endfor
                         </div>
 
                         <p class="text-slate-700 text-sm leading-relaxed font-normal">
@@ -86,13 +79,14 @@
             @endforeach
         </div>
 
-        <div class="flex md:hidden justify-center items-center gap-1.5 mt-4">
+        <div class="flex md:hidden justify-center items-center gap-1 mt-4">
             @for($i = 0; $i < count($displayStories); $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="h-2 rounded-full transition-all duration-300 cursor-pointer"
-                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer"
                         aria-label="Cerita {{ $i + 1 }}">
+                    <span class="h-2 rounded-full transition-all duration-300 block"
+                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
                 </button>
             @endfor
         </div>

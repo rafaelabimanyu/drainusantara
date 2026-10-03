@@ -183,7 +183,7 @@
                 <a href="https://wa.me/{{ $whatsappNumber }}?text={{ urlencode('Halo Admin Drainusantara, saya tertarik dengan kontrak perawatan rutin B2B untuk restoran/hotel.') }}" 
                    target="_blank" 
                    rel="noopener noreferrer" 
-                   class="btn-press inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs shadow-md transition-colors min-h-[44px]">
+                   class="btn-press inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs shadow-md transition-colors min-h-[44px]">
                     <span>Ajukan Penawaran B2B</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>

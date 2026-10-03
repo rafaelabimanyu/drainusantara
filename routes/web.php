@@ -39,6 +39,9 @@ Route::get('/artikel/{slug}', [PageController::class, 'articleDetail'])->name('a
 // Dynamic XML Sitemap for SEO Crawlers
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
 
+// llms.txt for AI crawlers (llmstxt.org)
+Route::get('/llms.txt', [PageController::class, 'llms'])->name('llms');
+
 // Corporate & About Sub-Pages
 Route::prefix('tentang-kami')->group(function () {
     Route::get('/', [PageController::class, 'about'])->name('about');

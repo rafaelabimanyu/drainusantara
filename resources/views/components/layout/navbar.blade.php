@@ -35,7 +35,8 @@
                             type="button" 
                             class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-sky-700 hover:bg-slate-50 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 cursor-pointer"
                             :class="{ 'text-sky-700 font-bold bg-sky-50/70 border border-sky-100/60': activeMenu === 'tentang' || {{ request()->is('tentang-kami*') ? 'true' : 'false' }} }"
-                            aria-expanded="activeMenu === 'tentang'"
+                            aria-expanded="false"
+                            :aria-expanded="activeMenu === 'tentang' ? 'true' : 'false'"
                             aria-haspopup="true">
                         <span>Tentang kami</span>
                         <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-700': activeMenu === 'tentang' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,81 +108,10 @@
                 </div>
 
                 <!-- 3. Layanan (Hybrid Compact Popover) -->
-                <div class="relative" @click.outside="activeMenu = (activeMenu === 'layanan' ? null : activeMenu)">
-                    <button @click="activeMenu = (activeMenu === 'layanan' ? null : 'layanan')"
-                            type="button" 
-                            class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-sky-700 hover:bg-slate-50 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 cursor-pointer"
-                            :class="{ 'text-sky-700 font-bold bg-sky-50/70': activeMenu === 'layanan' }"
-                            aria-expanded="activeMenu === 'layanan'"
-                            aria-haspopup="true">
-                        <span>Layanan</span>
-                        <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-700': activeMenu === 'layanan' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-
-                    <!-- Compact Popover Menu -->
-                    <div x-cloak 
-                         x-show="activeMenu === 'layanan'"
-                         x-transition:enter="transition ease-out duration-150"
-                         x-transition:enter-start="opacity-0 translate-y-1 scale-98"
-                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                         x-transition:leave="transition ease-in duration-100"
-                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                         x-transition:leave-end="opacity-0 translate-y-1 scale-98"
-                         class="absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-lg p-2 z-50">
-                        <div class="space-y-1 max-h-80 overflow-y-auto pr-1">
-                            @forelse($navServices ?? [] as $serviceItem)
-                                @php
-                                    $badge = 'Layanan';
-                                    $badgeColor = 'bg-sky-100 text-sky-800';
-                                    $lowerName = strtolower($serviceItem->name);
-                                    if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
-                                        $badge = 'Residensial';
-                                        $badgeColor = 'bg-sky-100 text-sky-800';
-                                    } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
-                                        $badge = '24 Jam';
-                                        $badgeColor = 'bg-red-100 text-red-800';
-                                    } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'resto') || str_contains($lowerName, 'lemak')) {
-                                        $badge = 'F&B';
-                                        $badgeColor = 'bg-amber-100 text-amber-800';
-                                    } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera') || str_contains($lowerName, 'gedung') || str_contains($lowerName, 'jetting')) {
-                                        $badge = 'Gedung';
-                                        $badgeColor = 'bg-emerald-100 text-emerald-800';
-                                    }
-                                @endphp
-                                <a href="{{ url('/#layanan-' . $serviceItem->slug) }}" @click="activeMenu = null" class="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors group">
-                                    <div class="flex items-center justify-between mb-0.5">
-                                        <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700 truncate mr-2">{{ $serviceItem->name }}</span>
-                                        <span class="text-[9px] font-bold px-1.5 py-0.5 {{ $badgeColor }} rounded-md shrink-0">{{ $badge }}</span>
-                                    </div>
-                                    <p class="text-[11px] text-slate-500 leading-snug line-clamp-1">
-                                        {{ $serviceItem->short_description ?: ($serviceItem->description ?: 'Layanan pelancaran saluran tanpa bongkar keramik.') }}
-                                    </p>
-                                </a>
-                            @empty
-                                <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors group">
-                                    <div class="flex items-center justify-between mb-0.5">
-                                        <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">Saluran Domestik</span>
-                                    </div>
-                                    <p class="text-[11px] text-slate-500 leading-snug">Wastafel dapur, floor drain, dan pipa talang air.</p>
-                                </a>
-                                <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="block p-2.5 rounded-lg hover:bg-slate-50 transition-colors group">
-                                    <div class="flex items-center justify-between mb-0.5">
-                                        <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700">Kloset &amp; WC Meluap</span>
-                                    </div>
-                                    <p class="text-[11px] text-slate-500 leading-snug">Pelancaran leher angsa keramik tanpa dibongkar.</p>
-                                </a>
-                            @endforelse
-                        </div>
-                        <div class="pt-2 mt-2 border-t border-slate-100">
-                            <a href="{{ url('/#layanan') }}" @click="activeMenu = null" class="block text-center py-1.5 text-xs font-bold text-sky-700 hover:text-sky-800 hover:bg-sky-50 rounded-lg transition-colors">
-                                Lihat Seluruh Layanan &amp; Spesifikasi
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
+                <a href="{{ url('/#layanan') }}" 
+                   class="px-3 py-2 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 hover:text-sky-700 hover:bg-slate-50">
+                    Layanan
+                </a>
                 <!-- 4. Hasil Kerja -->
                 <a href="{{ route('gallery') }}" 
                    class="px-3 py-2 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ request()->is('galeri*') ? 'text-sky-700 font-bold bg-sky-50/70 border border-sky-100/60' : 'hover:text-sky-700 hover:bg-slate-50' }}">
@@ -194,7 +124,8 @@
                             type="button" 
                             class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-sky-700 hover:bg-slate-50 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 cursor-pointer"
                             :class="{ 'text-sky-700 font-bold bg-sky-50/70': activeMenu === 'wilayah' || {{ request()->is('area*') ? 'true' : 'false' }} }"
-                            aria-expanded="activeMenu === 'wilayah'"
+                            aria-expanded="false"
+                            :aria-expanded="activeMenu === 'wilayah' ? 'true' : 'false'"
                             aria-haspopup="true">
                         <span>Area Jangkauan</span>
                         <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-700': activeMenu === 'wilayah' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -313,7 +244,7 @@
                 <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
                    target="_blank" 
                    rel="noopener noreferrer" 
-                   class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl px-5 py-2.5 shadow-sm hover:shadow transition-all inline-flex items-center gap-2 active:scale-98 text-sm">
+                   class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl px-5 py-2.5 shadow-sm hover:shadow transition-all inline-flex items-center gap-2 active:scale-98 text-sm">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                     </svg>

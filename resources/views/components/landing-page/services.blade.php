@@ -8,7 +8,7 @@
     $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6281234567890');
     $itemsLayanan = (isset($services) && $services->isNotEmpty()) ? $services : collect($problemCatalogs);
 @endphp
-<section id="layanan" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4000)">
+<section id="layanan" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200 content-auto" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4000)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
@@ -133,11 +133,11 @@
                             <div class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
                                 Rp {{ number_format($price, 0, ',', '.') }}
                             </div>
-                            <span class="text-[10px] text-emerald-700 font-semibold block mt-0.5">Tuntas baru bayar</span>
                         </div>
 
                         <a href="{{ $specificWaUrl }}" target="_blank" rel="noopener noreferrer" 
-                           class="btn-press inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 min-h-[44px]">
+                           class="btn-press inline-flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 min-h-[44px]"
+                           aria-label="Konsultasi penanganan {{ $title }} via WhatsApp">
                             <span>Konsultasi Titik Ini (WA)</span>
                         </a>
                     </div>
@@ -145,13 +145,14 @@
             @endforeach
         </div>
 
-        <div class="flex md:hidden justify-center items-center gap-1.5 mt-4">
+        <div class="flex md:hidden justify-center items-center gap-1 mt-4">
             @for($i = 0; $i < count($itemsLayanan); $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                        :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Layanan {{ $i + 1 }}">
+                    <span class="h-2 rounded-full transition-all duration-300 block"
+                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>
                 </button>
             @endfor
         </div>
