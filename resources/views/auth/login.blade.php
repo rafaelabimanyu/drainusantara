@@ -81,8 +81,8 @@
                             id="login" 
                             required 
                             autofocus 
-                            value="{{ old('login', 'Drainusantara@admin') }}"
-                            placeholder="Drainusantara@admin" 
+                            value="{{ old('login') }}"
+                            placeholder="Masukkan nama pengguna / email" 
                             class="w-full pl-9 pr-3.5 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs"
                         >
                     </div>
@@ -106,7 +106,6 @@
                             name="password" 
                             id="password" 
                             required 
-                            value="{{ old('login') ? '' : 'Drainusantara123' }}"
                             placeholder="••••••••••••" 
                             class="w-full pl-9 pr-10 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs"
                         >
@@ -150,17 +149,6 @@
                     </svg>
                 </button>
             </form>
-
-            <!-- Credential Helper Note -->
-            <div class="mt-6 pt-5 border-t border-slate-200">
-                <div class="rounded-lg bg-slate-50 border border-slate-200 p-3 text-xs text-slate-600">
-                    <p class="font-semibold text-slate-800 mb-1">Akses Default Pengembangan:</p>
-                    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px]">
-                        <span>User: <code class="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-800 font-mono">Drainusantara@admin</code></span>
-                        <span>Pass: <code class="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-800 font-mono">Drainusantara123</code></span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Back to Home -->
