@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Article;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class SitemapTest extends TestCase
@@ -43,5 +44,32 @@ class SitemapTest extends TestCase
         $this->assertStringContainsString('DRAINUSANTARA', $xslContent);
         $this->assertStringContainsString('Peta Situs XML Resmi', $xslContent);
         $this->assertStringContainsString('sitemapTable', $xslContent);
+    }
+
+    public function test_robots_txt_renders_dynamically_with_sitemap_url(): void
+    {
+        $response = $this->get('/robots.txt');
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'text/plain; charset=utf-8');
+        $this->assertStringContainsString('User-agent: *', $response->getContent());
+        $this->assertStringContainsString('Disallow: /admin/', $response->getContent());
+        $this->assertStringContainsString('Sitemap: '.url('/sitemap.xml'), $response->getContent());
+    }
+
+    public function test_legacy_artikel_url_redirects_301_to_pengetahuan(): void
+    {
+        $response = $this->get('/artikel');
+
+        $response->assertStatus(301);
+        $response->assertRedirect(route('articles.index'));
+    }
+
+    public function test_sitemap_is_cached(): void
+    {
+        Cache::forget('sitemap.xml');
+        $this->get('/sitemap.xml');
+
+        $this->assertTrue(Cache::has('sitemap.xml'));
     }
 }

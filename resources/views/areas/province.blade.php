@@ -35,7 +35,7 @@
             'category' => 'Toilet & Kamar Mandi',
             'desc' => 'Kloset duduk atau jongkok meluap saat disiram akibat sumbatan tisu, pembalut, kain, atau kerak kotoran pada lekukan porselen kloset.',
             'specs' => [
-                '100% tanpa membongkar dudukan kloset keramik',
+                'Metode mekanis tanpa membongkar dudukan kloset keramik',
                 'Daya putar meliuk aman di leher angsa keramik',
                 'Teknisi ber-APD bersih dan bersarung tangan',
                 'Garansi resmi 30 hari nota tertulis',
@@ -114,8 +114,8 @@
                      loading="eager"
                      decoding="async"
                      class="w-full h-full object-cover object-center opacity-60 md:opacity-75 scale-105 transition-transform duration-700">
-                <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/85 to-slate-50/20"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-slate-50/30"></div>
+                <div class="absolute inset-0 bg-linear-to-r from-slate-50 via-slate-50/85 to-slate-50/20"></div>
+                <div class="absolute inset-0 bg-linear-to-t from-slate-50 via-transparent to-slate-50/30"></div>
             </div>
         @endif
 
@@ -147,7 +147,7 @@
                     </h1>
 
                     <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl reveal-soft delay-100">
-                        Pelancaran pipa wastafel tersumbat minyak, kloset meluap, dan floor drain berbau got di seluruh kota dan kabupaten <strong>Provinsi {{ $provinceData['name'] }}</strong>. Dikerjakan mekanis menggunakan mesin spiral rotary baja elastis, 100% tanpa membongkar keramik lantai, dan dilindungi garansi resmi 30 hari kalender.
+                        Pelancaran pipa wastafel tersumbat minyak, kloset meluap, dan floor drain berbau got di seluruh kota dan kabupaten <strong>Provinsi {{ $provinceData['name'] }}</strong>. Dikerjakan mekanis menggunakan mesin spiral rotary baja elastis, metode tanpa membongkar keramik lantai, dan dilindungi garansi resmi 30 hari kalender.
                     </p>
 
                     <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5 pt-1 reveal-soft delay-150">
@@ -190,7 +190,7 @@
 
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 reveal-soft delay-200">
                         <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" 
-                           class="min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-xs hover:shadow transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 btn-press">
+                           class="min-h-12 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-xs hover:shadow transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 btn-press">
                             <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                             </svg>
@@ -198,7 +198,7 @@
                         </a>
                         
                         <a href="#wilayah-layanan" 
-                           class="min-h-[48px] inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm px-5 py-3 rounded-lg border border-slate-300 shadow-2xs transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 btn-press">
+                           class="min-h-12 inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm px-5 py-3 rounded-lg border border-slate-300 shadow-2xs transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 btn-press">
                             <span>Pilih Kota &amp; Kecamatan ({{ count($provinceData['cities']) }})</span>
                             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -209,7 +209,7 @@
 
                 <div class="hidden lg:block lg:col-span-4 reveal-soft delay-150">
                     <div class="bg-white rounded-xl p-3 sm:p-4 border border-slate-200 shadow-xs space-y-3 card-lift">
-                        <div class="relative rounded-lg overflow-hidden aspect-[4/3] bg-slate-900 border border-slate-200">
+                        <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                             <img 
                                 src="{{ asset('images/hero-technician.webp') }}" 
                                 alt="Teknisi Drainusantara Penanganan Saluran Mampet di Provinsi {{ $provinceData['name'] }}" 
@@ -223,7 +223,7 @@
                         </div>
                         <div class="px-1 py-0.5 flex items-center justify-between text-xs text-slate-600">
                             <span class="font-medium text-slate-700">Armada Siaga &amp; Mesin Ridgid</span>
-                            <span class="text-emerald-700 font-bold">100% Tanpa Bongkar</span>
+                            <span class="text-emerald-700 font-bold">Metode Tanpa Bongkar</span>
                         </div>
                     </div>
                 </div>
@@ -350,7 +350,7 @@
                             <a href="{{ $itemWaUrl }}" 
                                target="_blank" 
                                rel="noopener noreferrer" 
-                               class="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3.5 py-2.5 rounded-lg shadow-2xs transition-colors min-h-[44px]">
+                               class="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3.5 py-2.5 rounded-lg shadow-2xs transition-colors min-h-11">
                                 <span>Pesan Penanganan</span>
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -390,7 +390,7 @@
                 </div>
                 <div>
                     <a href="{{ url('/galeri') }}" 
-                       class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 bg-white hover:bg-slate-100 border border-slate-300 px-4 py-2.5 rounded-lg shadow-2xs transition-colors min-h-[44px]">
+                       class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 bg-white hover:bg-slate-100 border border-slate-300 px-4 py-2.5 rounded-lg shadow-2xs transition-colors min-h-11">
                         <span>Lihat Semua Galeri</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -404,19 +404,19 @@
                     <button type="button" 
                             @click="activeCategory = 'all'"
                             :class="activeCategory === 'all' ? 'bg-sky-700 text-white font-bold shadow-2xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
-                            class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                            class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-11">
                         Semua Sektor ({{ $countTotal }})
                     </button>
                     <button type="button" 
                             @click="activeCategory = 'rumahan'"
                             :class="activeCategory === 'rumahan' ? 'bg-sky-700 text-white font-bold shadow-2xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
-                            class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                            class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-11">
                         Rumahan / Residensial ({{ $countRumahan }})
                     </button>
                     <button type="button" 
                             @click="activeCategory = 'b2b'"
                             :class="activeCategory === 'b2b' ? 'bg-sky-700 text-white font-bold shadow-2xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
-                            class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
+                            class="px-4 py-2 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-11">
                         B2B / Komersial ({{ $countB2b }})
                     </button>
                 </div>
@@ -433,7 +433,7 @@
                         <div x-show="activeCategory === 'all' || activeCategory === '{{ $item->category ?? 'rumahan' }}'"
                              class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                             <div>
-                                <div class="relative aspect-[16/10] bg-slate-900 overflow-hidden border-b border-slate-100">
+                                <div class="relative aspect-16/10 bg-slate-900 overflow-hidden border-b border-slate-100">
                                     @if($photo)
                                         <img 
                                             src="{{ $photo }}" 
@@ -486,7 +486,7 @@
                                 <a href="{{ $itemWaUrl }}" 
                                    target="_blank" 
                                    rel="noopener noreferrer" 
-                                   class="text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-[36px] inline-flex items-center gap-1 group/btn">
+                                   class="text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-9 inline-flex items-center gap-1 group/btn">
                                     <span>Konsultasi Kasus Ini</span>
                                     <svg class="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -561,7 +561,7 @@
                                 </div>
 
                                 <a href="{{ route('area.city', ['city' => $citySlug]) }}" 
-                                   class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-sky-700 hover:bg-sky-800 px-4 py-2.5 rounded-lg transition-colors shrink-0 shadow-2xs min-h-[44px]">
+                                   class="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-sky-700 hover:bg-sky-800 px-4 py-2.5 rounded-lg transition-colors shrink-0 shadow-2xs min-h-11">
                                     <span>Buka Halaman Kota</span>
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -579,7 +579,7 @@
                                             $districtSlug = \Illuminate\Support\Str::slug($district);
                                         @endphp
                                         <a href="{{ route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]) }}" 
-                                           class="p-2.5 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 text-slate-800 hover:text-sky-700 font-semibold transition-all truncate flex items-center gap-1.5 min-h-[44px] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                                           class="p-2.5 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 text-slate-800 hover:text-sky-700 font-semibold transition-all truncate flex items-center gap-1.5 min-h-11 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
                                             <span class="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0"></span>
                                             <span class="truncate">{{ $district }}</span>
                                         </a>
@@ -607,14 +607,14 @@
             </p>
             <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" 
-                   class="min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm px-6 py-3.5 rounded-lg shadow-sm transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
+                   class="min-h-11 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm px-6 py-3.5 rounded-lg shadow-sm transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
                     <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                     </svg>
                     <span>Panggil Teknisi via WhatsApp</span>
                 </a>
                 <a href="#wilayah-layanan" 
-                   class="min-h-[48px] inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-sm px-6 py-3.5 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
+                   class="min-h-11 inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-sm px-6 py-3.5 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
                     <span>Lihat Daftar Kota &amp; Kecamatan</span>
                 </a>
             </div>
@@ -630,7 +630,7 @@
                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
-                    100% Tanpa Bongkar Keramik
+                    Metode Tanpa Bongkar Keramik
                 </span>
                 <span class="inline-flex items-center gap-1.5">
                     <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

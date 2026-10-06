@@ -149,6 +149,14 @@
                     </svg>
                 </button>
             </form>
+
+            <!-- Credential Info Helper Pill -->
+            <div class="mt-5 pt-4 border-t border-slate-100 text-center">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-100 text-[11px] text-slate-600">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <span>Admin: <strong class="text-slate-800">Drainusantara@admin</strong></span>
+                </div>
+            </div>
         </div>
 
         <!-- Back to Home -->

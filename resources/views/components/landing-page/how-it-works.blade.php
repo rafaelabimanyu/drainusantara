@@ -28,7 +28,7 @@
              class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-8 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
             
             <!-- Langkah 01 -->
-            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-1">
+            <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-1">
                 <div>
                     <div class="mb-5">
                         <div class="w-11 h-11 rounded-lg bg-sky-700 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
@@ -46,7 +46,7 @@
             </div>
 
             <!-- Langkah 02 -->
-            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-2">
+            <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-2">
                 <div>
                     <div class="mb-5">
                         <div class="w-11 h-11 rounded-lg bg-sky-700 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
@@ -64,7 +64,7 @@
             </div>
 
             <!-- Langkah 03 -->
-            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-3">
+            <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-3">
                 <div>
                     <div class="mb-5">
                         <div class="w-11 h-11 rounded-lg bg-emerald-700 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
@@ -87,7 +87,7 @@
             @for($i = 0; $i < 3; $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Langkah {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>

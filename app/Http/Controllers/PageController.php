@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\CoverageArea;
+use App\Models\Equipment;
 use App\Models\Gallery;
+use App\Models\Portfolio;
 use App\Models\Review;
 use App\Models\Service;
 use App\Models\Staff;
@@ -43,7 +46,7 @@ class PageController extends Controller
         ]);
 
         OpenGraph::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
-        OpenGraph::setDescription('Layanan pelancar pipa mampet wastafel & kloset pakai mesin spiral baja. 100% tanpa bongkar keramik, garansi nota 30 hari.');
+        OpenGraph::setDescription('Layanan pelancar pipa mampet wastafel & kloset pakai mesin spiral baja tanpa bongkar keramik, garansi nota 30 hari.');
         OpenGraph::setUrl(url()->current());
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
@@ -72,30 +75,40 @@ class PageController extends Controller
             ],
         ]);
 
-        $services = Service::where('is_active', true)
-            ->orderBy('order')
-            ->get();
+        $services = Cache::remember('landing.services', 86400, function () {
+            return Service::where('is_active', true)
+                ->orderBy('order')
+                ->get();
+        });
 
-        $reviews = Review::where('is_active', true)
-            ->latest()
-            ->take(6)
-            ->get();
+        $reviews = Cache::remember('landing.reviews', 86400, function () {
+            return Review::where('is_active', true)
+                ->latest()
+                ->take(6)
+                ->get();
+        });
 
-        $galleries = Gallery::where('is_active', true)
-            ->with('service')
-            ->orderBy('order')
-            ->take(4)
-            ->get();
+        $galleries = Cache::remember('landing.galleries', 86400, function () {
+            return Gallery::where('is_active', true)
+                ->with('service')
+                ->orderBy('order')
+                ->take(4)
+                ->get();
+        });
 
-        $articles = \App\Models\Article::where('is_published', true)
-            ->latest('published_at')
-            ->latest()
-            ->take(3)
-            ->get();
+        $articles = Cache::remember('landing.articles', 86400, function () {
+            return Article::where('is_published', true)
+                ->latest('published_at')
+                ->latest()
+                ->take(3)
+                ->get();
+        });
 
-        $portfolios = \App\Models\Portfolio::where('is_active', true)
-            ->orderBy('order')
-            ->get();
+        $portfolios = Cache::remember('landing.portfolios', 86400, function () {
+            return Portfolio::where('is_active', true)
+                ->orderBy('order')
+                ->get();
+        });
 
         return view('welcome', compact('services', 'reviews', 'galleries', 'articles', 'portfolios'));
     }
@@ -128,7 +141,9 @@ class PageController extends Controller
         ]);
 
         $provinces = RegionService::all();
-        $services = Service::where('is_active', true)->orderBy('order')->get();
+        $services = Cache::remember('services.all_active', 86400, function () {
+            return Service::where('is_active', true)->orderBy('order')->get();
+        });
 
         return view('areas.index', compact('provinces', 'services'));
     }
@@ -154,8 +169,8 @@ class PageController extends Controller
             "pipa mampet {$provinceData['name']}",
             "wastafel mampet {$provinceData['name']}",
             "kloset mampet {$provinceData['name']}",
-            "tanpa bongkar keramik",
-            "garansi 30 hari",
+            'tanpa bongkar keramik',
+            'garansi 30 hari',
         ]);
 
         OpenGraph::setTitle("Jasa Saluran Mampet {$provinceData['name']} - Drainusantara");
@@ -188,13 +203,19 @@ class PageController extends Controller
             ],
         ]);
 
-        $services = Service::where('is_active', true)->orderBy('order')->get();
-        $reviews = Review::where('is_active', true)->latest()->take(3)->get();
-        $galleries = Gallery::where('is_active', true)
-            ->with('service')
-            ->orderBy('order')
-            ->take(3)
-            ->get();
+        $services = Cache::remember('services.all_active', 86400, function () {
+            return Service::where('is_active', true)->orderBy('order')->get();
+        });
+        $reviews = Cache::remember('reviews.top3', 86400, function () {
+            return Review::where('is_active', true)->latest()->take(3)->get();
+        });
+        $galleries = Cache::remember('galleries.top3', 86400, function () {
+            return Gallery::where('is_active', true)
+                ->with('service')
+                ->orderBy('order')
+                ->take(3)
+                ->get();
+        });
 
         return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries'));
     }
@@ -233,8 +254,8 @@ class PageController extends Controller
             "wastafel mampet {$cityData['name']}",
             "toilet mampet {$cityData['name']}",
             "sedot lemak {$cityData['name']}",
-            "tanpa bongkar keramik",
-            "garansi 30 hari",
+            'tanpa bongkar keramik',
+            'garansi 30 hari',
         ]);
 
         OpenGraph::setTitle("Jasa Pipa Mampet {$cityData['name']} - Drainusantara");
@@ -275,8 +296,12 @@ class PageController extends Controller
             ],
         ]);
 
-        $services = Service::where('is_active', true)->orderBy('order')->get();
-        $reviews = Review::where('is_active', true)->latest()->take(4)->get();
+        $services = Cache::remember('services.all_active', 86400, function () {
+            return Service::where('is_active', true)->orderBy('order')->get();
+        });
+        $reviews = Cache::remember('reviews.top4', 86400, function () {
+            return Review::where('is_active', true)->latest()->take(4)->get();
+        });
 
         return view('areas.city', compact('cityData', 'services', 'reviews'));
     }
@@ -303,12 +328,12 @@ class PageController extends Controller
         $combinedSlug = Str::slug("{$cityFormatted}-{$districtFormatted}");
 
         $area = CoverageArea::where('is_active', true)
-            ->where(function ($query) use ($city, $district, $combinedSlug, $cityFormatted, $districtFormatted) {
+            ->where(function ($query) use ($district, $combinedSlug, $cityFormatted, $districtFormatted) {
                 $query->where('slug', $combinedSlug)
                     ->orWhere('slug', Str::slug($district))
                     ->orWhere(function ($q) use ($cityFormatted, $districtFormatted) {
                         $q->whereRaw('LOWER(city) = ?', [strtolower($cityFormatted)])
-                          ->whereRaw('LOWER(district) = ?', [strtolower($districtFormatted)]);
+                            ->whereRaw('LOWER(district) = ?', [strtolower($districtFormatted)]);
                     });
             })
             ->first();
@@ -321,7 +346,7 @@ class PageController extends Controller
                     'city' => $cityFormatted,
                     'district' => $districtFormatted,
                     'meta_title' => "Jasa Saluran Mampet {$districtFormatted}, {$cityFormatted}",
-                    'meta_description' => "Jasa pipa mampet wastafel, toilet, & talang air di {$districtFormatted}, {$cityFormatted}. 100% tanpa bongkar keramik pakai spiral baja, garansi nota 30 hari.",
+                    'meta_description' => "Jasa pipa mampet wastafel, toilet, & talang air di {$districtFormatted}, {$cityFormatted}. Tanpa bongkar keramik pakai spiral baja, garansi nota 30 hari.",
                     'content' => "Layanan penanganan saluran pipa mampet berstandar profesional di area {$districtFormatted}, {$cityFormatted} dan sekitarnya.",
                     'is_active' => true,
                 ]
@@ -331,7 +356,7 @@ class PageController extends Controller
         $rawTitle = $area->meta_title ?: "Jasa Saluran Mampet {$area->district}, {$area->city}";
         $cleanTitle = trim(str_replace([' - Drainusantara Bergaransi', ' | Drainusantara', ' - Drainusantara'], '', $rawTitle));
         $cleanTitle = preg_replace('/^Jasa Saluran Mampet di /i', 'Jasa Saluran Mampet ', $cleanTitle);
-        $description = $area->meta_description ?: "Jasa pipa mampet wastafel, toilet, & talang air di {$area->district}, {$area->city}. 100% tanpa bongkar keramik pakai spiral baja, garansi nota 30 hari.";
+        $description = $area->meta_description ?: "Jasa pipa mampet wastafel, toilet, & talang air di {$area->district}, {$area->city}. Tanpa bongkar keramik pakai spiral baja, garansi nota 30 hari.";
 
         SEOMeta::setTitle($cleanTitle);
         SEOMeta::setDescription($description);
@@ -342,9 +367,9 @@ class PageController extends Controller
             "wastafel mampet {$area->district}",
             "toilet wc mampet {$area->district}",
             "saluran mampet {$area->city}",
-            "tanpa bongkar keramik",
-            "garansi 30 hari",
-            "drainusantara",
+            'tanpa bongkar keramik',
+            'garansi 30 hari',
+            'drainusantara',
         ]);
 
         OpenGraph::setTitle("{$cleanTitle} - Drainusantara");
@@ -383,14 +408,13 @@ class PageController extends Controller
 
         $cityData = RegionService::findCity($city);
 
-        $services = Service::where('is_active', true)
-            ->orderBy('order')
-            ->get();
+        $services = Cache::remember('services.all_active', 86400, function () {
+            return Service::where('is_active', true)->orderBy('order')->get();
+        });
 
-        $reviews = Review::where('is_active', true)
-            ->latest()
-            ->take(3)
-            ->get();
+        $reviews = Cache::remember('reviews.top3', 86400, function () {
+            return Review::where('is_active', true)->latest()->take(3)->get();
+        });
 
         return view('areas.district', compact('area', 'services', 'reviews', 'cityData'));
     }
@@ -405,23 +429,25 @@ class PageController extends Controller
         SEOMeta::setCanonical(url()->current());
 
         OpenGraph::setTitle('Dokumentasi Hasil Pengerjaan Pipa Mampet - Drainusantara');
-        OpenGraph::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis berstandar profesional. 100% tanpa bongkar keramik dan bergaransi 30 hari.');
+        OpenGraph::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis berstandar profesional. Tanpa bongkar keramik dan bergaransi 30 hari.');
         OpenGraph::setUrl(url()->current());
         OpenGraph::addImage(asset('images/hero-technician.webp'));
 
         TwitterCard::setTitle('Dokumentasi Hasil Pengerjaan Pipa Mampet - Drainusantara');
-        TwitterCard::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis. 100% tanpa bongkar keramik, garansi nota 30 hari.');
+        TwitterCard::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis. Tanpa bongkar keramik, garansi nota 30 hari.');
         TwitterCard::setImage(asset('images/hero-technician.webp'));
 
         JsonLdMulti::setTitle('Galeri Pengerjaan Saluran Pipa Mampet - Drainusantara');
         JsonLdMulti::setDescription('Dokumentasi proyek pengerjaan pembersihan pipa tersumbat dan inspeksi CCTV pipa.');
         JsonLdMulti::setType('PlumbingService');
 
-        $galleries = \App\Models\Gallery::where('is_active', true)
-            ->with('service')
-            ->orderBy('order')
-            ->latest()
-            ->get();
+        $galleries = Cache::remember('galleries.all_active', 86400, function () {
+            return Gallery::where('is_active', true)
+                ->with('service')
+                ->orderBy('order')
+                ->latest()
+                ->get();
+        });
 
         return view('gallery', compact('galleries'));
     }
@@ -444,11 +470,11 @@ class PageController extends Controller
         TwitterCard::setDescription('Tips ahli dan panduan seputar perawatan saluran pembuangan air, wastafel, toilet, dan drainase rumah.');
         TwitterCard::setImage(asset('images/hero-technician.webp'));
 
-        $articles = \App\Models\Article::where('is_published', true)
+        $articles = Article::where('is_published', true)
             ->latest('published_at')
             ->paginate(9);
 
-        $featuredArticle = \App\Models\Article::where('is_published', true)
+        $featuredArticle = Article::where('is_published', true)
             ->latest('published_at')
             ->first();
 
@@ -460,7 +486,7 @@ class PageController extends Controller
      */
     public function articleDetail(string $slug): View
     {
-        $article = \App\Models\Article::where('slug', $slug)
+        $article = Article::where('slug', $slug)
             ->where('is_published', true)
             ->firstOrFail();
 
@@ -503,7 +529,7 @@ class PageController extends Controller
             ],
         ]);
 
-        $recentArticles = \App\Models\Article::where('is_published', true)
+        $recentArticles = Article::where('is_published', true)
             ->where('id', '!=', $article->id)
             ->latest('published_at')
             ->take(3)
@@ -517,78 +543,84 @@ class PageController extends Controller
      */
     public function sitemap(): Response
     {
-        $urls = [];
-        $now = now()->toAtomString();
+        $xml = Cache::remember('sitemap.xml', 3600, function () {
+            $urls = [];
+            $now = now()->startOfDay()->toAtomString();
 
-        // Core static pages
-        $urls[] = ['loc' => url('/'), 'lastmod' => $now, 'changefreq' => 'daily', 'priority' => '1.0'];
-        $urls[] = ['loc' => url('/tentang-kami'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.9'];
-        $urls[] = ['loc' => route('about.profile'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.holding'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.k3'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.equipment'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.warranty'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.faq'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => url('/area'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.9'];
-        $urls[] = ['loc' => url('/galeri'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => $now, 'changefreq' => 'daily', 'priority' => '0.8'];
+            // Core static pages
+            $urls[] = ['loc' => url('/'), 'lastmod' => $now, 'changefreq' => 'daily', 'priority' => '1.0'];
+            $urls[] = ['loc' => url('/tentang-kami'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.9'];
+            $urls[] = ['loc' => route('about.profile'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+            $urls[] = ['loc' => route('about.holding'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+            $urls[] = ['loc' => route('about.k3'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+            $urls[] = ['loc' => route('about.equipment'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+            $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+            $urls[] = ['loc' => route('about.warranty'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+            $urls[] = ['loc' => route('about.faq'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+            $urls[] = ['loc' => url('/area'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.9'];
+            $urls[] = ['loc' => url('/galeri'), 'lastmod' => $now, 'changefreq' => 'weekly', 'priority' => '0.8'];
+            $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => $now, 'changefreq' => 'daily', 'priority' => '0.8'];
 
-        // Regional landing routes
-        $provinces = RegionService::all();
-        foreach ($provinces as $provSlug => $prov) {
-            $urls[] = [
-                'loc' => route('area.province', ['province' => $provSlug]),
-                'lastmod' => $now,
-                'changefreq' => 'weekly',
-                'priority' => '0.8',
-            ];
-
-            foreach ($prov['cities'] as $citySlug => $city) {
+            // Regional landing routes
+            $provinces = RegionService::all();
+            foreach ($provinces as $provSlug => $prov) {
                 $urls[] = [
-                    'loc' => route('area.city', ['city' => $citySlug]),
+                    'loc' => route('area.province', ['province' => $provSlug]),
                     'lastmod' => $now,
                     'changefreq' => 'weekly',
                     'priority' => '0.8',
                 ];
 
-                foreach ($city['districts'] as $district) {
-                    $districtSlug = Str::slug($district);
+                foreach ($prov['cities'] as $citySlug => $city) {
                     $urls[] = [
-                        'loc' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
+                        'loc' => route('area.city', ['city' => $citySlug]),
                         'lastmod' => $now,
                         'changefreq' => 'weekly',
                         'priority' => '0.8',
                     ];
+
+                    foreach ($city['districts'] as $district) {
+                        $districtSlug = Str::slug($district);
+                        $urls[] = [
+                            'loc' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
+                            'lastmod' => $now,
+                            'changefreq' => 'weekly',
+                            'priority' => '0.8',
+                        ];
+                    }
                 }
             }
-        }
 
-        // Published knowledge articles
-        $articles = \App\Models\Article::where('is_published', true)->get();
-        foreach ($articles as $article) {
-            $urls[] = [
-                'loc' => route('articles.show', ['slug' => $article->slug]),
-                'lastmod' => ($article->updated_at ?? $article->created_at)->toAtomString(),
-                'changefreq' => 'monthly',
-                'priority' => '0.7',
-            ];
-        }
+            // Published knowledge articles
+            $articles = Article::where('is_published', true)->get();
+            foreach ($articles as $article) {
+                $urls[] = [
+                    'loc' => route('articles.show', ['slug' => $article->slug]),
+                    'lastmod' => ($article->updated_at ?? $article->created_at)->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => '0.7',
+                ];
+            }
 
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-        $xml .= '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>' . "\n";
-        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-        foreach ($urls as $u) {
-            $xml .= "  <url>\n";
-            $xml .= "    <loc>" . htmlspecialchars($u['loc'], ENT_XML1, 'UTF-8') . "</loc>\n";
-            $xml .= "    <lastmod>{$u['lastmod']}</lastmod>\n";
-            $xml .= "    <changefreq>{$u['changefreq']}</changefreq>\n";
-            $xml .= "    <priority>{$u['priority']}</priority>\n";
-            $xml .= "  </url>\n";
-        }
-        $xml .= '</urlset>';
+            $xmlString = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+            $xmlString .= '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>'."\n";
+            $xmlString .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
+            foreach ($urls as $u) {
+                $xmlString .= "  <url>\n";
+                $xmlString .= '    <loc>'.htmlspecialchars($u['loc'], ENT_XML1, 'UTF-8')."</loc>\n";
+                $xmlString .= "    <lastmod>{$u['lastmod']}</lastmod>\n";
+                $xmlString .= "    <changefreq>{$u['changefreq']}</changefreq>\n";
+                $xmlString .= "    <priority>{$u['priority']}</priority>\n";
+                $xmlString .= "  </url>\n";
+            }
+            $xmlString .= '</urlset>';
 
-        return response($xml, 200)->header('Content-Type', 'application/xml');
+            return $xmlString;
+        });
+
+        return response($xml, 200)
+            ->header('Content-Type', 'application/xml')
+            ->header('Cache-Control', 'public, max-age=3600');
     }
 
     /**
@@ -620,10 +652,12 @@ class PageController extends Controller
         JsonLdMulti::setTitle('Profil Perusahaan Drainusantara');
         JsonLdMulti::setType('AboutPage');
 
-        $staffMembers = Staff::where('is_active', true)
-            ->orderBy('order')
-            ->latest('id')
-            ->get();
+        $staffMembers = Cache::remember('staff.all_active', 86400, function () {
+            return Staff::where('is_active', true)
+                ->orderBy('order')
+                ->latest('id')
+                ->get();
+        });
 
         return view('about.profile', compact('staffMembers'));
     }
@@ -694,7 +728,9 @@ class PageController extends Controller
         TwitterCard::setDescription('Mesin spiral Ridgid K-50/K-60 dan kamera pipa CCTV IP68.');
         TwitterCard::setImage(asset('images/hero-technician.webp'));
 
-        $equipments = \App\Models\Equipment::where('is_active', true)->orderBy('order')->get();
+        $equipments = Cache::remember('equipments.all_active', 86400, function () {
+            return Equipment::where('is_active', true)->orderBy('order')->get();
+        });
 
         return view('about.equipment', compact('equipments'));
     }
@@ -720,9 +756,11 @@ class PageController extends Controller
         JsonLdMulti::setTitle('Klien & Portofolio Proyek - Drainusantara');
         JsonLdMulti::setType('AboutPage');
 
-        $portfolios = \App\Models\Portfolio::where('is_active', true)
-            ->orderBy('order')
-            ->get();
+        $portfolios = Cache::remember('landing.portfolios', 86400, function () {
+            return Portfolio::where('is_active', true)
+                ->orderBy('order')
+                ->get();
+        });
 
         return view('about.portfolio', compact('portfolios'));
     }
@@ -795,5 +833,17 @@ class PageController extends Controller
             ->header('Content-Type', 'text/plain; charset=utf-8')
             ->header('Cache-Control', 'public, max-age=600');
     }
-}
 
+    /**
+     * Plain-text dynamic robots.txt for search engines.
+     */
+    public function robots(): Response
+    {
+        $sitemapUrl = url('/sitemap.xml');
+        $content = "User-agent: *\nDisallow: /admin/\nDisallow: /login\n\nSitemap: {$sitemapUrl}\n";
+
+        return response($content, 200)
+            ->header('Content-Type', 'text/plain; charset=utf-8')
+            ->header('Cache-Control', 'public, max-age=86400');
+    }
+}

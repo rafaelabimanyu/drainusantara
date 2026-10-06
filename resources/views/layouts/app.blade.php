@@ -20,6 +20,18 @@
     <script>
         window.__DRAINUSANTARA_WA__ = "{{ config('app.whatsapp_number') ?: '6281234567890' }}";
     </script>
+    <script type="application/json" id="drainusantara-webmcp-data">
+        {!! json_encode([
+            'services' => ($navServices ?? collect())->map(fn ($s) => [
+                'name' => $s->name,
+                'slug' => $s->slug,
+                'short_description' => $s->short_description,
+                'price_starting_from' => (int) $s->price_starting_from,
+            ])->values()->all(),
+            'whatsappNumber' => config('app.whatsapp_number') ?: '6281234567890',
+            'baseUrl' => url('/'),
+        ], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}
+    </script>
 
     <!-- Vite Assets (Compiled Tailwind CSS & Alpine.js Bundle) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

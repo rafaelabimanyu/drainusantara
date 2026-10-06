@@ -32,7 +32,7 @@
                 @endif
             </div>
             <div class="shrink-0">
-                <a href="{{ url('/galeri') }}" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 bg-white hover:bg-sky-50 border border-slate-200 px-4 py-2.5 rounded-lg shadow-2xs transition-colors btn-press min-h-[40px]">
+                <a href="{{ url('/galeri') }}" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 bg-white hover:bg-sky-50 border border-slate-200 px-4 py-2.5 rounded-lg shadow-2xs transition-colors btn-press min-h-10">
                     <span>Lihat Semua Galeri</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -57,7 +57,7 @@
                     $waText = urlencode("Halo Tim Drainusantara, saya melihat dokumentasi '{$item->title}'. Saluran pipa saya ada kendala serupa, mohon info estimasi biaya dan kedatangan teknisi.");
                     $itemWaUrl = "https://wa.me/" . config('app.whatsapp_number', '6281234567890') . "?text={$waText}";
                 @endphp
-                <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }} flex flex-col justify-between group">
+                <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }} flex flex-col justify-between group">
                     <div>
                         <!-- Foto Dokumentasi Tajam (Tanpa Badge Kategori) -->
                         <div class="relative aspect-16/10 bg-slate-900 overflow-hidden border-b border-slate-100">
@@ -98,7 +98,7 @@
                         <a href="{{ $itemWaUrl }}" 
                            target="_blank" 
                            rel="noopener noreferrer" 
-                           class="btn-press text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-[36px] inline-flex items-center gap-1 group/btn">
+                           class="btn-press text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-9 inline-flex items-center gap-1 group/btn">
                             <span>Konsultasi</span>
                             <svg class="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -113,7 +113,7 @@
             @for($i = 0; $i < $countTotal; $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Dokumentasi {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>

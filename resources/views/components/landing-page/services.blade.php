@@ -88,11 +88,11 @@
                     }
 
                     $waMessage = $isModel 
-                        ? "Halo Drainusantara, saya butuh penanganan untuk {$title}. Mohon info jadwal teknisi terdekat."
-                        : ($catalog['wa_text'] ?? "Halo Drainusantara, saya butuh penanganan untuk {$title}.");
+                        ? "Halo Drainusantara, saya ingin konsultasi penanganan untuk {$title}. Mohon info estimasi biaya dan jadwal teknisi terdekat."
+                        : ($catalog['wa_text'] ?? "Halo Drainusantara, saya ingin konsultasi penanganan untuk {$title}. Mohon info estimasi biaya.");
                     $specificWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($waMessage);
                 @endphp
-                <div id="layanan-{{ $slug }}" class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-xs hover:border-sky-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
+                <div id="layanan-{{ $slug }}" class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-xs hover:border-sky-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                     <div>
                         <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                             <img src="{{ $imageSrc }}" 
@@ -129,16 +129,17 @@
 
                     <div class="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between gap-3">
                         <div>
-                            <span class="text-[11px] text-slate-500 block leading-none mb-1">Tarif Penanganan:</span>
+                            <span class="text-xs text-slate-500 block leading-tight mb-1">Estimasi Tarif:</span>
                             <div class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-                                Rp {{ number_format($price, 0, ',', '.') }}
+                                Mulai dari Rp {{ number_format($price, 0, ',', '.') }}
                             </div>
+                            <span class="text-xs text-slate-500 block mt-0.5">Detail &amp; konsultasi via WA</span>
                         </div>
 
                         <a href="{{ $specificWaUrl }}" target="_blank" rel="noopener noreferrer" 
-                           class="btn-press inline-flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 min-h-[44px]"
-                           aria-label="Konsultasi penanganan {{ $title }} via WhatsApp">
-                            <span>Konsultasi Titik Ini (WA)</span>
+                           class="btn-press inline-flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 min-h-11"
+                           aria-label="Konsultasi detail tarif penanganan {{ $title }} via WhatsApp">
+                            <span>Konsultasi Detail (WA)</span>
                         </a>
                     </div>
                 </div>
@@ -149,7 +150,7 @@
             @for($i = 0; $i < count($itemsLayanan); $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Layanan {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>

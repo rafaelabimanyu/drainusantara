@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import { registerWebMcpTools } from './webmcp';
 
 window.Alpine = Alpine;
 
@@ -243,6 +244,8 @@ Alpine.data('mobileCarousel', (totalSlides = 3, intervalMs = 4500) => ({
         }, 3000);
     }
 }));
+
+registerWebMcpTools();
 
 Alpine.start();
 

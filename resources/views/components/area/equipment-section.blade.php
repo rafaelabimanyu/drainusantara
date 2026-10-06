@@ -64,10 +64,10 @@
              @mouseleave="resume()"
              class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-6 pb-4 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
             @foreach($dbEquipments as $index => $equip)
-            <div class="w-[84vw] sm:w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col justify-between card-lift reveal-soft stagger-{{ ($index % 4) + 1 }}">
+            <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col justify-between card-lift reveal-soft stagger-{{ ($index % 4) + 1 }}">
                 <div>
                     <!-- Container Gambar Peralatan -->
-                    <div class="relative aspect-[16/10] bg-slate-900 overflow-hidden border-b border-slate-200 group">
+                    <div class="relative aspect-16/10 bg-slate-900 overflow-hidden border-b border-slate-200 group">
                         <img 
                             src="{{ $equip->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
                             alt="{{ $equip->name }}" 
@@ -125,7 +125,7 @@
             @for($i = 0; $i < $equipCount; $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Peralatan {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>

@@ -17,13 +17,13 @@
             'cable_spec' => 'Spiral Lentur 16mm Khusus Sifon PVC',
             'problem_desc' => 'Air bak cuci piring meluap atau lambat surut karena tumpukan minyak goreng beku, lemak sisa masakan, dan ampas makanan yang membatu di leher angsa.',
             'specs' => [
-                'Mengikis kerak minyak & lemak 100% tuntas',
+                'Mengikis kerak minyak & lemak hingga tuntas',
                 'Aman untuk pipa leher angsa sifon PVC',
                 'Pengerjaan rapi 30–45 menit tanpa kotor',
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'wa_text' => 'Halo Drainusantara, saya butuh penanganan untuk Wastafel & Bak Cuci Piring mampet. Mohon info jadwal teknisi terdekat.',
+            'wa_text' => 'Halo Drainusantara, saya butuh penanganan untuk Wastafel & Bak Cuci Piring mampet. Mohon info estimasi biaya dan jadwal teknisi terdekat.',
         ],
         [
             'code' => 'DN-02',
@@ -35,13 +35,13 @@
             'cable_spec' => 'Spiral Torsi Meliuk Anti-Kinking',
             'problem_desc' => 'Kloset duduk atau jongkok meluap saat disiram akibat sumbatan tisu basah, pembalut, kain, atau kerak kotoran yang tersangkut di lekukan porselen.',
             'specs' => [
-                '100% tanpa membongkar dudukan kloset porselen',
+                'Metode mekanis tanpa membongkar dudukan kloset porselen',
                 'Daya putar meliuk aman di leher angsa keramik',
                 'Teknisi ber-APD bersih, bersarung tangan & sepatu cover',
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'wa_text' => 'Halo Drainusantara, saya butuh bantuan darurat untuk Kloset / Toilet tersumbat tanpa bongkar keramik. Mohon segera kirim teknisi.',
+            'wa_text' => 'Halo Drainusantara, saya butuh bantuan darurat untuk Kloset / Toilet tersumbat tanpa bongkar keramik. Mohon info estimasi biaya dan kedatangan teknisi.',
         ],
         [
             'code' => 'DN-03',
@@ -59,7 +59,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'wa_text' => 'Halo Drainusantara, saya butuh penanganan Floor Drain Kamar Mandi yang menggenang dan berbau got. Mohon info teknisi terdekat.',
+            'wa_text' => 'Halo Drainusantara, saya butuh penanganan Floor Drain Kamar Mandi yang menggenang. Mohon info estimasi biaya dan jadwal teknisi terdekat.',
         ],
         [
             'code' => 'DN-04',
@@ -77,7 +77,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'wa_text' => 'Halo Drainusantara, pipa talang rooftop kami tersumbat dedaunan dan meluap. Mohon info teknisi untuk penanganan.',
+            'wa_text' => 'Halo Drainusantara, pipa talang rooftop kami tersumbat dedaunan dan meluap. Mohon info estimasi biaya dan jadwal teknisi.',
         ],
         [
             'code' => 'DN-05',
@@ -95,7 +95,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'wa_text' => 'Halo Drainusantara, kami ingin memesan pembersihan Grease Trap / Sedot Lemak untuk restoran/kafe kami. Mohon info penawaran.',
+            'wa_text' => 'Halo Drainusantara, kami ingin konsultasi pembersihan Grease Trap / Sedot Lemak untuk restoran/kafe kami. Mohon info penawaran dan rincian biaya.',
         ],
         [
             'code' => 'DN-06',
@@ -113,7 +113,7 @@
                 'Disertai laporan hasil inspeksi teknis lengkap',
             ],
             'price' => 400000,
-            'wa_text' => 'Halo Drainusantara, saya ingin menjadwalkan Inspeksi Kamera CCTV Pipa 30M untuk diagnosa saluran yang sering mampet. Mohon info ketersediaan unit.',
+            'wa_text' => 'Halo Drainusantara, saya ingin konsultasi Inspeksi Kamera CCTV Pipa 30M untuk diagnosa saluran yang sering mampet. Mohon info ketersediaan unit dan biayanya.',
         ],
     ];
 @endphp

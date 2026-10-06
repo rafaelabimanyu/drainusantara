@@ -33,7 +33,7 @@
              class="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-1 -mx-1 sm:mx-0 sm:px-0 items-stretch">
             
             <!-- Card 1: DKI JAKARTA -->
-            <div class="group/card relative overflow-hidden w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-1">
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-1">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                     <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-jakarta-indonesia-city-jakarta-drainusantara.webp') }}"
@@ -41,7 +41,7 @@
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
-                    <div class="absolute inset-0 bg-gradient-to-b from-white/55 via-white/70 to-white/55"></div>
+                    <div class="absolute inset-0 bg-linear-to-b from-white/55 via-white/70 to-white/55"></div>
                 </div>
 
                 <div class="relative z-10">
@@ -106,7 +106,7 @@
             </div>
 
             <!-- Card 2: BODETABEK -->
-            <div class="group/card relative overflow-hidden w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-2">
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-2">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                     <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-kota-bekasi-jawa-barat-drainusantara.webp') }}"
@@ -114,7 +114,7 @@
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
-                    <div class="absolute inset-0 bg-gradient-to-b from-white/55 via-white/70 to-white/55"></div>
+                    <div class="absolute inset-0 bg-linear-to-b from-white/55 via-white/70 to-white/55"></div>
                 </div>
 
                 <div class="relative z-10">
@@ -177,7 +177,7 @@
             </div>
 
             <!-- Card 3: SEMARANG & BANDAR LAMPUNG -->
-            <div class="group/card relative overflow-hidden w-[85vw] sm:w-[350px] lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-3">
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-3">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                     <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-semarang-lampung-drainusantara.webp') }}"
@@ -185,7 +185,7 @@
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
-                    <div class="absolute inset-0 bg-gradient-to-b from-white/55 via-white/70 to-white/55"></div>
+                    <div class="absolute inset-0 bg-linear-to-b from-white/55 via-white/70 to-white/55"></div>
                 </div>
 
                 <div class="relative z-10">
@@ -254,7 +254,7 @@
             @for($i = 0; $i < 3; $i++)
                 <button type="button" 
                         @click="goTo({{ $i }})"
-                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Wilayah {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>

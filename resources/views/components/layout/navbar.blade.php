@@ -61,7 +61,7 @@
                             </span>
                         </div>
 
-                        <div class="space-y-0.5 max-h-[380px] overflow-y-auto pr-1">
+                        <div class="space-y-0.5 max-h-95 overflow-y-auto pr-1">
                             <!-- 1. Struktur Holding J&J Group -->
                             <a href="{{ route('about.holding') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
                                 <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Struktur Holding J&amp;J Group</div>
@@ -142,7 +142,7 @@
                          x-transition:leave="transition ease-in duration-100"
                          x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                          x-transition:leave-end="opacity-0 translate-y-1 scale-98"
-                         class="absolute top-full right-0 mt-2 w-[480px] bg-white border border-slate-200 rounded-xl shadow-lg p-3 z-50">
+                         class="absolute top-full right-0 mt-2 w-120 bg-white border border-slate-200 rounded-xl shadow-lg p-3 z-50">
                         
                         <!-- Popover Header -->
                         <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-100">

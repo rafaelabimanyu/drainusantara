@@ -2,20 +2,20 @@
      :class="{ 'translate-y-28 opacity-0 pointer-events-none': mobileSearchOpen || sidebarOpen }"
      aria-label="Navigasi Mobile Floating Dock">
     <!-- 1. Beranda (Icon Home) -->
-    <a href="{{ url('/') }}" class="flex flex-col items-center justify-center py-1 px-2.5 min-h-[44px] min-w-[44px] text-xs {{ Request::is('/') ? 'text-sky-400 font-bold' : 'text-slate-300' }} hover:text-white transition-colors btn-press active:scale-90">
+    <a href="{{ url('/') }}" class="flex flex-col items-center justify-center py-1 px-2.5 min-h-11 min-w-11 text-xs {{ Request::is('/') ? 'text-sky-400 font-bold' : 'text-slate-300' }} hover:text-white transition-colors btn-press active:scale-90">
         <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
-        <span class="text-[10px] tracking-tight font-semibold">Beranda</span>
+        <span class="text-[11px] tracking-tight font-semibold">Beranda</span>
     </a>
 
     <!-- 2. Layanan (Icon Tools) -->
-    <a href="{{ url('/#layanan') }}" class="flex flex-col items-center justify-center py-1 px-2.5 min-h-[44px] min-w-[44px] text-xs text-slate-300 hover:text-white transition-colors btn-press active:scale-90">
+    <a href="{{ url('/#layanan') }}" class="flex flex-col items-center justify-center py-1 px-2.5 min-h-11 min-w-11 text-xs text-slate-300 hover:text-white transition-colors btn-press active:scale-90">
         <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        <span class="text-[10px] tracking-tight font-semibold">Layanan</span>
+        <span class="text-[11px] tracking-tight font-semibold">Layanan</span>
     </a>
 
     <!-- 3. WhatsApp Hero Center (Tombol bulat hijau empuk menonjol di tengah) -->
@@ -32,19 +32,19 @@
 </div>
 
     <!-- 4. Cari Wilayah (Icon Search / Pin) -->
-    <button @click="mobileSearchOpen = true; activeMenu = null" type="button" class="flex flex-col items-center justify-center py-1 px-2.5 min-h-[44px] min-w-[44px] text-xs text-slate-300 hover:text-white transition-colors cursor-pointer btn-press active:scale-90" aria-label="Area - Cari Wilayah">
+    <button @click="mobileSearchOpen = true; activeMenu = null" type="button" class="flex flex-col items-center justify-center py-1 px-2.5 min-h-11 min-w-11 text-xs text-slate-300 hover:text-white transition-colors cursor-pointer btn-press active:scale-90" aria-label="Area - Cari Wilayah">
         <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
         </svg>
-        <span class="text-[10px] tracking-tight font-semibold">Area</span>
+        <span class="text-[11px] tracking-tight font-semibold">Area</span>
     </button>
 
     <!-- 5. Drawer Menu (Icon Hamburger) -->
-    <button @click="sidebarOpen = true" type="button" class="flex flex-col items-center justify-center py-1 px-2.5 min-h-[44px] min-w-[44px] text-xs text-slate-300 hover:text-white transition-colors cursor-pointer btn-press active:scale-90" aria-label="Menu Lengkap">
+    <button @click="sidebarOpen = true" type="button" class="flex flex-col items-center justify-center py-1 px-2.5 min-h-11 min-w-11 text-xs text-slate-300 hover:text-white transition-colors cursor-pointer btn-press active:scale-90" aria-label="Menu Lengkap">
         <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-        <span class="text-[10px] tracking-tight font-semibold">Menu</span>
+        <span class="text-[11px] tracking-tight font-semibold">Menu</span>
     </button>
 </nav>

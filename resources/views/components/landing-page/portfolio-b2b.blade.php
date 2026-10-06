@@ -228,7 +228,7 @@
                 <a href="{{ $itemWaUrl }}" 
                    target="_blank" 
                    rel="noopener noreferrer" 
-                   class="w-[85vw] sm:w-[350px] lg:w-[calc(33.333%-1rem)] shrink-0 snap-center lg:snap-start bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600"
+                   class="w-[85vw] sm:w-85 md:w-auto lg:w-85 shrink-0 snap-center lg:snap-start bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600"
                    title="Konsultasi penanganan {{ $project->client_name }}">
                     <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
                     <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
@@ -275,7 +275,7 @@
             @for($p = 0; $p < $b2bDotCount; $p++)
                 <button type="button" 
                         @click="goToPage({{ $p }})"
-                        class="min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Halaman Portofolio {{ $p + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="activePage === {{ $p }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>

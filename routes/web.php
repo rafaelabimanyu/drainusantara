@@ -33,11 +33,12 @@ Route::get('/galeri', [PageController::class, 'gallery'])->name('gallery');
 
 // Artikel & Edukasi Pengetahuan
 Route::get('/pengetahuan', [PageController::class, 'articles'])->name('articles.index');
-Route::get('/artikel', [PageController::class, 'articles'])->name('articles.legacy');
+Route::get('/artikel', fn () => redirect()->route('articles.index', [], 301))->name('articles.legacy');
 Route::get('/artikel/{slug}', [PageController::class, 'articleDetail'])->name('articles.show');
 
-// Dynamic XML Sitemap for SEO Crawlers
+// Dynamic XML Sitemap & Robots.txt for SEO Crawlers
 Route::get('/sitemap.xml', [PageController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [PageController::class, 'robots'])->name('robots');
 
 // llms.txt for AI crawlers (llmstxt.org)
 Route::get('/llms.txt', [PageController::class, 'llms'])->name('llms');
@@ -67,7 +68,7 @@ Route::get('/admin/login', fn () => redirect()->route('login'));
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-    Route::resource('services', ServiceController::class);  
+    Route::resource('services', ServiceController::class);
     Route::resource('coverage-areas', CoverageAreaController::class);
     Route::resource('galleries', GalleryController::class);
     Route::resource('portfolios', PortfolioController::class);
@@ -76,4 +77,3 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('articles', ArticleController::class);
     Route::resource('reviews', ReviewController::class);
 });
-

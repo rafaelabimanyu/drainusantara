@@ -2,7 +2,7 @@
     'generalWaUrl',
 ])
 
-<section class="py-16 lg:py-20 bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950 text-white border-t border-slate-800 relative overflow-hidden">
+<section class="py-16 lg:py-20 bg-linear-to-br from-slate-900 via-slate-900 to-sky-950 text-white border-t border-slate-800 relative overflow-hidden">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center reveal-soft">
         
         <span class="text-xs font-bold uppercase tracking-wider text-sky-400 block mb-3">

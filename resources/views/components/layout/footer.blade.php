@@ -16,7 +16,7 @@
                     Layanan spesialis pelancaran pipa mampet mekanik profesional 100% tanpa bongkar keramik dan bebas bahan kimia korosif. Menggunakan mesin spiral baja torsi tinggi serta kamera inspeksi endoskopi CCTV 30 meter.
                 </p>
                 <div class="text-xs text-slate-300 space-y-1.5 pt-1">
-                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider text-sky-400">Workshop &amp; Posko Pusat:</div>
+                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Workshop &amp; Posko Pusat:</div>
                     <p class="leading-relaxed">Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440</p>
                     <div class="pt-1 text-[11px] text-emerald-400 font-semibold">
                         Siaga 24 Jam Nonstop
@@ -28,13 +28,13 @@
             <div>
                 <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Layanan Residensial</h3>
                 <ul class="space-y-2 text-xs text-slate-300">
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Wastafel &amp; Sink Cuci Piring</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Kloset &amp; Toilet Duduk/Jongkok</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Floor Drain Kamar Mandi</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Bak Kontrol Pipa Pembuangan</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Talang Air Hujan Rooftop / Dak</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Pipa Buang Mesin Cuci</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Inspeksi Kamera CCTV 30M</a></li>
+                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Wastafel &amp; Sink Cuci Piring</a></li>
+                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Kloset &amp; Toilet Duduk/Jongkok</a></li>
+                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Floor Drain Kamar Mandi</a></li>
+                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Bak Kontrol Pipa Pembuangan</a></li>
+                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Talang Air Hujan Rooftop / Dak</a></li>
+                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Pipa Buang Mesin Cuci</a></li>
+                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Inspeksi Kamera CCTV 30M</a></li>
                 </ul>
             </div>
 
@@ -42,12 +42,12 @@
             <div>
                 <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Solusi B2B &amp; Gedung</h3>
                 <ul class="space-y-2 text-xs text-slate-300">
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">De-Greasing Grease Trap Restoran</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Pembersihan Manhole Komunal Tenant</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Pipa Vertikal Gedung Bertingkat</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Saluran Limbah Dapur Industri</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">Perawatan Berkala After-Hours</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white hover:text-sky-300 transition-colors py-0.5 inline-block">e-Faktur Pajak &amp; Berita Acara (BAST)</a></li>
+                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">De-Greasing Grease Trap Restoran</a></li>
+                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">Pembersihan Manhole Komunal Tenant</a></li>
+                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">Pipa Vertikal Gedung Bertingkat</a></li>
+                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">Saluran Limbah Dapur Industri</a></li>
+                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">Perawatan Berkala After-Hours</a></li>
+                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">e-Faktur Pajak &amp; Berita Acara (BAST)</a></li>
                     <li class="pt-1"><a href="{{ route('about.portfolio') }}" class="text-sky-400 hover:text-sky-300 font-semibold inline-flex items-center gap-1 py-0.5">Portofolio Mitra B2B</a></li>
                 </ul>
             </div>
@@ -137,7 +137,7 @@
                         </span>
                         <span class="text-[11px] font-semibold text-slate-400">Jakarta Timur</span>
                     </div>
-                    <div class="rounded-xl overflow-hidden border border-slate-700 aspect-[16/10] bg-slate-950 relative shadow-inner">
+                    <div class="rounded-xl overflow-hidden border border-slate-700 aspect-16/10 bg-slate-950 relative shadow-inner">
                         <iframe 
                             title="Peta Lokasi Workshop Pusat Drainusantara"
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126920.28318721204!2d106.82056!3d-6.2297464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e46c757c23%3A0xa6436e2f694dc50!2sJakarta%20Timur%2C%20Kota%20Jakarta%20Timur%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
