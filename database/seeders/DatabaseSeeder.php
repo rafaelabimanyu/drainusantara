@@ -1,5 +1,9 @@
 <?php
+
+declare(strict_types=1);
+
 use App\Models\User;
+use App\Services\CacheService;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -498,6 +502,8 @@ class DatabaseSeeder extends Seeder
         foreach ($equipmentsData as $equip) {
             \App\Models\Equipment::updateOrCreate(['name' => $equip['name']], $equip);
         }
+
+        CacheService::clearPublicCache();
     }
 }
 

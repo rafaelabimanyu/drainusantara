@@ -81,7 +81,7 @@
                 <div class="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
                     <div class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
                         <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                        <span>Posko Wilayah: Kecamatan {{ $area->district }}, {{ $area->city }}</span>
+                        <span>Wilayah Layanan: Kecamatan {{ $area->district }}, {{ $area->city }}</span>
                     </div>
 
                     <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight reveal-soft">
@@ -284,8 +284,7 @@
                                      height="375"
                                      loading="lazy" 
                                      decoding="async"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
-                                     onerror="this.onerror=null; this.src='{{ asset('images/services/wastafel-cuci-piring-mampet.webp') }}';">
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out">
                             </div>
                             <h3 class="text-base font-bold text-slate-900 mb-1.5 tracking-tight group-hover:text-sky-700 transition-colors">
                                 {{ $title }}

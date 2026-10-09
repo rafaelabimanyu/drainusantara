@@ -99,7 +99,7 @@
                     </div>
                     <div class="flex items-start gap-1.5">
                         <span class="text-emerald-400 font-bold select-none">[✓]</span>
-                        <span>Garansi Tertulis 30 Hari Kerja</span>
+                        <span>Garansi Tertulis 30 Hari Kalender</span>
                     </div>
                     <div class="flex items-start gap-1.5">
                         <span class="text-emerald-400 font-bold select-none">[✓]</span>

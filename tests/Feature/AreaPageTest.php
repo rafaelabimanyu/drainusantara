@@ -40,7 +40,7 @@ class AreaPageTest extends TestCase
         $response->assertSee('Mulai Rp 400.000');
     }
 
-    public function test_area_page_creates_and_renders_dynamic_district_gracefully(): void
+    public function test_area_page_renders_valid_unseeded_district_without_persisting_it(): void
     {
         $response = $this->get('/area/semarang/banyumanik');
 
@@ -49,6 +49,7 @@ class AreaPageTest extends TestCase
         $response->assertSee('Semarang');
         $response->assertSee('Panggil Teknisi Sekarang');
         $response->assertSee('Mulai Rp 400.000');
+        $this->assertDatabaseCount('coverage_areas', 0);
     }
 
     public function test_area_page_resolves_aliases_and_regions(): void
@@ -70,11 +71,15 @@ class AreaPageTest extends TestCase
             'is_active' => true,
         ]);
 
-        // Test alias jaksel
+        // Alias jaksel di-301 ke slug kanonik (hindari duplicate content)
         $responseJaksel = $this->get('/area/jaksel/tebet');
-        $responseJaksel->assertStatus(200);
-        $responseJaksel->assertSee('Jakarta Selatan');
-        $responseJaksel->assertSee('Tebet');
+        $responseJaksel->assertStatus(301);
+        $responseJaksel->assertRedirect('/area/jakarta-selatan/tebet');
+
+        $canonical = $this->get('/area/jakarta-selatan/tebet');
+        $canonical->assertStatus(200);
+        $canonical->assertSee('Jakarta Selatan');
+        $canonical->assertSee('Tebet');
 
         // Test Depok & Cinere
         $responseDepok = $this->get('/area/depok-cinere/cinere');

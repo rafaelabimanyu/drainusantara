@@ -78,9 +78,11 @@
                                 @endif
                             </td>
                             <td class="px-5 py-3.5 whitespace-nowrap text-right text-xs font-medium space-x-1.5">
-                                <a href="{{ url('/area/' . Str::slug($area->city) . '/' . Str::slug($area->district)) }}" target="_blank" class="inline-flex items-center gap-1 text-slate-700 hover:bg-slate-100 border border-slate-200 px-2 py-1 rounded-md transition-colors">
-                                    <span>Lihat</span>
-                                </a>
+                                @if($area->publicUrl())
+                                    <a href="{{ $area->publicUrl() }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-slate-700 hover:bg-slate-100 border border-slate-200 px-2 py-1 rounded-md transition-colors">
+                                        <span>Lihat</span>
+                                    </a>
+                                @endif
 
                                 <a href="{{ route('admin.coverage-areas.edit', $area) }}" class="inline-flex items-center gap-1 text-sky-700 hover:bg-sky-50 border border-sky-200 px-2.5 py-1 rounded-md transition-colors">
                                     <span>Edit</span>

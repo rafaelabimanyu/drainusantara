@@ -60,7 +60,9 @@ Route::get('/area-layanan', fn () => redirect('/#area'))->name('areas.anchor');
 
 // CMS Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
+Route::post('/login', [AuthController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('login.attempt');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/admin/login', fn () => redirect()->route('login'));
 

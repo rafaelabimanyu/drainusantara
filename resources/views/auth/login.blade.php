@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-50">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-100">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,10 +20,29 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="h-full flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8 font-sans antialiased bg-slate-50 text-slate-900">
+<body class="min-h-full flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8 font-sans antialiased bg-slate-100 text-slate-900">
+    <main class="w-full max-w-5xl grid lg:grid-cols-[0.85fr_1.15fr] bg-white border border-slate-200 rounded-lg overflow-hidden">
+        <aside class="hidden lg:flex flex-col justify-between bg-slate-900 text-white p-10 xl:p-12">
+            <div>
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-lg bg-sky-700 text-white flex items-center justify-center font-extrabold text-lg tracking-wider">DN</div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight block leading-tight">DRAINUSANTARA</span>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-sky-300 block">CMS Control Panel</span>
+                    </div>
+                </div>
+                <div class="mt-16 border-l-2 border-sky-500 pl-5">
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-sky-300">Ruang kerja admin</p>
+                    <h1 class="mt-4 text-3xl font-bold tracking-tight leading-tight">Jaga layanan tetap bergerak.</h1>
+                    <p class="mt-4 text-sm leading-6 text-slate-300">Kelola layanan, proyek, ulasan, dan area teknisi dari satu panel operasional.</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400">Akses internal Drainusantara</p>
+        </aside>
+        <section class="p-6 sm:p-10 lg:p-12">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <!-- Brand Header -->
-        <div class="text-center">
+        <div class="text-center lg:hidden">
             <a href="{{ url('/') }}" class="inline-flex items-center gap-3 group focus:outline-hidden focus:ring-2 focus:ring-sky-700 focus:ring-offset-2 rounded-lg p-1">
                 <div class="w-11 h-11 rounded-lg bg-sky-700 text-white flex items-center justify-center font-extrabold text-lg tracking-wider shadow-2xs group-hover:bg-sky-800 transition-colors">
                     DN
@@ -42,7 +61,7 @@
         </div>
 
         <!-- Auth Card -->
-        <div class="mt-6 bg-white py-7 px-5 sm:px-8 rounded-xl border border-slate-200 shadow-2xs" x-data="{ showPassword: false }">
+        <div class="mt-8" x-data="{ showPassword: false }">
             @if(session('info'))
                 <div class="mb-5 p-3.5 rounded-lg bg-sky-50 border border-sky-200 text-sky-800 text-xs sm:text-sm flex items-start gap-2.5">
                     <svg class="w-4 h-4 text-sky-700 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,7 +102,7 @@
                             autofocus 
                             value="{{ old('login') }}"
                             placeholder="Masukkan nama pengguna / email" 
-                            class="w-full pl-9 pr-3.5 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs"
+                            class="w-full pl-9 pr-3.5 py-3 rounded-md border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition"
                         >
                     </div>
                 </div>
@@ -107,7 +126,7 @@
                             id="password" 
                             required 
                             placeholder="••••••••••••" 
-                            class="w-full pl-9 pr-10 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs"
+                            class="w-full pl-9 pr-10 py-3 rounded-md border border-slate-300 bg-white text-slate-900 placeholder-slate-400 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition"
                         >
                         <button 
                             type="button" 
@@ -141,7 +160,7 @@
                 <!-- Submit Button -->
                 <button 
                     type="submit" 
-                    class="w-full mt-2 py-2.5 px-4 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-semibold text-sm transition-colors shadow-2xs flex items-center justify-center gap-2 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-sky-700 focus:ring-offset-2"
+                    class="w-full mt-2 py-3 px-4 rounded-md bg-sky-700 hover:bg-sky-800 text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-sky-700 focus:ring-offset-2"
                 >
                     <span>Masuk ke Dashboard</span>
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -150,17 +169,15 @@
                 </button>
             </form>
 
-            <!-- Credential Info Helper Pill -->
-            <div class="mt-5 pt-4 border-t border-slate-100 text-center">
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-100 text-[11px] text-slate-600">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    <span>Admin: <strong class="text-slate-800">Drainusantara@admin</strong></span>
+            <div class="mt-6 pt-4 border-t border-slate-200 text-left">
+                <div class="text-xs text-slate-500">
+                    <span>Akses hanya untuk personel internal yang berwenang.</span>
                 </div>
             </div>
         </div>
 
         <!-- Back to Home -->
-        <div class="mt-6 text-center">
+        <div class="mt-8 text-center">
             <a href="{{ url('/') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-sky-700 transition-colors">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -169,5 +186,7 @@
             </a>
         </div>
     </div>
+        </section>
+    </main>
 </body>
 </html>
