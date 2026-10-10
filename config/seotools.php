@@ -11,7 +11,8 @@ return [
          * The default configurations to be used by the meta generator.
          */
         'defaults' => [
-            'title' => 'Drainusantara', // set false to total remove
+            // PageMetadata supplies unbranded page titles; SEOTools owns the suffix.
+            'title' => 'Drainusantara',
             'titleBefore' => false, // Put defaults.title before page title, like 'It's Over 9000! - Dashboard'
             'description' => 'Jasa pelancaran saluran pipa mampet wastafel & kloset tanpa bongkar keramik di Jabodetabek, Semarang & Lampung. Mesin spiral baja, garansi 30 hari.',
             'separator' => ' | ',

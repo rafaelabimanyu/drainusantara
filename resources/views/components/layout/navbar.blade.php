@@ -1,26 +1,16 @@
 @props(['navServices' => null])
+@php($navRegions = \App\Services\RegionService::all())
 
-<header class="border-b border-slate-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-40 transition-all shadow-2xs"
+<header class="border-b border-slate-200/80 bg-slate-300 backdrop-blur-md sticky top-0 z-40 transition-all shadow-2xs"
         @click.outside="activeMenu = null">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
-            <!-- Modern Friendly Brand Logo & Sub-Badge -->
-            <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-white border border-slate-200/90 flex items-center justify-center group-hover:border-sky-300 transition-colors shadow-2xs overflow-hidden p-1">
-                    <img src="{{ asset('images/logo/WebIcon.webp') }}" alt="Drainusantara" class="w-full h-full object-contain" width="40" height="40">
-                </div>
-                <div>
-                    <span class="text-xl font-extrabold tracking-tight text-slate-900 block leading-tight">
-                        DRAI<span class="text-sky-700">NUSANTARA</span>
-                    </span>
-                    <span class="text-[10px] font-semibold text-slate-500 tracking-wider uppercase block">
-                        Jasa Saluran Tanpa Bongkar
-                    </span>
-                </div>
+            <a href="{{ url('/') }}" class="flex min-h-11 shrink-0 items-center rounded-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                <img src="{{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }}" srcset="{{ asset('images/logo/TEKSBRAND-TAGLINE-224.webp') }} 224w, {{ asset('images/logo/TEKSBRAND-TAGLINE-448.webp') }} 448w, {{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }} 1198w" sizes="224px" alt="Drainusantara — Jasa Saluran Tanpa Bongkar" class="block h-auto w-56 max-w-full object-contain" width="1198" height="208">
             </a>
 
             <!-- Desktop Navigation Items -->
-            <nav class="hidden md:flex items-center space-x-1 lg:space-x-1.5 text-sm font-semibold text-slate-600" aria-label="Navigasi Utama">
+            <nav class="hidden lg:flex items-center space-x-1 lg:space-x-1.5 text-sm font-semibold text-slate-600" aria-label="Navigasi Utama">
                 <!-- 1. Beranda -->
                 <a href="{{ route('home') }}" 
                    class="px-3 py-2 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('area*') ? 'text-sky-700 font-bold bg-sky-50/70 border border-sky-100/60' : 'hover:text-sky-700 hover:bg-slate-50' }}">
@@ -159,21 +149,11 @@
                                     DKI Jakarta
                                 </div>
                                 <div class="space-y-0.5">
-                                    <a href="{{ url('/area/jakarta-selatan') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Jakarta Selatan
-                                    </a>
-                                    <a href="{{ url('/area/jakarta-timur') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Jakarta Timur
-                                    </a>
-                                    <a href="{{ url('/area/jakarta-barat') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Jakarta Barat
-                                    </a>
-                                    <a href="{{ url('/area/jakarta-utara') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Jakarta Utara
-                                    </a>
-                                    <a href="{{ url('/area/jakarta-pusat') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Jakarta Pusat
-                                    </a>
+                                    @foreach ($navRegions['dki-jakarta']['cities'] as $city)
+                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            {{ $city['name'] }}
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -183,21 +163,12 @@
                                     BODETABEK
                                 </div>
                                 <div class="space-y-0.5">
-                                    <a href="{{ url('/area/bogor-sentul') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Bogor &amp; Sentul
-                                    </a>
-                                    <a href="{{ url('/area/depok-cinere') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Depok &amp; Cinere
-                                    </a>
-                                    <a href="{{ url('/area/tangerang-kota') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Tangerang Kota
-                                    </a>
-                                    <a href="{{ url('/area/tangerang-selatan') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Tangsel / BSD
-                                    </a>
-                                    <a href="{{ url('/area/bekasi-cikarang') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Bekasi &amp; Cikarang
-                                    </a>
+                                    @foreach (['bogor', 'depok-cinere', 'tangerang-kota', 'tangerang-selatan', 'bekasi-cikarang'] as $slug)
+                                        @php($city = $navRegions[$slug === 'tangerang-kota' || $slug === 'tangerang-selatan' ? 'banten' : 'jawa-barat']['cities'][$slug])
+                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            {{ $city['name'] }}
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -207,12 +178,12 @@
                                     Hub Lainnya
                                 </div>
                                 <div class="space-y-0.5 mb-2">
-                                    <a href="{{ url('/area/semarang') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Kota Semarang
-                                    </a>
-                                    <a href="{{ url('/area/bandar-lampung') }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
-                                        Bandar Lampung
-                                    </a>
+                                    @foreach (['semarang' => 'jawa-tengah', 'bandar-lampung' => 'lampung'] as $slug => $province)
+                                        @php($city = $navRegions[$province]['cities'][$slug])
+                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-700 hover:text-sky-700 hover:bg-slate-50 transition-colors font-medium">
+                                            {{ $city['name'] }}
+                                        </a>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -237,8 +208,9 @@
             </nav>
 
             <!-- Desktop CTA: Tombol 'Hubungi Kami' -->
-            <div class="hidden md:flex items-center">
-                <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
+            <div class="hidden lg:flex items-center">
+                <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+                       :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
                    target="_blank" 
                    rel="noopener noreferrer" 
                    class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl px-5 py-2.5 shadow-sm hover:shadow transition-all inline-flex items-center gap-2 active:scale-98 text-sm">

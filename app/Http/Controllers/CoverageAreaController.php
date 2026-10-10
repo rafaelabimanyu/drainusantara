@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CoverageAreaController extends Controller
 {
@@ -47,7 +48,7 @@ class CoverageAreaController extends Controller
     {
         $validated = $request->validate([
             'city' => ['required', 'string', 'max:100'],
-            'district' => ['required', 'string', 'max:100'],
+            'district' => ['required', 'string', 'max:100', Rule::unique('coverage_areas')->where(fn ($query) => $query->where('city', $request->input('city')))],
             'postal_code' => ['nullable', 'string', 'max:10'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
@@ -55,15 +56,15 @@ class CoverageAreaController extends Controller
             'is_active' => ['nullable', 'boolean'],
         ]);
 
-        $slug = Str::slug("{$validated['city']}-{$validated['district']}");
+        $slug = substr(Str::slug("{$validated['city']}-{$validated['district']}"), 0, 255);
         $baseSlug = $slug;
         $counter = 1;
         while (CoverageArea::where('slug', $slug)->exists()) {
-            $slug = "{$baseSlug}-{$counter}";
+            $slug = substr($baseSlug, 0, 255 - strlen("-{$counter}")) . "-{$counter}";
             $counter++;
         }
 
-        $metaTitle = !empty($validated['meta_title']) ? $validated['meta_title'] : "Jasa Saluran Mampet di {$validated['district']}, {$validated['city']} - Drainusantara Bergaransi";
+        $metaTitle = !empty($validated['meta_title']) ? $validated['meta_title'] : mb_substr("Jasa Saluran Mampet di {$validated['district']}, {$validated['city']} - Drainusantara Bergaransi", 0, 255);
         $metaDescription = !empty($validated['meta_description']) ? $validated['meta_description'] : "Jasa pelancaran pipa wastafel, toilet, dan floor drain mampet di {$validated['district']}, {$validated['city']} tanpa bongkar keramik & garansi 30 hari. Hubungi teknisi terdekat sekarang!";
 
         CoverageArea::create([
@@ -74,7 +75,7 @@ class CoverageAreaController extends Controller
             'meta_title' => $metaTitle,
             'meta_description' => $metaDescription,
             'content' => $validated['content'] ?? null,
-            'is_active' => $request->boolean('is_active', true),
+            'is_active' => $request->boolean('is_active'),
         ]);
 
         return redirect()->route('admin.coverage-areas.index')
@@ -96,7 +97,7 @@ class CoverageAreaController extends Controller
     {
         $validated = $request->validate([
             'city' => ['required', 'string', 'max:100'],
-            'district' => ['required', 'string', 'max:100'],
+            'district' => ['required', 'string', 'max:100', Rule::unique('coverage_areas')->where(fn ($query) => $query->where('city', $request->input('city')))->ignore($coverageArea->id)],
             'postal_code' => ['nullable', 'string', 'max:10'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
@@ -107,11 +108,11 @@ class CoverageAreaController extends Controller
         $coverageArea->update([
             'city' => $validated['city'],
             'district' => $validated['district'],
-            'postal_code' => $validated['postal_code'] ?? null,
-            'meta_title' => $validated['meta_title'] ?? null,
-            'meta_description' => $validated['meta_description'] ?? null,
-            'content' => $validated['content'] ?? null,
-            'is_active' => $request->boolean('is_active', true),
+            'postal_code' => array_key_exists('postal_code', $validated) ? $validated['postal_code'] : $coverageArea->postal_code,
+            'meta_title' => array_key_exists('meta_title', $validated) ? $validated['meta_title'] : $coverageArea->meta_title,
+            'meta_description' => array_key_exists('meta_description', $validated) ? $validated['meta_description'] : $coverageArea->meta_description,
+            'content' => array_key_exists('content', $validated) ? $validated['content'] : $coverageArea->content,
+            'is_active' => $request->boolean('is_active'),
         ]);
 
         return redirect()->route('admin.coverage-areas.index')

@@ -58,7 +58,7 @@
         </div>
 
         <!-- Upload Foto Lokasi / Perusahaan -->
-        <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ preview: '{{ $portfolio->image }}' }">
+        <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ preview: {{ Illuminate\Support\Js::from($portfolio->image) }} }">
             <div class="flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Restoran / Tempat Usaha</span>

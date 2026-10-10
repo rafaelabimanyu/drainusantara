@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,14 +11,13 @@
     <link rel="icon" type="image/webp" href="{{ asset('images/logo/WebIcon.webp') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/logo/WebIcon.webp') }}">
 
-    <!-- Preload Resource Fonts & DNS Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="preload" as="font" href="{{ asset('fonts/plus-jakarta-sans-latin.woff2') }}" type="font/woff2" crossorigin>
 
     <!-- Preload Critical LCP Hero Image (Mobile First & Desktop WebP) -->
+    @if(request()->routeIs('home'))
     <link rel="preload" as="image" href="{{ asset('images/hero-technician-mobile.webp') }}" media="(max-width: 640px)" type="image/webp" fetchpriority="high">
     <link rel="preload" as="image" href="{{ asset('images/hero-technician.webp') }}" media="(min-width: 641px)" type="image/webp" fetchpriority="high">
+    @endif
 
     <!-- Global Application State Data (Lightweight, Non-blocking) -->
     <script>
@@ -40,10 +39,7 @@
     <!-- Vite Assets (Compiled Tailwind CSS & Alpine.js Bundle) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Google Fonts (Asynchronous & Non-render-blocking) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
         <style>
             .reveal-soft, .reveal-fade, .reveal-scale, .fade-up, .fade-in, .zoom-in {
                 opacity: 1 !important;
@@ -81,7 +77,7 @@
     <x-layout.mobile-drawer />
 
     {{-- Bottom padding on mobile prevents fixed nav dock from covering content --}}
-    <main id="main-content" tabindex="-1" class="flex-1 pb-24 md:pb-0 focus:outline-hidden">
+    <main id="main-content" tabindex="-1" class="flex-1 pb-24 lg:pb-0 focus:outline-hidden">
         {{ $slot ?? '' }}
         @yield('content')
     </main>

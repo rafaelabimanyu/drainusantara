@@ -24,7 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->extend('seotools.json-ld-multi', fn ($service, $app) => new \App\Support\SafeJsonLdMulti(
+            $app['config']->get('seotools.json-ld.defaults', []),
+        ));
     }
 
     /**

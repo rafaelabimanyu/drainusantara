@@ -1,4 +1,4 @@
-<nav class="fixed bottom-3 inset-x-4 max-w-md mx-auto z-50 bg-slate-900/95 backdrop-blur-xs text-white rounded-2xl shadow-xl border border-slate-800 px-1.5 py-1 grid grid-cols-5 items-end md:hidden mobile-nav-dock transition-all duration-300 ease-in-out"
+<nav class="fixed bottom-3 inset-x-4 max-w-md mx-auto z-50 bg-slate-900/95 backdrop-blur-xs text-white rounded-2xl shadow-xl border border-slate-800 px-1.5 py-1 grid grid-cols-5 items-end lg:hidden mobile-nav-dock transition-all duration-300 ease-in-out"
      :class="{ 'translate-y-28 opacity-0 pointer-events-none': mobileSearchOpen || sidebarOpen }"
      aria-label="Navigasi Mobile Floating Dock">
 
@@ -41,7 +41,9 @@
     </div>
 
     <!-- 4. Cari Wilayah -->
-    <button @click="mobileSearchOpen = true; activeMenu = null" 
+    <button @click="mobileSearchOpen = true; activeMenu = null"
+            aria-haspopup="dialog" aria-controls="area-search-dialog"
+            aria-expanded="false" :aria-expanded="mobileSearchOpen"
             type="button" 
             class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center text-slate-300 hover:text-white transition-colors cursor-pointer btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg" 
             aria-label="Area - Cari Wilayah">

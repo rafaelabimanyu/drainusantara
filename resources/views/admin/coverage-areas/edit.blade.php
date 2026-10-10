@@ -28,9 +28,9 @@
                 @error('city') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <!-- Nama Kecamatan -->
+            <!-- Nama Area -->
             <div>
-                <label for="district" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Kecamatan *</label>
+                <label for="district" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Area *</label>
                 <input type="text" name="district" id="district" required value="{{ old('district', $coverageArea->district) }}" class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
                 @error('district') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
             </div>
@@ -53,10 +53,17 @@
                 <textarea name="meta_description" id="meta_description" rows="2" class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('meta_description', $coverageArea->meta_description) }}</textarea>
             </div>
 
+            <div class="sm:col-span-2">
+                <label for="content" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Konten Lokal (Teks Biasa)</label>
+                <textarea name="content" id="content" rows="6" class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('content', $coverageArea->content) }}</textarea>
+                <p class="text-[11px] text-slate-500 mt-1">Isi informasi layanan khusus area ini. HTML ditampilkan sebagai teks, bukan markup.</p>
+                @error('content') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+
             <!-- Status Aktif Checkbox -->
             <div class="sm:col-span-2 flex items-center gap-2.5 pt-1">
                 <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $coverageArea->is_active) ? 'checked' : '' }} class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
-                <label for="is_active" class="text-xs sm:text-sm font-medium text-slate-700 cursor-pointer">Publikasikan halaman SEO kecamatan ini</label>
+                <label for="is_active" class="text-xs sm:text-sm font-medium text-slate-700 cursor-pointer">Publikasikan halaman SEO area ini</label>
             </div>
         </div>
 

@@ -26,50 +26,13 @@
         </div>
 
         <!-- 4 Disiplin APD Cards (Mobile Carousel, Desktop Grid) -->
-        <div x-data="{
-                 active: 0,
-                 total: 4,
-                 timer: null,
-                 init() {
-                     if (typeof window === 'undefined') return;
-                     if (window.innerWidth < 768) this.startAuto();
-                 },
-                 startAuto() {
-                     if (window.innerWidth >= 768) return;
-                     this.pause();
-                     this.timer = setInterval(() => { this.next(); }, 4000);
-                 },
-                 pause() {
-                     if (this.timer) { clearInterval(this.timer); this.timer = null; }
-                 },
-                 resume() {
-                     if (window.innerWidth >= 768) return;
-                     this.startAuto();
-                 },
-                 next() {
-                     this.goTo((this.active + 1) % this.total);
-                 },
-                 goTo(idx) {
-                     this.active = idx;
-                     const slider = this.$refs.apdSlider;
-                     if (slider && slider.children[idx]) {
-                         slider.scrollTo({ left: slider.children[idx].offsetLeft - slider.offsetLeft, behavior: 'smooth' });
-                     }
-                 },
-                 onScroll() {
-                     const slider = this.$refs.apdSlider;
-                     if (!slider || !slider.firstElementChild) return;
-                     const cardWidth = slider.firstElementChild.offsetWidth + 20;
-                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                 }
-             }"
+        <div x-data="mobileCarousel(4, 4000)"
              class="mb-12">
-            <div x-ref="apdSlider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Alat pelindung diri — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-white p-6 sm:p-7 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
@@ -129,14 +92,14 @@
             </div>
 
             <!-- Dots indicator for 4 APD cards on mobile -->
-            <div class="flex md:hidden justify-center items-center gap-1.5 mt-5">
+            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-5">
                 <template x-for="i in total" :key="i">
-                    <button type="button" 
+                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
                             @click="goTo(i - 1)"
-                            class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                            :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                            class="carousel-dot"
+
                             :aria-label="'SOP ' + i">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
                 </template>
             </div>
         </div>
@@ -158,49 +121,12 @@
             </p>
         </div>
 
-        <div x-data="{
-                 active: 0,
-                 total: 3,
-                 timer: null,
-                 init() {
-                     if (typeof window === 'undefined') return;
-                     if (window.innerWidth < 768) this.startAuto();
-                 },
-                 startAuto() {
-                     if (window.innerWidth >= 768) return;
-                     this.pause();
-                     this.timer = setInterval(() => { this.next(); }, 4000);
-                 },
-                 pause() {
-                     if (this.timer) { clearInterval(this.timer); this.timer = null; }
-                 },
-                 resume() {
-                     if (window.innerWidth >= 768) return;
-                     this.startAuto();
-                 },
-                 next() {
-                     this.goTo((this.active + 1) % this.total);
-                 },
-                 goTo(idx) {
-                     this.active = idx;
-                     const slider = this.$refs.desinfeksiSlider;
-                     if (slider && slider.children[idx]) {
-                         slider.scrollTo({ left: slider.children[idx].offsetLeft - slider.offsetLeft, behavior: 'smooth' });
-                     }
-                 },
-                 onScroll() {
-                     const slider = this.$refs.desinfeksiSlider;
-                     if (!slider || !slider.firstElementChild) return;
-                     const cardWidth = slider.firstElementChild.offsetWidth + 20;
-                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                 }
-             }">
-            <div x-ref="desinfeksiSlider"
+        <div x-data="mobileCarousel(3, 4000)">
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Prosedur desinfeksi — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
@@ -261,14 +187,14 @@
             </div>
 
             <!-- Dots indicator for 3 Desinfeksi cards on mobile -->
-            <div class="flex md:hidden justify-center items-center gap-1.5 mt-5">
+            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-5">
                 <template x-for="i in total" :key="i">
-                    <button type="button" 
+                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
                             @click="goTo(i - 1)"
-                            class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                            :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                            class="carousel-dot"
+
                             :aria-label="'Desinfeksi ' + i">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
                 </template>
             </div>
         </div>

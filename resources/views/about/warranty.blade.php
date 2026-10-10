@@ -26,49 +26,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12">
             <!-- Left: 4 Ketentuan Garansi Pokok (Mobile Carousel, Desktop Stack) -->
             <div class="lg:col-span-7"
-                 x-data="{
-                     active: 0,
-                     total: 4,
-                     timer: null,
-                     init() {
-                         if (typeof window === 'undefined') return;
-                         if (window.innerWidth < 1024) this.startAuto();
-                     },
-                     startAuto() {
-                         if (window.innerWidth >= 1024) return;
-                         this.pause();
-                         this.timer = setInterval(() => { this.next(); }, 4000);
-                     },
-                     pause() {
-                         if (this.timer) { clearInterval(this.timer); this.timer = null; }
-                     },
-                     resume() {
-                         if (window.innerWidth >= 1024) return;
-                         this.startAuto();
-                     },
-                     next() {
-                         this.goTo((this.active + 1) % this.total);
-                     },
-                     goTo(idx) {
-                         this.active = idx;
-                         const slider = this.$refs.pilarSlider;
-                         if (slider && slider.children[idx]) {
-                             slider.scrollTo({ left: slider.children[idx].offsetLeft - slider.offsetLeft, behavior: 'smooth' });
-                         }
-                     },
-                     onScroll() {
-                         const slider = this.$refs.pilarSlider;
-                         if (!slider || !slider.firstElementChild) return;
-                         const cardWidth = slider.firstElementChild.offsetWidth + 16;
-                         this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                     }
-                 }">
-                <div x-ref="pilarSlider"
+                 x-data="mobileCarousel(4, 4000)">
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Pilar garansi — geser untuk melihat lainnya"
                      @scroll.passive="onScroll()"
                      @touchstart="pause()"
                      @touchend="resume()"
-                     @mouseenter="pause()"
-                     @mouseleave="resume()"
+             @touchcancel="resume()"
                      class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 lg:flex-col lg:space-y-4 lg:gap-0 lg:overflow-visible lg:pb-0">
                     <div class="w-[85vw] sm:w-[340px] lg:w-full shrink-0 snap-center bg-white p-6 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-1">
                         <span class="text-xs font-bold text-sky-700 block mb-1">100% No Result No Pay</span>
@@ -97,14 +60,14 @@
                 </div>
 
                 <!-- Dots indicator for 4 pilar on mobile/tablet -->
-                <div class="flex lg:hidden justify-center items-center gap-1.5 mt-3">
+                <div class="flex lg:hidden justify-center items-center flex-wrap gap-1.5 mt-3">
                     <template x-for="i in total" :key="i">
-                        <button type="button" 
+                        <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
                                 @click="goTo(i - 1)"
-                                class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                                :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                                class="carousel-dot"
+
                                 :aria-label="'Pilar ' + i">
-                        </button>
+                        <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
                     </template>
                 </div>
             </div>
@@ -178,49 +141,12 @@
             </p>
         </div>
 
-        <div x-data="{
-                 active: 0,
-                 total: 3,
-                 timer: null,
-                 init() {
-                     if (typeof window === 'undefined') return;
-                     if (window.innerWidth < 768) this.startAuto();
-                 },
-                 startAuto() {
-                     if (window.innerWidth >= 768) return;
-                     this.pause();
-                     this.timer = setInterval(() => { this.next(); }, 4000);
-                 },
-                 pause() {
-                     if (this.timer) { clearInterval(this.timer); this.timer = null; }
-                 },
-                 resume() {
-                     if (window.innerWidth >= 768) return;
-                     this.startAuto();
-                 },
-                 next() {
-                     this.goTo((this.active + 1) % this.total);
-                 },
-                 goTo(idx) {
-                     this.active = idx;
-                     const slider = this.$refs.syaratSlider;
-                     if (slider && slider.children[idx]) {
-                         slider.scrollTo({ left: slider.children[idx].offsetLeft - slider.offsetLeft, behavior: 'smooth' });
-                     }
-                 },
-                 onScroll() {
-                     const slider = this.$refs.syaratSlider;
-                     if (!slider || !slider.firstElementChild) return;
-                     const cardWidth = slider.firstElementChild.offsetWidth + 20;
-                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                 }
-             }">
-            <div x-ref="syaratSlider"
+        <div x-data="mobileCarousel(3, 4000)">
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Syarat garansi — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
                 <div class="w-[85vw] sm:w-[350px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-6 sm:p-7 flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
@@ -304,14 +230,14 @@
             </div>
 
             <!-- Dots indicator for 3 cards on mobile -->
-            <div class="flex md:hidden justify-center items-center gap-1.5 mt-5">
+            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-5">
                 <template x-for="i in total" :key="i">
-                    <button type="button" 
+                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
                             @click="goTo(i - 1)"
-                            class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                            :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                            class="carousel-dot"
+
                             :aria-label="'Syarat ' + i">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
                 </template>
             </div>
         </div>

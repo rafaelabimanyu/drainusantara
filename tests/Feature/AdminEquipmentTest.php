@@ -62,11 +62,11 @@ class AdminEquipmentTest extends TestCase
         $response->assertRedirect('/admin/equipments');
         $equipment = Equipment::where('name', 'Mesin Drain Rooter Pro 400')->first();
         $this->assertNotNull($equipment);
-        $this->assertEquals('/assets/TOOLKIT/mesin-test-rooter.jpg', $equipment->image);
-        $this->assertFileExists(public_path('assets/TOOLKIT/mesin-test-rooter.jpg'));
+        $this->assertStringContainsString('/assets/TOOLKIT/', $equipment->image);
+        $this->assertFileExists(public_path(ltrim($equipment->image, '/')));
 
         // Clean up
-        @unlink(public_path('assets/TOOLKIT/mesin-test-rooter.jpg'));
+        @unlink(public_path(ltrim($equipment->image, '/')));
     }
 
     public function test_admin_equipment_destroy_deletes_image_file(): void
@@ -83,7 +83,7 @@ class AdminEquipmentTest extends TestCase
         $response->assertRedirect('/admin/equipments');
         $equipment = Equipment::where('name', 'Alat Untuk Dihapus')->first();
         $this->assertNotNull($equipment);
-        $this->assertFileExists(public_path('assets/TOOLKIT/alat-akan-dihapus.jpg'));
+        $this->assertFileExists(public_path(ltrim($equipment->image, '/')));
 
         // Hapus via CMS
         $deleteResponse = $this->delete("/admin/equipments/{$equipment->id}");
@@ -91,7 +91,7 @@ class AdminEquipmentTest extends TestCase
         $this->assertDatabaseMissing('equipments', ['id' => $equipment->id]);
 
         // Verifikasi file fisik di public/assets/TOOLKIT otomatis terhapus
-        $this->assertFileDoesNotExist(public_path('assets/TOOLKIT/alat-akan-dihapus.jpg'));
+        $this->assertFileDoesNotExist(public_path(ltrim($equipment->image, '/')));
     }
 
     public function test_admin_equipment_update_replaces_old_image(): void
@@ -106,7 +106,8 @@ class AdminEquipmentTest extends TestCase
 
         $equipment = Equipment::where('name', 'Unit Kamera Diagnosa')->first();
         $this->assertNotNull($equipment);
-        $this->assertFileExists(public_path('assets/TOOLKIT/gambar-lama-alat.jpg'));
+        $oldPath = public_path(ltrim($equipment->image, '/'));
+        $this->assertFileExists($oldPath);
 
         // Update dengan file baru
         $fileNew = UploadedFile::fake()->image('gambar-baru-alat.jpg', 600, 400);
@@ -116,10 +117,10 @@ class AdminEquipmentTest extends TestCase
         ]);
 
         $updateResponse->assertRedirect('/admin/equipments');
-        $this->assertFileDoesNotExist(public_path('assets/TOOLKIT/gambar-lama-alat.jpg'));
-        $this->assertFileExists(public_path('assets/TOOLKIT/gambar-baru-alat.jpg'));
+        $this->assertFileDoesNotExist($oldPath);
+        $this->assertFileExists(public_path(ltrim($equipment->fresh()->image, '/')));
 
         // Clean up
-        @unlink(public_path('assets/TOOLKIT/gambar-baru-alat.jpg'));
+        @unlink(public_path(ltrim($equipment->fresh()->image, '/')));
     }
 }

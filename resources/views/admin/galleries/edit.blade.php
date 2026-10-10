@@ -64,7 +64,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- Upload Sebelum (Before) -->
-                <div x-data="{ preview: '{{ $gallery->before_image }}' }">
+                <div x-data="{ preview: {{ Illuminate\Support\Js::from($gallery->before_image) }} }">
                     <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
                         <span class="w-2 h-2 rounded-full bg-rose-500 inline-block"></span>
                         Foto Sebelum (Before)
@@ -84,7 +84,7 @@
                 </div>
 
                 <!-- Upload Sesudah (After) -->
-                <div x-data="{ preview: '{{ $gallery->after_image }}' }">
+                <div x-data="{ preview: {{ Illuminate\Support\Js::from($gallery->after_image) }} }">
                     <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
                         Foto Sesudah (After)
@@ -106,7 +106,7 @@
         </div>
 
         <!-- Upload 1 Foto Utama Alternatif -->
-        <div x-data="{ preview: '{{ $gallery->image }}' }">
+        <div x-data="{ preview: {{ Illuminate\Support\Js::from($gallery->image) }} }">
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Foto Utama Alternatif</label>
             <div class="flex items-center gap-3 p-3.5 bg-slate-50/75 rounded-lg border border-slate-200">
                 <div class="w-16 h-14 rounded-md border border-slate-300 bg-white flex items-center justify-center overflow-hidden shrink-0">

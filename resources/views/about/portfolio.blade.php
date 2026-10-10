@@ -3,12 +3,7 @@
 @section('content')
 @php
     $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
-    $portfolioList = (isset($portfolios) && $portfolios->isNotEmpty())
-        ? $portfolios 
-        : \App\Models\Portfolio::where('is_active', true)->orderBy('order')->get();
-
-    // Fallback data default identik dengan landing page jika database CMS masih kosong
-    
+    $portfolioList = $portfolios ?? collect();
 @endphp
 
 <x-about.subnav 
@@ -19,6 +14,7 @@
     :bg-image="asset('assets/banner/hero-portofolio.webp')"
 />
 
+@if($portfolioList->isNotEmpty())
 <!-- Main Portfolio Content -->
 <section id="portofolio-page" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200" x-data="{ activeCategory: 'all' }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,59 +53,14 @@
         </div>
 
         <!-- Portfolio Cards Grid & Mobile Carousel -->
-        <div x-data="{
-                 active: 0,
-                 total: {{ count($portfolioList) }},
-                 timer: null,
-                 init() {
-                     if (typeof window === 'undefined') return;
-                     if (window.innerWidth < 768) {
-                         this.startAuto();
-                     }
-                 },
-                 startAuto() {
-                     if (this.total <= 1 || window.innerWidth >= 768) return;
-                     this.pause();
-                     this.timer = setInterval(() => { this.next(); }, 4000);
-                 },
-                 pause() {
-                     if (this.timer) {
-                         clearInterval(this.timer);
-                         this.timer = null;
-                     }
-                 },
-                 resume() {
-                     if (window.innerWidth >= 768) return;
-                     this.startAuto();
-                 },
-                 next() {
-                     this.goTo((this.active + 1) % this.total);
-                 },
-                 goTo(idx) {
-                     this.active = idx;
-                     const slider = this.$refs.portfolioSlider;
-                     if (slider && slider.children[idx]) {
-                         slider.scrollTo({
-                             left: slider.children[idx].offsetLeft - slider.offsetLeft,
-                             behavior: 'smooth'
-                         });
-                     }
-                 },
-                 onScroll() {
-                     const slider = this.$refs.portfolioSlider;
-                     if (!slider || !slider.firstElementChild) return;
-                     const cardWidth = slider.firstElementChild.offsetWidth + 20;
-                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                 }
-             }" 
+        <div x-data="mobileCarousel({{ count($portfolioList) }}, 4000)"
              class="mb-14">
             
-            <div x-ref="portfolioSlider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Portofolio proyek — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 lg:gap-8 md:overflow-visible md:pb-0">
                 @foreach($portfolioList as $project)
                     @php
@@ -124,8 +75,8 @@
                         <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
                         <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
                             @php
-                                $aboutProjImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp');
-                                $aboutDefaultFallback = asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp');
+                                $aboutProjImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/hero-technician.webp');
+                                $aboutDefaultFallback = asset('images/hero-technician.webp');
                             @endphp
                             <img src="{{ $aboutProjImg }}" 
                                  alt="{{ $project->client_name }}" 
@@ -158,14 +109,14 @@
             </div>
 
             <!-- Mobile Carousel Dots Indicator -->
-            <div class="flex md:hidden justify-center items-center gap-1.5 mt-5">
+            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-5">
                 @foreach($portfolioList as $idx => $item)
-                    <button type="button" 
+                    <button :aria-current="active === {{ $idx }} ? 'true' : 'false'" type="button"
                             @click="goTo({{ $idx }})"
-                            class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                            :class="active === {{ $idx }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                            class="carousel-dot"
+
                             aria-label="Portofolio {{ $idx + 1 }}">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === {{ $idx }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
                 @endforeach
             </div>
         </div>
@@ -194,4 +145,5 @@
 
     </div>
 </section>
+@endif
 @endsection

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Support\MediaLifecycle;
+
 use App\Http\Requests\Admin\StoreReviewRequest;
 use App\Http\Requests\Admin\UpdateReviewRequest;
 use App\Models\Review;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ReviewController extends Controller
@@ -52,21 +53,24 @@ class ReviewController extends Controller
     {
         $validated = $request->validated();
 
-        $avatarUrl = $validated['avatar_url'] ?? null;
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('reviews', 'public');
-            $avatarUrl = Storage::url($path);
-        }
+        $record = new Review;
+        $media = new MediaLifecycle;
+        $media->run($record, function () use ($request, $validated, $media, $record): void {
+            $avatarUrl = $validated['avatar_url'] ?? null;
+            if ($request->hasFile('avatar')) {
+                $avatarUrl = $media->upload($request->file('avatar'), 'reviews', true);
+            }
 
-        Review::create([
-            'customer_name' => $validated['customer_name'],
-            'customer_role_or_location' => $validated['customer_role_or_location'] ?? null,
-            'rating' => $validated['rating'],
-            'comment' => $validated['comment'],
-            'service_id' => $validated['service_id'] ?? null,
-            'avatar' => $avatarUrl,
-            'is_active' => $request->boolean('is_active', true),
-        ]);
+            $media->save($record, [
+                'customer_name' => $validated['customer_name'],
+                'customer_role_or_location' => $validated['customer_role_or_location'] ?? null,
+                'rating' => $validated['rating'],
+                'comment' => $validated['comment'],
+                'service_id' => $validated['service_id'] ?? null,
+                'avatar' => $avatarUrl,
+                'is_active' => $request->boolean('is_active'),
+            ]);
+        });
 
         return redirect()->route('admin.reviews.index')
             ->with('success', "Testimoni dari '{$validated['customer_name']}' berhasil ditambahkan.");
@@ -89,23 +93,25 @@ class ReviewController extends Controller
     {
         $validated = $request->validated();
 
-        $avatarUrl = $review->avatar;
-        if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('reviews', 'public');
-            $avatarUrl = Storage::url($path);
-        } elseif (!empty($validated['avatar_url'])) {
-            $avatarUrl = $validated['avatar_url'];
-        }
+        $media = new MediaLifecycle;
+        $media->run($review, function () use ($request, $validated, $media, $review): void {
+            $avatarUrl = $review->avatar;
+            if ($request->hasFile('avatar')) {
+                $avatarUrl = $media->upload($request->file('avatar'), 'reviews', true);
+            } elseif (!empty($validated['avatar_url'])) {
+                $avatarUrl = $validated['avatar_url'];
+            }
 
-        $review->update([
-            'customer_name' => $validated['customer_name'],
-            'customer_role_or_location' => $validated['customer_role_or_location'] ?? null,
-            'rating' => $validated['rating'],
-            'comment' => $validated['comment'],
-            'service_id' => $validated['service_id'] ?? null,
-            'avatar' => $avatarUrl,
-            'is_active' => $request->boolean('is_active', true),
-        ]);
+            $media->save($review, [
+                'customer_name' => $validated['customer_name'],
+                'customer_role_or_location' => array_key_exists('customer_role_or_location', $validated) ? $validated['customer_role_or_location'] : $review->customer_role_or_location,
+                'rating' => $validated['rating'],
+                'comment' => $validated['comment'],
+                'service_id' => $validated['service_id'] ?? null,
+                'avatar' => $avatarUrl,
+                'is_active' => $request->boolean('is_active'),
+            ]);
+        });
 
         return redirect()->route('admin.reviews.index')
             ->with('success', "Testimoni '{$review->customer_name}' berhasil diperbarui.");
@@ -117,7 +123,7 @@ class ReviewController extends Controller
     public function destroy(Review $review): RedirectResponse
     {
         $name = $review->customer_name;
-        $review->delete();
+        (new MediaLifecycle)->run($review, fn () => $review->delete());
 
         return redirect()->route('admin.reviews.index')
             ->with('success', "Testimoni '{$name}' berhasil dihapus.");

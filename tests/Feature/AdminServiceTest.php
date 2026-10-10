@@ -48,10 +48,10 @@ class AdminServiceTest extends TestCase
         $response->assertRedirect(route('admin.services.index'));
         $this->assertDatabaseHas('services', [
             'name' => 'Layanan Pipa Wastafel Unik',
-            'image' => '/images/services/custom-layanan-test.webp',
+            'image' => $service = Service::where('name', 'Layanan Pipa Wastafel Unik')->value('image'),
         ]);
 
-        $savedFilePath = public_path('images/services/custom-layanan-test.webp');
+        $savedFilePath = public_path(ltrim($service, '/'));
         $this->assertFileExists($savedFilePath);
 
         // Cleanup
@@ -71,7 +71,7 @@ class AdminServiceTest extends TestCase
         ]);
 
         $service = Service::where('name', 'Layanan Ganti Foto')->firstOrFail();
-        $oldPath = public_path('images/services/service-old-test.webp');
+        $oldPath = public_path(ltrim($service->image, '/'));
         $this->assertFileExists($oldPath);
 
         // Now update with a new image
@@ -85,10 +85,10 @@ class AdminServiceTest extends TestCase
         $response->assertRedirect(route('admin.services.index'));
         $this->assertDatabaseHas('services', [
             'id' => $service->id,
-            'image' => '/images/services/service-new-test.webp',
+            'image' => $service->fresh()->image,
         ]);
 
-        $newPath = public_path('images/services/service-new-test.webp');
+        $newPath = public_path(ltrim($service->fresh()->image, '/'));
         $this->assertFileExists($newPath);
         // Old custom file should have been cleaned up
         $this->assertFileDoesNotExist($oldPath);

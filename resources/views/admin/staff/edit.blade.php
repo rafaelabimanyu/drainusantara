@@ -58,7 +58,7 @@
         </div>
 
         <!-- Upload Foto Profil Staf -->
-        <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ preview: '{{ $staff->photo }}' }">
+        <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ preview: {{ Illuminate\Support\Js::from($staff->photo) }} }">
             <div class="flex items-center justify-between">
                 <div>
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Profil Staff</span>

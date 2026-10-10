@@ -47,7 +47,7 @@
             </h1>
 
             <p class="text-base text-slate-600 leading-relaxed reveal-soft delay-100">
-                Pilih provinsi dan kota administrasi Anda di bawah untuk melihat posko siaga teknisi terdekat, daftar kecamatan yang dilayani, serta layanan respon cepat WhatsApp.
+                Pilih provinsi dan kota administrasi Anda di bawah untuk melihat posko siaga teknisi terdekat, daftar area yang dilayani, serta layanan respon cepat WhatsApp.
             </p>
 
             <div class="pt-2 flex flex-wrap gap-2 reveal-soft delay-150">
@@ -116,7 +116,7 @@
 
                                 <div class="mt-3 pt-3 border-t border-slate-100">
                                     <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block mb-2">
-                                        {{ count($city['districts']) }} KECAMATAN SIAGA:
+                                        {{ count($city['districts']) }} AREA LAYANAN:
                                     </span>
                                     <div class="flex flex-wrap gap-1.5 text-xs text-slate-600">
                                         @foreach(array_slice($city['districts'], 0, 5) as $district)
@@ -137,7 +137,7 @@
                             <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
                                 <a href="{{ route('area.city', ['city' => $citySlug]) }}" 
                                    class="text-xs font-bold text-sky-700 hover:text-sky-800 inline-flex items-center gap-1">
-                                    <span>Lihat Kecamatan</span>
+                                    <span>Lihat Area</span>
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                     </svg>

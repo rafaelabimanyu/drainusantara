@@ -17,7 +17,8 @@
             <!-- FAQ 1 -->
             <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
-                    @click="active = (active === 1 ? null : 1)" 
+                    @click="active = (active === 1 ? null : 1)"
+                    aria-expanded="false" :aria-expanded="active === 1" aria-controls="home-faq-answer-1"
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
                     type="button"
                 >
@@ -26,7 +27,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div x-show="active === 1" x-collapse x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                <div id="home-faq-answer-1" x-show="active === 1" x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
                     Benar, 100% tanpa bongkar ubin keramik! Kami menggunakan mesin drain rooter fleksibel berteknologi spiral baja yang mampu meliuk mengikuti belokan pipa (knee/elbow) hingga ke titik sumbatan. Mesin ini mengikis kerak minyak beku atau menarik benda asing keluar tanpa melukai pipa PVC hunian Anda.
                 </div>
             </div>
@@ -34,7 +35,8 @@
             <!-- FAQ 2 -->
             <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
-                    @click="active = (active === 2 ? null : 2)" 
+                    @click="active = (active === 2 ? null : 2)"
+                    aria-expanded="false" :aria-expanded="active === 2" aria-controls="home-faq-answer-2"
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
                     type="button"
                 >
@@ -43,15 +45,16 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div x-show="active === 2" x-collapse x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
-                    Rata-rata pengerjaan berkisar antara 30 hingga 50 menit per titik saluran. Untuk kasus dengan jalur pipa sangat panjang atau sumbatan berat (seperti endapan semen mengeras), pengerjaan dapat memakan waktu hingga 1,5 jam disertai inspeksi visual kamera CCTV pipa.
+                <div id="home-faq-answer-2" x-show="active === 2" x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                    {{ config('service_facts.duration_answer') }}
                 </div>
             </div>
 
             <!-- FAQ 3 -->
             <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
-                    @click="active = (active === 3 ? null : 3)" 
+                    @click="active = (active === 3 ? null : 3)"
+                    aria-expanded="false" :aria-expanded="active === 3" aria-controls="home-faq-answer-3"
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
                     type="button"
                 >
@@ -60,7 +63,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div x-show="active === 3" x-collapse x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                <div id="home-faq-answer-3" x-show="active === 3" x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
                     Setiap pengerjaan kami berikan nota garansi resmi selama 30 hari kalender. Apabila dalam kurun waktu tersebut saluran pada titik yang sama mengalami mampet kembali, teknisi kami siap datang kembali untuk penanganan ulang tanpa dipungut biaya jasa tambahan apapun.
                 </div>
             </div>
@@ -68,7 +71,8 @@
             <!-- FAQ 4 -->
             <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
-                    @click="active = (active === 4 ? null : 4)" 
+                    @click="active = (active === 4 ? null : 4)"
+                    aria-expanded="false" :aria-expanded="active === 4" aria-controls="home-faq-answer-4"
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
                     type="button"
                 >
@@ -77,7 +81,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div x-show="active === 4" x-collapse x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                <div id="home-faq-answer-4" x-show="active === 4" x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
                     Soda api bereaksi menghasilkan panas eksotermik di atas 90°C sehingga sangat rentan membengkokkan pipa PVC dan merusak lem sambungan pipa. Selain itu, soda api yang bereaksi dengan minyak makanan akan mengeras menjadi sabun padat seperti batu semen (saponifikasi), yang justru membuat pipa tersumbat total secara permanen.
                 </div>
             </div>
@@ -85,7 +89,8 @@
             <!-- FAQ 5 -->
             <div class="bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                 <button 
-                    @click="active = (active === 5 ? null : 5)" 
+                    @click="active = (active === 5 ? null : 5)"
+                    aria-expanded="false" :aria-expanded="active === 5" aria-controls="home-faq-answer-5"
                     class="w-full flex items-center justify-between p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus:outline-hidden cursor-pointer"
                     type="button"
                 >
@@ -94,7 +99,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div x-show="active === 5" x-collapse x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+                <div id="home-faq-answer-5" x-show="active === 5" x-cloak class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
                     Cukup klik tombol hijau WhatsApp <strong>"Panggil Teknisi via WhatsApp"</strong> di website ini untuk terhubung langsung dengan admin kami. Sampaikan jenis masalah saluran Anda beserta alamat, teknisi terdekat akan segera dijadwalkan meluncur menuju lokasi Anda.
                 </div>
             </div>

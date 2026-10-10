@@ -182,10 +182,12 @@ class PortfolioTest extends TestCase
         $response->assertRedirect('/admin/portfolios');
         $portfolio = Portfolio::where('client_name', "D'Cost Kemang")->first();
         $this->assertNotNull($portfolio);
-        $this->assertEquals('/images/portfolio/dcost-resto-kemang.webp', $portfolio->image);
-        $this->assertFileExists(public_path('images/portfolio/dcost-resto-kemang.webp'));
+        $this->assertNotSame('', $portfolio->image);
+        $relativePath = ltrim(parse_url($portfolio->image, PHP_URL_PATH), '/');
+        $this->assertStringStartsWith('images/portfolio/', $relativePath);
+        $this->assertFileExists(public_path($relativePath));
 
         // Clean up test file
-        @unlink(public_path('images/portfolio/dcost-resto-kemang.webp'));
+        @unlink(public_path($relativePath));
     }
 }

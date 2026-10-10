@@ -1,8 +1,12 @@
-<div x-cloak 
-     x-show="sidebarOpen" 
-     @keydown.escape.window="sidebarOpen = false"
+<dialog x-cloak x-ref="drawerDialog" id="mobile-drawer"
+     @cancel.prevent="sidebarOpen = false"
+     @close="if (!$el.open) sidebarOpen = false"
+     @resize.window="if (window.innerWidth >= 1024) sidebarOpen = false"
      @keydown.tab="trapDrawerFocus($event)"
      x-data="{
+         trigger: null,
+         rootOverflow: '',
+         bodyOverflow: '',
          trapDrawerFocus(e) {
              const drawerEl = $refs.drawerPanel;
              if (!drawerEl) return;
@@ -26,15 +30,25 @@
      }"
      x-init="$watch('sidebarOpen', value => {
          if (value) {
+             trigger = document.activeElement;
+             rootOverflow = document.documentElement.style.overflow;
+             bodyOverflow = document.body.style.overflow;
+             document.documentElement.style.overflow = 'hidden';
+             document.body.style.overflow = 'hidden';
              $nextTick(() => {
-                 const firstBtn = $refs.closeButton;
-                 if (firstBtn) firstBtn.focus();
+                 if (!sidebarOpen) return;
+                 $refs.drawerDialog.showModal();
+                 $refs.closeButton.focus();
              });
+         } else {
+             if ($refs.drawerDialog.open) $refs.drawerDialog.close();
+             document.documentElement.style.overflow = rootOverflow;
+             document.body.style.overflow = bodyOverflow;
+             if (trigger?.isConnected) trigger.focus({ preventScroll: true });
          }
      })"
-     class="fixed inset-0 z-60 md:hidden" 
-     role="dialog" 
-     aria-modal="true" 
+     class="fixed inset-0 z-60 lg:hidden"
+     style="margin: 0; width: 100%; height: 100%; max-width: none; max-height: none; padding: 0; border: 0; background: transparent"
      aria-labelledby="mobile-drawer-title">
 
     <!-- Backdrop overlay -->
@@ -61,16 +75,10 @@
          class="fixed inset-y-0 right-0 max-w-xs w-full bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between overflow-hidden">
         
        
-        <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 shrink-0 bg-white">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center p-1 overflow-hidden shadow-2xs" aria-hidden="true">
-                    <img src="{{ asset('images/logo/WebIcon.webp') }}" alt="Drainusantara" class="w-full h-full object-contain" width="32" height="32">
-                </div>
-                <div>
-                    <h2 id="mobile-drawer-title" class="font-extrabold text-slate-900 tracking-tight block text-sm leading-tight">DRAINUSANTARA</h2>
-                    <span class="text-xs text-slate-500 font-medium block">Menu &amp; Layanan</span>
-                </div>
-            </div>
+        <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 shrink-0 bg-slate-300">
+            <h2 id="mobile-drawer-title" class="min-w-0 pr-3">
+                <img src="{{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }}" srcset="{{ asset('images/logo/TEKSBRAND-TAGLINE-224.webp') }} 224w, {{ asset('images/logo/TEKSBRAND-TAGLINE-448.webp') }} 448w, {{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }} 1198w" sizes="224px" alt="Drainusantara — Menu &amp; Layanan" class="block h-auto w-52 max-w-full object-contain" width="1198" height="208">
+            </h2>
             <button @click="sidebarOpen = false" 
                     x-ref="closeButton"
                     type="button"
@@ -177,6 +185,8 @@
                  :class="{ 'bg-slate-50 border-slate-200/80 p-1': tentangDrawerOpen }">
                 <button type="button" 
                         @click="tentangDrawerOpen = !tentangDrawerOpen"
+                        aria-expanded="false" :aria-expanded="tentangDrawerOpen"
+                        aria-controls="drawer-company-links"
                         class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 transition-all btn-press min-h-11 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-sky-600"
                         :class="{ 'text-sky-700 font-bold bg-sky-50/70': tentangDrawerOpen || {{ request()->routeIs('about*') && !request()->routeIs('about.warranty') && !request()->routeIs('about.faq') ? 'true' : 'false' }} }">
                     <div class="flex items-center gap-3">
@@ -193,7 +203,7 @@
                 </button>
 
                 <!-- Sub-items Korporat -->
-                <div x-cloak x-show="tentangDrawerOpen" x-collapse class="pt-1 pb-1 pl-3 pr-1 space-y-0.5 border-t border-slate-200/70 mt-1">
+                <div id="drawer-company-links" x-cloak x-show="tentangDrawerOpen" class="pt-1 pb-1 pl-3 pr-1 space-y-0.5 border-t border-slate-200/70 mt-1">
                     <a href="{{ route('about.profile') }}" 
                        @click="sidebarOpen = false" 
                        class="flex items-center px-3 py-2 rounded-md text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-11 transition-colors focus:outline-hidden focus:ring-2 focus:ring-sky-600">
@@ -230,7 +240,8 @@
         <!-- C. Ergonomic Sticky Bottom Zone -->
         <div class="p-4 border-t border-slate-200 bg-slate-50/95 backdrop-blur-xs space-y-2 shrink-0 pb-safe pb-4">
             <!-- 1. Primary Action: WhatsApp Siaga Darurat (48px Touch Target, WCAG AAA Contrast) -->
-            <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')" 
+            <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+                       :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
                target="_blank" 
                rel="noopener noreferrer" 
                class="w-full flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold h-12 px-4 rounded-xl shadow-xs transition-colors text-sm btn-press focus:outline-hidden focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2">
@@ -251,4 +262,4 @@
             </button>
         </div>
     </div>
-</div>
+</dialog>

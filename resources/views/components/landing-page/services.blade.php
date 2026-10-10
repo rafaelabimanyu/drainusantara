@@ -29,12 +29,11 @@
             </div>
         </div>
 
-        <div x-ref="slider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan saluran — geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
-             @mouseenter="pause()"
-             @mouseleave="resume()"
+             @touchcancel="resume()"
              class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
             @foreach($itemsLayanan as $catalog)
                 @php
@@ -42,7 +41,7 @@
                     $title = $isModel ? $catalog->name : $catalog['title'];
                     $slug = $isModel ? $catalog->slug : \Illuminate\Support\Str::slug($catalog['title']);
                     $desc = $isModel ? ($catalog->short_description ?: ($catalog->description ?: 'Pelancaran saluran mampet tanpa bongkar keramik.')) : $catalog['problem_desc'];
-                    $price = $isModel ? ($catalog->price_starting_from ?: 400000) : $catalog['price'];
+                    $price = $isModel ? $catalog->price_starting_from : $catalog['price'];
                     $features = $isModel ? ($catalog->features ?: []) : ($catalog['specs'] ?? []);
                     
                     // Smart Category Badge
@@ -64,27 +63,13 @@
                         $category = $catalog['category'];
                     }
 
-                    // Image resolution (custom CMS upload or curated fallback)
                     $rawImage = $isModel ? $catalog->image : ($catalog['image'] ?? null);
-                    $fallbackImage = asset('images/services/wastafel-cuci-piring-mampet.webp');
-                    if (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'toilet') || str_contains($lowerName, 'wc')) {
-                        $fallbackImage = asset('images/services/kloset-wc-mampet.webp');
-                    } elseif (str_contains($lowerName, 'floor') || str_contains($lowerName, 'kamar mandi')) {
-                        $fallbackImage = asset('images/services/floor-drain-kamar-mandi.webp');
-                    } elseif (str_contains($lowerName, 'talang') || str_contains($lowerName, 'atap')) {
-                        $fallbackImage = asset('images/services/talang-rooftop-pipa-atap.webp');
-                    } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'lemak') || str_contains($lowerName, 'resto')) {
-                        $fallbackImage = asset('images/services/kuras-grease-trap-lemak.webp');
-                    } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera')) {
-                        $fallbackImage = asset('images/services/inspeksi-kamera-cctv-pipa.webp');
-                    }
-
-                    if (empty($rawImage) || str_contains($rawImage, 'placehold.co')) {
+                    $fallbackImage = asset('assets/placeholders/service.svg');
+                    if (empty($rawImage) || str_contains($rawImage, 'placehold.co') || str_contains($rawImage, 'unsplash.com')) {
                         $imageSrc = $fallbackImage;
-                    } elseif (str_starts_with($rawImage, 'http://') || str_starts_with($rawImage, 'https://')) {
-                        $imageSrc = $rawImage;
                     } else {
-                        $imageSrc = asset(ltrim($rawImage, '/'));
+                        $imageSrc = str_starts_with($rawImage, 'http://') || str_starts_with($rawImage, 'https://')
+                            ? $rawImage : asset(ltrim($rawImage, '/'));
                     }
 
                     $waMessage = $isModel 
@@ -131,7 +116,7 @@
                         <div>
                             <span class="text-xs text-slate-500 block leading-tight mb-1">Estimasi Tarif:</span>
                             <div class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-                                Mulai dari Rp {{ number_format($price, 0, ',', '.') }}
+                                {{ $price > 0 ? 'Mulai dari Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}
                             </div>
                             <span class="text-xs text-slate-500 block mt-0.5">Detail &amp; konsultasi via WA</span>
                         </div>
@@ -146,11 +131,11 @@
             @endforeach
         </div>
 
-        <div class="flex md:hidden justify-center items-center gap-1 mt-4">
+        <div class="flex md:hidden justify-center items-center flex-wrap gap-1 mt-4">
             @for($i = 0; $i < count($itemsLayanan); $i++)
-                <button type="button" 
+                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
                         @click="goTo({{ $i }})"
-                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Layanan {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>

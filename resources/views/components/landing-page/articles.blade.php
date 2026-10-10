@@ -23,12 +23,11 @@
             </div>
         </div>
 
-        <div x-ref="slider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Artikel edukasi — geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
-             @mouseenter="pause()"
-             @mouseleave="resume()"
+             @touchcancel="resume()"
              class="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-8 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
             @forelse($articles as $article)
                 <article class="w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden hover:border-sky-300 hover:shadow-md transition-all flex flex-col justify-between group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
@@ -82,11 +81,11 @@
         </div>
 
         @if(count($articles) > 1)
-        <div class="flex lg:hidden justify-center items-center gap-1 mt-5">
+        <div class="flex lg:hidden justify-center items-center flex-wrap gap-1 mt-5">
             @for($i = 0; $i < count($articles); $i++)
-                <button type="button" 
+                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
                         @click="goTo({{ $i }})"
-                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Artikel {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>

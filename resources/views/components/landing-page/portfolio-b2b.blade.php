@@ -4,177 +4,13 @@
 ])
 
 @php
-    $b2bProjects = (isset($portfolios) && $portfolios->isNotEmpty()) ? $portfolios : collect([
-        (object)[
-            'client_name' => 'Mie Gacoan',
-            'client_type' => 'Restoran & F&B Komersial',
-            'location' => 'Jabodetabek & Jawa Tengah',
-            'image' => '/images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-        (object)[
-            'client_name' => 'KFC Indonesia',
-            'client_type' => 'Restoran Cepat Saji',
-            'location' => 'Jabodetabek',
-            'image' => '/images/portfolio/kfc-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-        (object)[
-            'client_name' => "McDonald's Indonesia",
-            'client_type' => 'Restoran Cepat Saji',
-            'location' => 'Jabodetabek',
-            'image' => '/images/portfolio/mcd-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-        (object)[
-            'client_name' => 'Richeese Factory',
-            'client_type' => 'Restoran Cepat Saji & Kafe',
-            'location' => 'Jabodetabek',
-            'image' => '/images/portfolio/richeese-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-        (object)[
-            'client_name' => 'Sushi Tei',
-            'client_type' => 'Restoran Kuliner Jepang',
-            'location' => 'Mall & Gedung Komersial',
-            'image' => '/images/portfolio/sushi-tei-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-        (object)[
-            'client_name' => 'Super Indo Supermarket',
-            'client_type' => 'Supermarket & Retail Komersial',
-            'location' => 'Jabodetabek & Jawa Tengah',
-            'image' => '/images/portfolio/superindo-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-        (object)[
-            'client_name' => 'SPBU Pertamina Sunter',
-            'client_type' => 'Fasilitas SPBU & Komersial',
-            'location' => 'Sunter, Jakarta Utara',
-            'image' => '/images/portfolio/pertamina-sunter-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-        (object)[
-            'client_name' => 'Stasiun KAI Lempuyangan',
-            'client_type' => 'Fasilitas Publik & Transportasi',
-            'location' => 'Yogyakarta & Jawa Tengah',
-            'image' => '/images/portfolio/stasiun-kai-lempuyangan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-        (object)[
-            'client_name' => 'Haka Dimsum',
-            'client_type' => 'Restoran & Kafe 24 Jam',
-            'location' => 'Kemang & BSD City',
-            'image' => '/images/portfolio/testimoni-restoran-haka-dimsum-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp',
-        ],
-    ]);
+    $b2bProjects = $portfolios ?? collect();
     $b2bWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode("Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran pipa & grease trap untuk perusahaan/gedung kami. Mohon info survey lokasi.");
 @endphp
 
+@if($b2bProjects->isNotEmpty())
 <section id="portofolio-b2b" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-20 lg:scroll-mt-24 content-auto" 
-         x-data="{
-             activePage: 0,
-             pageCount: {{ max(1, (int) ceil(count($b2bProjects) / 3)) }},
-             totalCards: {{ count($b2bProjects) }},
-             timer: null,
-             _observer: null,
-             _isProgrammatic: false,
-             _programmaticTimeout: null,
-             init() {
-                 if (typeof window === 'undefined') return;
-                 if ('IntersectionObserver' in window && this.$refs.b2bSlider) {
-                     this._observer = new IntersectionObserver((entries) => {
-                         entries.forEach(entry => {
-                             if (entry.isIntersecting && window.innerWidth < 1024) {
-                                 this.startAuto();
-                             } else {
-                                 this.pause();
-                             }
-                         });
-                     }, { threshold: 0.2 });
-                     this._observer.observe(this.$refs.b2bSlider);
-                 } else if (window.innerWidth < 1024) {
-                     this.startAuto();
-                 }
-             },
-             startAuto() {
-                 if (this.pageCount <= 1 || window.innerWidth >= 1024) return;
-                 this.pause();
-                 this.timer = setInterval(() => { this.next(); }, 4500);
-             },
-             pause() {
-                 if (this.timer) {
-                     clearInterval(this.timer);
-                     this.timer = null;
-                 }
-             },
-             resume() {
-                 if (window.innerWidth >= 1024) return;
-                 this.startAuto();
-             },
-             next() {
-                 this.goToPage((this.activePage + 1) % this.pageCount);
-             },
-             prev() {
-                 this.goToPage((this.activePage - 1 + this.pageCount) % this.pageCount);
-             },
-             goToPage(p) {
-                 this.activePage = p;
-                 this._isProgrammatic = true;
-                 clearTimeout(this._programmaticTimeout);
-
-                 const slider = this.$refs.b2bSlider;
-                 if (slider) {
-                     const cards = slider.children;
-                     const targetIndex = Math.min(p * 3, this.totalCards - 1);
-                     if (cards[targetIndex]) {
-                         const targetLeft = cards[targetIndex].offsetLeft - slider.offsetLeft;
-                         slider.scrollTo({ 
-                             left: Math.max(0, targetLeft), 
-                             behavior: 'smooth' 
-                         });
-                     }
-                 }
-
-                 this._programmaticTimeout = setTimeout(() => {
-                     this._isProgrammatic = false;
-                 }, 450);
-             },
-             onScroll() {
-                 if (this._isProgrammatic) return;
-                 const slider = this.$refs.b2bSlider;
-                 if (!slider) return;
-
-                 const scrollLeft = slider.scrollLeft;
-                 const maxScroll = slider.scrollWidth - slider.clientWidth;
-
-                 // Di posisi awal scroll track
-                 if (scrollLeft <= 15) {
-                     this.activePage = 0;
-                     return;
-                 }
-
-                 // Di posisi ujung akhir scroll track
-                 if (maxScroll > 0 && scrollLeft >= maxScroll - 15) {
-                     this.activePage = this.pageCount - 1;
-                     return;
-                 }
-
-                 const cards = slider.children;
-                 if (!cards || cards.length === 0) return;
-
-                 // Jarak horizontal per card yang presisi (lebar card + gap)
-                 const cardStep = cards.length > 1 
-                     ? (cards[1].offsetLeft - cards[0].offsetLeft) 
-                     : (cards[0].offsetWidth + 24);
-
-                 // 1 dot = tepat melewati 3 card
-                 const pageStep = cardStep * 3;
-
-                 // Pindah dot HANYA setiap kali sudah melewati 3 card
-                 // Toleransi 0.15 * cardStep agar dot berpindah tepat saat card ketiga terlewati
-                 const newPage = Math.min(
-                     this.pageCount - 1, 
-                     Math.max(0, Math.floor((scrollLeft + cardStep * 0.15) / pageStep))
-                 );
-
-                 if (newPage !== this.activePage) {
-                     this.activePage = newPage;
-                 }
-             }
-         }">
+         x-data="mobileCarousel({{ count($b2bProjects) }}, 4500, 3)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Section Header with Prev / Next Navigation -->
@@ -195,7 +31,7 @@
             <div class="hidden sm:flex items-center gap-2 shrink-0">
                 <button type="button" 
                         @click="prev()" 
-                        class="w-10 h-10 rounded-xl bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200/90 hover:border-sky-300 transition-all shadow-2xs flex items-center justify-center cursor-pointer btn-press"
+                        class="carousel-control w-10 h-10 rounded-xl bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200/90 hover:border-sky-300 transition-all shadow-2xs flex items-center justify-center cursor-pointer btn-press"
                         aria-label="Proyek Sebelumnya">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -203,7 +39,7 @@
                 </button>
                 <button type="button" 
                         @click="next()" 
-                        class="w-10 h-10 rounded-xl bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200/90 hover:border-sky-300 transition-all shadow-2xs flex items-center justify-center cursor-pointer btn-press"
+                        class="carousel-control w-10 h-10 rounded-xl bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200/90 hover:border-sky-300 transition-all shadow-2xs flex items-center justify-center cursor-pointer btn-press"
                         aria-label="Proyek Berikutnya">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -213,12 +49,11 @@
         </div>
 
         <!-- Carousel Slider Track -->
-        <div x-ref="b2bSlider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Portofolio perusahaan — geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
-             @mouseenter="pause()"
-             @mouseleave="resume()"
+             @touchcancel="resume()"
              class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-1 -mx-1 sm:mx-0 sm:px-0">
             @foreach($b2bProjects as $project)
                 @php
@@ -233,8 +68,8 @@
                     <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
                     <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
                         @php
-                            $projectImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp');
-                            $defaultFallback = asset('images/portfolio/gacoan-mitra-kepercayaan-drainusantara-jasa-saluran-pipa-mampet.webp');
+                            $projectImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/hero-technician.webp');
+                            $defaultFallback = asset('images/hero-technician.webp');
                         @endphp
                         <img src="{{ $projectImg }}" 
                              alt="{{ $project->client_name }}" 
@@ -273,12 +108,12 @@
         @if($b2bDotCount > 1)
         <div class="flex justify-center items-center gap-1 mt-5">
             @for($p = 0; $p < $b2bDotCount; $p++)
-                <button type="button" 
-                        @click="goToPage({{ $p }})"
-                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                <button :aria-current="active === {{ $p }} ? 'true' : 'false'" type="button"
+                        @click="goTo({{ $p }})"
+                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Halaman Portofolio {{ $p + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
-                          :class="activePage === {{ $p }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
+                          :class="active === {{ $p }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
                 </button>
             @endfor
         </div>
@@ -308,3 +143,4 @@
 
     </div>
 </section>
+@endif

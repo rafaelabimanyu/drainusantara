@@ -24,12 +24,11 @@
             </div>
         </div>
 
-        <div x-ref="slider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Wilayah layanan — geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
-             @mouseenter="pause()"
-             @mouseleave="resume()"
+             @touchcancel="resume()"
              class="flex lg:grid lg:grid-cols-3 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-1 -mx-1 sm:mx-0 sm:px-0 items-stretch">
             
             <!-- Card 1: DKI JAKARTA -->
@@ -90,7 +89,7 @@
 
                 <div class="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
                     <a href="{{ route('area.province', ['province' => 'dki-jakarta']) }}" class="text-xs font-bold text-sky-700 hover:text-sky-800 hover:underline">
-                        Lihat 44 Kecamatan &rarr;
+                        Lihat Area Layanan &rarr;
                     </a>
                     @php
                         $waJktText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area DKI Jakarta. Mohon info jadwal kedatangan.");
@@ -250,11 +249,11 @@
 
         </div>
 
-        <div class="flex lg:hidden justify-center items-center gap-1 mt-5">
+        <div class="flex lg:hidden justify-center items-center flex-wrap gap-1 mt-5">
             @for($i = 0; $i < 3; $i++)
-                <button type="button" 
+                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
                         @click="goTo({{ $i }})"
-                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Wilayah {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
@@ -267,7 +266,7 @@
                 <svg class="w-5 h-5 text-sky-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                 </svg>
-                <span>Cari kecamatan atau kota spesifik lainnya? Buka peta direktori lengkap seluruh provinsi layanan kami.</span>
+                <span>Cari area atau kota spesifik lainnya? Buka peta direktori lengkap seluruh provinsi layanan kami.</span>
             </div>
             <a href="{{ route('area.index') }}" class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 bg-sky-700 hover:bg-sky-800 text-white text-xs font-bold rounded-lg transition-colors shadow-xs">
                 <span>Lihat Direktori Seluruh Area</span>

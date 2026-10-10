@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import './fonts.css';
 @config '../../tailwind.config.js';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -35,6 +36,66 @@
 .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+@media (max-width: 359px) {
+    .snap-x {
+        scroll-padding-inline: 0.25rem;
+    }
+    .snap-x.px-4 {
+        scroll-padding-inline: 1rem;
+    }
+    .snap-x > * {
+        scroll-snap-align: start;
+    }
+}
+
+/* Carousel controls retain compact dots inside 44px touch targets. */
+.carousel-dot,
+.carousel-control {
+    min-width: 44px;
+    min-height: 44px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.carousel-dot {
+    padding: 8px;
+    background: transparent;
+    border-radius: 6px;
+}
+.carousel-dot > span {
+    display: block;
+}
+.carousel-toolbar {
+    display: flex;
+    justify-content: center;
+    margin-block: 0.5rem;
+}
+.carousel-toolbar .carousel-control {
+    padding: 8px 12px;
+    border: 1px solid #64748b;
+    border-radius: 6px;
+    background: white;
+    color: #0f172a;
+    font-size: 0.75rem;
+}
+.carousel-toolbar .carousel-control:disabled {
+    color: #475569;
+}
+.carousel-dot:focus-visible,
+.carousel-control:focus-visible,
+[role="region"][tabindex="0"]:focus-visible {
+    outline: 3px solid #0369a1;
+    outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+    .carousel-dot > span,
+    [role="region"][tabindex="0"] {
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* Content-visibility optimization for below-the-fold content */

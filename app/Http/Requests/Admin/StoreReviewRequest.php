@@ -25,7 +25,7 @@ class StoreReviewRequest extends FormRequest
             'avatar' => $this->hasFile('avatar')
                 ? ['image', 'mimes:jpeg,png,jpg,webp', 'max:5120']
                 : ['nullable'],
-            'avatar_url' => ['nullable', 'string', 'max:500'],
+            'avatar_url' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

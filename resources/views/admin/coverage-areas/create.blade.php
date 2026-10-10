@@ -8,7 +8,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Tambah Area Jangkauan Baru</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftarkan kecamatan &amp; kota baru untuk halaman pendaratan SEO lokal.</p>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftarkan area &amp; kota untuk halaman pendaratan SEO lokal.</p>
         </div>
         <a href="{{ route('admin.coverage-areas.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
@@ -45,9 +45,9 @@
                 @error('city') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <!-- Nama Kecamatan -->
+            <!-- Nama Area -->
             <div>
-                <label for="district" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Kecamatan *</label>
+                <label for="district" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Area *</label>
                 <input type="text" name="district" id="district" required value="{{ old('district') }}" placeholder="Contoh: Tebet, Sukarame, dll" class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
                 @error('district') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
             </div>
@@ -62,7 +62,7 @@
             <div class="sm:col-span-2">
                 <label for="meta_title" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Custom SEO Meta Title (Opsional)</label>
                 <input type="text" name="meta_title" id="meta_title" value="{{ old('meta_title') }}" placeholder="Biarkan kosong untuk judul SEO otomatis" class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
-                <p class="text-[11px] text-slate-500 mt-1">Default otomatis: Jasa Saluran Mampet di {Kecamatan}, {Kota} - Drainusantara Bergaransi</p>
+                <p class="text-[11px] text-slate-500 mt-1">Default otomatis: Jasa Saluran Mampet di {Area}, {Kota} - Drainusantara Bergaransi</p>
             </div>
 
             <!-- Custom SEO Meta Description -->
@@ -71,10 +71,17 @@
                 <textarea name="meta_description" id="meta_description" rows="2" placeholder="Deskripsi meta untuk mesin pencarian Google..." class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('meta_description') }}</textarea>
             </div>
 
+            <div class="sm:col-span-2">
+                <label for="content" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Konten Lokal (Teks Biasa)</label>
+                <textarea name="content" id="content" rows="6" class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('content') }}</textarea>
+                <p class="text-[11px] text-slate-500 mt-1">Isi informasi layanan khusus area ini. HTML ditampilkan sebagai teks, bukan markup.</p>
+                @error('content') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
+            </div>
+
             <!-- Status Aktif Checkbox -->
             <div class="sm:col-span-2 flex items-center gap-2.5 pt-1">
                 <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }} class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
-                <label for="is_active" class="text-xs sm:text-sm font-medium text-slate-700 cursor-pointer">Publikasikan halaman SEO kecamatan ini</label>
+                <label for="is_active" class="text-xs sm:text-sm font-medium text-slate-700 cursor-pointer">Publikasikan halaman SEO area ini</label>
             </div>
         </div>
 

@@ -48,7 +48,7 @@
                     'id' => 3,
                     'category' => 'teknis',
                     'q' => 'Berapa lama rata-rata durasi pengerjaan pelancaran saluran pipa?',
-                    'a' => 'Untuk kasus sumbatan standar residensial (wastafel dapur, floor drain kamar mandi, leher angsa kloset), proses pelancaran mekanis biasanya tuntas dalam 30 hingga 45 menit. Untuk sumbatan lemak beku berat pada grease trap restoran komersial, instalasi pipa utama gedung, atau penarikan akar pohon di jalur pipa luar, durasi berkisar antara 1 hingga 2 jam.'
+                    'a' => config('service_facts.duration_answer')
                 ],
                 [
                     'id' => 4,
@@ -122,6 +122,8 @@
                      class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs transition-all card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }}">
                     <button type="button" 
                             @click="openFaq = (openFaq === {{ $item['id'] }} ? null : {{ $item['id'] }})"
+                            aria-expanded="{{ $item['id'] === 1 ? 'true' : 'false' }}"
+                            :aria-expanded="openFaq === {{ $item['id'] }}" aria-controls="faq-answer-{{ $item['id'] }}"
                             class="w-full flex items-center justify-between p-4 sm:p-5 text-left text-xs sm:text-sm font-bold text-slate-900 hover:text-sky-700 transition-colors cursor-pointer min-h-[48px]">
                         <span class="pr-4 leading-snug">{{ $item['q'] }}</span>
                         <svg class="w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0" 
@@ -130,7 +132,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div x-show="openFaq === {{ $item['id'] }}" x-collapse>
+                    <div id="faq-answer-{{ $item['id'] }}" x-show="openFaq === {{ $item['id'] }}">
                         <div class="px-4 sm:px-5 pb-5 pt-1 border-t border-slate-100 text-xs sm:text-sm text-slate-600 leading-relaxed">
                             {{ $item['a'] }}
                         </div>

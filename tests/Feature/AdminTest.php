@@ -262,14 +262,14 @@ class AdminTest extends TestCase
         $response->assertRedirect('/admin/galleries');
         $gallery = Gallery::where('title', 'Pipa Restoran Bebas Sumbatan')->first();
         $this->assertNotNull($gallery);
-        $this->assertEquals('/images/dokumentasi/before-saluran.jpg', $gallery->before_image);
-        $this->assertEquals('/images/dokumentasi/after-saluran.jpg', $gallery->after_image);
-        $this->assertFileExists(public_path('images/dokumentasi/before-saluran.jpg'));
-        $this->assertFileExists(public_path('images/dokumentasi/after-saluran.jpg'));
+        $this->assertStringContainsString('/images/dokumentasi/', $gallery->before_image);
+        $this->assertStringContainsString('/images/dokumentasi/', $gallery->after_image);
+        $this->assertFileExists(public_path(ltrim($gallery->before_image, '/')));
+        $this->assertFileExists(public_path(ltrim($gallery->after_image, '/')));
 
         // Clean up test files
-        @unlink(public_path('images/dokumentasi/before-saluran.jpg'));
-        @unlink(public_path('images/dokumentasi/after-saluran.jpg'));
+        @unlink(public_path(ltrim($gallery->before_image, '/')));
+        @unlink(public_path(ltrim($gallery->after_image, '/')));
     }
 
     public function test_admin_article_image_upload(): void
@@ -306,7 +306,7 @@ class AdminTest extends TestCase
         $response->assertRedirect('/admin/galleries');
         $gallery = Gallery::where('title', 'Dokumentasi Hapus File Fisik')->first();
         $this->assertNotNull($gallery);
-        $this->assertFileExists(public_path('images/dokumentasi/test-delete-dokumentasi.jpg'));
+        $this->assertFileExists(public_path(ltrim($gallery->image, '/')));
 
         // Hapus via CMS
         $deleteResponse = $this->delete("/admin/galleries/{$gallery->id}");
@@ -314,7 +314,7 @@ class AdminTest extends TestCase
         $this->assertDatabaseMissing('galleries', ['id' => $gallery->id]);
 
         // Verifikasi file fisik juga terhapus dari folder public/images/dokumentasi
-        $this->assertFileDoesNotExist(public_path('images/dokumentasi/test-delete-dokumentasi.jpg'));
+        $this->assertFileDoesNotExist(public_path(ltrim($gallery->image, '/')));
     }
 
     public function test_admin_portfolio_destroy_deletes_image_file(): void
@@ -331,7 +331,7 @@ class AdminTest extends TestCase
         $response->assertRedirect('/admin/portfolios');
         $portfolio = \App\Models\Portfolio::where('client_name', 'PT Test Hapus File')->first();
         $this->assertNotNull($portfolio);
-        $this->assertFileExists(public_path('images/portfolio/test-delete-portfolio.jpg'));
+        $this->assertFileExists(public_path(ltrim($portfolio->image, '/')));
 
         // Hapus via CMS
         $deleteResponse = $this->delete("/admin/portfolios/{$portfolio->id}");
@@ -339,7 +339,7 @@ class AdminTest extends TestCase
         $this->assertDatabaseMissing('portfolios', ['id' => $portfolio->id]);
 
         // Verifikasi file fisik juga terhapus dari folder public/images/portfolio
-        $this->assertFileDoesNotExist(public_path('images/portfolio/test-delete-portfolio.jpg'));
+        $this->assertFileDoesNotExist(public_path(ltrim($portfolio->image, '/')));
     }
 }
 

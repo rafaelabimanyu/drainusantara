@@ -43,8 +43,51 @@ class FrontendContentTest extends TestCase
         $response = $this->get('/pengetahuan');
 
         $response->assertStatus(200);
-        $response->assertSee('Panduan Perawatan & Tips', false);
+        $response->assertSee('Panduan Perawatan & Tips');
         $response->assertSee('Bahaya Soda Api untuk Pipa');
+    }
+
+    public function test_knowledge_heading_decodes_ampersand_once(): void
+    {
+        $response = $this->get('/pengetahuan')->assertOk();
+        $response->assertSeeText('Panduan Perawatan & Tips');
+        $response->assertDontSee('Panduan Perawatan &amp;amp; Tips', false);
+
+        $document = new \DOMDocument;
+        $document->loadHTML($response->getContent(), LIBXML_NOERROR | LIBXML_NOWARNING);
+        $heading = $document->getElementsByTagName('h1')->item(0);
+
+        $this->assertNotNull($heading);
+        $this->assertSame('Panduan Perawatan & Tips Saluran Pipa', trim(preg_replace('/\s+/', ' ', $heading->textContent)));
+    }
+
+    public function test_article_titles_escape_special_characters_without_rendering_markup(): void
+    {
+        $title = 'Pipa & "Saluran" <em>Rumah</em>';
+        $article = Article::create([
+            'title' => $title,
+            'slug' => 'pipa-saluran-rumah',
+            'category' => 'Tips & Edukasi',
+            'excerpt' => 'Panduan perawatan saluran rumah.',
+            'content' => 'Bersihkan saluran secara berkala.',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        foreach (['/pengetahuan', "/artikel/{$article->slug}"] as $url) {
+            $response = $this->get($url)->assertOk();
+            $response->assertSeeText($title);
+            $response->assertDontSee(e(e($title)), false);
+
+            $document = new \DOMDocument;
+            $document->loadHTML($response->getContent(), LIBXML_NOERROR | LIBXML_NOWARNING);
+            $headings = (new \DOMXPath($document))->query('//h1 | //h2');
+            $titles = [];
+            foreach ($headings as $heading) {
+                $titles[] = trim(preg_replace('/\s+/', ' ', $heading->textContent));
+            }
+            $this->assertContains($title, $titles, $url);
+        }
     }
 
     public function test_article_detail_page_renders_successfully(): void

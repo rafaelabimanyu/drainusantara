@@ -15,7 +15,7 @@
     $inputId = $id ?? $name;
 @endphp
 
-<div x-data="{ preview: '{{ $resolvedCurrent }}' }">
+<div x-data="{ preview: {{ Illuminate\Support\Js::from($resolvedCurrent) }} }">
     <label for="{{ $inputId }}" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
         {{ $label }}
         @if($required) <span class="text-rose-600">*</span> @endif

@@ -19,7 +19,7 @@
                 Ringkasan Layanan &amp; Jangkauan
             </h1>
             <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
-                Pantau katalog jasa pelancaran pipa, landing page SEO kecamatan, portofolio klien B2B, dan ulasan pelanggan.
+                Pantau katalog jasa pelancaran pipa, landing page SEO area, portofolio klien B2B, dan ulasan pelanggan.
             </p>
         </div>
         <div class="flex items-center gap-2.5 shrink-0">
@@ -71,7 +71,7 @@
             </div>
             <div class="mt-3">
                 <div class="text-2xl font-extrabold text-slate-900">{{ $stats['total_coverage_areas'] }}</div>
-                <div class="text-[11px] text-slate-500 font-medium mt-0.5">Kecamatan / Kota</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">Area / Kota</div>
             </div>
             <div class="mt-3 pt-2.5 border-t border-slate-100">
                 <a href="{{ route('admin.coverage-areas.index') }}" class="text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 flex items-center justify-between">

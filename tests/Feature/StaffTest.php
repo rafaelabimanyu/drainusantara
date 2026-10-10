@@ -149,7 +149,7 @@ class StaffTest extends TestCase
         $staff = Staff::where('name', 'Fajar Teknisi')->first();
         $this->assertNotNull($staff);
         $this->assertNotNull($staff->photo);
-        $this->assertStringContainsString('teknisi-fajar.webp', $staff->photo);
+        $this->assertStringStartsWith('/images/staff/', $staff->photo);
 
         $relativePath = ltrim(parse_url($staff->photo, PHP_URL_PATH), '/');
         $this->assertFileExists(public_path($relativePath));

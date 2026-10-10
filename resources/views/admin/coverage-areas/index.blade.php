@@ -9,7 +9,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Area Jangkauan & Landing SEO Lokal</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Kelola direktori kota, kecamatan, dan optimasi tag meta SEO per wilayah.</p>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Kelola direktori kota, area, dan optimasi tag meta SEO per wilayah.</p>
         </div>
         <a href="{{ route('admin.coverage-areas.create') }}" class="inline-flex items-center justify-center gap-2 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-lg shadow-2xs transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -21,7 +21,7 @@
     <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
         <form method="GET" action="{{ route('admin.coverage-areas.index') }}" class="flex gap-2">
             <div class="relative flex-1">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kota, kecamatan, atau slug..." class="w-full rounded-lg border border-slate-300 pl-9 pr-3.5 py-2 text-xs sm:text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kota, area, atau slug..." class="w-full rounded-lg border border-slate-300 pl-9 pr-3.5 py-2 text-xs sm:text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
@@ -43,7 +43,7 @@
             <table class="min-w-full divide-y divide-slate-200 text-left text-xs sm:text-sm">
                 <thead class="bg-slate-50/75 border-b border-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wider">
                     <tr>
-                        <th scope="col" class="px-5 py-3.5">Kecamatan</th>
+                        <th scope="col" class="px-5 py-3.5">Nama Area</th>
                         <th scope="col" class="px-5 py-3.5">Kota / Wilayah</th>
                         <th scope="col" class="px-5 py-3.5">SEO Meta Title</th>
                         <th scope="col" class="px-5 py-3.5">Status</th>

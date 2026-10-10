@@ -80,7 +80,7 @@
             </div>
 
             <div class="flex items-center gap-2.5 pt-1">
-                <input type="checkbox" name="is_published" id="is_published" value="1" {{ old('is_published', true) ? 'checked' : '' }}
+                <input type="checkbox" name="is_published" id="is_published" value="1" {{ old('is_published', session()->hasOldInput() ? false : true) ? 'checked' : '' }}
                        class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
                 <label for="is_published" class="text-xs sm:text-sm font-medium text-slate-700 cursor-pointer">Publikasikan Langsung ke Website</label>
             </div>

@@ -327,6 +327,27 @@ class RegionService
         ];
     }
 
+    public static function districtType(array $city, string $district): string
+    {
+        $types = [
+            'jakarta-timur' => ['rawamangun' => 'Kelurahan'],
+            'jakarta-barat' => ['puri-kembangan' => 'Kawasan'],
+            'jakarta-utara' => ['pantai-indah-kapuk' => 'Kawasan', 'sunter' => 'Kawasan', 'pluit' => 'Kelurahan'],
+            'bogor' => ['sentul-city' => 'Kawasan', 'kota-bogor' => 'Kota'],
+            'depok-cinere' => ['margonda' => 'Kawasan'],
+            'bekasi-cikarang' => ['harapan-indah' => 'Kawasan'],
+            'bandung' => ['dago' => 'Kelurahan'],
+            'tangerang-selatan' => ['bsd-city' => 'Kawasan', 'bintaro' => 'Kawasan'],
+            'semarang' => ['simpang-lima' => 'Kawasan'],
+            'bandar-lampung' => ['teluk-betung' => 'Kawasan'],
+        ];
+
+        $slug = Str::slug($district);
+        $known = collect($city['districts'] ?? [])->contains(fn (string $name) => Str::slug($name) === $slug);
+
+        return $types[$city['slug'] ?? ''][$slug] ?? ($known ? 'Kecamatan' : 'Area');
+    }
+
     /**
      * Find a province by slug.
      */
@@ -391,11 +412,11 @@ class RegionService
 
             foreach ($prov['cities'] as $citySlug => $city) {
                 $items[] = [
-                    'type' => 'Kota',
-                    'badge' => 'KOTA',
+                    'type' => $city['type'],
+                    'badge' => strtoupper($city['type']),
                     'name' => $city['name'],
                     'short_name' => $city['name'],
-                    'subtitle' => $prov['name'] . ' &bull; ' . count($city['districts']) . ' Kecamatan Siaga',
+                    'subtitle' => $prov['name'] . ' &bull; ' . count($city['districts']) . ' Area Layanan',
                     'url' => route('area.city', ['city' => $citySlug]),
                     'eta' => 'Respon Cepat',
                     'search' => strtolower($city['name'] . ' ' . $citySlug),
@@ -404,8 +425,8 @@ class RegionService
                 foreach ($city['districts'] as $district) {
                     $districtSlug = Str::slug($district);
                     $items[] = [
-                        'type' => 'Kecamatan',
-                        'badge' => 'KECAMATAN',
+                        'type' => self::districtType($city, $district),
+                        'badge' => strtoupper(self::districtType($city, $district)),
                         'name' => $district,
                         'short_name' => $district,
                         'subtitle' => $city['name'] . ', ' . $prov['name'],

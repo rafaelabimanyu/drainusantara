@@ -130,7 +130,7 @@
 
                     <a href="#daftar-kecamatan" 
                        class="min-h-11 inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg border border-slate-200 shadow-2xs transition-colors btn-press">
-                        <span>Pilih Kecamatan ({{ count($cityData['districts']) }})</span>
+                        <span>Pilih Area ({{ count($cityData['districts']) }})</span>
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
@@ -166,13 +166,13 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mb-10 reveal-soft">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
-                DAFTAR KECAMATAN
+                DAFTAR AREA LAYANAN
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Kecamatan yang Dilayani di {{ $cityData['name'] }}
+                Area yang Dilayani di {{ $cityData['name'] }}
             </h2>
             <p class="text-slate-600 text-sm sm:text-base mt-2 leading-relaxed">
-                Pilih kecamatan Anda untuk melihat detail layanan lokal, estimasi respon cepat teknisi, dan pemesanan WhatsApp darurat:
+                Pilih area Anda untuk melihat detail layanan lokal, estimasi respon cepat teknisi, dan pemesanan WhatsApp darurat:
             </p>
         </div>
 
@@ -184,7 +184,7 @@
                 @endphp
                 <div class="bg-slate-50 hover:bg-white rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-sm p-3 sm:p-4.5 transition-all flex flex-col justify-between group card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }}">
                     <div>
-                        <span class="text-[10px] sm:text-[11px] text-slate-400 font-bold uppercase tracking-wider block mb-1">Kecamatan</span>
+                        <span class="text-[10px] sm:text-[11px] text-slate-600 font-bold uppercase tracking-wider block mb-1">{{ \App\Services\RegionService::districtType($cityData, $district) }}</span>
                         <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-sky-700 transition-colors tracking-tight leading-snug">
                             <a href="{{ $districtUrl }}" class="hover:underline">
                                 {{ $district }}
@@ -268,12 +268,11 @@
             </div>
         </div>
 
-        <div x-ref="slider" 
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan kota — geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
-             @mouseenter="pause()"
-             @mouseleave="resume()"
+             @touchcancel="resume()"
              class="flex lg:grid lg:grid-cols-4 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 sm:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
             @foreach($itemsCityServices as $index => $item)
                 @php
@@ -286,24 +285,12 @@
                     $category = $isModel ? ($item->category ?? 'LAYANAN UTAMA') : $item['category'];
 
                     $rawImage = $isModel ? $item->image : ($item['image'] ?? null);
-                    $imageSrc = $rawImage;
-                    $lowerName = strtolower($title);
-                    if (empty($imageSrc) || str_contains($imageSrc, 'placehold.co') || str_contains($imageSrc, 'unsplash.com')) {
-                        if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
-                            $imageSrc = asset('images/services/wastafel-cuci-piring-mampet.webp');
-                        } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
-                            $imageSrc = asset('images/services/kloset-wc-mampet.webp');
-                        } elseif (str_contains($lowerName, 'floor drain') || str_contains($lowerName, 'kamar mandi')) {
-                            $imageSrc = asset('images/services/floor-drain-kamar-mandi.webp');
-                        } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera')) {
-                            $imageSrc = asset('images/services/inspeksi-kamera-cctv-pipa.webp');
-                        } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'lemak') || str_contains($lowerName, 'resto')) {
-                            $imageSrc = asset('images/services/kuras-grease-trap-lemak.webp');
-                        } elseif (str_contains($lowerName, 'talang') || str_contains($lowerName, 'atap')) {
-                            $imageSrc = asset('images/services/talang-rooftop-pipa-atap.webp');
-                        } else {
-                            $imageSrc = asset('images/services/wastafel-cuci-piring-mampet.webp');
-                        }
+                    $fallbackImage = asset('assets/placeholders/service.svg');
+                    if (empty($rawImage) || str_contains($rawImage, 'placehold.co') || str_contains($rawImage, 'unsplash.com')) {
+                        $imageSrc = $fallbackImage;
+                    } else {
+                        $imageSrc = str_starts_with($rawImage, 'http://') || str_starts_with($rawImage, 'https://')
+                            ? $rawImage : asset(ltrim($rawImage, '/'));
                     }
 
                     $waServiceMsg = urlencode("Halo teknisi Drainusantara, saya butuh penanganan {$title} di area {$cityData['name']}. Mohon info estimasi biaya.");
@@ -312,7 +299,7 @@
                 <div class="w-[82vw] sm:w-70 lg:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-{{ ($index % 4) + 1 }}">
                     <div>
                         <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-3.5 border border-slate-100">
-                            <img src="{{ $imageSrc }}" 
+                            <img src="{{ $imageSrc }}" onerror="this.onerror=null; this.src='{{ $fallbackImage }}';"
                                  alt="{{ $title }}" 
                                  width="600"
                                  height="375"
@@ -340,7 +327,7 @@
                     <div class="pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
                         <div>
                             <span class="text-xs text-slate-500 block font-medium">Mulai dari</span>
-                            <span class="text-xs sm:text-sm font-extrabold text-slate-900">Rp {{ number_format($price, 0, ',', '.') }}</span>
+                            <span class="text-xs sm:text-sm font-extrabold text-slate-900">{{ $price > 0 ? 'Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}</span>
                         </div>
                         <a href="{{ $waServiceUrl }}" target="_blank" rel="noopener noreferrer" 
                            class="btn-press min-h-11 inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 py-2 px-3.5 rounded-lg shadow-2xs transition-colors shrink-0"
@@ -355,14 +342,14 @@
             @endforeach
         </div>
 
-        <div class="flex lg:hidden justify-center items-center gap-1.5 mt-3">
+        <div class="flex lg:hidden justify-center items-center flex-wrap gap-1.5 mt-3">
             @for($i = 0; $i < count($itemsCityServices); $i++)
-                <button type="button" 
+                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
                         @click="goTo({{ $i }})"
-                        class="h-1.5 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                        :class="active === {{ $i }} ? 'w-5 bg-sky-700' : 'w-1.5 bg-slate-300 hover:bg-slate-400'"
+                        class="carousel-dot"
+
                         aria-label="Layanan {{ $i + 1 }}">
-                </button>
+                <span aria-hidden="true" class="h-1.5 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === {{ $i }} ? 'w-5 bg-sky-700' : 'w-1.5 bg-slate-300 hover:bg-slate-400'"></span></button>
             @endfor
         </div>
     </div>

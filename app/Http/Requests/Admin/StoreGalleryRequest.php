@@ -21,16 +21,16 @@ class StoreGalleryRequest extends FormRequest
             'service_id' => ['nullable', 'exists:services,id'],
             'before_image' => $this->hasFile('before_image')
                 ? ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']
-                : ['nullable'],
-            'before_image_url' => ['nullable', 'string', 'max:500'],
+                : ['nullable', 'string', 'max:255'],
+            'before_image_url' => ['nullable', 'string', 'max:255'],
             'after_image' => $this->hasFile('after_image')
                 ? ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']
-                : ['nullable'],
-            'after_image_url' => ['nullable', 'string', 'max:500'],
+                : ['nullable', 'string', 'max:255'],
+            'after_image_url' => ['nullable', 'string', 'max:255'],
             'image' => $this->hasFile('image')
                 ? ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']
-                : ['nullable'],
-            'image_url' => ['nullable', 'string', 'max:500'],
+                : ['nullable', 'string', 'max:255'],
+            'image_url' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],

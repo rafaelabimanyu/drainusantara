@@ -14,6 +14,8 @@
     $districtSlug = \Illuminate\Support\Str::slug($area->district);
     $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($area->city);
     $provinceSlug = $cityData['province_slug'] ?? null;
+    $districtType = \App\Services\RegionService::districtType($cityData ?? [], $area->district);
+    $districtLabel = str_starts_with($area->district, $districtType.' ') ? $area->district : $districtType.' '.$area->district;
 
     $heroBgImage = $customHeroBg 
         ?: (file_exists(public_path("images/areas/districts/{$citySlug}-{$districtSlug}.webp"))
@@ -29,8 +31,23 @@
                             : ($area->hero_image ?? null))))));
 @endphp
 
-<div class="pb-24 md:pb-0">
-    <section class="relative bg-slate-50 border-b border-slate-200 pt-5 pb-10 sm:pt-8 sm:pb-14 lg:pt-12 lg:pb-18 overflow-hidden">
+@push('styles')
+<style>
+    .area-detail-page .area-hero { background: #f8fafc; border-bottom-color: #cbd5e1; }
+    .area-detail-page .area-hero h1 { max-width: 13ch; letter-spacing: -0.045em; }
+    .area-detail-page .hero-proof { border-left: 3px solid #0369a1; padding-left: 1rem; }
+    .area-detail-page .service-card { border-radius: 0.5rem; box-shadow: none; }
+    .area-detail-page .service-card:hover { border-color: #0369a1; box-shadow: 0 8px 24px rgb(15 23 42 / 0.08); }
+    .area-detail-page .process-step { border-top: 3px solid #0369a1; border-radius: 0.5rem; box-shadow: none; }
+    @media (max-width: 639px) {
+        .area-detail-page .area-hero h1 { max-width: 15ch; }
+        .area-detail-page .hero-proof { padding-left: 0.75rem; }
+    }
+</style>
+@endpush
+
+<div class="area-detail-page pb-24 md:pb-0">
+    <section class="relative area-hero bg-slate-50 border-b border-slate-200 pt-5 pb-10 sm:pt-8 sm:pb-14 lg:pt-12 lg:pb-18 overflow-hidden">
         @if(!empty($heroBgImage))
             <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
                 <img src="{{ $heroBgImage }}" 
@@ -81,7 +98,7 @@
                 <div class="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
                     <div class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
                         <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                        <span>Wilayah Layanan: Kecamatan {{ $area->district }}, {{ $area->city }}</span>
+                        <span>Wilayah Layanan: {{ $districtLabel }}, {{ $area->city }}</span>
                     </div>
 
                     <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight reveal-soft">
@@ -130,7 +147,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1 reveal-soft delay-200">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1 hero-proof reveal-soft delay-200">
                         <a href="{{ $emergencyWaUrl }}" target="_blank" rel="noopener noreferrer" 
                            class="min-h-12 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-xs hover:shadow transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 btn-press">
                             <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
@@ -172,6 +189,20 @@
             </div>
         </div>
     </section>
+
+    @if(filled($area->content) || filled($area->postal_code))
+        <section class="py-10 bg-white border-b border-slate-200" aria-labelledby="konten-lokal">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 id="konten-lokal" class="text-xl sm:text-2xl font-bold text-slate-900">Informasi Layanan di {{ $area->district }}</h2>
+                @if(filled($area->content))
+                    <div class="mt-3 whitespace-pre-line wrap-break-word text-sm sm:text-base text-slate-600 leading-relaxed">{{ $area->content }}</div>
+                @endif
+                @if(filled($area->postal_code))
+                    <p class="mt-3 text-sm text-slate-600">Kode Pos: {{ $area->postal_code }}</p>
+                @endif
+            </div>
+        </section>
+    @endif
 
     @php
         $defaultServices = [
@@ -228,14 +259,14 @@
                 </p>
             </div>
 
-            <div class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
+            <div tabindex="0" role="region" aria-label="Layanan kecamatan — geser untuk melihat lainnya" class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
                 @foreach($itemsLayanan as $catalog)
                     @php
                         $isModel = $catalog instanceof \App\Models\Service;
                         $title = $isModel ? $catalog->name : $catalog['name'];
                         $slug = $isModel ? $catalog->slug : $catalog['slug'];
                         $desc = $isModel ? ($catalog->short_description ?: ($catalog->description ?: 'Pelancaran saluran pipa mampet tanpa bongkar keramik.')) : $catalog['short_description'];
-                        $price = $isModel ? ($catalog->price_starting_from ?: 400000) : $catalog['price_starting_from'];
+                        $price = $isModel ? $catalog->price_starting_from : $catalog['price_starting_from'];
                         $features = $isModel ? ($catalog->features ?: ['Tanpa bongkar keramik', 'Teknisi profesional ber-APD', 'Garansi nota 30 hari']) : ($catalog['features'] ?? []);
                         
                         $category = 'LAYANAN SPESIALIS';
@@ -253,32 +284,21 @@
                         }
 
                         $rawImage = $isModel ? $catalog->image : ($catalog['image'] ?? null);
-                        $imageSrc = $rawImage;
-                        if (empty($imageSrc) || str_contains($imageSrc, 'placehold.co') || str_contains($imageSrc, 'unsplash.com')) {
-                            if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
-                                $imageSrc = asset('images/services/wastafel-cuci-piring-mampet.webp');
-                            } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
-                                $imageSrc = asset('images/services/kloset-wc-mampet.webp');
-                            } elseif (str_contains($lowerName, 'floor drain') || str_contains($lowerName, 'kamar mandi')) {
-                                $imageSrc = asset('images/services/floor-drain-kamar-mandi.webp');
-                            } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera')) {
-                                $imageSrc = asset('images/services/inspeksi-kamera-cctv-pipa.webp');
-                            } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'lemak') || str_contains($lowerName, 'resto')) {
-                                $imageSrc = asset('images/services/kuras-grease-trap-lemak.webp');
-                            } elseif (str_contains($lowerName, 'talang') || str_contains($lowerName, 'atap')) {
-                                $imageSrc = asset('images/services/talang-rooftop-pipa-atap.webp');
-                            } else {
-                                $imageSrc = asset('images/services/wastafel-cuci-piring-mampet.webp');
-                            }
+                        $fallbackImage = asset('assets/placeholders/service.svg');
+                        if (empty($rawImage) || str_contains($rawImage, 'placehold.co') || str_contains($rawImage, 'unsplash.com')) {
+                            $imageSrc = $fallbackImage;
+                        } else {
+                            $imageSrc = str_starts_with($rawImage, 'http://') || str_starts_with($rawImage, 'https://')
+                                ? $rawImage : asset(ltrim($rawImage, '/'));
                         }
 
                         $waMsg = urlencode("Halo teknisi Drainusantara, saya butuh perbaikan {$title} di area {$area->district}, {$area->city}. Mohon info estimasi biaya dan jadwal.");
                         $itemWaUrl = "https://wa.me/{$whatsappNumber}?text={$waMsg}";
                     @endphp
-                    <div class="w-[84vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:border-sky-300 transition-all duration-200 group card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }}">
+                    <div class="w-[84vw] sm:w-[320px] md:w-auto shrink-0 snap-center service-card bg-white rounded-lg border border-slate-200 p-4 sm:p-5 flex flex-col justify-between shadow-2xs hover:border-sky-300 transition-all duration-200 group card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }}">
                         <div>
                             <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-3.5 border border-slate-100">
-                                <img src="{{ $imageSrc }}" 
+                                <img src="{{ $imageSrc }}" onerror="this.onerror=null; this.src='{{ $fallbackImage }}';"
                                      alt="{{ $title }}" 
                                      width="600"
                                      height="375"
@@ -308,7 +328,7 @@
                         <div class="mt-5 pt-3.5 border-t border-slate-100">
                             <div class="text-[11px] text-slate-500 font-medium">Biaya Mulai Dari:</div>
                             <div class="text-base sm:text-lg font-extrabold text-slate-900 mb-2.5 tracking-tight">
-                                Mulai Rp {{ number_format($price, 0, ',', '.') }}
+                                {{ $price > 0 ? 'Mulai Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}
                             </div>
                             <a href="{{ $itemWaUrl }}" target="_blank" rel="noopener noreferrer" 
                                class="w-full min-h-11 flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow-2xs transition-all">
@@ -335,8 +355,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">
-                    <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto">
+                <div class="bg-slate-50 process-step p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">                    <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                         </svg>
@@ -345,8 +364,7 @@
                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Kirimkan pesan WhatsApp mengenai titik mampet dan lokasi hunian Anda untuk estimasi awal serta kepastian armada.</p>
                 </div>
 
-                <div class="bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">
-                    <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto">
+                <div class="bg-slate-50 process-step p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">                    <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
@@ -355,8 +373,7 @@
                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Teknisi memeriksa titik sumbatan menggunakan mesin rotary mekanis secara presisi tanpa merusak keramik.</p>
                 </div>
 
-                <div class="bg-slate-50 p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center mx-auto">
+                <div class="bg-slate-50 process-step p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">                    <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center mx-auto">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                         </svg>
@@ -396,7 +413,7 @@
                 <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-3 py-1 rounded-md border border-sky-200">KECAMATAN SEKITAR</span>
+                            <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-3 py-1 rounded-md border border-sky-200">AREA SEKITAR</span>
                             <span class="text-xs text-slate-500 font-medium">{{ $cityName }}</span>
                         </div>
                         <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">Armada Meluncur</span>

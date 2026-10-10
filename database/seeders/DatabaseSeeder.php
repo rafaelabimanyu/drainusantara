@@ -16,17 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed Admin User for CMS
-        \App\Models\User::updateOrCreate(
-            ['name' => 'Drainusantara@admin'],
-            [
-                'name' => 'Drainusantara@admin',
-                'email' => 'Drainusantara@admin',
-                'password' => \Illuminate\Support\Facades\Hash::make('Drainusantara123'),
-                'email_verified_at' => now(),
-            ]
-        );
-
         // Seed Services
         $servicesData = [
             [

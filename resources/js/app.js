@@ -1,9 +1,37 @@
 import Alpine from 'alpinejs';
 import { registerWebMcpTools } from './webmcp';
+import { registerCarousels } from './carousel';
 
 window.Alpine = Alpine;
 
 Alpine.data('layoutData', () => ({
+    init() {
+        this.$watch('mobileSearchOpen', open => {
+            const dialog = this.$refs.areaSearchDialog;
+            if (open) {
+                this.$nextTick(() => {
+                    if (!this.mobileSearchOpen) return;
+                    dialog.showModal();
+                    dialog.querySelector('button').focus();
+                });
+            } else if (dialog.open) {
+                dialog.close();
+            }
+        });
+    },
+    trapSearchFocus(event) {
+        const dialog = this.$refs.areaSearchDialog;
+        const items = [...dialog.querySelectorAll('a[href], button, input')]
+            .filter(el => !el.disabled && el.getClientRects().length);
+        const first = items[0], last = items.at(-1);
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    },
     activeMenu: null,
     areaSearch: '',
     sidebarOpen: false,
@@ -92,158 +120,7 @@ Alpine.data('layoutData', () => ({
     }
 }));
 
-Alpine.data('mobileCarousel', (totalSlides = 3, intervalMs = 4500) => ({
-    active: 0,
-    total: totalSlides,
-    timer: null,
-    isInteracting: false,
-    _scrollRaf: null,
-    _observer: null,
-    _isProgrammatic: false,
-    _programmaticTimer: null,
-    _resumeTimer: null,
-    getContainer() {
-        return this.$refs.slider || this.$refs.container;
-    },
-    isCarouselMode() {
-        const container = this.getContainer();
-        if (!container) return false;
-        return container.scrollWidth > (container.clientWidth + 5);
-    },
-    init() {
-        if (typeof window === 'undefined') return;
-
-        this.$nextTick(() => {
-            const container = this.getContainer();
-            if (container) {
-                const slides = Array.from(container.children).filter(el => el.nodeType === 1 && !el.classList.contains('hidden'));
-                if (slides.length > 0) {
-                    this.total = slides.length;
-                }
-            }
-        });
-
-        const container = this.getContainer();
-        if ('IntersectionObserver' in window && container) {
-            this._observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && this.isCarouselMode()) {
-                        this.startAutoScroll();
-                    } else {
-                        this.stopAutoScroll();
-                    }
-                });
-            }, { threshold: 0.25 });
-            this._observer.observe(container);
-        } else if (this.isCarouselMode()) {
-            setTimeout(() => this.startAutoScroll(), 2500);
-        }
-    },
-    startAutoScroll() {
-        this.stopAutoScroll();
-        this.timer = setInterval(() => {
-            if (!this.isInteracting && this.isCarouselMode()) {
-                this.next();
-            }
-        }, intervalMs);
-    },
-    stopAutoScroll() {
-        if (this.timer) {
-            clearInterval(this.timer);
-            this.timer = null;
-        }
-    },
-    next() {
-        this.active = (this.active + 1) % this.total;
-        this.scrollToActive();
-    },
-    prev() {
-        this.active = (this.active - 1 + this.total) % this.total;
-        this.scrollToActive();
-    },
-    goTo(index) {
-        this.active = Math.max(0, Math.min(this.total - 1, index));
-        this.pause();
-        this.scrollToActive();
-        this.resume();
-    },
-    scrollToActive() {
-        const container = this.getContainer();
-        if (!container) return;
-        const slides = Array.from(container.children).filter(el => el.nodeType === 1 && !el.classList.contains('hidden'));
-        if (!slides.length || !slides[this.active]) return;
-
-        this._isProgrammatic = true;
-        clearTimeout(this._programmaticTimer);
-        this._programmaticTimer = setTimeout(() => {
-            this._isProgrammatic = false;
-        }, 600);
-
-        let targetLeft;
-        if (this.active === 0) {
-            targetLeft = 0;
-        } else if (this.active === slides.length - 1) {
-            targetLeft = container.scrollWidth - container.clientWidth;
-        } else {
-            const slide = slides[this.active];
-            targetLeft = slide.offsetLeft - container.offsetLeft - (container.clientWidth - slide.clientWidth) / 2;
-        }
-
-        container.scrollTo({
-            left: Math.max(0, targetLeft),
-            behavior: 'smooth'
-        });
-    },
-    onScroll() {
-        if (this._isProgrammatic) return;
-        if (this._scrollRaf) return;
-        this._scrollRaf = requestAnimationFrame(() => {
-            this._scrollRaf = null;
-            const container = this.getContainer();
-            if (!container) return;
-            const slides = Array.from(container.children).filter(el => el.nodeType === 1 && !el.classList.contains('hidden'));
-            if (!slides.length) return;
-
-            const scrollLeft = container.scrollLeft;
-            const maxScroll = container.scrollWidth - container.clientWidth;
-
-            if (scrollLeft <= 15) {
-                if (this.active !== 0) this.active = 0;
-                return;
-            }
-            if (scrollLeft >= maxScroll - 15) {
-                if (this.active !== slides.length - 1) this.active = slides.length - 1;
-                return;
-            }
-
-            const containerCenter = scrollLeft + (container.clientWidth / 2);
-            let closestIndex = 0;
-            let minDiff = Infinity;
-
-            slides.forEach((slide, index) => {
-                const slideCenter = (slide.offsetLeft - container.offsetLeft) + (slide.clientWidth / 2);
-                const diff = Math.abs(containerCenter - slideCenter);
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    closestIndex = index;
-                }
-            });
-
-            if (closestIndex !== this.active && closestIndex < this.total) {
-                this.active = closestIndex;
-            }
-        });
-    },
-    pause() {
-        this.isInteracting = true;
-    },
-    resume() {
-        clearTimeout(this._resumeTimer);
-        this._resumeTimer = setTimeout(() => {
-            this.isInteracting = false;
-        }, 3000);
-    }
-}));
+registerCarousels(Alpine);
 
 registerWebMcpTools();
 

@@ -29,7 +29,7 @@
             </div>
 
             <!-- Upload Gambar Layanan -->
-            <div class="sm:col-span-2" x-data="{ previewUrl: '{{ $service->image }}' }">
+            <div class="sm:col-span-2" x-data="{ previewUrl: {{ Illuminate\Support\Js::from($service->image) }} }">
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Foto / Gambar Layanan</label>
                 <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center p-4 bg-slate-50/75 rounded-lg border border-slate-200">
                     <div class="w-24 h-20 rounded-lg border border-slate-300 bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-2xs">

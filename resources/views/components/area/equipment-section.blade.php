@@ -56,12 +56,11 @@
 
         @if($dbEquipments->isNotEmpty())
         <!-- Responsive Grid on Desktop / Mobile Carousel -->
-        <div x-ref="slider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan armada — geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
-             @mouseenter="pause()"
-             @mouseleave="resume()"
+             @touchcancel="resume()"
              class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-6 pb-4 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
             @foreach($dbEquipments as $index => $equip)
             <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden flex flex-col justify-between card-lift reveal-soft stagger-{{ ($index % 4) + 1 }}">
@@ -121,11 +120,11 @@
             @endforeach
         </div>
 
-        <div class="flex md:hidden justify-center items-center gap-1 mt-4">
+        <div class="flex md:hidden justify-center items-center flex-wrap gap-1 mt-4">
             @for($i = 0; $i < $equipCount; $i++)
-                <button type="button" 
+                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
                         @click="goTo({{ $i }})"
-                        class="min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
                         aria-label="Peralatan {{ $i + 1 }}">
                     <span class="h-2 rounded-full transition-all duration-300 block"
                           :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>

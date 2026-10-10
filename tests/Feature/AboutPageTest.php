@@ -54,7 +54,12 @@ class AboutPageTest extends TestCase
         $resEquip->assertSee('Ridgid K-50 &amp; K-60', false);
         $resEquip->assertSee('IP68 30 Meter');
 
-        // 5. Klien & Portofolio
+        // 5. Klien & Portofolio: project details come from active CMS entries.
+        \App\Models\Portfolio::create([
+            'client_name' => 'Klien Pengujian',
+            'project_title' => 'Perawatan Grease Trap',
+            'is_active' => true,
+        ]);
         $resPortfolio = $this->get('/tentang-kami/portofolio');
         $resPortfolio->assertStatus(200);
         $resPortfolio->assertSee('Dipercaya Restoran F&amp;B, Perhotelan &amp; Gedung Komersial', false);

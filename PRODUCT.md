@@ -36,7 +36,7 @@ Berbeda dari tukang ledeng konvensional yang mengandalkan pembongkaran lantai ke
 
 ## Capabilities and Constraints
 
-- **Teknologi & Framework:** Laravel 11, Blade Templates, Tailwind CSS, Alpine.js, SQLite/MySQL.
+- **Teknologi & Framework:** Laravel 13 (`laravel/framework: ^13.17`; versi terpasang mengikuti `composer.lock`), Blade Templates, Tailwind CSS, Alpine.js, SQLite/MySQL.
 - **Frontend Assets:** Bundling lokal via Vite (`@vite(['resources/css/app.css', 'resources/js/app.js'])`), dilarang menggunakan CDN eksternal di production view.
 - **Performance & SEO:** Memenuhi skor tinggi Core Web Vitals, dynamic JSON-LD Schema `LocalBusiness` & `PlumbingService`, `{!! SEO::generate() !!}` di `<head>`.
 - **Integrasi WhatsApp:** Parameter generator dinamis `https://wa.me/{nomor}?text={encoded_text}` pada setiap CTA.

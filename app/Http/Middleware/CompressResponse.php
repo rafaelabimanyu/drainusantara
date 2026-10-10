@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\AcceptHeader;
 use Symfony\Component\HttpFoundation\Response;
 
 class CompressResponse
@@ -17,11 +18,7 @@ class CompressResponse
     {
         $response = $next($request);
 
-        // Only compress if zlib is available, client accepts gzip, and response is standard Response
-        if (!extension_loaded('zlib') || 
-            !$request->headers->has('Accept-Encoding') || 
-            !str_contains((string) $request->header('Accept-Encoding'), 'gzip') ||
-            !($response instanceof \Illuminate\Http\Response)) {
+        if (!extension_loaded('zlib') || !($response instanceof \Illuminate\Http\Response)) {
             return $response;
         }
 
@@ -59,11 +56,18 @@ class CompressResponse
             return $response;
         }
 
+        $response->setVary('Accept-Encoding', false);
+        $encodings = AcceptHeader::fromString(strtolower((string) $request->header('Accept-Encoding')));
+        $gzipQuality = $encodings->get('gzip')?->getQuality() ?? 0;
+        $identityQuality = $encodings->has('identity') ? $encodings->get('identity')->getQuality() : 0;
+        if ($gzipQuality <= 0 || $identityQuality > $gzipQuality) {
+            return $response;
+        }
+
         $compressed = gzencode($content, 5);
         if ($compressed !== false && strlen($compressed) < strlen($content)) {
             $response->setContent($compressed);
             $response->headers->set('Content-Encoding', 'gzip');
-            $response->headers->set('Vary', 'Accept-Encoding', false);
             $response->headers->set('Content-Length', (string) strlen($compressed));
         }
 

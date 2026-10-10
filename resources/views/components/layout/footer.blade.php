@@ -5,15 +5,9 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 mb-10 pb-10 border-b border-slate-800/80">
             <!-- Kolom 1: Profil & Workshop Pusat -->
             <div class="space-y-3.5">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-white border border-slate-700 flex items-center justify-center p-1 overflow-hidden shadow-xs" aria-hidden="true">
-                        <img src="{{ asset('images/logo/WebIcon.webp') }}" alt="Drainusantara" class="w-full h-full object-contain" width="36" height="36">
-                    </div>
-                    <div>
-                        <span class="text-base font-extrabold tracking-tight text-white block">DRAINUSANTARA</span>
-                        <span class="text-[10px] text-sky-400 font-semibold block tracking-wider uppercase">Plumbing &amp; Rooter Engineering</span>
-                    </div>
-                </div>
+                <a href="{{ url('/') }}" class="inline-block max-w-full rounded-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400">
+                    <img src="{{ asset('images/logo/LOGOFULL.webp') }}" alt="Drainusantara" class="block h-auto w-52 max-w-full object-contain" width="687" height="363" loading="lazy" decoding="async">
+                </a>
                 <p class="text-xs text-slate-400 leading-relaxed">
                     Spesialis pelancaran saluran pipa mampet mekanis profesional 100% tanpa bongkar keramik dan bebas bahan kimia korosif soda api.
                 </p>
@@ -60,10 +54,11 @@
                     Saluran air meluap darurat atau butuh survei grease trap gedung? Penugasan teknisi terdekat langsung dari posko siaga untuk respon cepat.
                 </p>
                 <div class="space-y-2.5">
-                    <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.')" 
+                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ rawurlencode('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.') }}"
+                       :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.')"
                        target="_blank" 
                        rel="noopener noreferrer" 
-                       class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl border border-emerald-800 shadow-xs transition-colors btn-press">
+                       class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2.5 rounded-lg border border-emerald-800 shadow-xs transition-colors btn-press">
                         <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                         </svg>
@@ -77,7 +72,7 @@
         </div>
 
         <!-- Peta Workshop & Pusat Informasi Posko Siaga Terpadu -->
-        <div class="mb-10 p-5 sm:p-6 rounded-xl bg-slate-800/80 border border-slate-700/80 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div class="mb-10 p-5 sm:p-6 rounded-lg bg-slate-800/80 border border-slate-700/80 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             <!-- Map Embed Preview (4 Kolom) -->
             <div class="lg:col-span-4 flex flex-col justify-between">
                 <div>
@@ -87,7 +82,7 @@
                         </span>
                         <span class="text-[11px] font-semibold text-slate-400">Jakarta Timur</span>
                     </div>
-                    <div class="rounded-xl overflow-hidden border border-slate-700 aspect-16/10 bg-slate-950 relative shadow-inner">
+                    <div class="rounded-lg overflow-hidden border border-slate-700 aspect-16/10 bg-slate-950 relative shadow-inner">
                         <iframe 
                             title="Peta Lokasi Workshop Pusat Drainusantara"
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126920.28318721204!2d106.82056!3d-6.2297464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e46c757c23%3A0xa6436e2f694dc50!2sJakarta%20Timur%2C%20Kota%20Jakarta%20Timur%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
@@ -124,7 +119,7 @@
                 <!-- 3 Structured Operational Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- Card 1: Jaringan Posko Terdekat -->
-                    <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-700/70 flex flex-col justify-between">
+                    <div class="p-3.5 rounded-lg bg-slate-900/70 border border-slate-700/70 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center gap-2 text-sky-400 font-bold text-xs mb-2">
                                 <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -146,7 +141,7 @@
                     </div>
 
                     <!-- Card 2: Alat Kerja Standar Industri -->
-                    <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-700/70 flex flex-col justify-between">
+                    <div class="p-3.5 rounded-lg bg-slate-900/70 border border-slate-700/70 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center gap-2 text-sky-400 font-bold text-xs mb-2">
                                 <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -168,7 +163,7 @@
                     </div>
 
                     <!-- Card 3: Garansi & Transparansi Biaya -->
-                    <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-700/70 flex flex-col justify-between">
+                    <div class="p-3.5 rounded-lg bg-slate-900/70 border border-slate-700/70 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs mb-2">
                                 <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -190,14 +185,15 @@
                 </div>
 
                 <!-- Bottom Action Bar: Respon Cepat -->
-                <div class="p-3.5 bg-slate-900/90 rounded-xl border border-slate-700/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <div class="p-3.5 bg-slate-900/90 rounded-lg border border-slate-700/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                     <div class="flex items-center gap-2.5 text-slate-300">
                         <svg class="w-5 h-5 text-sky-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         <span>Saluran pipa meluap mendesak atau butuh survei grease trap gedung? Teknisi kami siap meluncur dari posko terdekat.</span>
                     </div>
-                    <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info kedatangan teknisi ke alamat saya.')" 
+                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ rawurlencode('Halo Admin Drainusantara, saya membutuhkan info kedatangan teknisi ke alamat saya.') }}"
+                       :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info kedatangan teknisi ke alamat saya.')"
                        target="_blank" 
                        rel="noopener noreferrer" 
                        class="shrink-0 inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg transition-colors shadow-2xs btn-press">

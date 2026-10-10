@@ -35,57 +35,14 @@
 
         @if($mainMachines->isNotEmpty())
         <!-- Main Machine Cards (Mobile Carousel, Tablet/Desktop Grid) -->
-        <div x-data="{
-                 active: 0,
-                 total: {{ $mainMachines->count() }},
-                 timer: null,
-                 init() {
-                     if (typeof window === 'undefined') return;
-                     if (window.innerWidth < 768) this.startAuto();
-                 },
-                 startAuto() {
-                     if (this.total <= 1 || window.innerWidth >= 768) return;
-                     this.pause();
-                     this.timer = setInterval(() => { this.next(); }, 4000);
-                 },
-                 pause() {
-                     if (this.timer) {
-                         clearInterval(this.timer);
-                         this.timer = null;
-                     }
-                 },
-                 resume() {
-                     if (window.innerWidth >= 768) return;
-                     this.startAuto();
-                 },
-                 next() {
-                     this.goTo((this.active + 1) % this.total);
-                 },
-                 goTo(idx) {
-                     this.active = idx;
-                     const slider = this.$refs.equipmentSlider;
-                     if (slider && slider.children[idx]) {
-                         slider.scrollTo({
-                             left: slider.children[idx].offsetLeft - slider.offsetLeft,
-                             behavior: 'smooth'
-                         });
-                     }
-                 },
-                 onScroll() {
-                     const slider = this.$refs.equipmentSlider;
-                     if (!slider || !slider.firstElementChild) return;
-                     const cardWidth = slider.firstElementChild.offsetWidth + 20;
-                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                 }
-             }" 
+        <div x-data="mobileCarousel({{ $mainMachines->count() }}, 4000)"
              class="mb-14">
             
-            <div x-ref="equipmentSlider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan kerja — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0">
                 @foreach($mainMachines as $machine)
                 <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
@@ -155,69 +112,26 @@
             @if($mainMachines->count() > 1)
             <div class="flex items-center justify-center gap-2 mt-4 md:hidden">
                 <template x-for="i in total" :key="i">
-                    <button type="button"
+                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
                             @click="goTo(i - 1)"
-                            class="h-2 rounded-full transition-all duration-300"
-                            :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                            class="carousel-dot"
+
                             :aria-label="'Peralatan ' + i">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
                 </template>
             </div>
             @endif
         </div>
         @else
         <!-- Fallback Default 3 Main Machine Cards (Mobile Carousel, Tablet/Desktop Grid) -->
-        <div x-data="{
-                 active: 0,
-                 total: 3,
-                 timer: null,
-                 init() {
-                     if (typeof window === 'undefined') return;
-                     if (window.innerWidth < 768) this.startAuto();
-                 },
-                 startAuto() {
-                     if (window.innerWidth >= 768) return;
-                     this.pause();
-                     this.timer = setInterval(() => { this.next(); }, 4000);
-                 },
-                 pause() {
-                     if (this.timer) {
-                         clearInterval(this.timer);
-                         this.timer = null;
-                     }
-                 },
-                 resume() {
-                     if (window.innerWidth >= 768) return;
-                     this.startAuto();
-                 },
-                 next() {
-                     this.goTo((this.active + 1) % this.total);
-                 },
-                 goTo(idx) {
-                     this.active = idx;
-                     const slider = this.$refs.equipmentFallbackSlider;
-                     if (slider && slider.children[idx]) {
-                         slider.scrollTo({
-                             left: slider.children[idx].offsetLeft - slider.offsetLeft,
-                             behavior: 'smooth'
-                         });
-                     }
-                 },
-                 onScroll() {
-                     const slider = this.$refs.equipmentFallbackSlider;
-                     if (!slider || !slider.firstElementChild) return;
-                     const cardWidth = slider.firstElementChild.offsetWidth + 20;
-                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                 }
-             }" 
+        <div x-data="mobileCarousel(3, 4000)"
              class="mb-14">
             
-            <div x-ref="equipmentFallbackSlider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan kerja — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0">
                 
                 <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-1">
@@ -387,12 +301,12 @@
             <!-- Mobile Carousel Indicators -->
             <div class="flex items-center justify-center gap-2 mt-4 md:hidden">
                 <template x-for="i in total" :key="i">
-                    <button type="button"
+                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
                             @click="goTo(i - 1)"
-                            class="h-2 rounded-full transition-all duration-300"
-                            :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                            class="carousel-dot"
+
                             :aria-label="'Peralatan ' + i">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
                 </template>
             </div>
         </div>

@@ -105,8 +105,38 @@
     $countB2b = $displayGalleries->where('category', 'b2b')->count();
 @endphp
 
-<div class="pb-24 md:pb-0">
-    <section class="relative bg-slate-50 border-b border-slate-200 pt-6 pb-12 sm:pt-10 sm:pb-16 lg:pt-14 lg:pb-20 overflow-hidden">
+@push('styles')
+<style>
+    .area-directory-page .area-hero {
+        background: #f8fafc;
+        border-bottom-color: #cbd5e1;
+    }
+    .area-directory-page .area-hero h1 { max-width: 14ch; letter-spacing: -0.045em; }
+    .area-directory-page .area-hero p { max-width: 58ch; }
+    .area-directory-page .area-hero .hero-proof {
+        border-left: 3px solid #0369a1;
+        padding-left: 1rem;
+    }
+    .area-directory-page .service-card,
+    .area-directory-page .city-card {
+        border-radius: 0.5rem;
+        box-shadow: none;
+    }
+    .area-directory-page .service-card:hover,
+    .area-directory-page .city-card:hover {
+        border-color: #0369a1;
+        box-shadow: 0 8px 24px rgb(15 23 42 / 0.08);
+    }
+    .area-directory-page .directory-heading { max-width: 44rem; }
+    @media (max-width: 639px) {
+        .area-directory-page .area-hero h1 { max-width: 15ch; }
+        .area-directory-page .area-hero .hero-proof { padding-left: 0.75rem; }
+    }
+</style>
+@endpush
+
+<div class="area-directory-page pb-24 md:pb-0">
+    <section class="relative area-hero bg-slate-50 border-b border-slate-200 pt-6 pb-12 sm:pt-10 sm:pb-16 lg:pt-14 lg:pb-20 overflow-hidden">
         @if(!empty($heroBgImage))
             <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
                 <img src="{{ $heroBgImage }}" 
@@ -188,7 +218,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 reveal-soft delay-200">
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 hero-proof reveal-soft delay-200">
                         <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" 
                            class="min-h-12 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm sm:text-base px-6 py-3 rounded-lg shadow-xs hover:shadow transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 btn-press">
                             <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
@@ -199,7 +229,7 @@
                         
                         <a href="#wilayah-layanan" 
                            class="min-h-12 inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm px-5 py-3 rounded-lg border border-slate-300 shadow-2xs transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 btn-press">
-                            <span>Pilih Kota &amp; Kecamatan ({{ count($provinceData['cities']) }})</span>
+                            <span>Pilih Kota &amp; Area ({{ count($provinceData['cities']) }})</span>
                             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
@@ -252,12 +282,11 @@
                 </div>
             </div>
 
-            <div x-ref="slider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan provinsi — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
                 @foreach($itemsLayanan as $catalog)
                     @php
@@ -265,7 +294,7 @@
                         $title = $isModel ? $catalog->name : $catalog['title'];
                         $slug = $isModel ? $catalog->slug : \Illuminate\Support\Str::slug($catalog['title']);
                         $desc = $isModel ? ($catalog->short_description ?: ($catalog->description ?: 'Pelancaran saluran mampet tanpa bongkar keramik.')) : $catalog['desc'];
-                        $price = $isModel ? ($catalog->price_starting_from ?: 400000) : $catalog['price'];
+                        $price = $isModel ? $catalog->price_starting_from : $catalog['price'];
                         $features = $isModel ? ($catalog->features ?: []) : ($catalog['specs'] ?? []);
 
                         $category = 'Layanan Spesialis';
@@ -287,29 +316,18 @@
                         }
 
                         $rawImage = $isModel ? $catalog->image : ($catalog['image'] ?? null);
-                        $imageSrc = $rawImage;
-                        if (empty($imageSrc) || str_contains($imageSrc, 'placehold.co') || str_contains($imageSrc, 'unsplash.com')) {
-                            if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
-                                $imageSrc = asset('images/services/wastafel-cuci-piring-mampet.webp');
-                            } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
-                                $imageSrc = asset('images/services/kloset-wc-mampet.webp');
-                            } elseif (str_contains($lowerName, 'floor drain') || str_contains($lowerName, 'kamar mandi')) {
-                                $imageSrc = asset('images/services/floor-drain-kamar-mandi.webp');
-                            } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera')) {
-                                $imageSrc = asset('images/services/inspeksi-kamera-cctv-pipa.webp');
-                            } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'lemak') || str_contains($lowerName, 'resto')) {
-                                $imageSrc = asset('images/services/kuras-grease-trap-lemak.webp');
-                            } elseif (str_contains($lowerName, 'talang') || str_contains($lowerName, 'atap')) {
-                                $imageSrc = asset('images/services/talang-rooftop-pipa-atap.webp');
-                            } else {
-                                $imageSrc = asset('images/services/wastafel-cuci-piring-mampet.webp');
-                            }
+                        $fallbackImage = asset('assets/placeholders/service.svg');
+                        if (empty($rawImage) || str_contains($rawImage, 'placehold.co') || str_contains($rawImage, 'unsplash.com')) {
+                            $imageSrc = $fallbackImage;
+                        } else {
+                            $imageSrc = str_starts_with($rawImage, 'http://') || str_starts_with($rawImage, 'https://')
+                                ? $rawImage : asset(ltrim($rawImage, '/'));
                         }
 
                         $waMessage = "Halo Drainusantara, saya butuh penanganan untuk {$title} di Provinsi {$provinceData['name']}. Mohon info estimasi biaya dan kedatangan teknisi.";
                         $itemWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($waMessage);
                     @endphp
-                    <div class="w-[84vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-sky-300 hover:shadow-xs transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
+                    <div class="w-[84vw] sm:w-[320px] md:w-auto shrink-0 snap-center service-card bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-sky-300 hover:shadow-xs transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                         <div>
                             <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-4 border border-slate-100">
                                 <img src="{{ $imageSrc }}" 
@@ -319,7 +337,7 @@
                                      loading="lazy" 
                                      decoding="async"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
-                                     onerror="this.onerror=null; this.src='{{ asset('images/services/wastafel-cuci-piring-mampet.webp') }}';">
+                                     onerror="this.onerror=null; this.src='{{ $fallbackImage }}';">
                             </div>
 
                             <h3 class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-sky-700 transition-colors mb-2">
@@ -345,7 +363,7 @@
                         <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3 mt-2">
                             <div>
                                 <span class="text-[10px] text-slate-500 font-medium block">Biaya Mulai Dari</span>
-                                <span class="text-sm font-extrabold text-slate-900">Rp {{ number_format($price, 0, ',', '.') }}</span>
+                                <span class="text-sm font-extrabold text-slate-900">{{ $price > 0 ? 'Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}</span>
                             </div>
                             <a href="{{ $itemWaUrl }}" 
                                target="_blank" 
@@ -361,14 +379,14 @@
                 @endforeach
             </div>
 
-            <div class="flex md:hidden justify-center items-center gap-1.5 mt-4">
+            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-4">
                 @for($i = 0; $i < count($itemsLayanan); $i++)
-                    <button type="button" 
+                    <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
                             @click="goTo({{ $i }})"
-                            class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75"
-                            :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                            class="carousel-dot"
+
                             aria-label="Layanan {{ $i + 1 }}">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
                 @endfor
             </div>
         </div>
@@ -531,13 +549,13 @@
                     Pilih Kota atau Kabupaten Anda di {{ $provinceData['name'] }}
                 </h2>
                 <p class="text-slate-600 text-sm sm:text-base mt-2 leading-relaxed">
-                    Pilih kota untuk melihat posko spesifik, atau klik langsung nama kecamatan Anda di bawahnya untuk respon cepat teknisi terdekat.
+                    Pilih kota untuk melihat posko spesifik, atau klik langsung nama area Anda di bawahnya untuk respon cepat teknisi terdekat.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 @foreach($provinceData['cities'] as $citySlug => $city)
-                    <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-7 hover:border-sky-300 transition-all flex flex-col justify-between shadow-2xs card-lift reveal-soft stagger-{{ ($loop->iteration % 2) + 1 }}">
+                    <div class="bg-white city-card rounded-lg border border-slate-200 p-6 sm:p-7 hover:border-sky-300 flex flex-col justify-between shadow-2xs card-lift reveal-soft stagger-{{ ($loop->iteration % 2) + 1 }}">
                         <div>
                             <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-5 border-b border-slate-100">
                                 <div>
@@ -571,7 +589,7 @@
 
                             <div class="mt-5">
                                 <span class="text-xs text-slate-500 uppercase font-bold tracking-wider block mb-3">
-                                    PILIH KECAMATAN DI {{ strtoupper($city['name']) }}:
+                                    PILIH AREA DI {{ strtoupper($city['name']) }}:
                                 </span>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
                                     @foreach($city['districts'] as $district)
@@ -615,7 +633,7 @@
                 </a>
                 <a href="#wilayah-layanan" 
                    class="min-h-11 inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-sm px-6 py-3.5 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
-                    <span>Lihat Daftar Kota &amp; Kecamatan</span>
+                    <span>Lihat Daftar Kota &amp; Area</span>
                 </a>
             </div>
             

@@ -39,57 +39,14 @@
                 </div>
 
                 <!-- 3 Pilar Integritas Teknis (Mobile Carousel, Tablet/Desktop Grid) -->
-                <div x-data="{
-                         active: 0,
-                         total: 3,
-                         timer: null,
-                         init() {
-                             if (typeof window === 'undefined') return;
-                             if (window.innerWidth < 640) this.startAuto();
-                         },
-                         startAuto() {
-                             if (window.innerWidth >= 640) return;
-                             this.pause();
-                             this.timer = setInterval(() => { this.next(); }, 4000);
-                         },
-                         pause() {
-                             if (this.timer) {
-                                 clearInterval(this.timer);
-                                 this.timer = null;
-                             }
-                         },
-                         resume() {
-                             if (window.innerWidth >= 640) return;
-                             this.startAuto();
-                         },
-                         next() {
-                             this.goTo((this.active + 1) % this.total);
-                         },
-                         goTo(idx) {
-                             this.active = idx;
-                             const slider = this.$refs.pilarSlider;
-                             if (slider && slider.children[idx]) {
-                                 slider.scrollTo({
-                                     left: slider.children[idx].offsetLeft - slider.offsetLeft,
-                                     behavior: 'smooth'
-                                 });
-                             }
-                         },
-                         onScroll() {
-                             const slider = this.$refs.pilarSlider;
-                             if (!slider || !slider.firstElementChild) return;
-                             const cardWidth = slider.firstElementChild.offsetWidth + 16;
-                             this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                         }
-                     }" 
+                <div x-data="mobileCarousel(3, 4000)"
                      class="mt-8">
                     
-                    <div x-ref="pilarSlider"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Pilar perusahaan — geser untuk melihat lainnya"
                          @scroll.passive="onScroll()"
                          @touchstart="pause()"
                          @touchend="resume()"
-                         @mouseenter="pause()"
-                         @mouseleave="resume()"
+             @touchcancel="resume()"
                          class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-3 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0">
                         
                         <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-1">
@@ -126,12 +83,12 @@
                     <!-- Mobile Carousel Indicators -->
                     <div class="flex items-center justify-center gap-2 mt-4 sm:hidden">
                         <template x-for="i in total" :key="i">
-                            <button type="button"
+                            <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
                                     @click="goTo(i - 1)"
-                                    class="h-2 rounded-full transition-all duration-300"
-                                    :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                                    class="carousel-dot"
+
                                     :aria-label="'Pilar ' + i">
-                            </button>
+                            <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
                         </template>
                     </div>
                 </div>
@@ -218,55 +175,12 @@
         </div>
 
         <!-- 4 Standar Mutu Pelayanan (Mobile Carousel, Tablet/Desktop Grid) -->
-        <div x-data="{
-                 active: 0,
-                 total: 4,
-                 timer: null,
-                 init() {
-                     if (typeof window === 'undefined') return;
-                     if (window.innerWidth < 768) this.startAuto();
-                 },
-                 startAuto() {
-                     if (window.innerWidth >= 768) return;
-                     this.pause();
-                     this.timer = setInterval(() => { this.next(); }, 4000);
-                 },
-                 pause() {
-                     if (this.timer) {
-                         clearInterval(this.timer);
-                         this.timer = null;
-                     }
-                 },
-                 resume() {
-                     if (window.innerWidth >= 768) return;
-                     this.startAuto();
-                 },
-                 next() {
-                     this.goTo((this.active + 1) % this.total);
-                 },
-                 goTo(idx) {
-                     this.active = idx;
-                     const slider = this.$refs.standarPelayananSlider;
-                     if (slider && slider.children[idx]) {
-                         slider.scrollTo({
-                             left: slider.children[idx].offsetLeft - slider.offsetLeft,
-                             behavior: 'smooth'
-                         });
-                     }
-                 },
-                 onScroll() {
-                     const slider = this.$refs.standarPelayananSlider;
-                     if (!slider || !slider.firstElementChild) return;
-                     const cardWidth = slider.firstElementChild.offsetWidth + 24;
-                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                 }
-             }">
-            <div x-ref="standarPelayananSlider"
+        <div x-data="mobileCarousel(4, 4000)">
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Standar pelayanan — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-6 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0">
                 
                 <!-- Standar 01 -->
@@ -347,12 +261,12 @@
             <!-- Mobile Carousel Indicators -->
             <div class="flex items-center justify-center gap-2 mt-4 md:hidden">
                 <template x-for="i in total" :key="i">
-                    <button type="button"
+                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
                             @click="goTo(i - 1)"
-                            class="h-2 rounded-full transition-all duration-300"
-                            :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
+                            class="carousel-dot"
+
                             :aria-label="'Standar ' + i">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
                 </template>
             </div>
         </div>
@@ -420,55 +334,12 @@
         @endphp
 
         <!-- Staff Cards Grid & Mobile Carousel -->
-        <div x-data="{
-                 active: 0,
-                 total: {{ count($staffMembers) }},
-                 timer: null,
-                 init() {
-                     if (typeof window === 'undefined') return;
-                     if (window.innerWidth < 640) this.startAuto();
-                 },
-                 startAuto() {
-                     if (window.innerWidth >= 640) return;
-                     this.pause();
-                     this.timer = setInterval(() => { this.next(); }, 4000);
-                 },
-                 pause() {
-                     if (this.timer) {
-                         clearInterval(this.timer);
-                         this.timer = null;
-                     }
-                 },
-                 resume() {
-                     if (window.innerWidth >= 640) return;
-                     this.startAuto();
-                 },
-                 next() {
-                     this.goTo((this.active + 1) % this.total);
-                 },
-                 goTo(idx) {
-                     this.active = idx;
-                     const slider = this.$refs.staffSlider;
-                     if (slider && slider.children[idx]) {
-                         slider.scrollTo({
-                             left: slider.children[idx].offsetLeft - slider.offsetLeft,
-                             behavior: 'smooth'
-                         });
-                     }
-                 },
-                 onScroll() {
-                     const slider = this.$refs.staffSlider;
-                     if (!slider || !slider.firstElementChild) return;
-                     const cardWidth = slider.firstElementChild.offsetWidth + 16;
-                     this.active = Math.min(this.total - 1, Math.max(0, Math.round(slider.scrollLeft / cardWidth)));
-                 }
-             }">
-            <div x-ref="staffSlider"
+        <div x-data="mobileCarousel({{ count($staffMembers) }}, 4000)">
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Staf dan teknisi — geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
-                 @mouseenter="pause()"
-                 @mouseleave="resume()"
+             @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 lg:grid-cols-6 sm:overflow-visible sm:pb-0">
                 @foreach($staffMembers as $member)
                     @php
@@ -507,14 +378,14 @@
             </div>
 
             <!-- Mobile Carousel Dots Indicator -->
-            <div class="flex items-center justify-center gap-1.5 mt-5 sm:hidden">
+            <div class="flex flex-wrap items-center justify-center gap-1.5 mt-5 sm:hidden">
                 @foreach($staffMembers as $idx => $m)
-                    <button type="button" 
+                    <button :aria-current="active === {{ $idx }} ? 'true' : 'false'" type="button"
                             @click="goTo({{ $idx }})"
-                            class="h-2 rounded-full transition-all duration-300 cursor-pointer"
-                            :class="active === {{ $idx }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"
+                            class="carousel-dot"
+
                             aria-label="Staff {{ $idx + 1 }}">
-                    </button>
+                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 cursor-pointer" :class="active === {{ $idx }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
                 @endforeach
             </div>
         </div>

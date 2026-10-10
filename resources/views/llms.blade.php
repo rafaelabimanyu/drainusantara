@@ -21,7 +21,7 @@ Workshop pusat: Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440.
 ## Informasi Utama
 
 - [Beranda]({{ route('home') }}): ringkasan layanan, alur kerja, dan harga
-- [Wilayah Layanan]({{ route('area.index') }}): daftar provinsi, kota, dan kecamatan yang dilayani
+- [Wilayah Layanan]({{ route('area.index') }}): daftar provinsi, kota, dan area layanan
 - [Galeri Before & After]({{ route('gallery') }}): dokumentasi pengerjaan lapangan
 - [Artikel & Edukasi]({{ route('articles.index') }}): panduan perawatan saluran pipa
 

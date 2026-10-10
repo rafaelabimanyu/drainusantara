@@ -70,12 +70,12 @@ Route::get('/admin/login', fn () => redirect()->route('login'));
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-    Route::resource('services', ServiceController::class);
-    Route::resource('coverage-areas', CoverageAreaController::class);
-    Route::resource('galleries', GalleryController::class);
-    Route::resource('portfolios', PortfolioController::class);
-    Route::resource('staff', StaffController::class);
-    Route::resource('equipments', EquipmentController::class);
-    Route::resource('articles', ArticleController::class);
-    Route::resource('reviews', ReviewController::class);
+    Route::resource('services', ServiceController::class)->except('show');
+    Route::resource('coverage-areas', CoverageAreaController::class)->except('show');
+    Route::resource('galleries', GalleryController::class)->except('show');
+    Route::resource('portfolios', PortfolioController::class)->except('show');
+    Route::resource('staff', StaffController::class)->except('show');
+    Route::resource('equipments', EquipmentController::class)->except('show');
+    Route::resource('articles', ArticleController::class)->except('show');
+    Route::resource('reviews', ReviewController::class)->except('show');
 });

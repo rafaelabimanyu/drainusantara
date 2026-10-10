@@ -20,8 +20,8 @@ class StoreArticleRequest extends FormRequest
             'category' => ['nullable', 'string', 'max:100'],
             'thumbnail' => $this->hasFile('thumbnail')
                 ? ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120']
-                : ['nullable'],
-            'thumbnail_url' => ['nullable', 'string', 'max:500'],
+                : ['nullable', 'string', 'max:255'],
+            'thumbnail_url' => ['nullable', 'string', 'max:255'],
             'excerpt' => ['nullable', 'string', 'max:500'],
             'content' => ['required', 'string'],
             'meta_title' => ['nullable', 'string', 'max:255'],
