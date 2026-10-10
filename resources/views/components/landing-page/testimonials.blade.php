@@ -3,31 +3,12 @@
 ])
 
 @php
-    $displayStories = collect([
-        (object)[
-            'comment' => 'Awalnya panik wastafel dapur meluap pas lagi siap-siap masak. Takut banget kalau harus bobok keramik kitchen set. Mas teknisi datang cepat bawa mesin spiral, sekitar 35 menit leher angsa bersih, air langsung lancar dan dapur ditinggal dalam kondisi rapi.',
-            'customer_name' => 'Ibu Ratna Dewi',
-            'customer_role_or_location' => 'Duren Sawit, Jakarta Timur',
-            'initial' => 'R',
-            'rating' => 5,
-        ],
-        (object)[
-            'comment' => 'Kloset duduk lantai atas mampet airnya meluap hampir ke kamar. Sempat mikir bakal dicopot klosetnya, ternyata dikerjakan lewat pipa pakai spiral khusus tanpa dibongkar sama sekali. Masalah beres, langsung dikasih nota garansi tertulis 30 hari.',
-            'customer_name' => 'Bpk. Hendra Wijaya',
-            'customer_role_or_location' => 'BSD City, Tangerang Selatan',
-            'initial' => 'H',
-            'rating' => 5,
-        ],
-        (object)[
-            'comment' => 'Saluran grease trap resto kami di Kelapa Gading mampet oleh lemak jenuh pas jam sibuk. Drainusantara datang malam hari, kerak lemaknya dibersihkan tuntas sampai ke bak kontrol tanpa bau mengganggu pelanggan besok paginya.',
-            'customer_name' => 'Chef Adrian',
-            'customer_role_or_location' => 'Resto F&B Kelapa Gading, Jakarta Utara',
-            'initial' => 'A',
-            'rating' => 5,
-        ],
-    ]);
+    $displayStories = collect($reviews ?? [])
+        ->filter(fn ($review) => filled($review->comment) && filled($review->customer_name))
+        ->values();
 @endphp
 
+@if($displayStories->isNotEmpty())
 <section id="pengalaman" class="py-16 lg:py-24 bg-white border-b border-slate-200" x-data="mobileCarousel({{ count($displayStories) }}, 4500)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -68,7 +49,7 @@
 
                     <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-3">
                         <div class="w-9 h-9 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                            {{ $story->initial }}
+                            {{ mb_strtoupper(mb_substr($story->customer_name, 0, 1)) }}
                         </div>
                         <div>
                             <div class="font-bold text-slate-900 text-sm leading-snug">{{ $story->customer_name }}</div>
@@ -93,3 +74,4 @@
 
     </div>
 </section>
+@endif

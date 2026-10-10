@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\StoreArticleRequest;
+use App\Http\Requests\Admin\UpdateArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,19 +36,9 @@ class ArticleController extends Controller
     /**
      * Store a newly created article in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreArticleRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'category' => ['nullable', 'string', 'max:100'],
-            'thumbnail' => ['nullable'],
-            'thumbnail_url' => ['nullable', 'string', 'max:500'],
-            'excerpt' => ['nullable', 'string', 'max:500'],
-            'content' => ['required', 'string'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string', 'max:500'],
-            'is_published' => ['nullable', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $slug = Str::slug($validated['title']);
         $baseSlug = $slug;
@@ -61,7 +55,6 @@ class ArticleController extends Controller
 
         $thumbnailUrl = $validated['thumbnail_url'] ?? null;
         if ($request->hasFile('thumbnail')) {
-            $request->validate(['thumbnail' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120']]);
             $thumbnailUrl = Storage::url($request->file('thumbnail')->store('articles', 'public'));
         } elseif (is_string($request->input('thumbnail')) && !empty($request->input('thumbnail'))) {
             $thumbnailUrl = $request->input('thumbnail');
@@ -97,25 +90,14 @@ class ArticleController extends Controller
     /**
      * Update the specified article in storage.
      */
-    public function update(Request $request, Article $article): RedirectResponse
+    public function update(UpdateArticleRequest $request, Article $article): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'category' => ['nullable', 'string', 'max:100'],
-            'thumbnail' => ['nullable'],
-            'thumbnail_url' => ['nullable', 'string', 'max:500'],
-            'excerpt' => ['nullable', 'string', 'max:500'],
-            'content' => ['required', 'string'],
-            'meta_title' => ['nullable', 'string', 'max:255'],
-            'meta_description' => ['nullable', 'string', 'max:500'],
-            'is_published' => ['nullable', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $isPublished = $request->boolean('is_published', true);
 
         $thumbnailUrl = $article->thumbnail;
         if ($request->hasFile('thumbnail')) {
-            $request->validate(['thumbnail' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120']]);
             $thumbnailUrl = Storage::url($request->file('thumbnail')->store('articles', 'public'));
         } elseif (!empty($validated['thumbnail_url'])) {
             $thumbnailUrl = $validated['thumbnail_url'];

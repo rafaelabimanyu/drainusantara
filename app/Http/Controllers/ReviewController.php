@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\StoreReviewRequest;
+use App\Http\Requests\Admin\UpdateReviewRequest;
 use App\Models\Review;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
@@ -44,22 +48,12 @@ class ReviewController extends Controller
     /**
      * Store a newly created review in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreReviewRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'customer_name' => ['required', 'string', 'max:255'],
-            'customer_role_or_location' => ['nullable', 'string', 'max:255'],
-            'rating' => ['required', 'integer', 'min:1', 'max:5'],
-            'comment' => ['required', 'string', 'max:1000'],
-            'service_id' => ['nullable', 'exists:services,id'],
-            'is_active' => ['nullable', 'boolean'],
-            'avatar' => ['nullable'],
-            'avatar_url' => ['nullable', 'string', 'max:500'],
-        ]);
+        $validated = $request->validated();
 
         $avatarUrl = $validated['avatar_url'] ?? null;
         if ($request->hasFile('avatar')) {
-            $request->validate(['avatar' => ['image', 'mimes:jpeg,png,jpg,webp', 'max:5120']]);
             $path = $request->file('avatar')->store('reviews', 'public');
             $avatarUrl = Storage::url($path);
         }
@@ -91,22 +85,12 @@ class ReviewController extends Controller
     /**
      * Update the specified review in storage.
      */
-    public function update(Request $request, Review $review): RedirectResponse
+    public function update(UpdateReviewRequest $request, Review $review): RedirectResponse
     {
-        $validated = $request->validate([
-            'customer_name' => ['required', 'string', 'max:255'],
-            'customer_role_or_location' => ['nullable', 'string', 'max:255'],
-            'rating' => ['required', 'integer', 'min:1', 'max:5'],
-            'comment' => ['required', 'string', 'max:1000'],
-            'service_id' => ['nullable', 'exists:services,id'],
-            'is_active' => ['nullable', 'boolean'],
-            'avatar' => ['nullable'],
-            'avatar_url' => ['nullable', 'string', 'max:500'],
-        ]);
+        $validated = $request->validated();
 
         $avatarUrl = $review->avatar;
         if ($request->hasFile('avatar')) {
-            $request->validate(['avatar' => ['image', 'mimes:jpeg,png,jpg,webp', 'max:5120']]);
             $path = $request->file('avatar')->store('reviews', 'public');
             $avatarUrl = Storage::url($path);
         } elseif (!empty($validated['avatar_url'])) {

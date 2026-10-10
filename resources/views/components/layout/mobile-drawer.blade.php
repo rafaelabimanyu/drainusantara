@@ -60,7 +60,7 @@
          x-transition:leave-end="translate-x-full"
          class="fixed inset-y-0 right-0 max-w-xs w-full bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between overflow-hidden">
         
-        <!-- A. Top Header (Brand & Accessible Close) -->
+       
         <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 shrink-0 bg-white">
             <div class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-lg bg-sky-700 text-white flex items-center justify-center font-extrabold text-xs shadow-xs" aria-hidden="true">
@@ -82,7 +82,7 @@
             </button>
         </div>
 
-        <!-- B. Scrollable Navigation List (Clean Top-to-Bottom Flow) -->
+       
         <div class="flex-1 overflow-y-auto px-4 py-3 flex flex-col justify-start space-y-1">
             <!-- 1. Beranda -->
             <a href="{{ route('home') }}" 
@@ -101,49 +101,7 @@
                 </svg>
             </a>
 
-            <!-- 2. Layanan & Estimasi Biaya -->
-            <a href="{{ url('/#layanan') }}" 
-               @click="sidebarOpen = false" 
-               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 transition-all btn-press min-h-11 border border-transparent focus:outline-hidden focus:ring-2 focus:ring-sky-600">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <span class="text-sm font-semibold block leading-tight">Layanan &amp; Biaya</span>
-                        <span class="text-xs text-slate-500 font-normal">Katalog titik saluran mampet</span>
-                    </div>
-                </div>
-                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </a>
-
-            <!-- 3. Area Jangkauan -->
-            <button type="button" 
-                    @click="sidebarOpen = false; mobileSearchOpen = true" 
-                    class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 transition-all btn-press min-h-11 border border-transparent text-left cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-sky-600">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <span class="text-sm font-semibold block leading-tight">Area Jangkauan</span>
-                        <span class="text-xs text-slate-500 font-normal">Cari armada teknisi siaga</span>
-                    </div>
-                </div>
-                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
-
-            <!-- 4. Hasil Kerja & Galeri -->
+          
             <a href="{{ route('gallery') }}" 
                @click="sidebarOpen = false" 
                class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->is('galeri*') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
@@ -160,12 +118,12 @@
                 </svg>
             </a>
 
-            <!-- 5. Ketentuan Garansi 30 Hari (Diangkat ke Level Utama demi Kepercayaan Konsumen) -->
+            
             <a href="{{ route('about.warranty') }}" 
                @click="sidebarOpen = false" 
                class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.warranty') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-md bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-100" aria-hidden="true">
+                    <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
@@ -180,7 +138,7 @@
                 </svg>
             </a>
 
-            <!-- 6. Tanya Jawab (FAQ) (Akses Cepat Pengunjung) -->
+           
             <a href="{{ route('about.faq') }}" 
                @click="sidebarOpen = false" 
                class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.faq') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
@@ -197,7 +155,7 @@
                 </svg>
             </a>
 
-            <!-- 7. Edukasi Saluran -->
+           
             <a href="{{ route('articles.index') }}" 
                @click="sidebarOpen = false" 
                class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->is('artikel*') || request()->is('pengetahuan*') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">

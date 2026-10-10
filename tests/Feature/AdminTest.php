@@ -41,7 +41,7 @@ class AdminTest extends TestCase
         $response = $this->get('/login');
         $response->assertStatus(200);
         $response->assertSee('CMS Control Panel');
-        $response->assertSee('Drainusantara@admin');
+        $response->assertDontSee('Drainusantara@admin');
     }
 
     public function test_admin_can_authenticate_using_login_screen(): void
@@ -65,6 +65,21 @@ class AdminTest extends TestCase
         $this->assertGuest();
         $response->assertRedirect('/login');
         $response->assertSessionHasErrors('login');
+    }
+
+    public function test_login_is_rate_limited_after_five_attempts(): void
+    {
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->from('/login')->post('/login', [
+                'login' => 'unknown-admin',
+                'password' => 'WrongPassword',
+            ])->assertRedirect('/login');
+        }
+
+        $this->post('/login', [
+            'login' => 'unknown-admin',
+            'password' => 'WrongPassword',
+        ])->assertTooManyRequests();
     }
 
     public function test_admin_can_logout(): void

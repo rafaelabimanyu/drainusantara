@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -164,7 +167,7 @@ class ServiceController extends Controller
     /**
      * Upload uncompressed service image directly to public/images/services preserving original filename.
      */
-    protected function uploadServiceImage($file): string
+    protected function uploadServiceImage(UploadedFile $file): string
     {
         $targetDir = public_path('images/services');
         if (!is_dir($targetDir)) {

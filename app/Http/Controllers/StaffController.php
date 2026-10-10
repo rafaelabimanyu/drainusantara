@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\View\View;
 
 class StaffController extends Controller
@@ -129,7 +132,7 @@ class StaffController extends Controller
     /**
      * Upload uncompressed staff photo to public/images/staff preserving original filename.
      */
-    protected function uploadStaffPhoto($file): string
+    protected function uploadStaffPhoto(UploadedFile $file): string
     {
         $targetDir = public_path('images/staff');
         if (!is_dir($targetDir)) {

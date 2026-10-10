@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Article;
@@ -16,6 +18,7 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -223,27 +226,34 @@ class PageController extends Controller
     /**
      * Display city/kabupaten level coverage area page.
      */
-    public function city(string $city): View
+    public function city(string $city): View|RedirectResponse
     {
-        $cityData = RegionService::findCity($city);
+        $normalizedCity = Str::slug($city);
+        $cityAliases = [
+            'jaksel' => 'jakarta-selatan',
+            'jaktim' => 'jakarta-timur',
+            'jakbar' => 'jakarta-barat',
+            'jakut' => 'jakarta-utara',
+            'jakpus' => 'jakarta-pusat',
+            'tangsel' => 'tangerang-selatan',
+            'tangerang' => 'tangerang-kota',
+            'depok' => 'depok-cinere',
+            'bekasi' => 'bekasi-cikarang',
+            'cikarang' => 'bekasi-cikarang',
+            'kota-semarang' => 'semarang',
+            'kota-bandung' => 'bandung',
+        ];
 
-        if (! $cityData) {
-            $cityFormatted = ucwords(str_replace('-', ' ', $city));
-            $cityData = [
-                'name' => $cityFormatted,
-                'slug' => Str::slug($city),
-                'type' => 'Kota / Wilayah',
-                'province_name' => 'Indonesia',
-                'province_slug' => 'dki-jakarta',
-                'posko_address' => "Posko Siaga {$cityFormatted}",
-                'phone' => config('app.whatsapp_number', '0812-3456-7890'),
-                'eta_minutes' => 'Respon Cepat',
-                'districts' => ['Pusat Kota', 'Wilayah Sekitar'],
-            ];
+        if (isset($cityAliases[$normalizedCity])) {
+            return redirect()->route('area.city', ['city' => $cityAliases[$normalizedCity]], 301);
         }
 
+        $cityData = RegionService::findCity($city);
+
+        abort_unless($cityData && $city === $cityData['slug'], 404);
+
         $title = "Jasa Pipa Mampet {$cityData['name']}";
-        $description = "Pelancaran wastafel, kloset, & floor drain mampet di {$cityData['name']} tanpa bongkar keramik. Armada siaga respon cepat 15 menit, garansi resmi 30 hari.";
+        $description = "Pelancaran wastafel, kloset, & floor drain mampet di {$cityData['name']} tanpa bongkar keramik. Layanan respons chat sigap via WhatsApp, garansi resmi 30 hari.";
 
         SEOMeta::setTitle($title);
         SEOMeta::setDescription($description);
@@ -273,12 +283,11 @@ class PageController extends Controller
         JsonLdMulti::addValues([
             'name' => "Drainusantara {$cityData['name']}",
             'areaServed' => "{$cityData['name']}, {$cityData['province_name']}",
-            'telephone' => $cityData['phone'] ?? config('app.whatsapp_number', '+6281234567890'),
+            'telephone' => $cityData['phone'] ?? config('app.whatsapp_number', '+628****7890'),
             'priceRange' => 'Mulai Rp 400.000',
             'openingHours' => 'Mo-Su 00:00-24:00',
             'address' => [
                 '@type' => 'PostalAddress',
-                'streetAddress' => $cityData['posko_address'] ?? "Posko Siaga {$cityData['name']}",
                 'addressLocality' => $cityData['name'],
                 'addressRegion' => $cityData['province_name'],
                 'addressCountry' => 'ID',
@@ -309,54 +318,65 @@ class PageController extends Controller
     /**
      * Display coverage area SEO detail page (Kecamatan level).
      */
-    public function area(string $city, string $district): View
+    public function area(string $city, string $district): View|RedirectResponse
     {
         $cityAliases = [
-            'jaksel' => 'Jakarta Selatan',
-            'jaktim' => 'Jakarta Timur',
-            'jakut' => 'Jakarta Utara',
-            'jakpus' => 'Jakarta Pusat',
-            'jakbar' => 'Jakarta Barat',
-            'tangsel' => 'Tangerang Selatan',
-            'semarang' => 'Kota Semarang',
-            'lampung' => 'Bandar Lampung',
+            'jaksel' => 'jakarta-selatan',
+            'jaktim' => 'jakarta-timur',
+            'jakut' => 'jakarta-utara',
+            'jakpus' => 'jakarta-pusat',
+            'jakbar' => 'jakarta-barat',
+            'tangsel' => 'tangerang-selatan',
+            'tangerang' => 'tangerang-kota',
+            'depok' => 'depok-cinere',
+            'bekasi' => 'bekasi-cikarang',
+            'cikarang' => 'bekasi-cikarang',
+            'semarang' => 'semarang',
+            'kota-semarang' => 'semarang',
+            'kota-bandung' => 'bandung',
+            'lampung' => 'bandar-lampung',
         ];
 
         $lowerCity = strtolower($city);
-        $cityFormatted = $cityAliases[$lowerCity] ?? ucwords(str_replace('-', ' ', $city));
-        $districtFormatted = ucwords(str_replace('-', ' ', $district));
-        $combinedSlug = Str::slug("{$cityFormatted}-{$districtFormatted}");
+        if (isset($cityAliases[$lowerCity]) && $cityAliases[$lowerCity] !== $lowerCity) {
+            return redirect()->route('area.detail', ['city' => $cityAliases[$lowerCity], 'district' => $district], 301);
+        }
 
-        $area = CoverageArea::where('is_active', true)
-            ->where(function ($query) use ($district, $combinedSlug, $cityFormatted, $districtFormatted) {
-                $query->where('slug', $combinedSlug)
-                    ->orWhere('slug', Str::slug($district))
-                    ->orWhere(function ($q) use ($cityFormatted, $districtFormatted) {
-                        $q->whereRaw('LOWER(city) = ?', [strtolower($cityFormatted)])
-                            ->whereRaw('LOWER(district) = ?', [strtolower($districtFormatted)]);
-                    });
-            })
+        $cityData = RegionService::findCity($city);
+        abort_unless($cityData && $city === $cityData['slug'], 404);
+
+        $districtFormatted = collect($cityData['districts'])
+            ->first(fn (string $name) => Str::slug($name) === $district);
+        abort_unless($districtFormatted, 404);
+
+        $cityFormatted = $cityData['name'];
+        $combinedSlug = $cityData['slug'].'-'.$district;
+
+        $area = CoverageArea::whereIn('city', [
+            $cityFormatted,
+            ucwords(str_replace('-', ' ', $cityData['slug'])),
+        ])
+            ->whereRaw('LOWER(district) = ?', [Str::lower($districtFormatted)])
             ->first();
 
-        // Fallback record for unseeded dynamic SEO landing areas
+        abort_if($area && ! $area->is_active, 404);
+
         if (! $area) {
-            $area = CoverageArea::firstOrCreate(
-                ['slug' => $combinedSlug],
-                [
-                    'city' => $cityFormatted,
-                    'district' => $districtFormatted,
-                    'meta_title' => "Jasa Saluran Mampet {$districtFormatted}, {$cityFormatted}",
-                    'meta_description' => "Jasa pipa mampet wastafel, toilet, & talang air di {$districtFormatted}, {$cityFormatted}. Tanpa bongkar keramik pakai spiral baja, garansi nota 30 hari.",
-                    'content' => "Layanan penanganan saluran pipa mampet berstandar profesional di area {$districtFormatted}, {$cityFormatted} dan sekitarnya.",
-                    'is_active' => true,
-                ]
-            );
+            $area = new CoverageArea([
+                'slug' => $combinedSlug,
+                'city' => $cityFormatted,
+                'district' => $districtFormatted,
+                'meta_title' => "Jasa Saluran Mampet {$districtFormatted}, {$cityFormatted}",
+                'meta_description' => "Jasa pipa mampet wastafel, toilet, & talang air di {$districtFormatted}, {$cityFormatted}. Tanpa bongkar keramik pakai spiral baja, respons chat via WhatsApp & garansi 30 hari.",
+                'content' => "Layanan penanganan saluran pipa mampet berstandar profesional di area {$districtFormatted}, {$cityFormatted} dan sekitarnya.",
+                'is_active' => true,
+            ]);
         }
 
         $rawTitle = $area->meta_title ?: "Jasa Saluran Mampet {$area->district}, {$area->city}";
         $cleanTitle = trim(str_replace([' - Drainusantara Bergaransi', ' | Drainusantara', ' - Drainusantara'], '', $rawTitle));
         $cleanTitle = preg_replace('/^Jasa Saluran Mampet di /i', 'Jasa Saluran Mampet ', $cleanTitle);
-        $description = $area->meta_description ?: "Jasa pipa mampet wastafel, toilet, & talang air di {$area->district}, {$area->city}. Tanpa bongkar keramik pakai spiral baja, garansi nota 30 hari.";
+        $description = $area->meta_description ?: "Jasa pipa mampet wastafel, toilet, & talang air di {$area->district}, {$area->city}. Tanpa bongkar keramik pakai spiral baja, respons chat via WhatsApp & garansi 30 hari.";
 
         SEOMeta::setTitle($cleanTitle);
         SEOMeta::setDescription($description);
@@ -390,10 +410,20 @@ class PageController extends Controller
         JsonLdMulti::addValues([
             'name' => "Drainusantara {$area->district}",
             'areaServed' => "{$area->district}, {$area->city}",
-            'telephone' => config('app.whatsapp_number', '+6281234567890'),
+            'telephone' => config('app.whatsapp_number', '+628****7890'),
             'priceRange' => 'Mulai Rp 400.000',
             'openingHours' => 'Mo-Su 00:00-24:00',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressLocality' => $area->district,
+                'addressRegion' => $area->city,
+                'addressCountry' => 'ID',
+            ],
         ]);
+
+        $cityData = RegionService::findCity($city);
+        $provinceSlug = $cityData['province_slug'] ?? 'dki-jakarta';
+        $provinceName = $cityData['province_name'] ?? 'DKI Jakarta';
 
         $breadcrumb = JsonLdMulti::newJsonLd();
         $breadcrumb->setType('BreadcrumbList');
@@ -401,12 +431,11 @@ class PageController extends Controller
             'itemListElement' => [
                 ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
                 ['@type' => 'ListItem', 'position' => 2, 'name' => 'Area Layanan', 'item' => route('area.index')],
-                ['@type' => 'ListItem', 'position' => 3, 'name' => $area->city, 'item' => route('area.city', ['city' => Str::slug($city)])],
-                ['@type' => 'ListItem', 'position' => 4, 'name' => $area->district, 'item' => route('area.detail', ['city' => $city, 'district' => $district])],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => $provinceName, 'item' => route('area.province', ['province' => $provinceSlug])],
+                ['@type' => 'ListItem', 'position' => 4, 'name' => $area->city, 'item' => route('area.city', ['city' => Str::slug($city)])],
+                ['@type' => 'ListItem', 'position' => 5, 'name' => $area->district, 'item' => route('area.detail', ['city' => $city, 'district' => $district])],
             ],
         ]);
-
-        $cityData = RegionService::findCity($city);
 
         $services = Cache::remember('services.all_active', 86400, function () {
             return Service::where('is_active', true)->orderBy('order')->get();
@@ -518,14 +547,37 @@ class PageController extends Controller
             'dateModified' => $article->updated_at->toIso8601String(),
             'image' => $thumbnailUrl,
             'author' => [
-                '@type' => 'Organization',
+                '@type' => 'Person',
                 'name' => 'Tim Ahli Drainusantara',
-                'url' => url('/'),
+                'jobTitle' => 'Spesialis Drainase & Pemipaan',
+                'worksFor' => [
+                    '@type' => 'Organization',
+                    'name' => 'Drainusantara',
+                    'url' => url('/'),
+                ],
             ],
             'publisher' => [
                 '@type' => 'Organization',
                 'name' => 'Drainusantara',
                 'url' => url('/'),
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => asset('images/hero-technician.webp'),
+                ],
+            ],
+            'mainEntityOfPage' => [
+                '@type' => 'WebPage',
+                '@id' => url()->current(),
+            ],
+        ]);
+
+        $breadcrumb = JsonLdMulti::newJsonLd();
+        $breadcrumb->setType('BreadcrumbList');
+        $breadcrumb->addValues([
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Pengetahuan & Edukasi', 'item' => route('articles.index')],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => $article->title, 'item' => url()->current()],
             ],
         ]);
 
@@ -808,7 +860,53 @@ class PageController extends Controller
         TwitterCard::setImage(asset('images/hero-technician.webp'));
 
         JsonLdMulti::setTitle('Tanya Jawab (FAQ) - Drainusantara');
-        JsonLdMulti::setType('AboutPage');
+        JsonLdMulti::setType('FAQPage');
+        JsonLdMulti::addValues([
+            'mainEntity' => [
+                [
+                    '@type' => 'Question',
+                    'name' => 'Mengapa Drainusantara melarang keras penggunaan soda api?',
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => 'Soda api memicu reaksi eksotermik panas ekstrem hingga di atas 100°C yang melunakkan, merusak lem, dan memecahkan pipa PVC cor di dalam lantai, serta memadatkan endapan lemak menjadi sekeras semen.',
+                    ],
+                ],
+                [
+                    '@type' => 'Question',
+                    'name' => 'Berapa lama estimasi waktu pengerjaan pelancaran pipa?',
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => 'Rata-rata pengerjaan berkisar 30 hingga 60 menit per titik mampet menggunakan mesin rotary spiral baja berdaya dorong fleksibel tinggi.',
+                    ],
+                ],
+                [
+                    '@type' => 'Question',
+                    'name' => 'Apakah penanganan saluran memerlukan pembongkaran lantai atau keramik?',
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => 'Tidak perlu. Metode mekanis spiral baja elastis masuk mengikuti jalur belokan pipa langsung dari lubang saringan atau leher angsa porselen tanpa membongkar keramik.',
+                    ],
+                ],
+                [
+                    '@type' => 'Question',
+                    'name' => 'Bagaimana ketentuan jaminan garansi 30 hari kalender?',
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => 'Setiap pengerjaan tuntas dilindungi nota digital garansi 30 hari. Jika saluran mampet kembali dalam masa garansi akibat residu titik yang sama, teknisi datang melancarkan ulang tanpa biaya tambahan.',
+                    ],
+                ],
+            ],
+        ]);
+
+        $breadcrumb = JsonLdMulti::newJsonLd();
+        $breadcrumb->setType('BreadcrumbList');
+        $breadcrumb->addValues([
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Tentang Kami', 'item' => route('about')],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => 'FAQ', 'item' => route('about.faq')],
+            ],
+        ]);
 
         return view('about.faq');
     }

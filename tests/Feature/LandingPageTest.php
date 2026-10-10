@@ -40,7 +40,8 @@ class LandingPageTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Drainusantara');
         $response->assertSee('Wastafel &amp; Cuci Piring', false);
-        $response->assertSee('Ibu Ratna Dewi');
+        $response->assertSee('Pak Budi');
+        $response->assertDontSee('Ibu Ratna Dewi');
         $response->assertSee('Tanpa Bongkar Keramik');
         $response->assertSee('Inspeksi CCTV 30M');
         $response->assertSee('Garansi 30 Hari');

@@ -258,9 +258,11 @@
                             <div class="text-xs text-slate-500 truncate">{{ $area->city }}</div>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
-                            <a href="{{ url('/area/' . Str::slug($area->city) . '/' . Str::slug($area->district)) }}" target="_blank" class="text-xs font-medium text-slate-600 hover:text-sky-700 px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-200 rounded-md">
-                                Live
-                            </a>
+                            @if($area->publicUrl())
+                                <a href="{{ $area->publicUrl() }}" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-slate-600 hover:text-sky-700 px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-200 rounded-md">
+                                    Live
+                                </a>
+                            @endif
                             <a href="{{ route('admin.coverage-areas.edit', $area) }}" class="text-xs font-semibold text-slate-700 hover:text-emerald-700 px-2.5 py-1 bg-white hover:bg-slate-50 border border-slate-200 rounded-md">
                                 Edit
                             </a>

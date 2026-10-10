@@ -62,43 +62,42 @@
                         </div>
 
                         <div class="space-y-0.5 max-h-95 overflow-y-auto pr-1">
-                            <!-- 1. Struktur Holding J&J Group -->
+                             <a href="{{ route('about.profile') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
+                                <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Profil Perusahaan</div>
+                                <p class="text-[11px] text-slate-500 leading-snug">Visi, misi, dan komitmen spesialis pipa tanpa bongkar.</p>
+                            </a>
+                            
+                         
                             <a href="{{ route('about.holding') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
                                 <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Struktur Holding J&amp;J Group</div>
                                 <p class="text-[11px] text-slate-500 leading-snug">Induk perusahaan &amp; jaringan ekosistem sanitasi.</p>
                             </a>
 
-                            <!-- 2. SOP K3 -->
+                          
                             <a href="{{ route('about.k3') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
                                 <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">SOP K3</div>
                                 <p class="text-[11px] text-slate-500 leading-snug">Standar APD teknisi, cover sepatu, &amp; sanitasi pasca kerja.</p>
                             </a>
 
-                            <!-- 3. Profil Perusahaan -->
-                            <a href="{{ route('about.profile') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
-                                <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Profil Perusahaan</div>
-                                <p class="text-[11px] text-slate-500 leading-snug">Visi, misi, dan komitmen spesialis pipa tanpa bongkar.</p>
-                            </a>
-
-                            <!-- 4. Peralatan & Teknologi -->
+                           
                             <a href="{{ route('about.equipment') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
                                 <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Peralatan &amp; Teknologi</div>
                                 <p class="text-[11px] text-slate-500 leading-snug">Mesin spiral rotary Ridgid &amp; kamera inspeksi CCTV IP68.</p>
                             </a>
 
-                            <!-- 5. Klien / Portofolio (Perusahaan Yang Menggunakan Jasa Kami) -->
+                          
                             <a href="{{ route('about.portfolio') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
                                 <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Perusahaan &amp; Portofolio Klien</div>
                                 <p class="text-[11px] text-slate-500 leading-snug">Daftar perusahaan &amp; mitra B2B yang menggunakan jasa Drainusantara.</p>
                             </a>
 
-                            <!-- 6. Ketentuan Garansi 30 Hari -->
+                         
                             <a href="{{ route('about.warranty') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
                                 <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">Ketentuan Garansi 30 Hari</div>
                                 <p class="text-[11px] text-slate-500 leading-snug">Jaminan tertulis, No Cure No Pay, &amp; alur klaim re-visit gratis.</p>
                             </a>
 
-                            <!-- 7. FAQ -->
+                         
                             <a href="{{ route('about.faq') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-50 transition-colors group">
                                 <div class="text-xs font-bold text-slate-900 group-hover:text-sky-700 mb-0.5">FAQ</div>
                                 <p class="text-[11px] text-slate-500 leading-snug">Tanya jawab seputar metode tanpa bongkar, biaya, &amp; soda api.</p>

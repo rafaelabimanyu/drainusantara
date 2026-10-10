@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\StoreGalleryRequest;
+use App\Http\Requests\Admin\UpdateGalleryRequest;
 use App\Models\Gallery;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -34,26 +38,12 @@ class GalleryController extends Controller
     /**
      * Store a newly created gallery item in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreGalleryRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'category' => ['nullable', 'string', 'in:rumahan,b2b'],
-            'service_id' => ['nullable', 'exists:services,id'],
-            'before_image' => ['nullable'],
-            'before_image_url' => ['nullable', 'string', 'max:500'],
-            'after_image' => ['nullable'],
-            'after_image_url' => ['nullable', 'string', 'max:500'],
-            'image' => ['nullable'],
-            'image_url' => ['nullable', 'string', 'max:500'],
-            'description' => ['nullable', 'string'],
-            'order' => ['nullable', 'integer', 'min:0'],
-            'is_active' => ['nullable', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $beforeImage = $validated['before_image_url'] ?? null;
         if ($request->hasFile('before_image')) {
-            $request->validate(['before_image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
             $beforeImage = $this->uploadDokumentasiImage($request->file('before_image'));
         } elseif (is_string($request->input('before_image')) && !empty($request->input('before_image'))) {
             $beforeImage = $request->input('before_image');
@@ -61,7 +51,6 @@ class GalleryController extends Controller
 
         $afterImage = $validated['after_image_url'] ?? null;
         if ($request->hasFile('after_image')) {
-            $request->validate(['after_image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
             $afterImage = $this->uploadDokumentasiImage($request->file('after_image'));
         } elseif (is_string($request->input('after_image')) && !empty($request->input('after_image'))) {
             $afterImage = $request->input('after_image');
@@ -69,7 +58,6 @@ class GalleryController extends Controller
 
         $image = $validated['image_url'] ?? null;
         if ($request->hasFile('image')) {
-            $request->validate(['image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
             $image = $this->uploadDokumentasiImage($request->file('image'));
         } elseif (is_string($request->input('image')) && !empty($request->input('image'))) {
             $image = $request->input('image');
@@ -104,26 +92,12 @@ class GalleryController extends Controller
     /**
      * Update the specified gallery item in storage.
      */
-    public function update(Request $request, Gallery $gallery): RedirectResponse
+    public function update(UpdateGalleryRequest $request, Gallery $gallery): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'category' => ['nullable', 'string', 'in:rumahan,b2b'],
-            'service_id' => ['nullable', 'exists:services,id'],
-            'before_image' => ['nullable'],
-            'before_image_url' => ['nullable', 'string', 'max:500'],
-            'after_image' => ['nullable'],
-            'after_image_url' => ['nullable', 'string', 'max:500'],
-            'image' => ['nullable'],
-            'image_url' => ['nullable', 'string', 'max:500'],
-            'description' => ['nullable', 'string'],
-            'order' => ['nullable', 'integer', 'min:0'],
-            'is_active' => ['nullable', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $beforeImage = $gallery->before_image;
         if ($request->hasFile('before_image')) {
-            $request->validate(['before_image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
             $newBefore = $this->uploadDokumentasiImage($request->file('before_image'));
             if ($gallery->before_image && $gallery->before_image !== $newBefore) {
                 $this->deleteDokumentasiFile($gallery->before_image, $gallery->id);
@@ -135,7 +109,6 @@ class GalleryController extends Controller
 
         $afterImage = $gallery->after_image;
         if ($request->hasFile('after_image')) {
-            $request->validate(['after_image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
             $newAfter = $this->uploadDokumentasiImage($request->file('after_image'));
             if ($gallery->after_image && $gallery->after_image !== $newAfter) {
                 $this->deleteDokumentasiFile($gallery->after_image, $gallery->id);
@@ -147,7 +120,6 @@ class GalleryController extends Controller
 
         $image = $gallery->image;
         if ($request->hasFile('image')) {
-            $request->validate(['image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
             $newImage = $this->uploadDokumentasiImage($request->file('image'));
             if ($gallery->image && $gallery->image !== $newImage) {
                 $this->deleteDokumentasiFile($gallery->image, $gallery->id);
@@ -194,7 +166,7 @@ class GalleryController extends Controller
     /**
      * Upload uncompressed image to public/images/dokumentasi preserving the original filename intact.
      */
-    protected function uploadDokumentasiImage($file): string
+    protected function uploadDokumentasiImage(UploadedFile $file): string
     {
         $targetDir = public_path('images/dokumentasi');
         if (!is_dir($targetDir)) {

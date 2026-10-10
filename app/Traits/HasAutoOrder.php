@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
+
+use Illuminate\Database\Eloquent\Model;
 
 trait HasAutoOrder
 {
@@ -9,7 +13,7 @@ trait HasAutoOrder
      */
     protected static function bootHasAutoOrder(): void
     {
-        static::creating(function ($model) {
+        static::creating(function (Model $model): void {
             if (!isset($model->order) || (int) $model->order <= 0) {
                 $model->order = static::getNextAvailableOrder();
             }

@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -143,7 +146,7 @@ class PortfolioController extends Controller
     /**
      * Upload uncompressed image to public/images/portfolio preserving the original filename intact.
      */
-    protected function uploadPortfolioImage($file): string
+    protected function uploadPortfolioImage(UploadedFile $file): string
     {
         $targetDir = public_path('images/portfolio');
         if (!is_dir($targetDir)) {

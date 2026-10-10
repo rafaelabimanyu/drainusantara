@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Equipment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\View\View;
 
 class EquipmentController extends Controller
@@ -144,7 +147,7 @@ class EquipmentController extends Controller
     /**
      * Upload uncompressed image to public/assets/TOOLKIT preserving the original filename intact.
      */
-    protected function uploadEquipmentImage($file): string
+    protected function uploadEquipmentImage(UploadedFile $file): string
     {
         $targetDir = public_path('assets/TOOLKIT');
         if (!is_dir($targetDir)) {
