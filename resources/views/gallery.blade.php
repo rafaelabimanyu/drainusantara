@@ -112,9 +112,7 @@
                                     <span class="px-2 py-0.5 text-[10px] sm:text-xs font-bold bg-sky-50 text-sky-800 border border-sky-200 rounded-md truncate max-w-full">
                                         {{ $item->service ? $item->service->name : 'Plumbing Spesialis' }}
                                     </span>
-                                    <span class="hidden sm:flex text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md items-center gap-1">
-                                        ✓ 100% Tanpa Bongkar
-                                    </span>
+                                   
                                 </div>
 
                                 <h3 class="text-xs sm:text-lg md:text-xl font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug tracking-tight line-clamp-2">
@@ -132,9 +130,7 @@
                                 $waUrl = "https://wa.me/{$whatsappNumber}?text={$waMessage}";
                             @endphp
                             <div class="mt-3 sm:mt-6 pt-2.5 sm:pt-4 border-t border-slate-100 flex items-center justify-between gap-2 sm:gap-3">
-                                <span class="hidden md:inline-flex text-xs text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200/80 font-bold">
-                                    Garansi 30 Hari
-                                </span>
+                                
                                 <a href="{{ $waUrl }}" 
                                    target="_blank" 
                                    rel="noopener noreferrer" 
