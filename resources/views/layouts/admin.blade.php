@@ -7,6 +7,10 @@
 
     <title>@yield('title', 'Admin Dashboard') | CMS Drainusantara</title>
 
+    <!-- Favicon & Web Icon -->
+    <link rel="icon" type="image/webp" href="{{ asset('images/logo/WebIcon.webp') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo/WebIcon.webp') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
@@ -46,8 +50,8 @@
                     <div class="flex flex-col grow gap-y-5 overflow-y-auto bg-slate-900 px-5 pb-4 border-r border-slate-800">
                         <div class="flex h-16 shrink-0 items-center justify-between border-b border-slate-800">
                             <div class="flex items-center gap-2.5">
-                                <div class="w-8 h-8 rounded-lg bg-sky-700 text-white flex items-center justify-center font-extrabold text-sm">
-                                    DN
+                                <div class="w-8 h-8 rounded-lg bg-white border border-slate-700 flex items-center justify-center p-1 overflow-hidden shadow-2xs">
+                                    <img src="{{ asset('images/logo/WebIcon.webp') }}" alt="Drainusantara" class="w-full h-full object-contain" width="32" height="32">
                                 </div>
                                 <div>
                                     <span class="font-extrabold text-white text-sm block leading-tight">DRAINUSANTARA</span>
@@ -72,8 +76,8 @@
             <div class="flex flex-col grow gap-y-4 overflow-y-auto px-5 pb-4">
                 <div class="flex h-16 shrink-0 items-center justify-between border-b border-slate-800">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-sky-700 text-white flex items-center justify-center font-extrabold text-sm shadow-2xs">
-                            DN
+                        <div class="w-8 h-8 rounded-lg bg-white border border-slate-700 flex items-center justify-center p-1 overflow-hidden shadow-2xs">
+                            <img src="{{ asset('images/logo/WebIcon.webp') }}" alt="Drainusantara" class="w-full h-full object-contain" width="32" height="32">
                         </div>
                         <div>
                             <span class="font-extrabold text-white text-sm tracking-tight block leading-tight">DRAINUSANTARA</span>

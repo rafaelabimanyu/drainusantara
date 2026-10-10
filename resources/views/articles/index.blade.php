@@ -205,7 +205,6 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                     </svg>
                                 </a>
-                                <span class="text-[9px] sm:text-[11px] text-slate-400 font-medium truncate max-w-[48%]">Drainusantara</span>
                             </div>
                         </div>
                     </article>

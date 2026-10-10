@@ -63,8 +63,8 @@
        
         <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 shrink-0 bg-white">
             <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-lg bg-sky-700 text-white flex items-center justify-center font-extrabold text-xs shadow-xs" aria-hidden="true">
-                    DN
+                <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center p-1 overflow-hidden shadow-2xs" aria-hidden="true">
+                    <img src="{{ asset('images/logo/WebIcon.webp') }}" alt="Drainusantara" class="w-full h-full object-contain" width="32" height="32">
                 </div>
                 <div>
                     <h2 id="mobile-drawer-title" class="font-extrabold text-slate-900 tracking-tight block text-sm leading-tight">DRAINUSANTARA</h2>

@@ -7,6 +7,10 @@
 
     <title>Masuk Admin CMS | Drainusantara</title>
 
+    <!-- Favicon & Web Icon -->
+    <link rel="icon" type="image/webp" href="{{ asset('images/logo/WebIcon.webp') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo/WebIcon.webp') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
@@ -25,7 +29,9 @@
         <aside class="hidden lg:flex flex-col justify-between bg-slate-900 text-white p-10 xl:p-12">
             <div>
                 <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-lg bg-sky-700 text-white flex items-center justify-center font-extrabold text-lg tracking-wider">DN</div>
+                    <div class="w-11 h-11 rounded-lg bg-white border border-slate-700 flex items-center justify-center p-1.5 overflow-hidden shadow-2xs">
+                        <img src="{{ asset('images/logo/WebIcon.webp') }}" alt="Drainusantara" class="w-full h-full object-contain" width="44" height="44">
+                    </div>
                     <div>
                         <span class="text-xl font-extrabold tracking-tight block leading-tight">DRAINUSANTARA</span>
                         <span class="text-[11px] font-bold uppercase tracking-wider text-sky-300 block">CMS Control Panel</span>

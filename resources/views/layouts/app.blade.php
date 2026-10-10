@@ -7,6 +7,10 @@
 
     {!! SEO::generate() !!}
 
+    <!-- Favicon & Web Icon -->
+    <link rel="icon" type="image/webp" href="{{ asset('images/logo/WebIcon.webp') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo/WebIcon.webp') }}">
+
     <!-- Preload Resource Fonts & DNS Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

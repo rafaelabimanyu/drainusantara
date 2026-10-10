@@ -1,126 +1,76 @@
-<footer class="bg-slate-900 text-slate-300 pt-16 pb-28 md:pb-12 border-t border-slate-800" id="footer-workshop">
+<footer class="bg-slate-900 text-slate-300 pt-12 pb-24 md:pb-12 border-t border-slate-800" id="footer-workshop">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
-            <!-- Kolom 1: Workshop Pusat & Identitas Legal -->
-            <div class="space-y-4 lg:col-span-1">
+        
+        <!-- Top Section: 3 Kolom Ringkas & Berbobot (Fokus Informasi Inti & Kredibilitas) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 mb-10 pb-10 border-b border-slate-800/80">
+            <!-- Kolom 1: Profil & Workshop Pusat -->
+            <div class="space-y-3.5">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-sky-700 text-white flex items-center justify-center font-extrabold text-sm shadow-xs">
-                        DN
+                    <div class="w-9 h-9 rounded-xl bg-white border border-slate-700 flex items-center justify-center p-1 overflow-hidden shadow-xs" aria-hidden="true">
+                        <img src="{{ asset('images/logo/WebIcon.webp') }}" alt="Drainusantara" class="w-full h-full object-contain" width="36" height="36">
                     </div>
                     <div>
                         <span class="text-base font-extrabold tracking-tight text-white block">DRAINUSANTARA</span>
                         <span class="text-[10px] text-sky-400 font-semibold block tracking-wider uppercase">Plumbing &amp; Rooter Engineering</span>
                     </div>
                 </div>
-                <p class="text-xs text-slate-300 leading-relaxed">
-                    Layanan spesialis pelancaran pipa mampet mekanik profesional 100% tanpa bongkar keramik dan bebas bahan kimia korosif. Menggunakan mesin spiral baja torsi tinggi serta kamera inspeksi endoskopi CCTV 30 meter.
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Spesialis pelancaran saluran pipa mampet mekanis profesional 100% tanpa bongkar keramik dan bebas bahan kimia korosif soda api.
                 </p>
-                <div class="text-xs text-slate-300 space-y-1.5 pt-1">
-                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Workshop &amp; Posko Pusat:</div>
+                <div class="pt-1 text-xs text-slate-400 space-y-1">
+                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Workshop Pusat:</div>
                     <p class="leading-relaxed">Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440</p>
-                    <div class="pt-1 text-[11px] text-emerald-400 font-semibold">
+                    <div class="text-[11px] text-emerald-400 font-semibold pt-0.5">
                         Siaga 24 Jam Nonstop
                     </div>
                 </div>
             </div>
 
-            <!-- Kolom 2: Layanan Residensial (Rumah & Ruko) -->
+            <!-- Kolom 2: Jaminan Layanan & Standar Resmi -->
             <div>
-                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Layanan Residensial</h3>
-                <ul class="space-y-2 text-xs text-slate-300">
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Wastafel &amp; Sink Cuci Piring</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Kloset &amp; Toilet Duduk/Jongkok</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Floor Drain Kamar Mandi</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Bak Kontrol Pipa Pembuangan</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Talang Air Hujan Rooftop / Dak</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Pipa Buang Mesin Cuci</a></li>
-                    <li><a href="{{ url('/#layanan') }}" class="hover:text-white transition-colors py-0.5 inline-block">Inspeksi Kamera CCTV 30M</a></li>
-                </ul>
-            </div>
-
-            <!-- Kolom 3: Solusi B2B & Gedung -->
-            <div>
-                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Solusi B2B &amp; Gedung</h3>
-                <ul class="space-y-2 text-xs text-slate-300">
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">De-Greasing Grease Trap Restoran</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">Pembersihan Manhole Komunal Tenant</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">Pipa Vertikal Gedung Bertingkat</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">Saluran Limbah Dapur Industri</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">Perawatan Berkala After-Hours</a></li>
-                    <li><a href="{{ url('/#portofolio-b2b') }}" class="hover:text-white transition-colors py-0.5 inline-block">e-Faktur Pajak &amp; Berita Acara (BAST)</a></li>
-                    <li class="pt-1"><a href="{{ route('about.portfolio') }}" class="text-sky-400 hover:text-sky-300 font-semibold inline-flex items-center gap-1 py-0.5">Portofolio Mitra B2B</a></li>
-                </ul>
-            </div>
-
-            <!-- Kolom 4: Area Jangkauan Jabodetabek -->
-            <div>
-                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Posko Jabodetabek</h3>
-                <ul class="space-y-2 text-xs text-slate-300">
-                    <li><a href="{{ route('area.province', ['province' => 'dki-jakarta']) }}" class="hover:text-white font-semibold text-sky-300 py-0.5 inline-block">Provinsi DKI Jakarta</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'jakarta-selatan']) }}" class="hover:text-white py-0.5 inline-block">Jakarta Selatan (Tebet &amp; Cilandak)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'jakarta-timur']) }}" class="hover:text-white py-0.5 inline-block">Jakarta Timur (Duren Sawit)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'jakarta-barat']) }}" class="hover:text-white py-0.5 inline-block">Jakarta Barat (Kebon Jeruk &amp; Puri)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'jakarta-utara']) }}" class="hover:text-white py-0.5 inline-block">Jakarta Utara (Kelapa Gading &amp; PIK)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'jakarta-pusat']) }}" class="hover:text-white py-0.5 inline-block">Jakarta Pusat (Kemayoran)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'tangerang-selatan']) }}" class="hover:text-white py-0.5 inline-block">Tangerang Selatan (BSD &amp; Bintaro)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'tangerang-kota']) }}" class="hover:text-white py-0.5 inline-block">Tangerang Kota (Karawaci &amp; Ciledug)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'bekasi-cikarang']) }}" class="hover:text-white py-0.5 inline-block">Bekasi &amp; Cikarang Industri</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'depok-cinere']) }}" class="hover:text-white py-0.5 inline-block">Depok &amp; Cinere (Margonda)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'bogor']) }}" class="hover:text-white py-0.5 inline-block">Bogor &amp; Sentul City</a></li>
-                </ul>
-            </div>
-
-            <!-- Kolom 5: Hub Luar Kota & Edukasi Sanitasi -->
-            <div>
-                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Hub Regional &amp; Edukasi</h3>
-                <ul class="space-y-2 text-xs text-slate-300">
-                    <li><a href="{{ route('area.province', ['province' => 'jawa-tengah']) }}" class="hover:text-white font-semibold text-sky-300 py-0.5 inline-block">Provinsi Jawa Tengah</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'semarang']) }}" class="hover:text-white py-0.5 inline-block">Kota Semarang (Candisari &amp; Tembalang)</a></li>
-                    <li><a href="{{ route('area.province', ['province' => 'lampung']) }}" class="hover:text-white font-semibold text-sky-300 py-0.5 inline-block">Provinsi Lampung</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="hover:text-white py-0.5 inline-block">Bandar Lampung (Kedaton &amp; Tjg. Karang)</a></li>
-                    <li><a href="{{ route('area.city', ['city' => 'bandung']) }}" class="hover:text-white py-0.5 inline-block">Kota Bandung (Jawa Barat)</a></li>
-                    <li class="pt-1"><a href="{{ route('articles.index') }}" class="hover:text-white font-semibold text-sky-300 py-0.5 inline-block">Artikel &amp; Edukasi Sanitasi</a></li>
-                    <li><a href="{{ route('gallery') }}" class="hover:text-white py-0.5 inline-block">Galeri Bukti Before &amp; After</a></li>
-                    <li class="pt-1">
-                        <a href="{{ route('area.index') }}" class="inline-flex items-center gap-1 text-[11px] text-sky-400 hover:text-sky-300 underline font-medium py-1">
-                            Indeks Lengkap 38 Area
-                        </a>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-3.5 pb-2 border-b border-slate-800">Standar Mutu &amp; Jaminan</h3>
+                <ul class="space-y-2.5 text-xs text-slate-300">
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span>Sistem <strong>No Cure No Pay</strong> (Air lancar baru bayar)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span>Garansi Tertulis 30 Hari Kalender</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span>100% Tanpa Bongkar Keramik Lantai</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span>Zero Chemical / Bebas Soda Api Korosif</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span>e-Faktur Pajak PPN &amp; Dokumen BAST B2B</span>
                     </li>
                 </ul>
             </div>
 
-            <!-- Kolom 6: Standar Mutu, K3 & Legalitas -->
+            <!-- Kolom 3: Layanan Dispatch & Bantuan Cepat -->
             <div>
-                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-4 border-b border-slate-800 pb-2">Standar Mutu &amp; K3</h3>
-                <div class="space-y-2.5 text-xs text-slate-300">
-                    <div class="flex items-start gap-1.5">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
-                        <span>Sistem No Cure No Pay</span>
-                    </div>
-                    <div class="flex items-start gap-1.5">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
-                        <span>Garansi Tertulis 30 Hari Kalender</span>
-                    </div>
-                    <div class="flex items-start gap-1.5">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
-                        <span>100% Tanpa Bongkar Keramik</span>
-                    </div>
-                    <div class="flex items-start gap-1.5">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
-                        <span>Zero Chemical / Bebas Soda Api</span>
-                    </div>
-                    <div class="flex items-start gap-1.5">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
-                        <span>Teknisi Bersepatu &amp; APD Steril</span>
-                    </div>
-                    <div class="flex items-start gap-1.5">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
-                        <span>Faktur Pajak B2B &amp; Dokumen BAST</span>
-                    </div>
-                    <div class="pt-2">
-                        <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran pipa mampet.')" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl border border-emerald-800 shadow-sm transition-colors cursor-pointer">
-                            <span>Konsultasi CS Siaga</span>
-                        </a>
+                <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-3.5 pb-2 border-b border-slate-800">Dispatch Siaga 24 Jam</h3>
+                <p class="text-xs text-slate-400 leading-relaxed mb-3.5">
+                    Saluran air meluap darurat atau butuh survei grease trap gedung? Penugasan teknisi terdekat langsung dari posko siaga untuk respon cepat.
+                </p>
+                <div class="space-y-2.5">
+                    <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.')" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl border border-emerald-800 shadow-xs transition-colors btn-press">
+                        <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                        <span>Chat WhatsApp Dispatch</span>
+                    </a>
+                    <div class="text-[11px] text-slate-400">
+                        Posko respon darurat se-Jabodetabek, Semarang, &amp; Lampung
                     </div>
                 </div>
             </div>
@@ -151,12 +101,12 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-xs text-slate-300 mt-3 leading-relaxed">
+                <p class="text-xs text-slate-400 mt-3 leading-relaxed">
                     Pusat perawatan mesin rooter spiral, kalibrasi kamera inspeksi CCTV pipa, serta posko pemberangkatan armada teknisi siaga ke seluruh wilayah Jabodetabek.
                 </p>
             </div>
 
-            <!-- Informasi Posko Siaga & Kelengkapan Armada (8 Kolom) - Menggantikan Kotak Disclaimer Lama -->
+            <!-- Informasi Posko Siaga & Kelengkapan Armada (8 Kolom) -->
             <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
                 <!-- Top Operational Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-700/80">
@@ -164,7 +114,7 @@
                         <h3 class="text-sm sm:text-base font-bold text-white tracking-tight">
                             Posko Siaga Armada &amp; Spesifikasi Tindakan Lapangan
                         </h3>
-                        <p class="text-xs text-slate-300 mt-0.5">Penugasan teknisi terdekat langsung dari posko siaga masing-masing kota untuk respon cepat.</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Penugasan teknisi terdekat langsung dari posko siaga masing-masing kota untuk respon cepat.</p>
                     </div>
                     <div class="inline-flex items-center px-3 py-1 bg-emerald-500/15 border border-emerald-500/30 rounded-md text-emerald-400 text-xs font-semibold shrink-0">
                         <span>Siaga 24 Jam Nonstop</span>
@@ -250,7 +200,7 @@
                     <a :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info kedatangan teknisi ke alamat saya.')" 
                        target="_blank" 
                        rel="noopener noreferrer" 
-                       class="shrink-0 inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg transition-colors shadow-2xs">
+                       class="shrink-0 inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg transition-colors shadow-2xs btn-press">
                         <span>Hubungi Dispatch WhatsApp</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -261,9 +211,15 @@
         </div>
 
         <!-- Footer Bottom Note -->
-        <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs">
-            <p class="text-white">&copy; {{ date('Y') }} Drainusantara. Rooter &amp; Plumbing Engineering. 100% Tanpa Bongkar Keramik &amp; Tanpa Bahan Kimia Korosif.</p>
-            
+        <div class="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs text-slate-400">
+            <p>&copy; {{ date('Y') }} Drainusantara. Rooter &amp; Plumbing Engineering. 100% Tanpa Bongkar Keramik &amp; Bebas Bahan Kimia Korosif.</p>
+            <div class="flex items-center gap-4 text-slate-400 text-[11px]">
+                <a href="{{ route('about.warranty') }}" class="hover:text-white transition-colors">Ketentuan Garansi</a>
+                <span>&bull;</span>
+                <a href="{{ route('about.k3') }}" class="hover:text-white transition-colors">Standar K3</a>
+                <span>&bull;</span>
+                <a href="{{ route('about.faq') }}" class="hover:text-white transition-colors">FAQ</a>
+            </div>
         </div>
     </div>
 </footer>
