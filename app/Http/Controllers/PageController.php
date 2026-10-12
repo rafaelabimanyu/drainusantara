@@ -22,6 +22,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class PageController extends Controller
@@ -611,7 +612,22 @@ class PageController extends Controller
      */
     public function sitemap(): Response
     {
-        $xml = Cache::remember('sitemap.xml', 3600, function () {
+        $baseUrl = rtrim((string) config('app.url'), '/');
+        if (str_starts_with($baseUrl, 'https://')) {
+            URL::forceScheme('https');
+        }
+        if (! empty($baseUrl)) {
+            URL::forceRootUrl($baseUrl);
+        }
+
+        $xml = Cache::remember('sitemap.xml', 3600, function () use ($baseUrl) {
+            if (str_starts_with($baseUrl, 'https://')) {
+                URL::forceScheme('https');
+            }
+            if (! empty($baseUrl)) {
+                URL::forceRootUrl($baseUrl);
+            }
+
             $urls = [];
             // ponytail: omit lastmod without tracked content history; add it when dates are recorded.
 
@@ -693,11 +709,15 @@ class PageController extends Controller
             }
             $xmlString .= '</urlset>';
 
-            return $xmlString;
+            return trim($xmlString);
         });
 
+        if (ob_get_level() > 0) {
+            ob_clean();
+        }
+
         return response($xml, 200)
-            ->header('Content-Type', 'application/xml')
+            ->header('Content-Type', 'text/xml; charset=UTF-8')
             ->header('Cache-Control', 'public, max-age=3600');
     }
 
@@ -971,7 +991,8 @@ class PageController extends Controller
      */
     public function robots(): Response
     {
-        $sitemapUrl = url('/sitemap.xml');
+        $baseUrl = rtrim((string) config('app.url'), '/');
+        $sitemapUrl = ! empty($baseUrl) ? "{$baseUrl}/sitemap.xml" : url('/sitemap.xml');
         $content = "User-agent: *\nDisallow: /admin/\nDisallow: /login\n\nSitemap: {$sitemapUrl}\n";
 
         return response($content, 200)

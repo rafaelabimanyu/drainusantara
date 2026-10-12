@@ -57,6 +57,7 @@ Route::prefix('tentang-kami')->group(function () {
     Route::get('/faq', [PageController::class, 'aboutFaq'])->name('about.faq');
 });
 Route::get('/area-layanan', fn () => redirect('/#area'))->name('areas.anchor');
+Route::get('/layanan', fn () => redirect('/#layanan', 301))->name('services.anchor');
 
 // CMS Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

@@ -14,6 +14,7 @@ use App\Models\Service;
 use App\Models\Staff;
 use App\Observers\ContentCacheObserver;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,6 +35,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (str_starts_with((string) config('app.url'), 'https://') || app()->isProduction()) {
+            URL::forceScheme('https');
+        }
+
         // 1. Invalidate frontend cache automatically when content changes in CMS
         $cacheObserver = ContentCacheObserver::class;
         Service::observe($cacheObserver);

@@ -23,15 +23,39 @@ class SitemapTest extends TestCase
         $response = $this->get('/sitemap.xml');
 
         $response->assertStatus(200);
-        $response->assertHeader('Content-Type', 'application/xml');
+        $response->assertHeader('Content-Type', 'text/xml; charset=UTF-8');
 
         $content = $response->getContent();
+        $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $content);
         $this->assertStringContainsString('<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>', $content);
         $this->assertStringContainsString('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', $content);
         $this->assertStringContainsString(url('/'), $content);
         $this->assertStringContainsString(url('/area'), $content);
         $this->assertStringContainsString(url('/tentang-kami'), $content);
         $this->assertStringContainsString('cara-mengatasi-saluran-pipa-mampet', $content);
+    }
+
+    public function test_sitemap_respects_custom_app_url_and_https(): void
+    {
+        config(['app.url' => 'https://drainusantara.id']);
+        Cache::forget('sitemap.xml');
+
+        $response = $this->get('/sitemap.xml');
+        $response->assertStatus(200);
+        $content = $response->getContent();
+
+        $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $content);
+        $this->assertStringContainsString('<loc>https://drainusantara.id</loc>', $content);
+        $this->assertStringContainsString('<loc>https://drainusantara.id/area</loc>', $content);
+        $this->assertStringContainsString('<loc>https://drainusantara.id/tentang-kami/profil</loc>', $content);
+        $this->assertStringNotContainsString('http://localhost', $content);
+    }
+
+    public function test_layanan_redirects_301_to_home_layanan_anchor(): void
+    {
+        $response = $this->get('/layanan');
+        $response->assertStatus(301);
+        $response->assertRedirect('/#layanan');
     }
 
     public function test_sitemap_xsl_file_exists_and_contains_proper_structure(): void
