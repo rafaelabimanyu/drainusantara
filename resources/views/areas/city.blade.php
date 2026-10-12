@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
+    $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
     $cityWaMsg = urlencode("Halo teknisi Drainusantara, saya butuh layanan darurat pelancaran saluran pipa mampet di area {$cityData['name']}. Mohon info estimasi kedatangan teknisi terdekat.");
     $cityWaUrl = "https://wa.me/{$whatsappNumber}?text={$cityWaMsg}";
 
@@ -142,7 +142,7 @@
                 <div class="bg-white rounded-xl p-3 sm:p-4 border border-slate-200 shadow-xs space-y-3 card-lift">
                     <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                         <img 
-                            src="{{ asset('images/hero-technician.webp') }}" 
+                            src="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
                             alt="Armada Teknisi Drainusantara di {{ $cityData['name'] }}" 
                             width="700" 
                             height="525" 

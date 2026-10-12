@@ -325,7 +325,7 @@
                 </p>
             </div>
             @php
-                $sopWaNumber = config('app.whatsapp_number') ?: '6281234567890';
+                $sopWaNumber = config('app.whatsapp_number') ?: '6285609009009';
                 $sopWaText = urlencode('Halo Drainusantara, saya ingin konsultasi layanan saluran mampet dengan standar SOP K3.');
             @endphp
             <a href="https://wa.me/{{ $sopWaNumber }}?text={{ $sopWaText }}"

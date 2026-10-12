@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $whatsappNumber = config('app.whatsapp_number', '6281234567890');
+    $whatsappNumber = config('app.whatsapp_number', '6285609009009');
     $emergencyWaMsg = urlencode("Halo teknisi Drainusantara, saya butuh perbaikan saluran mampet di area {$area->district}, {$area->city}. Mohon info biaya dan estimasi kedatangan teknisi ke lokasi saya.");
     $emergencyWaUrl = "https://wa.me/{$whatsappNumber}?text={$emergencyWaMsg}";
 
@@ -170,7 +170,7 @@
                     <div class="bg-white rounded-xl p-3 sm:p-4 border border-slate-200 shadow-xs space-y-3 card-lift">
                         <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                             <img 
-                                src="{{ asset('images/hero-technician.webp') }}" 
+                                src="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
                                 alt="Teknisi Drainusantara Penanganan Saluran Pipa Mampet di {{ $area->district }}" 
                                 width="700" 
                                 height="525" 
@@ -213,7 +213,7 @@
                 'short_description' => "Atasi toilet duduk atau jongkok tersumbat pembalut atau tisu tanpa mencabut kloset dan tanpa merusak keramik di {$area->district}.",
                 'price_starting_from' => 400000,
                 'features' => ['Tanpa bongkar kloset keramik', 'APD steril dan bebas bau', 'Garansi nota 30 hari'],
-                'image' => asset('images/services/kloset-wc-mampet.webp'),
+                'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-kloset-wc-toilet-mampet.webp'),
             ],
             [
                 'name' => 'Wastafel & Kitchen Sink',
@@ -222,7 +222,7 @@
                 'short_description' => "Pembersihan kerak minyak dan endapan lemak beku pada bak cuci piring rumah atau dapur resto di {$area->district}.",
                 'price_starting_from' => 400000,
                 'features' => ['Lemak beku rontok tuntas', 'Aman untuk pipa sifon PVC', 'Garansi nota 30 hari'],
-                'image' => asset('images/services/wastafel-cuci-piring-mampet.webp'),
+                'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-wastafel-cuci-piring-mampet.webp'),
             ],
             [
                 'name' => 'Floor Drain & Got Mandi',
@@ -231,7 +231,7 @@
                 'short_description' => "Menuntaskan sumbatan rambut dan residu sabun yang memicu luapan air kotor pada saluran pembuangan kamar mandi Anda.",
                 'price_starting_from' => 400000,
                 'features' => ['Bersihkan gumpalan rambut', 'Hilangkan bau got menguap', 'Garansi nota 30 hari'],
-                'image' => asset('images/services/floor-drain-kamar-mandi.webp'),
+                'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-floor-drain-kamar-mandi-mampet.webp'),
             ],
             [
                 'name' => 'Inspeksi CCTV 30M',
@@ -240,7 +240,7 @@
                 'short_description' => "Mendeteksi titik pipa patah, sambungan lepas, atau intrusi akar di bawah cor dengan monitor resolusi tinggi berjarak hingga 30 meter.",
                 'price_starting_from' => 400000,
                 'features' => ['Jangkauan kabel 30 meter', 'Rekaman visual monitor digital', 'Diagnosa titik akurat'],
-                'image' => asset('images/services/inspeksi-kamera-cctv-pipa.webp'),
+                'image' => asset('images/services/drainusantara-jasa-inspeksi-kamera-cctv-saluran-pipa-endoskopi.webp'),
             ],
         ];
         $itemsLayanan = (isset($services) && $services->isNotEmpty()) ? $services : collect($defaultServices);

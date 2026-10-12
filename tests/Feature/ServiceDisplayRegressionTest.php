@@ -50,7 +50,7 @@ class ServiceDisplayRegressionTest extends TestCase
     {
         $dom = $this->serviceDom('/');
         $this->assertSame(1, $dom->query('//dialog[@aria-labelledby="mobile-drawer-title"]')->length);
-        $button = $dom->query('//button[contains(@*[name()="@click"], "tentangDrawerOpen =")]')->item(0);
+        $button = $dom->query('//button[@aria-controls="drawer-company-links"]')->item(0);
         $this->assertNotNull($button);
         $this->assertSame('false', $button->getAttribute('aria-expanded'));
         $this->assertSame('tentangDrawerOpen', $button->getAttribute(':aria-expanded'));

@@ -24,7 +24,7 @@ return [
          * Webmaster tags are always added.
          */
         'webmaster_tags' => [
-            'google' => null,
+            'google' => env('GOOGLE_SITE_VERIFICATION', 'aoHQ2ZJhlGecoaMyq4c-0pnAqdqj6AViTLZUPxDbKgw'),
             'bing' => null,
             'alexa' => null,
             'pinterest' => null,
@@ -44,7 +44,7 @@ return [
             'url' => null,
             'type' => 'website',
             'site_name' => 'Drainusantara',
-            'images' => ['/images/hero-technician.webp'],
+            'images' => ['/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'],
         ],
     ],
     'twitter' => [
@@ -54,7 +54,7 @@ return [
         'defaults' => [
             'card' => 'summary_large_image',
             'site' => '@drainusantara',
-            'images' => ['/images/hero-technician.webp'],
+            'images' => ['/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'],
         ],
     ],
     'json-ld' => [
@@ -66,7 +66,7 @@ return [
             'description' => 'Layanan pelancaran saluran mampet tanpa bongkar & inspeksi CCTV pipa.',
             'url' => null,
             'type' => 'PlumbingService',
-            'images' => ['/images/hero-technician.webp'],
+            'images' => ['/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'],
         ],
     ],
 ];

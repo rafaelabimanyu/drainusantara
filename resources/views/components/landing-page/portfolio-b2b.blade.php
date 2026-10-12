@@ -68,8 +68,8 @@
                     <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
                     <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
                         @php
-                            $projectImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/hero-technician.webp');
-                            $defaultFallback = asset('images/hero-technician.webp');
+                            $projectImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
+                            $defaultFallback = asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
                         @endphp
                         <img src="{{ $projectImg }}" 
                              alt="{{ $project->client_name }}" 

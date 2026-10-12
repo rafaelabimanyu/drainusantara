@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
+    $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
     $generalWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode("Halo Admin Drainusantara, saya ingin cek ketersediaan teknisi saluran mampet untuk wilayah saya.");
 
     $heroBgImage = file_exists(public_path('images/areas/hero-area.webp'))

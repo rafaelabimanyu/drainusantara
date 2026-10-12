@@ -13,15 +13,14 @@
 
     <link rel="preload" as="font" href="{{ asset('fonts/plus-jakarta-sans-latin.woff2') }}" type="font/woff2" crossorigin>
 
-    <!-- Preload Critical LCP Hero Image (Mobile First & Desktop WebP) -->
+    <!-- Preload Critical LCP Hero Image (WebP) -->
     @if(request()->routeIs('home'))
-    <link rel="preload" as="image" href="{{ asset('images/hero-technician-mobile.webp') }}" media="(max-width: 640px)" type="image/webp" fetchpriority="high">
-    <link rel="preload" as="image" href="{{ asset('images/hero-technician.webp') }}" media="(min-width: 641px)" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" type="image/webp" fetchpriority="high">
     @endif
 
     <!-- Global Application State Data (Lightweight, Non-blocking) -->
     <script>
-        window.__DRAINUSANTARA_WA__ = "{{ config('app.whatsapp_number') ?: '6281234567890' }}";
+        window.__DRAINUSANTARA_WA__ = "{{ config('app.whatsapp_number') ?: '6285609009009' }}";
     </script>
     <script type="application/json" id="drainusantara-webmcp-data">
         {!! json_encode([
@@ -31,7 +30,7 @@
                 'short_description' => $s->short_description,
                 'price_starting_from' => (int) $s->price_starting_from,
             ])->values()->all(),
-            'whatsappNumber' => config('app.whatsapp_number') ?: '6281234567890',
+            'whatsappNumber' => config('app.whatsapp_number') ?: '6285609009009',
             'baseUrl' => url('/'),
         ], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}
     </script>

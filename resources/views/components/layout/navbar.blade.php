@@ -209,7 +209,7 @@
 
             <!-- Desktop CTA: Tombol 'Hubungi Kami' -->
             <div class="hidden lg:flex items-center">
-                <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+                <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6285609009009' }}?text={{ rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
                        :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
                    target="_blank" 
                    rel="noopener noreferrer" 

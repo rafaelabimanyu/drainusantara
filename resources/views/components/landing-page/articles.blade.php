@@ -51,7 +51,7 @@
                             <div class="flex items-center gap-2 text-xs text-slate-400 mb-2.5">
                                 <span>{{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}</span>
                                 <span>&bull;</span>
-                                <span class="text-slate-500 font-medium">4 Menit Baca</span>
+                                <span class="text-slate-500 font-medium">{{ $article->reading_time }} Menit Baca</span>
                             </div>
 
                             <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-sky-700 transition-colors line-clamp-2 leading-snug">

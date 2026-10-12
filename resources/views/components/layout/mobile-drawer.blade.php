@@ -1,7 +1,7 @@
-<dialog x-cloak x-ref="drawerDialog" id="mobile-drawer"
+<dialog id="mobile-drawer" aria-labelledby="mobile-drawer-title" x-cloak x-ref="drawerDialog"
      @cancel.prevent="sidebarOpen = false"
      @close="if (!$el.open) sidebarOpen = false"
-     @resize.window="if (window.innerWidth >= 1024) sidebarOpen = false"
+     @resize.window="if (window.innerWidth &gt;= 1024) sidebarOpen = false"
      @keydown.tab="trapDrawerFocus($event)"
      x-data="{
          trigger: null,
@@ -240,7 +240,7 @@
         <!-- C. Ergonomic Sticky Bottom Zone -->
         <div class="p-4 border-t border-slate-200 bg-slate-50/95 backdrop-blur-xs space-y-2 shrink-0 pb-safe pb-4">
             <!-- 1. Primary Action: WhatsApp Siaga Darurat (48px Touch Target, WCAG AAA Contrast) -->
-            <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+            <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6285609009009' }}?text={{ rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
                        :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
                target="_blank" 
                rel="noopener noreferrer" 

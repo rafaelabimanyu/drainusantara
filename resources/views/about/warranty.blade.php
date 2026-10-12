@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="mt-8 pt-6 border-t border-slate-100">
-                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ urlencode('Halo Admin Drainusantara, saya ingin konsultasi garansi pengerjaan saluran.') }}" 
+                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6285609009009' }}?text={{ urlencode('Halo Admin Drainusantara, saya ingin konsultasi garansi pengerjaan saluran.') }}" 
                        target="_blank" 
                        rel="noopener noreferrer" 
                        class="btn-press w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs shadow-xs transition-colors min-h-[44px]">

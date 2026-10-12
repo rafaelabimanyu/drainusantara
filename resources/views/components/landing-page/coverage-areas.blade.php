@@ -3,7 +3,7 @@
 ])
 
 @php
-    $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6281234567890');
+    $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6285609009009');
 @endphp
 
 <section id="area" class="bg-slate-50 border-b border-slate-200 py-16 lg:py-20" x-data="mobileCarousel(3, 4500)">

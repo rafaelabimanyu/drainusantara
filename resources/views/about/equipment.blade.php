@@ -313,7 +313,7 @@
         @endif
 
         @php
-            $equipWaNumber = config('app.whatsapp_number') ?: '6281234567890';
+            $equipWaNumber = config('app.whatsapp_number') ?: '6285609009009';
             $equipWaText = urlencode('Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran menggunakan unit mesin spiral rotary / kamera CCTV.');
             $equipWaUrl = "https://wa.me/{$equipWaNumber}?text={$equipWaText}";
         @endphp

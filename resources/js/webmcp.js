@@ -24,7 +24,7 @@ function getWebMcpData() {
     }
     return {
         services: [],
-        whatsappNumber: window.__DRAINUSANTARA_WA__ || '6281234567890',
+        whatsappNumber: window.__DRAINUSANTARA_WA__ || '6285609009009',
         baseUrl: window.location.origin
     };
 }
@@ -51,7 +51,7 @@ export function registerWebMcpTools() {
 
     const data = getWebMcpData();
     const baseUrl = data.baseUrl || window.location.origin;
-    const waNumber = (data.whatsappNumber || '6281234567890').replace(/[^0-9]/g, '');
+    const waNumber = (data.whatsappNumber || '6285609009009').replace(/[^0-9]/g, '');
 
     // Tool 1: Cari Layanan & Estimasi Biaya
     try {

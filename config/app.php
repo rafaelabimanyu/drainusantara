@@ -128,6 +128,6 @@ return [
     | Drainusantara WhatsApp Hotline Configuration
     |--------------------------------------------------------------------------
     */
-    'whatsapp_number' => env('WHATSAPP_NUMBER', '6281234567890'),
+    'whatsapp_number' => env('WHATSAPP_NUMBER', '6285609009009'),
 
 ];

@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
+    $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
     $faqWaText = urlencode("Halo Admin Drainusantara, saya ingin bertanya lebih lanjut mengenai penanganan saluran pipa dan estimasi biaya.");
     $faqWaUrl = "https://wa.me/{$whatsappNumber}?text={$faqWaText}";
 @endphp

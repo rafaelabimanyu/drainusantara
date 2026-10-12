@@ -54,17 +54,17 @@ class PageController extends Controller
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
         OpenGraph::addProperty('site_name', 'Drainusantara');
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Pelancar saluran wastafel & kloset tanpa bongkar keramik di Jabodetabek, Semarang & Lampung. Bergaransi 30 hari.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
         JsonLdMulti::setDescription('Jasa pelancaran saluran pipa mampet profesional, mesin rooter spiral baja, dan inspeksi kamera CCTV pipa bergaransi 30 hari.');
         JsonLdMulti::setType('Plumber');
         JsonLdMulti::addValues([
             'name' => 'Drainusantara',
-            'telephone' => config('app.whatsapp_number', '+6281234567890'),
+            'telephone' => $this->formatInternationalPhone(),
             'priceRange' => 'Mulai Rp 400.000',
             'openingHours' => 'Mo-Su 00:00-24:00',
             'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung'],
@@ -126,16 +126,16 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Armada siaga teknisi pelancar saluran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.');
         OpenGraph::setUrl(url()->current());
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Armada siaga teknisi pelancar saluran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Wilayah Jangkauan Layanan Drainusantara');
         JsonLdMulti::setType('Plumber');
         JsonLdMulti::addValues([
             'name' => 'Drainusantara - Wilayah Jangkauan Layanan',
-            'telephone' => config('app.whatsapp_number', '+6281234567890'),
+            'telephone' => $this->formatInternationalPhone(),
             'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung'],
             'priceRange' => 'Mulai Rp 400.000',
         ]);
@@ -177,10 +177,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription($description);
         OpenGraph::setUrl(url()->current());
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription($description);
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle("Drainusantara Provinsi {$provinceData['name']}");
         JsonLdMulti::setDescription($description);
@@ -188,7 +188,7 @@ class PageController extends Controller
         JsonLdMulti::addValues([
             'name' => "Drainusantara Provinsi {$provinceData['name']}",
             'areaServed' => $provinceData['name'],
-            'telephone' => config('app.whatsapp_number', '+6281234567890'),
+            'telephone' => $this->formatInternationalPhone(),
             'priceRange' => 'Mulai Rp 400.000',
             'openingHours' => 'Mo-Su 00:00-24:00',
         ]);
@@ -267,10 +267,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription($description);
         OpenGraph::setUrl(url()->current());
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription($description);
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle("Drainusantara {$cityData['name']}");
         JsonLdMulti::setDescription($description);
@@ -278,7 +278,7 @@ class PageController extends Controller
         JsonLdMulti::addValues([
             'name' => "Drainusantara {$cityData['name']}",
             'areaServed' => "{$cityData['name']}, {$cityData['province_name']}",
-            'telephone' => $cityData['phone'] ?? config('app.whatsapp_number', '+628****7890'),
+            'telephone' => $this->formatInternationalPhone(),
             'priceRange' => 'Mulai Rp 400.000',
             'openingHours' => 'Mo-Su 00:00-24:00',
             'address' => [
@@ -392,10 +392,10 @@ class PageController extends Controller
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
         OpenGraph::addProperty('site_name', 'Drainusantara');
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription($description);
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle("Drainusantara - Area {$area->district}, {$area->city}");
         JsonLdMulti::setDescription($description);
@@ -403,7 +403,7 @@ class PageController extends Controller
         JsonLdMulti::addValues([
             'name' => "Drainusantara {$area->district}",
             'areaServed' => "{$area->district}, {$area->city}",
-            'telephone' => config('app.whatsapp_number', '+628****7890'),
+            'telephone' => $this->formatInternationalPhone(),
             'priceRange' => 'Mulai Rp 400.000',
             'openingHours' => 'Mo-Su 00:00-24:00',
             'address' => [
@@ -452,10 +452,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis berstandar profesional. Tanpa bongkar keramik dan bergaransi 30 hari.');
         OpenGraph::setUrl(url()->current());
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis. Tanpa bongkar keramik, garansi nota 30 hari.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Galeri Pengerjaan Saluran Pipa Mampet - Drainusantara');
         JsonLdMulti::setDescription('Dokumentasi proyek pengerjaan pembersihan pipa tersumbat dan inspeksi CCTV pipa.');
@@ -486,10 +486,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Tips ahli dan panduan seputar perawatan saluran pembuangan air, wastafel, toilet, dan drainase rumah.');
         OpenGraph::setUrl($canonical);
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Tips ahli dan panduan seputar perawatan saluran pembuangan air, wastafel, toilet, dan drainase rumah.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
         $this->addBreadcrumb(['Pengetahuan & Edukasi', route('articles.index')]);
 
         $articles = Article::where('is_published', true)
@@ -515,7 +515,7 @@ class PageController extends Controller
         $rawTitle = $article->meta_title ?: $article->title;
         $cleanTitle = PageMetadata::cleanTitle($rawTitle);
         $metaDescription = $article->meta_description ?: ($article->excerpt ?: Str::limit(strip_tags($article->content), 150));
-        $thumbnailUrl = $article->thumbnail ? (filter_var($article->thumbnail, FILTER_VALIDATE_URL) ? $article->thumbnail : asset($article->thumbnail)) : asset('images/hero-technician.webp');
+        $thumbnailUrl = $article->thumbnail ? (filter_var($article->thumbnail, FILTER_VALIDATE_URL) ? $article->thumbnail : asset($article->thumbnail)) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
 
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($metaDescription);
@@ -553,9 +553,11 @@ class PageController extends Controller
                 'url' => url('/'),
                 'logo' => [
                     '@type' => 'ImageObject',
-                    'url' => asset('images/hero-technician.webp'),
+                    'url' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
                 ],
             ],
+            'articleSection' => $article->category ?? 'Tips & Edukasi',
+            'inLanguage' => 'id-ID',
             'mainEntityOfPage' => [
                 '@type' => 'WebPage',
                 '@id' => url()->current(),
@@ -572,13 +574,36 @@ class PageController extends Controller
             ],
         ]);
 
-        $recentArticles = Article::where('is_published', true)
+        $prevArticle = Article::where('is_published', true)
+            ->where('published_at', '<', $article->published_at ?? $article->created_at)
+            ->orderByDesc('published_at')
+            ->first();
+
+        $nextArticle = Article::where('is_published', true)
+            ->where('published_at', '>', $article->published_at ?? $article->created_at)
+            ->orderBy('published_at')
+            ->first();
+
+        $relatedArticles = Article::where('is_published', true)
             ->where('id', '!=', $article->id)
+            ->when($article->category, fn ($q) => $q->where('category', $article->category))
             ->latest('published_at')
             ->take(3)
             ->get();
 
-        return view('articles.show', compact('article', 'recentArticles'));
+        if ($relatedArticles->count() < 3) {
+            $fallback = Article::where('is_published', true)
+                ->where('id', '!=', $article->id)
+                ->whereNotIn('id', $relatedArticles->pluck('id'))
+                ->latest('published_at')
+                ->take(3 - $relatedArticles->count())
+                ->get();
+            $relatedArticles = $relatedArticles->concat($fallback);
+        }
+
+        $recentArticles = $relatedArticles;
+
+        return view('articles.show', compact('article', 'recentArticles', 'relatedArticles', 'prevArticle', 'nextArticle'));
     }
 
     /**
@@ -695,10 +720,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Mengenal integritas, visi, misi, dan pilar keunggulan teknik Drainusantara dalam melayani perumahan dan komersial.');
         OpenGraph::setUrl(route('about.profile'));
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Spesialis pelancaran pipa mampet tanpa bongkar keramik bergaransi 30 hari.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Profil Perusahaan Drainusantara');
         JsonLdMulti::setType('AboutPage');
@@ -725,10 +750,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Fondasi korporasi kokoh di bawah naungan J&J Group dengan jaringan logistik armada dan pengawasan mutu sanitasi.');
         OpenGraph::setUrl(route('about.holding'));
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Ekosistem holding sanitasi dan drainase modern di Indonesia.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Struktur Holding J&J Group - Drainusantara');
         JsonLdMulti::setType('AboutPage');
@@ -748,10 +773,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Disiplin keselamatan kerja dan perlindungan sanitasi ruangan konsumen pada setiap penanganan pipa.');
         OpenGraph::setUrl(route('about.k3'));
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Protokol higienis, cover sepatu, sarung tangan nitril, dan keamanan kelistrikan.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Standar SOP K3 Teknisi - Drainusantara');
         JsonLdMulti::setType('AboutPage');
@@ -771,10 +796,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Teknologi mekanis spiral baja elastis dan visualisasi kondisi internal pipa dengan kamera endoskopi digital.');
         OpenGraph::setUrl(route('about.equipment'));
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Mesin spiral Ridgid K-50/K-60 dan kamera pipa CCTV IP68.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
         $this->addAboutBreadcrumb('Peralatan & Teknologi', 'about.equipment');
 
         $equipments = Cache::remember('equipments.all_active', 86400, function () {
@@ -795,10 +820,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Kepercayaan puluhan entitas komersial F&B dan perhotelan terhadap solusi drainase tanpa bongkar keramik.');
         OpenGraph::setUrl(route('about.portfolio'));
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Portofolio pembersihan pipa dan grease trap resto, hotel, dan gedung komersial.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Klien & Portofolio Proyek - Drainusantara');
         JsonLdMulti::setType('AboutPage');
@@ -824,10 +849,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Perlindungan purna jual nyata: nota digital resmi, komitmen No Cure No Pay, dan respon klaim prioritas.');
         OpenGraph::setUrl(route('about.warranty'));
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Jaminan garansi 30 hari kalender dan komitmen No Cure No Pay.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Ketentuan Resmi Garansi 30 Hari - Drainusantara');
         JsonLdMulti::setType('AboutPage');
@@ -847,10 +872,10 @@ class PageController extends Controller
 
         OpenGraph::setDescription('Informasi transparan seputar metode pengerjaan tanpa bongkar keramik, peralatan, dan jaminan keamanan sanitasi.');
         OpenGraph::setUrl(route('about.faq'));
-        OpenGraph::addImage(asset('images/hero-technician.webp'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Tanya jawab teknis seputar pelancaran pipa tanpa bongkar keramik.');
-        TwitterCard::setImage(asset('images/hero-technician.webp'));
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Tanya Jawab (FAQ) - Drainusantara');
         JsonLdMulti::setType('FAQPage');
@@ -932,7 +957,7 @@ class PageController extends Controller
 
             return view('llms', [
                 'services' => $services,
-                'whatsappNumber' => config('app.whatsapp_number') ?: '6281234567890',
+                'whatsappNumber' => config('app.whatsapp_number', '6285609009009'),
             ])->render();
         });
 
@@ -952,5 +977,16 @@ class PageController extends Controller
         return response($content, 200)
             ->header('Content-Type', 'text/plain; charset=utf-8')
             ->header('Cache-Control', 'public, max-age=86400');
+    }
+
+    /**
+     * Format official hotline phone into E.164 international format for Schema JSON-LD.
+     */
+    private function formatInternationalPhone(): string
+    {
+        $raw = (string) config('app.whatsapp_number', '6285609009009');
+        $digits = preg_replace('/[^0-9]/', '', $raw);
+
+        return '+'.($digits !== '' ? $digits : '6285609009009');
     }
 }

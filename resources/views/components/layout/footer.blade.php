@@ -54,7 +54,7 @@
                     Saluran air meluap darurat atau butuh survei grease trap gedung? Penugasan teknisi terdekat langsung dari posko siaga untuk respon cepat.
                 </p>
                 <div class="space-y-2.5">
-                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ rawurlencode('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.') }}"
+                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6285609009009' }}?text={{ rawurlencode('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.') }}"
                        :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.')"
                        target="_blank" 
                        rel="noopener noreferrer" 
@@ -192,7 +192,7 @@
                         </svg>
                         <span>Saluran pipa meluap mendesak atau butuh survei grease trap gedung? Teknisi kami siap meluncur dari posko terdekat.</span>
                     </div>
-                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6281234567890' }}?text={{ rawurlencode('Halo Admin Drainusantara, saya membutuhkan info kedatangan teknisi ke alamat saya.') }}"
+                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6285609009009' }}?text={{ rawurlencode('Halo Admin Drainusantara, saya membutuhkan info kedatangan teknisi ke alamat saya.') }}"
                        :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info kedatangan teknisi ke alamat saya.')"
                        target="_blank" 
                        rel="noopener noreferrer" 

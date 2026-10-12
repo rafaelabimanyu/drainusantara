@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
+    $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
     $waMsg = urlencode("Halo Drainusantara, saya butuh penanganan pipa mampet di Provinsi {$provinceData['name']}. Mohon info armada teknisi terdekat.");
     $waUrl = "https://wa.me/{$whatsappNumber}?text={$waMsg}";
 
@@ -28,7 +28,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'image' => asset('images/services/wastafel-cuci-piring-mampet.webp'),
+            'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-wastafel-cuci-piring-mampet.webp'),
         ],
         [
             'title' => 'Kloset & WC Meluap',
@@ -41,7 +41,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'image' => asset('images/services/kloset-wc-mampet.webp'),
+            'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-kloset-wc-toilet-mampet.webp'),
         ],
         [
             'title' => 'Floor Drain Kamar Mandi',
@@ -54,7 +54,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'image' => asset('images/services/floor-drain-kamar-mandi.webp'),
+            'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-floor-drain-kamar-mandi-mampet.webp'),
         ],
         [
             'title' => 'Talang Rooftop & Pipa Atap',
@@ -67,7 +67,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'image' => asset('images/services/talang-rooftop-pipa-atap.webp'),
+            'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-talang-rooftop-pipa-atap-mampet.webp'),
         ],
         [
             'title' => 'Kuras Grease Trap & Lemak',
@@ -80,7 +80,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 400000,
-            'image' => asset('images/services/kuras-grease-trap-lemak.webp'),
+            'image' => asset('images/services/drainusantara-jasa-perbaikan-kuras-grease-trap-lemak-restoran.webp'),
         ],
         [
             'title' => 'Inspeksi Kamera CCTV Pipa IP68',
@@ -93,7 +93,7 @@
                 'Garansi resmi 30 hari nota tertulis',
             ],
             'price' => 500000,
-            'image' => asset('images/services/inspeksi-kamera-cctv-pipa.webp'),
+            'image' => asset('images/services/drainusantara-jasa-inspeksi-kamera-cctv-saluran-pipa-endoskopi.webp'),
         ],
     ];
 
@@ -241,7 +241,7 @@
                     <div class="bg-white rounded-xl p-3 sm:p-4 border border-slate-200 shadow-xs space-y-3 card-lift">
                         <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                             <img 
-                                src="{{ asset('images/hero-technician.webp') }}" 
+                                src="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
                                 alt="Teknisi Drainusantara Penanganan Saluran Mampet di Provinsi {{ $provinceData['name'] }}" 
                                 width="600" 
                                 height="450" 

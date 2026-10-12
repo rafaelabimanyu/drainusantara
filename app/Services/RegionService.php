@@ -27,7 +27,7 @@ class RegionService
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Posko Armada Siaga Jakarta Timur (Area Duren Sawit & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Ciracas',
@@ -50,7 +50,7 @@ class RegionService
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Posko Armada Siaga Jakarta Selatan (Area Tebet & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Tebet',
@@ -72,7 +72,7 @@ class RegionService
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Posko Armada Siaga Jakarta Barat (Area Kebon Jeruk & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kebon Jeruk',
@@ -92,7 +92,7 @@ class RegionService
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Posko Armada Siaga Jakarta Utara (Area Kelapa Gading & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kelapa Gading',
@@ -113,7 +113,7 @@ class RegionService
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
                         'posko_address' => 'Posko Armada Siaga Jakarta Pusat (Area Kemayoran & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kemayoran',
@@ -141,7 +141,7 @@ class RegionService
                         'province_name' => 'Jawa Barat',
                         'province_slug' => 'jawa-barat',
                         'posko_address' => 'Posko Armada Siaga Bogor (Area Cibinong, Sentul & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cibinong',
@@ -161,7 +161,7 @@ class RegionService
                         'province_name' => 'Jawa Barat',
                         'province_slug' => 'jawa-barat',
                         'posko_address' => 'Posko Armada Siaga Depok & Cinere (Area Margonda & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cinere',
@@ -181,7 +181,7 @@ class RegionService
                         'province_name' => 'Jawa Barat',
                         'province_slug' => 'jawa-barat',
                         'posko_address' => 'Posko Armada Siaga Bekasi & Cikarang',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cikarang Selatan',
@@ -202,7 +202,7 @@ class RegionService
                         'province_name' => 'Jawa Barat',
                         'province_slug' => 'jawa-barat',
                         'posko_address' => 'Posko Armada Siaga Kota Bandung',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Buahbatu',
@@ -232,7 +232,7 @@ class RegionService
                         'province_name' => 'Banten',
                         'province_slug' => 'banten',
                         'posko_address' => 'Posko Armada Siaga Tangerang Kota (Area Cipondoh & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cipondoh',
@@ -253,7 +253,7 @@ class RegionService
                         'province_name' => 'Banten',
                         'province_slug' => 'banten',
                         'posko_address' => 'Posko Armada Siaga Tangerang Selatan (Area BSD & Bintaro)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Serpong',
@@ -280,7 +280,7 @@ class RegionService
                         'province_name' => 'Jawa Tengah',
                         'province_slug' => 'jawa-tengah',
                         'posko_address' => 'Posko Armada Siaga Kota Semarang (Area Candisari & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Candisari',
@@ -309,7 +309,7 @@ class RegionService
                         'province_name' => 'Lampung',
                         'province_slug' => 'lampung',
                         'posko_address' => 'Posko Armada Siaga Bandar Lampung (Area Kedaton & Sekitarnya)',
-                        'phone' => config('app.whatsapp_number', '0812-3456-7890'),
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
                         'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kedaton',

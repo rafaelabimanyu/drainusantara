@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
+    $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
     $portfolioList = $portfolios ?? collect();
 @endphp
 
@@ -75,8 +75,8 @@
                         <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
                         <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
                             @php
-                                $aboutProjImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/hero-technician.webp');
-                                $aboutDefaultFallback = asset('images/hero-technician.webp');
+                                $aboutProjImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
+                                $aboutDefaultFallback = asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
                             @endphp
                             <img src="{{ $aboutProjImg }}" 
                                  alt="{{ $project->client_name }}" 

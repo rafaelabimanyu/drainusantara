@@ -111,7 +111,7 @@ class StaffController extends Controller
                 'name' => $validated['name'],
                 'role' => array_key_exists('role', $validated) ? $validated['role'] : $staff->role,
                 'photo' => $photoUrl,
-                'initials' => array_key_exists('initials', $validated) ? $validated['initials'] : $staff->initials,
+                'initials' => array_key_exists('initials', $validated) ? $validated['initials'] : $staff->getRawOriginal('initials'),
                 'order' => $validated['order'] ?? $staff->order,
                 'is_active' => $request->boolean('is_active'),
             ]);

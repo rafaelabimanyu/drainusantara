@@ -38,7 +38,7 @@ Alpine.data('layoutData', () => ({
     mobileSearchOpen: false,
     tentangDrawerOpen: false,
     diagProblem: 'wastafel',
-    whatsappNumber: window.__DRAINUSANTARA_WA__ || '6281234567890',
+    whatsappNumber: window.__DRAINUSANTARA_WA__ || '6285609009009',
     _cachedAreas: null,
     diagnostics: {
         wastafel: {

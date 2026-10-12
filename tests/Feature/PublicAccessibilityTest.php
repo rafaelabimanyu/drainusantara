@@ -20,7 +20,7 @@ class PublicAccessibilityTest extends TestCase
     {
         foreach (['/' => 'faq', '/tentang-kami/faq' => 'faq-page'] as $url => $id) {
             $dom = $this->dom($this->get($url)->assertOk()->getContent());
-            $buttons = $dom->query('//*[@id="'.$id.'"]//button[contains(@*[name()="@click"], "? null")]');
+            $buttons = $dom->query('//*[@id="'.$id.'"]//button[@aria-controls]');
             $this->assertGreaterThan(0, $buttons->length);
             foreach ($buttons as $button) {
                 $this->assertTrue($button->hasAttribute('aria-expanded'));

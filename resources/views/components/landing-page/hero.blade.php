@@ -6,10 +6,10 @@
 <section class="relative min-h-[calc(100vh-5rem)] flex items-center bg-white border-b border-slate-200 overflow-hidden py-12 lg:py-20">
     <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <picture class="w-full h-full">
-            <source media="(max-width: 640px)" srcset="{{ asset('images/hero-technician-mobile.webp') }}" type="image/webp">
+            <source media="(max-width: 640px)" srcset="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" type="image/webp">
             <img 
-                src="{{ asset('images/hero-technician.webp') }}"
-                alt="Background Drainusantara" 
+                src="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}"
+                alt="Jasa Saluran Pipa Mampet Teknisi Profesional Drainusantara" 
                 class="w-full h-full object-cover object-center"
                 loading="eager"
                 fetchpriority="high"

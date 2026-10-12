@@ -60,7 +60,7 @@ class CmsSecurityRegressionTest extends TestCase
         $link = $root . '/media-path-link-test.webp';
         file_put_contents($outside, 'untouched');
         try {
-            if (function_exists('symlink') && symlink($outside, $link)) {
+            if (function_exists('symlink') && @symlink($outside, $link)) {
                 $this->assertNull(MediaPath::resolve('/images/services/media-path-link-test.webp', $folder));
             }
             $this->assertNull(MediaPath::resolve('/images/services/../media-path-outside-test.webp', $folder));

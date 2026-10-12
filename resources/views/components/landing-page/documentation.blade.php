@@ -54,7 +54,7 @@
                     $photo = $item->image ?: ($item->after_image ?: $item->before_image);
                     $serviceTitle = is_object($item->service ?? null) ? $item->service->name : 'Pelancaran Pipa';
                     $waText = urlencode("Halo Tim Drainusantara, saya melihat dokumentasi '{$item->title}'. Saluran pipa saya ada kendala serupa, mohon info estimasi biaya dan kedatangan teknisi.");
-                    $itemWaUrl = "https://wa.me/" . config('app.whatsapp_number', '6281234567890') . "?text={$waText}";
+                    $itemWaUrl = "https://wa.me/" . config('app.whatsapp_number', '6285609009009') . "?text={$waText}";
                 @endphp
                 <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }} flex flex-col justify-between group">
                     <div>

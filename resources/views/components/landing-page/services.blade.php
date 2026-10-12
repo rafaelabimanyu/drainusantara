@@ -5,7 +5,7 @@
 ])
 
 @php
-    $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6281234567890');
+    $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6285609009009');
     $itemsLayanan = (isset($services) && $services->isNotEmpty()) ? $services : collect($problemCatalogs);
 @endphp
 <section id="layanan" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200 content-auto" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4000)">

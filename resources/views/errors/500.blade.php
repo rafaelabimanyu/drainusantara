@@ -2,7 +2,7 @@
 
 @section('content')
 @php
-    $whatsappNumber = config('app.whatsapp_number') ?: '6281234567890';
+    $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
     $waText = urlencode("Halo Admin Drainusantara, website sedang mengalami kendala server (error 500) dan saya membutuhkan bantuan darurat teknisi pelancar saluran air.");
     $waUrl = "https://wa.me/{$whatsappNumber}?text={$waText}";
 @endphp
