@@ -1,58 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Drainusantara
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Website layanan saluran pipa dengan halaman wilayah, artikel edukasi, galeri, portofolio, serta CMS admin.
 
-## About Laravel
+## Stack dan kebutuhan
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Laravel 13, constraint `laravel/framework: ^13.17`. Versi persis mengikuti `composer.lock`; gunakan `composer install`, bukan `composer update`, untuk setup.
+- PHP `^8.3`, Composer 2. Jalankan `composer check-platform-reqs` untuk memeriksa kebutuhan dependency terkunci.
+- Blade, Tailwind CSS 4, Alpine.js 3, Vite 8. Node.js `^20.19.0 || >=22.12.0` dan npm.
+- SQLite untuk pengembangan/tes; MySQL didukung melalui `pdo_mysql`.
+- Ekstensi tambahan aplikasi: GD dengan dukungan WebP untuk optimasi gambar; `pdo_sqlite` untuk suite tes default. `mysqli` bukan driver database Laravel.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Setup lokal baru
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Jangan menimpa `.env` atau database instalasi yang sudah ada. Langkah berikut untuk checkout baru dan database lokal kosong.
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Edit `.env`: set `APP_NAME=Drainusantara`, `APP_URL=http://localhost:8000`, dan `DB_CONNECTION=sqlite`. Untuk MySQL, siapkan database kosong dan isi `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, serta `DB_PASSWORD` sendiri. Jangan commit kredensial.
 
-## Contributing
+```bash
+php artisan migrate
+php artisan storage:link
+npm ci --ignore-scripts
+npm run build
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Buka `http://localhost:8000`. Untuk hot reload, jalankan `npm run dev` di terminal kedua. Folder `storage/` dan `bootstrap/cache/` harus dapat ditulis proses PHP. Aset frontend dibundel lokal, bukan Tailwind/Alpine CDN.
 
-## Code of Conduct
+Seeder bersifat opsional. Periksa `database/seeders/DatabaseSeeder.php` sebelum menjalankannya; jangan seed ulang database berisi data CMS tanpa meninjau dampaknya.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Tes dan pemeriksaan
 
-## Security Vulnerabilities
+```bash
+composer check-platform-reqs
+php artisan test
+php artisan test tests/Feature/FrontendContentTest.php
+node tests/carousel-accessibility.mjs
+npm run build
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+`phpunit.xml` memakai SQLite `:memory:`, cache/session array, dan queue sync. Jangan jalankan tes migrasi terhadap database aplikasi. Jangan gunakan cache konfigurasi production saat menjalankan tes.
 
-## License
+Regresi judul membedakan teks dengan sumber HTML: `assertSee('Panduan Perawatan & Tips')` melakukan escaping otomatis. Jangan memakai `false` untuk teks mentah yang di-escape Blade. Pemeriksaan DOM memastikan heading tampil dengan `&`, bukan `&amp;`, serta judul CMS tidak berubah menjadi markup.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Tes perilaku khusus MySQL tersedia melalui:
+
+```bash
+bash tests/run-mysql.sh
+```
+
+Runner ini memerlukan server MySQL lokal dan izin `sudo -n mysql`; membuat database/user sementara lalu menghapusnya saat selesai. Tidak memakai database aplikasi.
+
+## Warning startup PHP / mysqli
+
+Periksa executable dan konfigurasi yang benar sebelum mengubah ekstensi:
+
+```bash
+command -v php
+php -v
+php --ini
+php --ri mysqli
+php --ri pdo_mysql
+composer check-platform-reqs
+```
+
+- `Module "mysqli" is already loaded`: sisakan satu directive aktif `extension=mysqli` di kumpulan INI milik SAPI terkait; hapus duplikat, bukan semua konfigurasi ekstensi.
+- `Unable to load dynamic library 'mysqli'` atau `undefined symbol: mysqlnd_*`: pastikan paket ekstensi cocok dengan versi PHP dan `mysqlnd` dimuat sebelum `mysqli`. Pada Debian/Ubuntu, konfigurasi paket biasanya memuat `10-mysqlnd.ini` sebelum `20-mysqli.ini`. Jangan memuat `mysqli` lebih awal secara manual di `php.ini`.
+- Laravel menggunakan PDO: pertahankan `pdo_mysql` untuk MySQL. Jangan menonaktifkan driver database hanya untuk menyembunyikan warning.
+- PHP CLI dan PHP-FPM/Apache dapat memakai INI berbeda. Periksa SAPI yang mengeluarkan warning; reload layanan web hanya setelah konfigurasi diperbaiki.
+
+Setelah perbaikan, ulangi `php -v`, `php --ri mysqli`, dan `php artisan test`. Jangan menyembunyikan masalah dengan `2>/dev/null` atau mematikan pelaporan error.
+
+## Deployment
+
+Arahkan document root ke `public/`. Set `APP_ENV=production`, `APP_DEBUG=false`, URL dan database production yang benar. Simpan `APP_KEY` existing; jangan regenerasi pada deployment rutin. Backup database sebelum migrasi. Install dependency dari lockfile, build aset, lalu jalankan migrasi yang sudah ditinjau. Jangan salin database atau kredensial tes ke production.
+
+## Panduan proyek
+
+- `AGENTS.md`: standar pengembangan.
+- `PRODUCT.md`: konteks produk dan kebutuhan pengguna.
+- `DESIGN.md`: panduan tampilan.

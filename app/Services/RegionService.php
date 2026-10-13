@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use Illuminate\Support\Str;
@@ -24,9 +26,9 @@ class RegionService
                         'type' => 'Kota Administrasi',
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
-                        'posko_address' => 'Jl. Duren Sawit Raya No. 45, Jakarta Timur',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'posko_address' => 'Posko Armada Siaga Jakarta Timur (Area Duren Sawit & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Ciracas',
                             'Duren Sawit',
@@ -47,9 +49,9 @@ class RegionService
                         'type' => 'Kota Administrasi',
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
-                        'posko_address' => 'Jl. Tebet Barat Dalam No. 18, Jakarta Selatan',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 40 Menit',
+                        'posko_address' => 'Posko Armada Siaga Jakarta Selatan (Area Tebet & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Tebet',
                             'Cilandak',
@@ -69,9 +71,9 @@ class RegionService
                         'type' => 'Kota Administrasi',
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
-                        'posko_address' => 'Jl. Kebon Jeruk Raya No. 12, Jakarta Barat',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'posko_address' => 'Posko Armada Siaga Jakarta Barat (Area Kebon Jeruk & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kebon Jeruk',
                             'Puri Kembangan',
@@ -89,9 +91,9 @@ class RegionService
                         'type' => 'Kota Administrasi',
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
-                        'posko_address' => 'Jl. Boulevard Raya Blok PA, Kelapa Gading, Jakarta Utara',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'posko_address' => 'Posko Armada Siaga Jakarta Utara (Area Kelapa Gading & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kelapa Gading',
                             'Pantai Indah Kapuk',
@@ -110,9 +112,9 @@ class RegionService
                         'type' => 'Kota Administrasi',
                         'province_name' => 'DKI Jakarta',
                         'province_slug' => 'dki-jakarta',
-                        'posko_address' => 'Jl. Benyamin Sueb No. 8, Kemayoran, Jakarta Pusat',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 40 Menit',
+                        'posko_address' => 'Posko Armada Siaga Jakarta Pusat (Area Kemayoran & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kemayoran',
                             'Cempaka Putih',
@@ -138,9 +140,9 @@ class RegionService
                         'type' => 'Kota & Kabupaten',
                         'province_name' => 'Jawa Barat',
                         'province_slug' => 'jawa-barat',
-                        'posko_address' => 'Jl. Raya Mayor Oking No. 23, Cibinong, Bogor',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 50 Menit',
+                        'posko_address' => 'Posko Armada Siaga Bogor (Area Cibinong, Sentul & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cibinong',
                             'Sentul City',
@@ -158,9 +160,9 @@ class RegionService
                         'type' => 'Kota',
                         'province_name' => 'Jawa Barat',
                         'province_slug' => 'jawa-barat',
-                        'posko_address' => 'Jl. Margonda Raya No. 102, Depok',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'posko_address' => 'Posko Armada Siaga Depok & Cinere (Area Margonda & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cinere',
                             'Margonda',
@@ -178,9 +180,9 @@ class RegionService
                         'type' => 'Kota & Kabupaten',
                         'province_name' => 'Jawa Barat',
                         'province_slug' => 'jawa-barat',
-                        'posko_address' => 'Jl. Ahmad Yani No. 55, Bekasi Barat',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 50 Menit',
+                        'posko_address' => 'Posko Armada Siaga Bekasi & Cikarang',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cikarang Selatan',
                             'Cikarang Utara',
@@ -199,9 +201,9 @@ class RegionService
                         'type' => 'Kota',
                         'province_name' => 'Jawa Barat',
                         'province_slug' => 'jawa-barat',
-                        'posko_address' => 'Jl. Buah Batu No. 88, Lengkong, Kota Bandung',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'posko_address' => 'Posko Armada Siaga Kota Bandung',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Buahbatu',
                             'Antapani',
@@ -229,9 +231,9 @@ class RegionService
                         'type' => 'Kota',
                         'province_name' => 'Banten',
                         'province_slug' => 'banten',
-                        'posko_address' => 'Jl. KH Hasyim Ashari No. 34, Cipondoh, Tangerang Kota',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'posko_address' => 'Posko Armada Siaga Tangerang Kota (Area Cipondoh & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Cipondoh',
                             'Karawaci',
@@ -250,9 +252,9 @@ class RegionService
                         'type' => 'Kota',
                         'province_name' => 'Banten',
                         'province_slug' => 'banten',
-                        'posko_address' => 'Jl. Pahlawan Seribu No. 9, BSD City, Serpong',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 40 Menit',
+                        'posko_address' => 'Posko Armada Siaga Tangerang Selatan (Area BSD & Bintaro)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Serpong',
                             'BSD City',
@@ -277,9 +279,9 @@ class RegionService
                         'type' => 'Kota',
                         'province_name' => 'Jawa Tengah',
                         'province_slug' => 'jawa-tengah',
-                        'posko_address' => 'Jl. Dr. Wahidin No. 70, Candisari, Kota Semarang',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'posko_address' => 'Posko Armada Siaga Kota Semarang (Area Candisari & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Candisari',
                             'Banyumanik',
@@ -306,9 +308,9 @@ class RegionService
                         'type' => 'Kota',
                         'province_name' => 'Lampung',
                         'province_slug' => 'lampung',
-                        'posko_address' => 'Jl. ZA. Pagar Alam No. 42, Kedaton, Bandar Lampung',
-                        'phone' => '0812-3456-7890',
-                        'eta_minutes' => '30 - 45 Menit',
+                        'posko_address' => 'Posko Armada Siaga Bandar Lampung (Area Kedaton & Sekitarnya)',
+                        'phone' => config('app.whatsapp_number', '6285609009009'),
+                        'eta_minutes' => 'Respon Cepat',
                         'districts' => [
                             'Kedaton',
                             'Tanjung Karang Pusat',
@@ -323,6 +325,27 @@ class RegionService
                 ],
             ],
         ];
+    }
+
+    public static function districtType(array $city, string $district): string
+    {
+        $types = [
+            'jakarta-timur' => ['rawamangun' => 'Kelurahan'],
+            'jakarta-barat' => ['puri-kembangan' => 'Kawasan'],
+            'jakarta-utara' => ['pantai-indah-kapuk' => 'Kawasan', 'sunter' => 'Kawasan', 'pluit' => 'Kelurahan'],
+            'bogor' => ['sentul-city' => 'Kawasan', 'kota-bogor' => 'Kota'],
+            'depok-cinere' => ['margonda' => 'Kawasan'],
+            'bekasi-cikarang' => ['harapan-indah' => 'Kawasan'],
+            'bandung' => ['dago' => 'Kelurahan'],
+            'tangerang-selatan' => ['bsd-city' => 'Kawasan', 'bintaro' => 'Kawasan'],
+            'semarang' => ['simpang-lima' => 'Kawasan'],
+            'bandar-lampung' => ['teluk-betung' => 'Kawasan'],
+        ];
+
+        $slug = Str::slug($district);
+        $known = collect($city['districts'] ?? [])->contains(fn (string $name) => Str::slug($name) === $slug);
+
+        return $types[$city['slug'] ?? ''][$slug] ?? ($known ? 'Kecamatan' : 'Area');
     }
 
     /**
@@ -376,7 +399,6 @@ class RegionService
         $items = [];
 
         foreach (self::all() as $provSlug => $prov) {
-            // 1. Province entry
             $items[] = [
                 'type' => 'Provinsi',
                 'badge' => 'PROVINSI',
@@ -388,30 +410,28 @@ class RegionService
                 'search' => strtolower('provinsi ' . $prov['name'] . ' ' . $prov['slug']),
             ];
 
-            // 2. City entries
             foreach ($prov['cities'] as $citySlug => $city) {
                 $items[] = [
-                    'type' => 'Kota',
-                    'badge' => 'KOTA',
+                    'type' => $city['type'],
+                    'badge' => strtoupper($city['type']),
                     'name' => $city['name'],
                     'short_name' => $city['name'],
-                    'subtitle' => $prov['name'] . ' &bull; ' . count($city['districts']) . ' Kecamatan Siaga',
+                    'subtitle' => $prov['name'] . ' &bull; ' . count($city['districts']) . ' Area Layanan',
                     'url' => route('area.city', ['city' => $citySlug]),
-                    'eta' => $city['eta_minutes'] ?? '30-45 MNT',
+                    'eta' => 'Respon Cepat',
                     'search' => strtolower($city['name'] . ' ' . $citySlug),
                 ];
 
-                // 3. District entries
                 foreach ($city['districts'] as $district) {
                     $districtSlug = Str::slug($district);
                     $items[] = [
-                        'type' => 'Kecamatan',
-                        'badge' => 'KECAMATAN',
+                        'type' => self::districtType($city, $district),
+                        'badge' => strtoupper(self::districtType($city, $district)),
                         'name' => $district,
                         'short_name' => $district,
                         'subtitle' => $city['name'] . ', ' . $prov['name'],
                         'url' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
-                        'eta' => '30-45 MNT',
+                        'eta' => 'Respon Cepat',
                         'search' => strtolower($district),
                     ];
                 }

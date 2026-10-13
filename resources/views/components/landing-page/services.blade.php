@@ -1,0 +1,147 @@
+@props([
+    'services' => null,
+    'problemCatalogs' => [],
+    'whatsappNumber' => null,
+])
+
+@php
+    $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6285609009009');
+    $itemsLayanan = (isset($services) && $services->isNotEmpty()) ? $services : collect($problemCatalogs);
+@endphp
+<section id="layanan" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200 content-auto" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4000)">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
+                Katalog Spesialis Masalah
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                Layanan Penanganan Saluran Pipa Mampet
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
+                Pembersihan kerak pipa buangan wastafel, kloset duduk, floor drain, talang, dan grease trap menggunakan mesin spiral baja rotary. Dikerjakan dari lubang pipa eksisting tanpa merusak lantai keramik.
+            </p>
+            <div class="flex md:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+                <span>Geser katalog titik saluran</span>
+            </div>
+        </div>
+
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan saluran — geser untuk melihat lainnya"
+             @scroll.passive="onScroll()"
+             @touchstart="pause()"
+             @touchend="resume()"
+             @touchcancel="resume()"
+             class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
+            @foreach($itemsLayanan as $catalog)
+                @php
+                    $isModel = $catalog instanceof \App\Models\Service;
+                    $title = $isModel ? $catalog->name : $catalog['title'];
+                    $slug = $isModel ? $catalog->slug : \Illuminate\Support\Str::slug($catalog['title']);
+                    $desc = $isModel ? ($catalog->short_description ?: ($catalog->description ?: 'Pelancaran saluran mampet tanpa bongkar keramik.')) : $catalog['problem_desc'];
+                    $price = $isModel ? $catalog->price_starting_from : $catalog['price'];
+                    $features = $isModel ? ($catalog->features ?: []) : ($catalog['specs'] ?? []);
+                    
+                    // Smart Category Badge
+                    $category = 'Layanan Spesialis';
+                    $lowerName = strtolower($title);
+                    if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
+                        $category = 'Dapur & Residensial';
+                    } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
+                        $category = 'Toilet & Kamar Mandi';
+                    } elseif (str_contains($lowerName, 'floor drain') || str_contains($lowerName, 'kamar mandi')) {
+                        $category = 'Kamar Mandi & Lantai';
+                    } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera')) {
+                        $category = 'Diagnostik IP68';
+                    } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'lemak') || str_contains($lowerName, 'resto')) {
+                        $category = 'F&B Komersial';
+                    } elseif (str_contains($lowerName, 'talang') || str_contains($lowerName, 'atap')) {
+                        $category = 'Talang & Saluran Atap';
+                    } elseif (!$isModel && isset($catalog['category'])) {
+                        $category = $catalog['category'];
+                    }
+
+                    $rawImage = $isModel ? $catalog->image : ($catalog['image'] ?? null);
+                    $fallbackImage = asset('assets/placeholders/service.svg');
+                    if (empty($rawImage) || str_contains($rawImage, 'placehold.co') || str_contains($rawImage, 'unsplash.com')) {
+                        $imageSrc = $fallbackImage;
+                    } else {
+                        $imageSrc = str_starts_with($rawImage, 'http://') || str_starts_with($rawImage, 'https://')
+                            ? $rawImage : asset(ltrim($rawImage, '/'));
+                    }
+
+                    $waMessage = $isModel 
+                        ? "Halo Drainusantara, saya ingin konsultasi penanganan untuk {$title}. Mohon info estimasi biaya dan jadwal teknisi terdekat."
+                        : ($catalog['wa_text'] ?? "Halo Drainusantara, saya ingin konsultasi penanganan untuk {$title}. Mohon info estimasi biaya.");
+                    $specificWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($waMessage);
+                @endphp
+                <div id="layanan-{{ $slug }}" class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 shadow-xs hover:border-sky-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
+                    <div>
+                        <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-4 border border-slate-100">
+                            <img src="{{ $imageSrc }}" 
+                                 alt="{{ $title }}" 
+                                 width="600"
+                                 height="375"
+                                 loading="lazy" 
+                                 decoding="async"
+                                 onerror="this.onerror=null; this.src='{{ $fallbackImage }}';"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out">
+                        </div>
+
+                        <h3 class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-sky-700 transition-colors mb-2">
+                            {{ $title }}
+                        </h3>
+
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+                            {{ $desc }}
+                        </p>
+
+                        @if(!empty($features) && is_array($features))
+                            <ul class="space-y-1.5 text-xs text-slate-600 mb-3 pt-2 border-t border-slate-100">
+                                @foreach(array_slice($features, 0, 3) as $feat)
+                                    <li class="flex items-center gap-1.5">
+                                        <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span>{{ $feat }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+
+                    <div class="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between gap-3">
+                        <div>
+                            <span class="text-xs text-slate-500 block leading-tight mb-1">Estimasi Tarif:</span>
+                            <div class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+                                {{ $price > 0 ? 'Mulai dari Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}
+                            </div>
+                            <span class="text-xs text-slate-500 block mt-0.5">Detail &amp; konsultasi via WA</span>
+                        </div>
+
+                        <a href="{{ $specificWaUrl }}" target="_blank" rel="noopener noreferrer" 
+                           class="btn-press inline-flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 min-h-11"
+                           aria-label="Konsultasi detail tarif penanganan {{ $title }} via WhatsApp">
+                            <span>Konsultasi Detail (WA)</span>
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="flex md:hidden justify-center items-center flex-wrap gap-1 mt-4">
+            @for($i = 0; $i < count($itemsLayanan); $i++)
+                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
+                        @click="goTo({{ $i }})"
+                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
+                        aria-label="Layanan {{ $i + 1 }}">
+                    <span class="h-2 rounded-full transition-all duration-300 block"
+                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>
+                </button>
+            @endfor
+        </div>
+
+    </div>
+</section>

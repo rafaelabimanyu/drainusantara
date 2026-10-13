@@ -41,7 +41,7 @@ class AdminTest extends TestCase
         $response = $this->get('/login');
         $response->assertStatus(200);
         $response->assertSee('CMS Control Panel');
-        $response->assertSee('Drainusantara@admin');
+        $response->assertDontSee('Drainusantara@admin');
     }
 
     public function test_admin_can_authenticate_using_login_screen(): void
@@ -65,6 +65,21 @@ class AdminTest extends TestCase
         $this->assertGuest();
         $response->assertRedirect('/login');
         $response->assertSessionHasErrors('login');
+    }
+
+    public function test_login_is_rate_limited_after_five_attempts(): void
+    {
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->from('/login')->post('/login', [
+                'login' => 'unknown-admin',
+                'password' => 'WrongPassword',
+            ])->assertRedirect('/login');
+        }
+
+        $this->post('/login', [
+            'login' => 'unknown-admin',
+            'password' => 'WrongPassword',
+        ])->assertTooManyRequests();
     }
 
     public function test_admin_can_logout(): void
@@ -210,9 +225,8 @@ class AdminTest extends TestCase
     public function test_admin_service_image_upload(): void
     {
         $this->actingAs($this->adminUser);
-        Storage::fake('public');
 
-        $file = UploadedFile::fake()->image('wastafel.jpg', 600, 400);
+        $file = UploadedFile::fake()->image('wastafel-test.jpg', 600, 400);
 
         $response = $this->post('/admin/services', [
             'name' => 'Wastafel Dapur Mampet',
@@ -223,17 +237,21 @@ class AdminTest extends TestCase
         $response->assertRedirect('/admin/services');
         $service = Service::where('slug', 'wastafel-dapur-mampet')->first();
         $this->assertNotNull($service);
-        $this->assertStringContainsString('/storage/services/', $service->image);
-        Storage::disk('public')->assertExists(str_replace('/storage/', '', $service->image));
+        $this->assertStringContainsString('/images/services/', $service->image);
+        $savedPath = public_path(ltrim($service->image, '/'));
+        $this->assertFileExists($savedPath);
+
+        if (file_exists($savedPath)) {
+            @unlink($savedPath);
+        }
     }
 
     public function test_admin_gallery_image_upload(): void
     {
         $this->actingAs($this->adminUser);
-        Storage::fake('public');
 
-        $before = UploadedFile::fake()->image('before.jpg', 600, 400);
-        $after = UploadedFile::fake()->image('after.jpg', 600, 400);
+        $before = UploadedFile::fake()->image('before-saluran.jpg', 600, 400);
+        $after = UploadedFile::fake()->image('after-saluran.jpg', 600, 400);
 
         $response = $this->post('/admin/galleries', [
             'title' => 'Pipa Restoran Bebas Sumbatan',
@@ -244,10 +262,14 @@ class AdminTest extends TestCase
         $response->assertRedirect('/admin/galleries');
         $gallery = Gallery::where('title', 'Pipa Restoran Bebas Sumbatan')->first();
         $this->assertNotNull($gallery);
-        $this->assertStringContainsString('/storage/galleries/', $gallery->before_image);
-        $this->assertStringContainsString('/storage/galleries/', $gallery->after_image);
-        Storage::disk('public')->assertExists(str_replace('/storage/', '', $gallery->before_image));
-        Storage::disk('public')->assertExists(str_replace('/storage/', '', $gallery->after_image));
+        $this->assertStringContainsString('/images/dokumentasi/', $gallery->before_image);
+        $this->assertStringContainsString('/images/dokumentasi/', $gallery->after_image);
+        $this->assertFileExists(public_path(ltrim($gallery->before_image, '/')));
+        $this->assertFileExists(public_path(ltrim($gallery->after_image, '/')));
+
+        // Clean up test files
+        @unlink(public_path(ltrim($gallery->before_image, '/')));
+        @unlink(public_path(ltrim($gallery->after_image, '/')));
     }
 
     public function test_admin_article_image_upload(): void
@@ -269,4 +291,55 @@ class AdminTest extends TestCase
         $this->assertStringContainsString('/storage/articles/', $article->thumbnail);
         Storage::disk('public')->assertExists(str_replace('/storage/', '', $article->thumbnail));
     }
+
+    public function test_admin_gallery_destroy_deletes_image_files(): void
+    {
+        $this->actingAs($this->adminUser);
+
+        $testFile = UploadedFile::fake()->image('test-delete-dokumentasi.jpg', 600, 400);
+
+        $response = $this->post('/admin/galleries', [
+            'title' => 'Dokumentasi Hapus File Fisik',
+            'image' => $testFile,
+        ]);
+
+        $response->assertRedirect('/admin/galleries');
+        $gallery = Gallery::where('title', 'Dokumentasi Hapus File Fisik')->first();
+        $this->assertNotNull($gallery);
+        $this->assertFileExists(public_path(ltrim($gallery->image, '/')));
+
+        // Hapus via CMS
+        $deleteResponse = $this->delete("/admin/galleries/{$gallery->id}");
+        $deleteResponse->assertRedirect('/admin/galleries');
+        $this->assertDatabaseMissing('galleries', ['id' => $gallery->id]);
+
+        // Verifikasi file fisik juga terhapus dari folder public/images/dokumentasi
+        $this->assertFileDoesNotExist(public_path(ltrim($gallery->image, '/')));
+    }
+
+    public function test_admin_portfolio_destroy_deletes_image_file(): void
+    {
+        $this->actingAs($this->adminUser);
+
+        $testFile = UploadedFile::fake()->image('test-delete-portfolio.jpg', 600, 400);
+
+        $response = $this->post('/admin/portfolios', [
+            'client_name' => 'PT Test Hapus File',
+            'image' => $testFile,
+        ]);
+
+        $response->assertRedirect('/admin/portfolios');
+        $portfolio = \App\Models\Portfolio::where('client_name', 'PT Test Hapus File')->first();
+        $this->assertNotNull($portfolio);
+        $this->assertFileExists(public_path(ltrim($portfolio->image, '/')));
+
+        // Hapus via CMS
+        $deleteResponse = $this->delete("/admin/portfolios/{$portfolio->id}");
+        $deleteResponse->assertRedirect('/admin/portfolios');
+        $this->assertDatabaseMissing('portfolios', ['id' => $portfolio->id]);
+
+        // Verifikasi file fisik juga terhapus dari folder public/images/portfolio
+        $this->assertFileDoesNotExist(public_path(ltrim($portfolio->image, '/')));
+    }
 }
+
