@@ -119,7 +119,7 @@
                 </svg>
                 <span>Lihat Website</span>
             </span>
-            <span class="text-[10px] bg-slate-800 border border-slate-700 px-1.5 py-0.5 rounded text-slate-400">Live</span>
+            <span class="text-xs text-slate-500 font-mono">Live ↗</span>
         </a>
 
         <form method="POST" action="{{ route('logout') }}">

@@ -11,7 +11,7 @@ class SitemapTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_sitemap_xml_renders_with_xsl_stylesheet(): void
+    public function test_sitemap_xml_renders_clean_xml_without_deprecated_xslt(): void
     {
         Article::create([
             'title' => 'Cara Mengatasi Saluran Pipa Mampet',
@@ -27,7 +27,7 @@ class SitemapTest extends TestCase
 
         $content = $response->getContent();
         $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $content);
-        $this->assertStringContainsString('<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>', $content);
+        $this->assertStringNotContainsString('xml-stylesheet', $content);
         $this->assertStringContainsString('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', $content);
         $this->assertStringContainsString(url('/'), $content);
         $this->assertStringContainsString(url('/area'), $content);
@@ -95,5 +95,25 @@ class SitemapTest extends TestCase
         $this->get('/sitemap.xml');
 
         $this->assertTrue(Cache::has('sitemap.xml'));
+    }
+
+    public function test_html_sitemap_renders_successfully_for_human_visitors(): void
+    {
+        $response = $this->get('/sitemap');
+
+        $response->assertStatus(200);
+        $response->assertSee('Peta Situs &amp; Panduan Direktori Drainusantara', false);
+        $response->assertSee('Layanan Pelancar Saluran Pipa');
+        $response->assertSee('Wilayah Layanan Siaga 24 Jam');
+        $response->assertSee('Profil Perusahaan &amp; Tata Kelola', false);
+        $response->assertSee('/sitemap.xml');
+    }
+
+    public function test_peta_situs_alias_redirects_301_to_sitemap(): void
+    {
+        $response = $this->get('/peta-situs');
+
+        $response->assertStatus(301);
+        $response->assertRedirect(route('sitemap.html'));
     }
 }

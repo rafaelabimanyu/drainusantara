@@ -35,7 +35,7 @@
             </template>
         </div>
         <div class="flex-1 w-full space-y-1">
-            <input type="file" name="{{ $name }}" id="{{ $inputId }}" accept="image/*"
+            <input type="file" name="{{ $name }}" id="{{ $inputId }}" accept="image/jpeg,image/png,image/webp"
                    {{ $required && !$current ? 'required' : '' }}
                    @change="const f = $event.target.files[0]; if (f) { preview = URL.createObjectURL(f); }"
                    class="block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">

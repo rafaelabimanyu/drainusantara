@@ -6,10 +6,6 @@
     $emergencyWaMsg = urlencode("Halo teknisi Drainusantara, saya butuh perbaikan saluran mampet di area {$area->district}, {$area->city}. Mohon info biaya dan estimasi kedatangan teknisi ke lokasi saya.");
     $emergencyWaUrl = "https://wa.me/{$whatsappNumber}?text={$emergencyWaMsg}";
 
-    // Hero Background Resolution (Hierarchical Inheritance):
-    // Cukup taruh 1 foto provinsi di: public/images/areas/provinces/{province-slug}.webp
-    // Halaman kecamatan otomatis mewarisi foto provinsi tersebut.
-    // Jika ada kecamatan prioritas yang ingin foto khusus, taruh di: public/images/areas/districts/{city-slug}-{district-slug}.webp
     $customHeroBg = null;
     $districtSlug = \Illuminate\Support\Str::slug($area->district);
     $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($area->city);
@@ -17,18 +13,29 @@
     $districtType = \App\Services\RegionService::districtType($cityData ?? [], $area->district);
     $districtLabel = str_starts_with($area->district, $districtType.' ') ? $area->district : $districtType.' '.$area->district;
 
-    $heroBgImage = $customHeroBg 
-        ?: (file_exists(public_path("images/areas/districts/{$citySlug}-{$districtSlug}.webp"))
-            ? asset("images/areas/districts/{$citySlug}-{$districtSlug}.webp")
-            : (file_exists(public_path("images/areas/districts/{$districtSlug}.webp"))
-                ? asset("images/areas/districts/{$districtSlug}.webp")
-                : (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
-                    ? asset("images/areas/cities/{$citySlug}.webp")
-                    : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
-                        ? asset("images/areas/provinces/{$provinceSlug}.webp")
-                        : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
-                            ? asset("images/areas/provinces/{$provinceSlug}.jpg")
-                            : ($area->hero_image ?? null))))));
+    // Hero Background Resolution:
+    // Prioritas 1: Foto hero yang diatur via CMS admin ($area->hero_image)
+    // Prioritas 2: File statis kecamatan (districts/{citySlug}-{districtSlug}.webp)
+    // Prioritas 3: File statis kota (cities/{citySlug}.webp)
+    // Prioritas 4: File statis provinsi (provinces/{provinceSlug}.webp)
+    // Prioritas 5: Default hero background
+    $rawHero = !empty($area->hero_image) ? (filter_var($area->hero_image, FILTER_VALIDATE_URL) ? $area->hero_image : asset($area->hero_image)) : null;
+
+    $heroBgImage = $rawHero
+        ?: ($customHeroBg 
+            ?: (file_exists(public_path("images/areas/districts/{$citySlug}-{$districtSlug}.webp"))
+                ? asset("images/areas/districts/{$citySlug}-{$districtSlug}.webp")
+                : (file_exists(public_path("images/areas/districts/{$districtSlug}.webp"))
+                    ? asset("images/areas/districts/{$districtSlug}.webp")
+                    : (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
+                        ? asset("images/areas/cities/{$citySlug}.webp")
+                        : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
+                            ? asset("images/areas/provinces/{$provinceSlug}.webp")
+                            : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
+                                ? asset("images/areas/provinces/{$provinceSlug}.jpg")
+                                : null))))));
+
+    $areaFaqs = $area->resolved_faqs;
 @endphp
 
 @push('styles')
@@ -96,10 +103,10 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
                 <div class="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
-                        <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 inline-block" aria-hidden="true"></span>
                         <span>Wilayah Layanan: {{ $districtLabel }}, {{ $area->city }}</span>
-                    </div>
+                    </p>
 
                     <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight reveal-soft">
                         Jasa Pipa & Saluran Mampet <span class="text-sky-700">{{ $area->district }}, {{ $area->city }}</span>
@@ -118,12 +125,12 @@
                             </div>
                             <div class="min-w-0">
                                 <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium leading-tight">Respon WA</div>
-                                <div class="text-xs sm:text-sm font-extrabold text-emerald-700 truncate">Respon Cepat</div>
+                                <div class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">Respon Cepat</div>
                             </div>
                         </div>
 
                         <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift">
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                                 </svg>
@@ -135,7 +142,7 @@
                         </div>
 
                         <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift">
-                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                                 </svg>
@@ -182,7 +189,7 @@
                         </div>
                         <div class="px-1 py-0.5 flex items-center justify-between text-xs text-slate-600">
                             <span class="font-medium text-slate-700">Unit Mesin Spiral Ridgid &amp; APD Steril</span>
-                            <span class="text-emerald-700 font-bold">Metode Tanpa Bongkar</span>
+                            <span class="text-sky-700 font-bold">Metode Tanpa Bongkar</span>
                         </div>
                     </div>
                 </div>
@@ -212,7 +219,6 @@
                 'category' => 'TOILET & KLOSET',
                 'short_description' => "Atasi toilet duduk atau jongkok tersumbat pembalut atau tisu tanpa mencabut kloset dan tanpa merusak keramik di {$area->district}.",
                 'price_starting_from' => 400000,
-                'features' => ['Tanpa bongkar kloset keramik', 'APD steril dan bebas bau', 'Garansi nota 30 hari'],
                 'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-kloset-wc-toilet-mampet.webp'),
             ],
             [
@@ -221,7 +227,6 @@
                 'category' => 'DAPUR & RESIDENSIAL',
                 'short_description' => "Pembersihan kerak minyak dan endapan lemak beku pada bak cuci piring rumah atau dapur resto di {$area->district}.",
                 'price_starting_from' => 400000,
-                'features' => ['Lemak beku rontok tuntas', 'Aman untuk pipa sifon PVC', 'Garansi nota 30 hari'],
                 'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-wastafel-cuci-piring-mampet.webp'),
             ],
             [
@@ -230,7 +235,6 @@
                 'category' => 'SALURAN LANTAI',
                 'short_description' => "Menuntaskan sumbatan rambut dan residu sabun yang memicu luapan air kotor pada saluran pembuangan kamar mandi Anda.",
                 'price_starting_from' => 400000,
-                'features' => ['Bersihkan gumpalan rambut', 'Hilangkan bau got menguap', 'Garansi nota 30 hari'],
                 'image' => asset('images/services/drainusantara-jasa-perbaikan-saluran-floor-drain-kamar-mandi-mampet.webp'),
             ],
             [
@@ -239,7 +243,6 @@
                 'category' => 'DIAGNOSTIK DIGITAL',
                 'short_description' => "Mendeteksi titik pipa patah, sambungan lepas, atau intrusi akar di bawah cor dengan monitor resolusi tinggi berjarak hingga 30 meter.",
                 'price_starting_from' => 400000,
-                'features' => ['Jangkauan kabel 30 meter', 'Rekaman visual monitor digital', 'Diagnosa titik akurat'],
                 'image' => asset('images/services/drainusantara-jasa-inspeksi-kamera-cctv-saluran-pipa-endoskopi.webp'),
             ],
         ];
@@ -248,9 +251,9 @@
     <section id="layanan-area" class="py-12 sm:py-18 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                     KATALOG WILAYAH {{ strtoupper($area->district) }}
-                </span>
+                </p>
                 <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Layanan Pipa Mampet Area {{ $area->district }}, {{ $area->city }}
                 </h2>
@@ -259,7 +262,7 @@
                 </p>
             </div>
 
-            <div tabindex="0" role="region" aria-label="Layanan kecamatan — geser untuk melihat lainnya" class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
+            <div tabindex="0" role="region" aria-label="Layanan kecamatan, geser untuk melihat lainnya" class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
                 @foreach($itemsLayanan as $catalog)
                     @php
                         $isModel = $catalog instanceof \App\Models\Service;
@@ -267,7 +270,7 @@
                         $slug = $isModel ? $catalog->slug : $catalog['slug'];
                         $desc = $isModel ? ($catalog->short_description ?: ($catalog->description ?: 'Pelancaran saluran pipa mampet tanpa bongkar keramik.')) : $catalog['short_description'];
                         $price = $isModel ? $catalog->price_starting_from : $catalog['price_starting_from'];
-                        $features = $isModel ? ($catalog->features ?: ['Tanpa bongkar keramik', 'Teknisi profesional ber-APD', 'Garansi nota 30 hari']) : ($catalog['features'] ?? []);
+                        
                         
                         $category = 'LAYANAN SPESIALIS';
                         $lowerName = strtolower($title);
@@ -312,18 +315,7 @@
                             <p class="text-xs text-slate-600 leading-relaxed line-clamp-3">
                                 {{ $desc }}
                             </p>
-                            @if(!empty($features))
-                                <ul class="mt-3.5 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-700 font-medium">
-                                    @foreach(array_slice($features, 0, 3) as $feature)
-                                        <li class="flex items-center gap-2">
-                                            <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                                            </svg>
-                                            <span class="truncate">{{ $feature }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
+                           
                         </div>
                         <div class="mt-5 pt-3.5 border-t border-slate-100">
                             <div class="text-[11px] text-slate-500 font-medium">Biaya Mulai Dari:</div>
@@ -344,54 +336,138 @@
         </div>
     </section>
 
+    <!-- ALUR PENANGANAN TEKNIS -->
     <section class="py-12 sm:py-18 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
-                    ALUR MUDAH DAN CEPAT
-                </span>
-                <h3 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">3 Langkah Praktis Penanganan Saluran</h3>
-                <p class="text-slate-600 text-xs sm:text-base mt-2">Alur terstruktur dari konsultasi awal hingga aliran pipa lancar dan terproteksi garansi.</p>
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
+                    Standar Prosedur Operasional
+                </p>
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">Alur Penanganan Pipa Tanpa Rusak Keramik</h3>
+                <p class="text-slate-600 text-xs sm:text-base mt-2">Dikerjakan terstruktur dari konfirmasi armada hingga tes aliran tuntas dan penyerahan nota garansi resmi.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-slate-50 process-step p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">                    <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
+                <!-- Fase 1 -->
+                <div class="bg-slate-50 p-6 sm:p-7 rounded-lg border border-slate-200 space-y-3 shadow-2xs relative">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="w-10 h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Tahap 1</span>
                     </div>
-                    <h4 class="font-bold text-slate-900 text-base sm:text-lg">01. Konsultasi via WhatsApp</h4>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Kirimkan pesan WhatsApp mengenai titik mampet dan lokasi hunian Anda untuk estimasi awal serta kepastian armada.</p>
+                    <h4 class="font-bold text-slate-900 text-base">Konsultasi Titik &amp; Jadwal Armada</h4>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Kirimkan info titik mampet via WhatsApp. Tim kami memverifikasi jenis kendala dan memberangkatkan armada teknisi terdekat.</p>
                 </div>
 
-                <div class="bg-slate-50 process-step p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">                    <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
+                <!-- Fase 2 -->
+                <div class="bg-slate-50 p-6 sm:p-7 rounded-lg border border-slate-200 space-y-3 shadow-2xs relative">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="w-10 h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Tahap 2</span>
                     </div>
-                    <h4 class="font-bold text-slate-900 text-base sm:text-lg">02. Teknisi Cek Lokasi</h4>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Teknisi memeriksa titik sumbatan menggunakan mesin rotary mekanis secara presisi tanpa merusak keramik.</p>
+                    <h4 class="font-bold text-slate-900 text-base">Penanganan Mekanis Rotary Spiral</h4>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Kabel spiral baja elastis berputar menghancurkan lemak beku dan menarik kotoran penyumbat tanpa membongkar lantai keramik.</p>
                 </div>
 
-                <div class="bg-slate-50 process-step p-6 sm:p-7 rounded-xl border border-slate-200 text-center space-y-3 shadow-2xs">                    <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center mx-auto">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                        </svg>
+                <!-- Fase 3 -->
+                <div class="bg-slate-50 p-6 sm:p-7 rounded-lg border border-slate-200 space-y-3 shadow-2xs relative">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="w-10 h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Tahap 3</span>
                     </div>
-                    <h4 class="font-bold text-slate-900 text-base sm:text-lg">03. Air Lancar, Baru Bayar</h4>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Aliran air dites bersama di hadapan Anda hingga tuntas, setelah itu nota garansi resmi 30 hari diterbitkan.</p>
+                    <h4 class="font-bold text-slate-900 text-base">Uji Aliran Bersama &amp; Nota Garansi</h4>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">Air digelontorkan bersama untuk memastikan pipa 100% lancar plong, baru kemudian nota garansi resmi 30 hari diterbitkan.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- FAQ Section Dinamis Wilayah -->
+    @if(!empty($areaFaqs) && count($areaFaqs) > 0)
+    <section class="py-14 sm:py-20 bg-white border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10 reveal-soft">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
+                    Tanya Jawab Seputar Layanan
+                </p>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">
+                    Pertanyaan Seputar Layanan di {{ $area->district }}
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                    Informasi mengenai respon kedatangan teknisi, metode pengerjaan tanpa bongkar, serta garansi di wilayah {{ $area->district }}, {{ $area->city }}.
+                </p>
+            </div>
+
+            <div x-data="{ active: null }" class="space-y-3 reveal-soft">
+                @foreach($areaFaqs as $idx => $faq)
+                    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
+                        <button type="button" 
+                                @click="active = (active === {{ $idx }} ? null : {{ $idx }})"
+                                :aria-expanded="active === {{ $idx }}" 
+                                aria-controls="area-faq-{{ $idx }}"
+                                class="w-full flex items-center justify-between p-4 sm:p-5 text-left font-bold text-slate-900 hover:text-sky-700 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 cursor-pointer">
+                            <div class="flex items-center gap-3 pr-4">
+                                <span class="w-6 h-6 rounded-md bg-slate-100 text-slate-600 border border-slate-200 text-xs font-bold flex items-center justify-center shrink-0">
+                                    {{ $idx + 1 }}
+                                </span>
+                                <span class="text-sm sm:text-base font-bold tracking-tight">{{ $faq['question'] }}</span>
+                            </div>
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0 transform transition-transform duration-200 text-slate-400" 
+                                 :class="{ 'rotate-180 text-sky-700': active === {{ $idx }} }" 
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div id="area-faq-{{ $idx }}" 
+                             x-show="active === {{ $idx }}" 
+                             x-cloak 
+                             class="px-4 sm:px-5 pb-4 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3 sm:pt-4 pl-12 sm:pl-14">
+                            <p>{{ $faq['answer'] }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- FAQ Micro-CTA -->
+            <div class="mt-8 p-4 sm:p-5 bg-slate-50 border border-slate-200 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </div>
+                    <span class="text-slate-700 font-medium">Punya kendala pipa spesifik di {{ $area->district }} yang belum terjawab?</span>
+                </div>
+                <a href="{{ $emergencyWaUrl }}" target="_blank" rel="noopener noreferrer" 
+                   class="btn-press shrink-0 inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-2xs">
+                    <span>Tanya Teknisi via WA</span>
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
     <section class="py-14 sm:py-20 bg-slate-50 border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-10">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2 shadow-2xs">
-                    POSKO STRATEGIS
-                </span>
-                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">Area Layanan Drainusantara Lainnya</h3>
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
+                    Posko &amp; Wilayah Strategis
+                </p>
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 tracking-tight">Area Layanan Drainusantara Lainnya</h3>
                 <p class="text-xs sm:text-sm text-slate-600 mt-1">Teknisi kami juga siaga di seluruh wilayah Jabodetabek, Semarang, dan Lampung.</p>
             </div>
 
@@ -412,11 +488,8 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-3 py-1 rounded-md border border-sky-200">AREA SEKITAR</span>
-                            <span class="text-xs text-slate-500 font-medium">{{ $cityName }}</span>
-                        </div>
-                        <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">Armada Meluncur</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-800">Area Sekitar {{ $cityName }}</span>
+                       
                     </div>
                     
                     @if($neighboringDistricts->isNotEmpty())
@@ -440,7 +513,7 @@
                 <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-3 py-1 rounded-md border border-sky-200">POSKO KOTA LAIN</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-sky-800">POSKO KOTA LAIN</span>
                             <span class="text-xs text-slate-500 font-medium">Jaringan Armada Siaga</span>
                         </div>
                         <a href="{{ route('area.index') }}" class="text-[11px] text-sky-700 hover:underline font-semibold flex items-center gap-1 min-h-11">
@@ -471,9 +544,9 @@
 
     <section class="py-12 sm:py-16 bg-slate-900 text-white text-center relative overflow-hidden">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-md uppercase tracking-wider mb-2.5">
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
                 RESPON CEPAT WILAYAH {{ strtoupper($area->district) }}
-            </span>
+            </p>
             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white">
                 Saluran Air di Lokasi Anda Tersumbat Hari Ini?
             </h2>
@@ -490,26 +563,7 @@
                     <span>Panggil Teknisi Sekarang</span>
                 </a>
 
-                <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-slate-300 text-[11px] sm:text-xs">
-                    <span class="inline-flex items-center gap-1">
-                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Respon Cepat Armada
-                    </span>
-                    <span class="inline-flex items-center gap-1">
-                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Metode Tanpa Bongkar Keramik
-                    </span>
-                    <span class="inline-flex items-center gap-1">
-                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                        Garansi Nota 30 Hari
-                    </span>
-                </div>
+                
             </div>
         </div>
     </section>

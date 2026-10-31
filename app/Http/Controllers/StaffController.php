@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Support\MediaLifecycle;
 
 use App\Models\Staff;
+use App\Rules\OptimizedImage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -41,7 +42,7 @@ class StaffController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'role' => ['nullable', 'string', 'max:255'],
-            'photo' => $request->hasFile('photo') ? ['nullable'] : ['nullable', 'string', 'max:255'],
+            'photo' => $request->hasFile('photo') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
             'photo_url' => ['nullable', 'string', 'max:255'],
             'initials' => ['nullable', 'string', 'max:10'],
             'order' => ['nullable', 'integer', 'min:1'],
@@ -53,7 +54,6 @@ class StaffController extends Controller
         $media->run($record, function () use ($request, $validated, $media, $record): void {
             $photoUrl = $validated['photo_url'] ?? null;
             if ($request->hasFile('photo')) {
-                $request->validate(['photo' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:10240']]);
                 $photoUrl = $media->upload($request->file('photo'), 'images/staff');
             } elseif (is_string($request->input('photo')) && !empty($request->input('photo'))) {
                 $photoUrl = $request->input('photo');
@@ -89,7 +89,7 @@ class StaffController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'role' => ['nullable', 'string', 'max:255'],
-            'photo' => $request->hasFile('photo') ? ['nullable'] : ['nullable', 'string', 'max:255'],
+            'photo' => $request->hasFile('photo') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
             'photo_url' => ['nullable', 'string', 'max:255'],
             'initials' => ['nullable', 'string', 'max:10'],
             'order' => ['nullable', 'integer', 'min:0'],
@@ -100,7 +100,6 @@ class StaffController extends Controller
         $media->run($staff, function () use ($request, $validated, $media, $staff): void {
             $photoUrl = $staff->photo;
             if ($request->hasFile('photo')) {
-                $request->validate(['photo' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:10240']]);
                 $newPhoto = $media->upload($request->file('photo'), 'images/staff');
                 $photoUrl = $newPhoto;
             } elseif (!empty($validated['photo_url'])) {

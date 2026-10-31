@@ -97,9 +97,9 @@
 
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div class="max-w-3xl">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-950/80 border border-sky-500/40 text-sky-300 text-xs font-bold rounded-md uppercase tracking-wider mb-2.5 reveal-fade">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2 reveal-fade">
                     {{ $eyebrow }}
-                </span>
+                </p>
                 <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight reveal-soft">
                     {{ $heading }}
                 </h1>

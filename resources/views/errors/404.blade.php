@@ -11,37 +11,37 @@
             'title' => 'Wastafel & Cuci Piring',
             'desc' => 'Pelancaran lemak beku dan sisa makanan di pipa leher angsa.',
             'url' => url('/#layanan'),
-            'tag' => 'Pipa Dapur',
+           
         ],
         [
             'title' => 'Kloset & Toilet Meluap',
             'desc' => 'Penanganan tuntas tanpa bongkar dudukan kloset porselen.',
             'url' => url('/#layanan'),
-            'tag' => 'Darurat 24 Jam',
+          
         ],
         [
             'title' => 'Floor Drain Kamar Mandi',
             'desc' => 'Pembersihan endapan rambut rontok dan kerak residu sabun.',
             'url' => url('/#layanan'),
-            'tag' => 'Saluran Mandi',
+           
         ],
         [
             'title' => 'Inspeksi Kamera CCTV 30M',
             'desc' => 'Deteksi visual retak atau jalur pipa tersembunyi di dinding.',
             'url' => url('/#layanan'),
-            'tag' => 'Endoskopi Pipa',
+           
         ],
         [
             'title' => 'Cakupan Area Layanan',
             'desc' => 'Posko teknisi siaga di Jabodetabek, Semarang, dan Lampung.',
             'url' => route('area.index'),
-            'tag' => 'Lokasi Posko',
+          
         ],
         [
             'title' => 'Artikel & Solusi Sanitasi',
             'desc' => 'Panduan pencegahan mampet dan bahaya cairan kimia keras.',
             'url' => route('articles.index'),
-            'tag' => 'Pusat Edukasi',
+           
         ],
     ];
 @endphp
@@ -52,8 +52,8 @@
         <!-- Header Status Card -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 md:p-12 text-center shadow-xs reveal-soft">
             
-            <!-- HTTP Status Badge -->
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold tracking-wide uppercase mb-6">
+            <!-- HTTP Status Eyebrow -->
+            <div class="inline-flex items-center gap-2 text-xs font-bold tracking-wider text-sky-800 uppercase mb-4">
                 <span class="w-2 h-2 rounded-full bg-sky-600 animate-pulse"></span>
                 <span>Status HTTP 404: Halaman Tidak Ditemukan</span>
             </div>
@@ -130,9 +130,6 @@
                                 <div class="flex items-center justify-between gap-2 mb-1.5">
                                     <span class="text-xs font-bold text-slate-900 group-hover:text-sky-700 transition-colors">
                                         {{ $service['title'] }}
-                                    </span>
-                                    <span class="text-[10px] font-semibold text-sky-700 bg-sky-100/60 px-2 py-0.5 rounded-md">
-                                        {{ $service['tag'] }}
                                     </span>
                                 </div>
                                 <p class="text-xs text-slate-500 leading-relaxed">

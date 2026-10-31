@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Support;
 
-use App\Models\{Article, Equipment, Gallery, Portfolio, Review, Service, Staff};
+use App\Models\{Article, CoverageArea, Equipment, Gallery, Portfolio, Review, Service, Staff};
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -17,13 +17,14 @@ final class MediaLifecycle
 {
     private const FIELDS = [
         Service::class => ['image'], Equipment::class => ['image'], Staff::class => ['photo'],
-        Portfolio::class => ['image'], Gallery::class => ['image', 'before_image', 'after_image'],
+        Portfolio::class => ['image', 'logo'], Gallery::class => ['image', 'before_image', 'after_image'],
         Article::class => ['thumbnail'], Review::class => ['avatar'],
+        CoverageArea::class => ['hero_image'],
     ];
 
     private const DIRECTORIES = [
         'images/services', 'assets/TOOLKIT', 'images/staff', 'images/portfolio',
-        'images/dokumentasi', 'storage/articles', 'storage/reviews',
+        'images/dokumentasi', 'storage/articles', 'storage/reviews', 'images/areas',
     ];
 
     private const DEFAULTS = [

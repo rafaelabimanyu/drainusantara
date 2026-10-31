@@ -49,7 +49,7 @@
         </div>
 
         <!-- Carousel Slider Track -->
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Portofolio perusahaan — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Portofolio perusahaan - geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
@@ -59,14 +59,14 @@
                 @php
                     $itemWaText = urlencode("Halo Tim Drainusantara, saya tertarik dengan portofolio penanganan di '{$project->client_name}'. Mohon info konsultasi dan survei lokasi.");
                     $itemWaUrl = "https://wa.me/{$whatsappNumber}?text={$itemWaText}";
+                    $portfolioDetailUrl = !empty($project->slug) ? route('partnership.show', $project->slug) : null;
                 @endphp
-                <a href="{{ $itemWaUrl }}" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="w-[85vw] sm:w-85 md:w-auto lg:w-85 shrink-0 snap-center lg:snap-start bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600"
-                   title="Konsultasi penanganan {{ $project->client_name }}">
+                <div class="w-[85vw] sm:w-85 md:w-auto lg:w-85 shrink-0 snap-center lg:snap-start bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col group card-lift">
                     <!-- Foto Restoran / Klien Jernih (Tanpa Blur) -->
                     <div class="w-full h-52 sm:h-56 overflow-hidden bg-slate-100 relative">
+                        @if($portfolioDetailUrl)
+                            <a href="{{ $portfolioDetailUrl }}" class="block w-full h-full focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600" title="Lihat profil kemitraan {{ $project->client_name }}">
+                        @endif
                         @php
                             $projectImg = $project->image ? (str_starts_with($project->image, 'http') || str_starts_with($project->image, '/') ? $project->image : asset($project->image)) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
                             $defaultFallback = asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
@@ -79,13 +79,22 @@
                              height="500"
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                              onerror="this.onerror=null; this.src='{{ $defaultFallback }}';">
+                        @if($portfolioDetailUrl)
+                            </a>
+                        @endif
                     </div>
 
                     <!-- Informasi Restoran / Klien Bersih -->
                     <div class="p-5 flex flex-col justify-between flex-1">
                         <div>
                             <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight line-clamp-1 group-hover:text-sky-700 transition-colors">
-                                {{ $project->client_name }}
+                                @if($portfolioDetailUrl)
+                                    <a href="{{ $portfolioDetailUrl }}" class="hover:underline">
+                                        {{ $project->client_name }}
+                                    </a>
+                                @else
+                                    {{ $project->client_name }}
+                                @endif
                             </h3>
                             @if(!empty($project->client_type))
                             <p class="text-xs text-slate-500 mt-1.5 flex items-center gap-1.5 truncate">
@@ -96,8 +105,26 @@
                             </p>
                             @endif
                         </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                            @if($portfolioDetailUrl)
+                                <a href="{{ $portfolioDetailUrl }}" 
+                                   class="inline-flex items-center gap-1 text-xs font-semibold text-sky-700 hover:text-sky-800 transition-colors py-1">
+                                    <span>Detail Mitra</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                    </svg>
+                                </a>
+                            @endif
+                            <a href="{{ $itemWaUrl }}" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="btn-press {{ $portfolioDetailUrl ? '' : 'w-full' }} inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold transition-colors">
+                                <span>Konsultasi</span>
+                            </a>
+                        </div>
                     </div>
-                </a>
+                </div>
             @endforeach
         </div>
 

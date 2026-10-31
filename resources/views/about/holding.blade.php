@@ -19,9 +19,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="max-w-3xl mb-12 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                 SINERGI EKOSISTEM BISNIS
-            </span>
+            </p>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Sinergi Infrastruktur Industri &amp; Layanan Presisi Tanpa Bongkar
             </h2>
@@ -35,7 +35,7 @@
 
         <!-- 4 Pilar Sinergi Holding (Carousel on Mobile, Grid on Tablet/Desktop) -->
         <div x-data="mobileCarousel(4, 4000)">
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Pilar holding — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Pilar holding - geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
@@ -110,9 +110,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="max-w-3xl mb-12 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                 AKUNTABILITAS &amp; KEPATUHAN BISNIS
-            </span>
+            </p>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Formalitas Kelengkapan Administrasi &amp; Kemitraan Korporat
             </h2>
@@ -124,7 +124,7 @@
         <!-- 3 Kartu Kelengkapan Dokumen Legalitas & Pajak (Mobile Carousel, Tablet/Desktop Grid) -->
         <div x-data="mobileCarousel(3, 4000)"
              class="mb-12">
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Dokumen legalitas — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Dokumen legalitas - geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"

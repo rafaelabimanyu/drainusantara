@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin;
 
+use App\Rules\OptimizedImage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreArticleRequest extends FormRequest
@@ -19,7 +20,7 @@ class StoreArticleRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:100'],
             'thumbnail' => $this->hasFile('thumbnail')
-                ? ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120']
+                ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'thumbnail_url' => ['nullable', 'string', 'max:255'],
             'excerpt' => ['nullable', 'string', 'max:500'],

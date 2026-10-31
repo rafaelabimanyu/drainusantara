@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use App\Rules\OptimizedImage;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class ServiceController extends Controller
             'features_text' => ['nullable', 'string'],
             'is_active' => ['nullable', 'boolean'],
             'order' => ['nullable', 'integer', 'min:1'],
-            'image' => ['nullable'],
+            'image' => ['nullable', new OptimizedImage],
             'image_url' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -56,9 +57,6 @@ class ServiceController extends Controller
             // Process image upload
             $imageUrl = 'https://placehold.co/600x400/0284c7/ffffff?text=' . urlencode(mb_strcut($validated['name'], 0, 69, 'UTF-8'));
             if ($request->hasFile('image')) {
-                $request->validate([
-                    'image' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120'],
-                ]);
                 $imageUrl = $media->upload($request->file('image'), 'images/services');
             } elseif (!empty($validated['image_url'])) {
                 $imageUrl = $validated['image_url'];
@@ -117,7 +115,7 @@ class ServiceController extends Controller
             'features_text' => ['nullable', 'string'],
             'is_active' => ['nullable', 'boolean'],
             'order' => ['nullable', 'integer'],
-            'image' => ['nullable'],
+            'image' => ['nullable', new OptimizedImage],
             'image_url' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -125,10 +123,6 @@ class ServiceController extends Controller
         $media->run($service, function () use ($request, $validated, $media, $service): void {
             $imageUrl = $service->image;
             if ($request->hasFile('image')) {
-                $request->validate([
-                    'image' => ['image', 'mimes:jpeg,png,jpg,webp,svg', 'max:5120'],
-                ]);
-
                 $imageUrl = $media->upload($request->file('image'), 'images/services');
             } elseif (!empty($validated['image_url'])) {
                 $imageUrl = $validated['image_url'];

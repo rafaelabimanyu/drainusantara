@@ -152,5 +152,8 @@ class CoverageAreaSeeder extends Seeder
         foreach ($coverageAreas as $area) {
             CoverageArea::updateOrCreate(['slug' => $area['slug']], $area);
         }
+
+        // Synchronize any remaining districts from the RegionService master directory
+        CoverageArea::syncFromMaster();
     }
 }

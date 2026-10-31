@@ -1,6 +1,7 @@
 import Alpine from 'alpinejs';
 import { registerWebMcpTools } from './webmcp';
 import { registerCarousels } from './carousel';
+import { initAutoTracking } from './tracking';
 
 window.Alpine = Alpine;
 
@@ -18,6 +19,47 @@ Alpine.data('layoutData', () => ({
                 dialog.close();
             }
         });
+
+        if (window.location.pathname === '/' || window.location.pathname === '') {
+            const updateFromHash = () => {
+                const hash = window.location.hash;
+                if (hash === '#layanan') this.activeSection = 'layanan';
+                else if (hash === '#area') this.activeSection = 'area';
+                else if (!hash || hash === '#') this.activeSection = 'home';
+            };
+
+            updateFromHash();
+            window.addEventListener('hashchange', updateFromHash);
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.activeSection = entry.target.id;
+                        }
+                    });
+                    if (window.scrollY < 200) {
+                        this.activeSection = 'home';
+                    }
+                }, {
+                    rootMargin: '-20% 0px -60% 0px',
+                    threshold: 0.1
+                });
+
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY < 200) {
+                        this.activeSection = 'home';
+                    }
+                }, { passive: true });
+
+                this.$nextTick(() => {
+                    ['layanan', 'area'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) observer.observe(el);
+                    });
+                });
+            }
+        }
     },
     trapSearchFocus(event) {
         const dialog = this.$refs.areaSearchDialog;
@@ -32,6 +74,7 @@ Alpine.data('layoutData', () => ({
             first.focus();
         }
     },
+    activeSection: 'home',
     activeMenu: null,
     areaSearch: '',
     sidebarOpen: false,
@@ -39,6 +82,8 @@ Alpine.data('layoutData', () => ({
     tentangDrawerOpen: false,
     diagProblem: 'wastafel',
     whatsappNumber: window.__DRAINUSANTARA_WA__ || '6285609009009',
+    contextualWaMsg: window.__DRAINUSANTARA_CONTEXTUAL_WA_MSG__ || 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.',
+    contextualWaUrl: window.__DRAINUSANTARA_DYNAMIC_WA_URL__ || 'https://wa.me/6285609009009',
     _cachedAreas: null,
     diagnostics: {
         wastafel: {
@@ -123,6 +168,8 @@ Alpine.data('layoutData', () => ({
 registerCarousels(Alpine);
 
 registerWebMcpTools();
+
+initAutoTracking();
 
 Alpine.start();
 

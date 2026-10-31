@@ -120,6 +120,26 @@
 
     <x-landing-page.hero :general-wa-url="$generalWaUrl" :whatsapp-number="$whatsappNumber" />
     <x-landing-page.how-it-works />
+
+    <!-- Interactive Quick Quote CRO Section -->
+    <section class="py-12 sm:py-16 bg-slate-100 border-b border-slate-200" id="estimasi">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-1">
+                    Hitung Cepat Biaya
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    Konsultasi &amp; Estimasi Biaya Saluran Mampet
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-600 mt-2">
+                    Pilih titik sumbatan dan lokasi Anda untuk mendapatkan simulasi penanganan teknisi spiral baja bergaransi 30 hari.
+                </p>
+            </div>
+
+            <x-conversion.quick-quote />
+        </div>
+    </section>
+
     <x-landing-page.services :services="$services ?? null" :problem-catalogs="$problemCatalogs" :whatsapp-number="$whatsappNumber" />
    
     <x-landing-page.advantages />

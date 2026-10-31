@@ -118,4 +118,46 @@ class AreaPageTest extends TestCase
         $response->assertSee('id="wilayah-layanan"', false);
         $response->assertSee('Pilih Kota atau Kabupaten Anda di DKI Jakarta');
     }
+
+    public function test_area_page_displays_custom_hero_image_and_custom_faqs(): void
+    {
+        CoverageArea::create([
+            'city' => 'Jakarta Selatan',
+            'district' => 'Tebet',
+            'slug' => 'jakarta-selatan-tebet',
+            'meta_title' => 'Jasa Saluran Mampet di Tebet, Jakarta Selatan',
+            'hero_image' => 'images/areas/tebet-landmark-custom.webp',
+            'faqs' => [
+                [
+                    'question' => 'Berapa biaya kuras pipa di Tebet Barat?',
+                    'answer' => 'Biaya penanganan di Tebet Barat mulai Rp 400.000 bergaransi 30 hari.',
+                ],
+                [
+                    'question' => 'Apakah melayani ruko di Jalan Tebet Raya?',
+                    'answer' => 'Ya, kami melayani ruko kuliner dan komersial di sepanjang Jalan Tebet Raya.',
+                ],
+            ],
+            'is_active' => true,
+        ]);
+
+        $response = $this->get('/area/jakarta-selatan/tebet');
+
+        $response->assertStatus(200);
+        $response->assertSee('images/areas/tebet-landmark-custom.webp');
+        $response->assertSee('Berapa biaya kuras pipa di Tebet Barat?');
+        $response->assertSee('Biaya penanganan di Tebet Barat mulai Rp 400.000 bergaransi 30 hari.');
+        $response->assertSee('Apakah melayani ruko di Jalan Tebet Raya?');
+        $response->assertSee('FAQPage');
+    }
+
+    public function test_area_page_displays_dynamic_fallback_faqs(): void
+    {
+        $response = $this->get('/area/semarang/banyumanik');
+
+        $response->assertStatus(200);
+        $response->assertSee('Pertanyaan Seputar Layanan di Banyumanik');
+        $response->assertSee('Berapa lama estimasi teknisi Drainusantara tiba di area Banyumanik, Kota Semarang?');
+        $response->assertSee('Apakah pengerjaan saluran mampet di Banyumanik membongkar lantai keramik?');
+        $response->assertSee('FAQPage');
+    }
 }

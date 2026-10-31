@@ -14,8 +14,7 @@
         ? $equipments 
         : \App\Models\Equipment::where('is_active', true)->orderBy('order')->get();
 
-    $mainMachines = $equipmentList->where('category', '!=', 'Mata Cutter');
-    $cutterUnits = $equipmentList->where('category', 'Mata Cutter');
+    $mainMachines = $equipmentList;
 @endphp
 
 <section id="peralatan" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
@@ -38,46 +37,48 @@
         <div x-data="mobileCarousel({{ $mainMachines->count() }}, 4000)"
              class="mb-14">
             
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan kerja — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan kerja - geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
              @touchcancel="resume()"
                  class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-5 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0">
                 @foreach($mainMachines as $machine)
+                @php
+                    $targetSlug = $machine->slug ?: \Illuminate\Support\Str::slug($machine->name);
+                @endphp
                 <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                     <div>
                         <div class="relative aspect-[16/10] bg-slate-900 rounded-lg overflow-hidden border border-slate-200 mb-6 group">
-                            <img 
-                                src="{{ $machine->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
-                                alt="{{ $machine->name }}" 
-                                width="800" 
-                                height="500" 
-                                loading="lazy" 
-                                decoding="async" 
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';"
-                            >
+                            <a href="{{ route('equipment.show', $targetSlug) }}" class="block w-full h-full">
+                                <img 
+                                    src="{{ $machine->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
+                                    alt="{{ $machine->name }}" 
+                                    width="800" 
+                                    height="500" 
+                                    loading="lazy" 
+                                    decoding="async" 
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';"
+                                >
+                            </a>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-3 text-xs">
+                            <span class="font-bold uppercase tracking-wider text-sky-700">
+                                {{ $machine->category ?? 'Unit Armada' }}
+                            </span>
                             @if($machine->badge)
-                            <div class="absolute top-2.5 left-2.5">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-slate-900/85 backdrop-blur-xs text-[11px] font-bold text-white border border-slate-700">
-                                    {{ $machine->badge }}
-                                </span>
-                            </div>
+                            <span class="font-semibold text-slate-500">
+                                {{ $machine->badge }}
+                            </span>
                             @endif
                         </div>
 
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-sky-700">
-                                {{ $machine->category ?? 'Unit Armada' }}
-                            </span>
-                            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
-                                100% Mekanis
-                            </span>
-                        </div>
-
                         <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2.5 leading-snug">
-                            {{ $machine->name }}
+                            <a href="{{ route('equipment.show', $targetSlug) }}" class="hover:text-sky-700 transition-colors">
+                                {{ $machine->name }}
+                            </a>
                         </h3>
                         @if($machine->short_description)
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
@@ -100,9 +101,14 @@
                         @endif
                     </div>
 
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                        <span>Standar Industri Plumbing</span>
-                        <span class="text-sky-700 font-bold">Tanpa Bongkar Pipa</span>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-500 font-medium">{{ $machine->category ?? 'Unit Armada' }}</span>
+                        <a href="{{ route('equipment.show', $targetSlug) }}" class="inline-flex items-center gap-1.5 font-bold text-sky-700 hover:text-sky-800 group/link">
+                            <span>Detail Spesifikasi &amp; SOP</span>
+                            <svg class="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 @endforeach
@@ -127,7 +133,7 @@
         <div x-data="mobileCarousel(3, 4000)"
              class="mb-14">
             
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan kerja — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan kerja - geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
@@ -137,30 +143,29 @@
                 <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift reveal-soft stagger-1">
                     <div>
                         <div class="relative aspect-[16/10] bg-slate-900 rounded-lg overflow-hidden border border-slate-200 mb-6 group">
-                            <img 
-                                src="{{ asset('assets/TOOLKIT/mesin-spiral-rotary.webp') }}" 
-                                alt="Mesin Drain Rooter Spiral Baja Rotary Ridgid K-50 &amp; K-60" 
-                                width="800" 
-                                height="500" 
-                                loading="lazy" 
-                                decoding="async" 
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';"
-                            >
-                            <div class="absolute top-2.5 left-2.5">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-slate-900/85 backdrop-blur-xs text-[11px] font-bold text-white border border-slate-700">
-                                    Unit Utama Lapangan
-                                </span>
-                            </div>
+                            <a href="{{ route('equipment.show', 'mesin-rooter-ridgid-k-50-cable-spiral') }}" class="block w-full h-full">
+                                <img 
+                                    src="{{ asset('assets/TOOLKIT/mesin-spiral-rotary.webp') }}" 
+                                    alt="Mesin Drain Rooter Spiral Baja Rotary Ridgid K-50 &amp; K-60" 
+                                    width="800" 
+                                    height="500" 
+                                    loading="lazy" 
+                                    decoding="async" 
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';"
+                                >
+                            </a>
                         </div>
 
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-sky-700">Rotary Rooter</span>
-                            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">100% Mekanis</span>
+                        <div class="flex items-center justify-between mb-3 text-xs">
+                            <span class="font-bold uppercase tracking-wider text-sky-700">Rotary Rooter</span>
+                            <span class="font-semibold text-emerald-700">100% Mekanis &bull; Unit Utama</span>
                         </div>
 
                         <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2.5 leading-snug">
-                            Mesin Drain Rooter Spiral Baja Rotary Ridgid K-50 &amp; K-60
+                            <a href="{{ route('equipment.show', 'mesin-rooter-ridgid-k-50-cable-spiral') }}" class="hover:text-sky-700 transition-colors">
+                                Mesin Drain Rooter Spiral Baja Rotary Ridgid K-50 &amp; K-60
+                            </a>
                         </h3>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
                             Mesin drain cleaner bertenaga motor elektrik berkecepatan 400 RPM yang memutar kabel spiral baja lentur berinti kawat karbon. Mampu meluncur melewati belokan leher angsa dan elbow 90 derajat tanpa melubangi pipa PVC.
@@ -182,39 +187,43 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                        <span>Motor Listrik 220V</span>
-                        <span class="text-sky-700 font-bold">Standard Industri</span>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-500 font-medium">Unit Utama Lapangan</span>
+                        <a href="{{ route('equipment.show', 'mesin-rooter-ridgid-k-50-cable-spiral') }}" class="inline-flex items-center gap-1.5 font-bold text-sky-700 hover:text-sky-800 group/link">
+                            <span>Detail Spesifikasi &amp; SOP</span>
+                            <svg class="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
                 <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift">
                     <div>
                         <div class="relative aspect-[16/10] bg-slate-900 rounded-lg overflow-hidden border border-slate-200 mb-6 group">
-                            <img 
-                                src="{{ asset('assets/TOOLKIT/kamera-cctv-pipa.webp') }}" 
-                                alt="Kamera Inspeksi Endoskopi CCTV Pipa IP68 30 Meter" 
-                                width="800" 
-                                height="500" 
-                                loading="lazy" 
-                                decoding="async" 
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-drainusantara.webp') }}';"
-                            >
-                            <div class="absolute top-2.5 left-2.5">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-sky-950/85 backdrop-blur-xs text-[11px] font-bold text-sky-300 border border-sky-700">
-                                    Diagnosis Visual
-                                </span>
-                            </div>
+                            <a href="{{ route('equipment.show', 'inspeksi-kamera-cctv-pipa-saluran') }}" class="block w-full h-full">
+                                <img 
+                                    src="{{ asset('assets/TOOLKIT/kamera-cctv-pipa.webp') }}" 
+                                    alt="Kamera Inspeksi Endoskopi CCTV Pipa IP68 30 Meter" 
+                                    width="800" 
+                                    height="500" 
+                                    loading="lazy" 
+                                    decoding="async" 
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-drainusantara.webp') }}';"
+                                >
+                            </a>
                         </div>
 
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-sky-700">Pipe Inspection</span>
-                            <span class="text-xs font-bold text-sky-700 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-md">Kamera IP68 Digital</span>
+                        <div class="flex items-center justify-between mb-3 text-xs">
+                            <span class="font-bold uppercase tracking-wider text-sky-700">Pipe Inspection</span>
+                            <span class="font-semibold text-sky-700">Diagnosis Visual IP68</span>
                         </div>
 
                         <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2.5 leading-snug">
-                            Kamera CCTV Endoskopi Pipa IP68 30 Meter
+                            <a href="{{ route('equipment.show', 'inspeksi-kamera-cctv-pipa-saluran') }}" class="hover:text-sky-700 transition-colors">
+                                Kamera CCTV Endoskopi Pipa IP68 30 Meter
+                            </a>
                         </h3>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
                             Unit kamera industri tahan air beresolusi tinggi dengan lampu LED sorot adjustable dan kabel dorong fleksibel kaku. Memberikan inspeksi visual real-time kondisi bagian dalam pipa pada layar monitor LCD.
@@ -236,39 +245,43 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                        <span>IP68 Submersible</span>
-                        <span class="text-sky-700 font-bold">Titik Pasti</span>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-500 font-medium">Diagnosis Visual</span>
+                        <a href="{{ route('equipment.show', 'inspeksi-kamera-cctv-pipa-saluran') }}" class="inline-flex items-center gap-1.5 font-bold text-sky-700 hover:text-sky-800 group/link">
+                            <span>Detail Spesifikasi &amp; SOP</span>
+                            <svg class="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
                 <div class="w-[85vw] sm:w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs flex flex-col justify-between card-lift">
                     <div>
                         <div class="relative aspect-[16/10] bg-slate-900 rounded-lg overflow-hidden border border-slate-200 mb-6 group">
-                            <img 
-                                src="{{ asset('assets/TOOLKIT/hydro-jetting.webp') }}" 
-                                alt="Unit High Pressure Hydro Jetting Drainusantara" 
-                                width="800" 
-                                height="500" 
-                                loading="lazy" 
-                                decoding="async" 
-                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/hydro-jetting-high-pressure-hose.webp') }}';"
-                            >
-                            <div class="absolute top-2.5 left-2.5">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-amber-950/85 backdrop-blur-xs text-[11px] font-bold text-amber-300 border border-amber-700">
-                                    Lemak &amp; Restoran
-                                </span>
-                            </div>
+                            <a href="{{ route('equipment.show', 'high-pressure-hydro-jetting-unit') }}" class="block w-full h-full">
+                                <img 
+                                    src="{{ asset('assets/TOOLKIT/hydro-jetting.webp') }}" 
+                                    alt="Unit High Pressure Hydro Jetting Drainusantara" 
+                                    width="800" 
+                                    height="500" 
+                                    loading="lazy" 
+                                    decoding="async" 
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/hydro-jetting-high-pressure-hose.webp') }}';"
+                                >
+                            </a>
                         </div>
 
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Hydro Jetting</span>
-                            <span class="text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md">Tekanan Tinggi</span>
+                        <div class="flex items-center justify-between mb-3 text-xs">
+                            <span class="font-bold uppercase tracking-wider text-amber-700">Hydro Jetting</span>
+                            <span class="font-semibold text-amber-800">Tekanan Tinggi Lemak &amp; Restoran</span>
                         </div>
 
                         <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-2.5 leading-snug">
-                            Unit Pembersih Saluran High Pressure Hydro Jetting
+                            <a href="{{ route('equipment.show', 'high-pressure-hydro-jetting-unit') }}" class="hover:text-sky-700 transition-colors">
+                                Unit Pembersih Saluran High Pressure Hydro Jetting
+                            </a>
                         </h3>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
                             Menembakkan semburan air mikro bertekanan 100-200 bar untuk mengikis dan membilas bersih tumpukan minyak beku, kerak lumpur, dan sisa limbah padat di restoran, ruko, serta instalasi industri.
@@ -290,9 +303,14 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                        <span>Eco-Friendly (Tanpa Kimia)</span>
-                        <span class="text-amber-700 font-bold">Bilas Bersih Total</span>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-500 font-medium">Hydro Jetting</span>
+                        <a href="{{ route('equipment.show', 'high-pressure-hydro-jetting-unit') }}" class="inline-flex items-center gap-1.5 font-bold text-sky-700 hover:text-sky-800 group/link">
+                            <span>Detail Spesifikasi &amp; SOP</span>
+                            <svg class="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
 

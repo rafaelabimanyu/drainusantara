@@ -167,10 +167,10 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 <div class="lg:col-span-8 space-y-5 sm:space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
-                        <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 inline-block" aria-hidden="true"></span>
                         <span>Posko Wilayah Resmi: Provinsi {{ $provinceData['name'] }}</span>
-                    </div>
+                    </p>
 
                     <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-tight reveal-soft">
                         Jasa Saluran Pipa Mampet <span class="text-sky-700">Provinsi {{ $provinceData['name'] }}</span>
@@ -265,9 +265,9 @@
     <section id="layanan" class="py-14 lg:py-20 bg-white border-b border-slate-200" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4500)">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                     KATALOG SPESIALIS MASALAH PIPA
-                </span>
+                </p>
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Layanan Saluran Pipa Mampet di {{ $provinceData['name'] }}
                 </h2>
@@ -282,7 +282,7 @@
                 </div>
             </div>
 
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan provinsi — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan provinsi, geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
@@ -396,9 +396,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-8 md:mb-12">
                 <div class="max-w-2xl">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
+                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                         BUKTI PENGERJAAN NYATA
-                    </span>
+                    </p>
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                         Hasil Pengerjaan Teknisi di Lapangan
                     </h2>
@@ -486,11 +486,9 @@
                                 </div>
 
                                 <div class="p-5 sm:p-6">
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <span class="px-2 py-0.5 text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200 rounded-md">
-                                            {{ $serviceTitle }}
-                                        </span>
-                                    </div>
+                                    <p class="text-xs font-bold text-sky-800 uppercase tracking-wide mb-1.5">
+                                        {{ $serviceTitle }}
+                                    </p>
                                     <h3 class="text-base font-bold text-slate-900 mb-2 leading-snug line-clamp-2">
                                         {{ $item->title }}
                                     </h3>
@@ -542,9 +540,9 @@
     <section id="wilayah-layanan" class="py-14 lg:py-20 bg-slate-50 border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-3xl mb-10">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2 shadow-2xs">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                     KOTA &amp; KABUPATEN YANG DILAYANI
-                </span>
+                </p>
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Pilih Kota atau Kabupaten Anda di {{ $provinceData['name'] }}
                 </h2>
@@ -559,13 +557,14 @@
                         <div>
                             <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-5 border-b border-slate-100">
                                 <div>
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <span class="text-xs font-bold text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-md border border-sky-200">
+                                    <div class="flex items-center gap-2 mb-2 text-xs">
+                                        <span class="font-bold uppercase tracking-wide text-sky-800">
                                             {{ $city['type'] }}
                                         </span>
-                                        <span class="text-xs text-emerald-800 font-bold bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200 flex items-center gap-1">
+                                        <span class="text-slate-300">&bull;</span>
+                                        <span class="text-xs text-emerald-700 font-semibold flex items-center gap-1">
                                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                                            <span>Armada Siaga &bull; Respon Cepat</span>
+                                            <span>Armada Siaga</span>
                                         </span>
                                     </div>
                                     <h3 class="text-xl font-bold text-slate-900 tracking-tight">
@@ -614,9 +613,9 @@
 
     <section id="kontak-provinsi" class="py-14 lg:py-20 bg-slate-900 text-white relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
                 RESPON CEPAT PROVINSI {{ strtoupper($provinceData['name']) }}
-            </span>
+            </p>
             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
                 Saluran Pipa di Lokasi Anda Tersumbat Hari Ini?
             </h2>

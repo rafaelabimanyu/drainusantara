@@ -22,13 +22,9 @@
         <!-- Header Section -->
         <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-10 md:mb-12 reveal-soft">
             <div class="max-w-3xl">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
-                    <svg class="w-3.5 h-3.5 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    <span>{{ $eyebrow }}</span>
-                </span>
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2.5">
+                    {{ $eyebrow }}
+                </p>
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                     {{ $resolvedTitle }}
                 </h2>
@@ -56,7 +52,7 @@
 
         @if($dbEquipments->isNotEmpty())
         <!-- Responsive Grid on Desktop / Mobile Carousel -->
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan armada — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Peralatan armada - geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
@@ -67,6 +63,20 @@
                 <div>
                     <!-- Container Gambar Peralatan -->
                     <div class="relative aspect-16/10 bg-slate-900 overflow-hidden border-b border-slate-200 group">
+                        @if($equip->slug)
+                        <a href="{{ route('equipment.show', $equip->slug) }}" class="block w-full h-full">
+                            <img 
+                                src="{{ $equip->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
+                                alt="{{ $equip->name }}" 
+                                width="600" 
+                                height="375" 
+                                loading="lazy" 
+                                decoding="async" 
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';"
+                            >
+                        </a>
+                        @else
                         <img 
                             src="{{ $equip->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
                             alt="{{ $equip->name }}" 
@@ -77,23 +87,30 @@
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';"
                         >
-                        @if($equip->badge)
-                        <div class="absolute top-2.5 left-2.5">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-slate-900/85 backdrop-blur-xs text-[11px] font-bold text-white border border-slate-700">
-                                {{ $equip->badge }}
-                            </span>
-                        </div>
                         @endif
                     </div>
 
                     <div class="p-5">
-                        @if($equip->category)
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-sky-700 block mb-1">
-                            {{ $equip->category }}
-                        </span>
-                        @endif
+                        <div class="flex items-center justify-between gap-2 mb-1.5 text-[11px]">
+                            @if($equip->category)
+                            <span class="font-bold uppercase tracking-wider text-sky-700">
+                                {{ $equip->category }}
+                            </span>
+                            @endif
+                            @if($equip->badge)
+                            <span class="font-semibold text-slate-500">
+                                {{ $equip->badge }}
+                            </span>
+                            @endif
+                        </div>
                         <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug mb-2">
+                            @if($equip->slug)
+                            <a href="{{ route('equipment.show', $equip->slug) }}" class="hover:text-sky-700 transition-colors">
+                                {{ $equip->name }}
+                            </a>
+                            @else
                             {{ $equip->name }}
+                            @endif
                         </h3>
                         @if($equip->short_description)
                         <p class="text-xs text-slate-600 leading-relaxed mb-4">
@@ -116,6 +133,17 @@
                         @endif
                     </div>
                 </div>
+
+                @if($equip->slug)
+                <div class="px-5 pb-5 pt-0">
+                    <a href="{{ route('equipment.show', $equip->slug) }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-sky-700 hover:text-sky-800 group/link">
+                        <span>Spesifikasi &amp; Detail</span>
+                        <svg class="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+                @endif
             </div>
             @endforeach
         </div>

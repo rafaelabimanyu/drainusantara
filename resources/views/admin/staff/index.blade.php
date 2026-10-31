@@ -69,12 +69,13 @@
                         <td class="px-5 py-3.5 whitespace-nowrap">
                             <div class="flex items-center gap-2">
                                 @if($staff->is_active)
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                                         Siaga Aktif
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
                                         Nonaktif
                                     </span>
                                 @endif

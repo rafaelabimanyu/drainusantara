@@ -1,6 +1,7 @@
-<dialog x-ref="areaSearchDialog" id="area-search-dialog" x-cloak
+<dialog x-ref="areaSearchDialog" id="area-search-dialog" x-cloak x-show="mobileSearchOpen"
         class="fixed inset-0 z-[60] lg:hidden" aria-labelledby="area-search-title"
-        style="margin: 0; width: 100%; height: 100%; max-width: none; max-height: none; padding: 0; border: 0; background: transparent"
+        :class="mobileSearchOpen ? 'block' : 'hidden'"
+        style="margin: 0; width: 100%; height: 100%; max-width: none; max-height: none; padding: 0; border: 0; background: transparent; display: none;"
         @cancel.prevent="mobileSearchOpen = false" @close="mobileSearchOpen = false"
         @keydown.tab="trapSearchFocus($event)"
         @resize.window="if (window.innerWidth >= 1024) mobileSearchOpen = false">
@@ -75,16 +76,11 @@
                            class="block p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 hover:border-sky-400 hover:bg-white transition-all btn-press">
                             <div class="flex items-center justify-between gap-2">
                                 <div class="flex items-center gap-2 min-w-0">
-                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-md shrink-0"
-                                          :class="{
-                                              'bg-sky-100 text-sky-800 border border-sky-200': area.type === 'Provinsi',
-                                              'bg-indigo-100 text-indigo-800 border border-indigo-200': ['Kota', 'Kota Administrasi', 'Kota & Kabupaten'].includes(area.type),
-                                              'bg-emerald-100 text-emerald-800 border border-emerald-200': ['Kecamatan', 'Kelurahan', 'Kawasan', 'Area'].includes(area.type)
-                                          }"
+                                    <span class="text-[10px] font-bold text-sky-800 tracking-wider uppercase shrink-0"
                                           x-text="area.badge"></span>
                                     <span class="text-xs font-bold text-slate-900 truncate" x-text="area.name"></span>
                                 </div>
-                                <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-md shrink-0" x-text="area.eta"></span>
+                                <span class="text-[11px] font-medium text-emerald-700 shrink-0" x-text="area.eta"></span>
                             </div>
                             <p class="text-[11px] text-slate-500 mt-1 line-clamp-1" x-html="area.subtitle"></p>
                         </a>

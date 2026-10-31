@@ -67,11 +67,10 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
             <div class="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
-                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                    <span class="sm:hidden">Wilayah {{ $cityData['name'] }} &bull; Respon Cepat</span>
-                    <span class="hidden sm:inline">Wilayah {{ $cityData['name'] }} &bull; Respon Chat WhatsApp Cepat</span>
-                </div>
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600 inline-block" aria-hidden="true"></span>
+                    <span>Wilayah Layanan: {{ $cityData['name'] }}, {{ $cityData['province_name'] }}</span>
+                </p>
 
                 <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight reveal-soft">
                     Jasa Saluran Mampet di <span class="text-sky-700">{{ $cityData['name'] }}</span>
@@ -90,12 +89,12 @@
                         </div>
                         <div class="min-w-0">
                             <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium leading-tight">Respon WA</div>
-                            <div class="text-xs sm:text-sm font-extrabold text-emerald-700 truncate">Respon Cepat</div>
+                            <div class="text-xs sm:text-sm font-extrabold text-slate-900 truncate">Respon Cepat</div>
                         </div>
                     </div>
 
                     <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift">
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                             </svg>
@@ -107,7 +106,7 @@
                     </div>
 
                     <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left card-lift">
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                             </svg>
@@ -165,9 +164,9 @@
 <section id="daftar-kecamatan" class="py-14 lg:py-20 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl mb-10 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                 DAFTAR AREA LAYANAN
-            </span>
+            </p>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 Area yang Dilayani di {{ $cityData['name'] }}
             </h2>
@@ -218,7 +217,7 @@
             'category' => 'DAPUR & RESIDENSIAL',
             'desc' => 'Pembersihan pipa wastafel tersumbat minyak beku menggunakan spiral baja elektrik tanpa merusak sifon PVC.',
             'price' => 400000,
-            'features' => ['Tanpa bongkar sifon PVC', 'Kerak lemak rontok tuntas', 'Garansi nota 30 hari'],
+            
         ],
         [
             'name' => 'Kloset & Toilet Meluap',
@@ -226,7 +225,7 @@
             'category' => 'TOILET & KLOSET',
             'desc' => 'Penanganan kloset duduk/jongkok tersumbat pembalut atau tisu tanpa membongkar porselen keramik.',
             'price' => 400000,
-            'features' => ['100% tanpa cabut kloset', 'Teknisi APD steril higienis', 'Garansi nota 30 hari'],
+            
         ],
         [
             'name' => 'Floor Drain Kamar Mandi',
@@ -234,7 +233,7 @@
             'category' => 'SALURAN LANTAI',
             'desc' => 'Mengatasi genangan air lantai kamar mandi akibat jalinan rambut dan residu busa sabun yang menebal.',
             'price' => 400000,
-            'features' => ['Tarik gumpalan rambut', 'Hilangkan bau got menguap', 'Garansi nota 30 hari'],
+           
         ],
         [
             'name' => 'Inspeksi Kamera CCTV Pipa',
@@ -242,7 +241,7 @@
             'category' => 'DIAGNOSTIK DIGITAL',
             'desc' => 'Pemeriksaan visual kondisi jalur pipa dengan monitor HD hingga 30 meter untuk kepastian titik masalah.',
             'price' => 500000,
-            'features' => ['Kamera anti-air IP68', 'Jangkauan kabel 30 meter', 'Bukti visual langsung'],
+           
         ],
     ];
     $itemsCityServices = (isset($services) && $services->isNotEmpty()) ? $services : collect($defaultCityServices);
@@ -250,9 +249,9 @@
 <section id="layanan-kota" class="py-12 sm:py-18 bg-slate-50 border-b border-slate-200" x-data="mobileCarousel({{ count($itemsCityServices) }}, 4500)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-800 text-xs font-bold rounded-md uppercase tracking-wider mb-2 shadow-2xs">
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                 SPESIFIKASI LAYANAN
-            </span>
+            </p>
             <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                 Layanan Saluran Mampet di {{ $cityData['name'] }}
             </h2>
@@ -268,7 +267,7 @@
             </div>
         </div>
 
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan kota — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan kota, geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
@@ -281,7 +280,7 @@
                     $slug = $isModel ? $item->slug : $item['slug'];
                     $desc = $isModel ? ($item->short_description ?: $item->description) : $item['desc'];
                     $price = $isModel ? $item->price_starting_from : $item['price'];
-                    $features = $isModel ? ($item->features ?: ['Tanpa bongkar keramik', 'Garansi nota 30 hari']) : $item['features'];
+                   
                     $category = $isModel ? ($item->category ?? 'LAYANAN UTAMA') : $item['category'];
 
                     $rawImage = $isModel ? $item->image : ($item['image'] ?? null);
@@ -314,14 +313,7 @@
                             {{ $desc }}
                         </p>
 
-                        <ul class="space-y-1.5 text-xs text-slate-700 border-t border-slate-100 pt-3 mb-4">
-                            @foreach(array_slice($features, 0, 3) as $feature)
-                                <li class="flex items-center gap-1.5 text-slate-600">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0"></span>
-                                    <span class="truncate">{{ $feature }}</span>
-                                </li>
-                            @endforeach
-                        </ul>
+                       
                     </div>
 
                     <div class="pt-3.5 border-t border-slate-100 flex items-center justify-between gap-2">
@@ -362,9 +354,9 @@
 
 <section class="py-14 lg:py-20 bg-slate-900 text-white relative overflow-hidden reveal-soft">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-full uppercase tracking-wider mb-3">
+        <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
             RESPON CEPAT {{ strtoupper($cityData['name']) }}
-        </span>
+        </p>
         <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Butuh Bantuan Teknisi di {{ $cityData['name'] }}?
         </h2>

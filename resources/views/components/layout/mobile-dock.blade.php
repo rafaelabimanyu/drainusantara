@@ -1,10 +1,21 @@
+@php
+    $isHome = Request::is('/');
+    $isArea = request()->is('area*');
+@endphp
 <nav class="fixed bottom-3 inset-x-4 max-w-md mx-auto z-50 bg-slate-900/95 backdrop-blur-xs text-white rounded-2xl shadow-xl border border-slate-800 px-1.5 py-1 grid grid-cols-5 items-end lg:hidden mobile-nav-dock transition-all duration-300 ease-in-out"
      :class="{ 'translate-y-28 opacity-0 pointer-events-none': mobileSearchOpen || sidebarOpen }"
      aria-label="Navigasi Mobile Floating Dock">
 
     <!-- 1. Beranda -->
     <a href="{{ url('/') }}" 
-       class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center {{ Request::is('/') ? 'text-sky-400 font-bold' : 'text-slate-300' }} hover:text-white transition-colors btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg"
+       @click="activeSection = 'home'"
+       class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center hover:text-white transition-colors btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg {{ $isHome ? 'text-sky-400 font-bold' : 'text-slate-300' }}"
+       @if($isHome)
+       :class="{
+           'text-sky-400 font-bold': activeSection === 'home',
+           'text-slate-300': activeSection !== 'home'
+       }"
+       @endif
        aria-label="Beranda">
         <svg class="w-5 h-5 mb-1 shrink-0 transition-transform group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -14,7 +25,12 @@
 
     <!-- 2. Layanan -->
     <a href="{{ url('/#layanan') }}" 
+       @click="activeSection = 'layanan'"
        class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center text-slate-300 hover:text-white transition-colors btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg"
+       :class="{
+           'text-sky-400 font-bold': activeSection === 'layanan',
+           'text-slate-300': activeSection !== 'layanan'
+       }"
        aria-label="Layanan">
         <svg class="w-5 h-5 mb-1 shrink-0 transition-transform group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -25,10 +41,11 @@
 
     <!-- 3. WhatsApp Hero Center (Floating FAB Simetris di Tengah) -->
     <div class="flex flex-col items-center justify-end w-full pb-1">
-        <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6285609009009' }}?text={{ urlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
-           :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')" 
+        <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+           :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')" 
            target="_blank" 
            rel="noopener noreferrer" 
+           data-track-location="mobile_dock"
            class="flex flex-col items-center justify-center w-full group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-lg" 
            aria-label="Panggil Teknisi via WhatsApp">
             <div class="-mt-6 w-12 h-12 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-lg border-4 border-slate-900 flex items-center justify-center btn-press active:scale-95 transition-all group-hover:scale-105 shrink-0">
@@ -45,7 +62,11 @@
             aria-haspopup="dialog" aria-controls="area-search-dialog"
             aria-expanded="false" :aria-expanded="mobileSearchOpen"
             type="button" 
-            class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center text-slate-300 hover:text-white transition-colors cursor-pointer btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg" 
+            class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center hover:text-white transition-colors cursor-pointer btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg {{ $isArea ? 'text-sky-400 font-bold' : 'text-slate-300' }}" 
+            :class="{
+                'text-sky-400 font-bold': {{ $isArea ? 'true' : 'false' }} || activeSection === 'area' || mobileSearchOpen,
+                'text-slate-300': !{{ $isArea ? 'true' : 'false' }} && activeSection !== 'area' && !mobileSearchOpen
+            }"
             aria-label="Area - Cari Wilayah">
         <svg class="w-5 h-5 mb-1 shrink-0 transition-transform group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>

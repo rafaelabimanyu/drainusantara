@@ -21,15 +21,26 @@
     <form action="{{ route('admin.equipments.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl border border-slate-200 p-5 sm:p-7 space-y-5 shadow-2xs">
         @csrf
 
-        <!-- 1. Nama Peralatan -->
-        <div>
-            <label for="name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Peralatan / Mesin *</label>
-            <input type="text" name="name" id="name" required value="{{ old('name') }}" 
-                   placeholder="Contoh: Mesin Drain Rooter Spiral Baja Rotary Ridgid K-50"
-                   class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs @error('name') border-rose-500 @enderror">
-            @error('name')
-                <p class="text-xs text-rose-600 mt-1">{{ $message }}</p>
-            @enderror
+        <!-- 1. Nama Peralatan & Slug URL -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label for="name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Peralatan / Mesin *</label>
+                <input type="text" name="name" id="name" required value="{{ old('name') }}" 
+                       placeholder="Contoh: Mesin Drain Rooter Spiral Baja Rotary Ridgid K-50"
+                       class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs @error('name') border-rose-500 @enderror">
+                @error('name')
+                    <p class="text-xs text-rose-600 mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+            <div>
+                <label for="slug" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Slug URL Halaman Detail</label>
+                <input type="text" name="slug" id="slug" value="{{ old('slug') }}" 
+                       placeholder="otomatis dari nama jika kosong (mis: mesin-rooter-ridgid-k50)"
+                       class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm font-mono outline-hidden transition shadow-2xs @error('slug') border-rose-500 @enderror">
+                @error('slug')
+                    <p class="text-xs text-rose-600 mt-1">{{ $message }}</p>
+                @enderror
+            </div>
         </div>
 
         <!-- 2. Kategori & Badge -->
@@ -61,7 +72,7 @@
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                     Foto Peralatan
                 </label>
-                <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/jpg,image/webp,image/svg+xml"
+                <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/webp"
                        class="block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition cursor-pointer">
                 @error('image')
                     <p class="text-xs text-rose-600 mt-1">{{ $message }}</p>
@@ -76,23 +87,55 @@
             </div>
         </div>
 
-        <!-- 4. Deskripsi Singkat -->
+        <!-- 4. Deskripsi Singkat & Deskripsi Lengkap Halaman Detail -->
         <div>
-            <label for="short_description" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Deskripsi Singkat Cara Kerja</label>
+            <label for="short_description" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Deskripsi Singkat (Ringkasan Katalog &amp; Card)</label>
             <textarea name="short_description" id="short_description" rows="2" 
-                      placeholder="Jelaskan cara kerja alat, fleksibilitas kabel, dan kemampuan mengatasi sumbatan tanpa merusak pipa..."
+                      placeholder="Jelaskan cara kerja alat secara ringkas (1-2 kalimat) untuk kartu katalog..."
                       class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">{{ old('short_description') }}</textarea>
         </div>
 
-        <!-- 5. Spesifikasi Teknis -->
         <div>
-            <label for="specs" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                Spesifikasi Teknis (1 baris per poin)
-            </label>
-            <textarea name="specs" id="specs" rows="3" 
-                      placeholder="Jangkauan: Hingga 30 Meter modular&#10;Diameter Pipa: 1.5 sampai 6 Inci&#10;Tenaga: Motor Listrik 220V 400 RPM"
-                      class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-xs font-mono outline-hidden transition shadow-2xs">{{ old('specs') }}</textarea>
-            <p class="text-[11px] text-slate-500 mt-1">Setiap baris baru akan ditampilkan sebagai poin spesifikasi tersendiri.</p>
+            <label for="description" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Deskripsi Lengkap &amp; Prinsip Kerja (Halaman Detail)</label>
+            <textarea name="description" id="description" rows="5" 
+                      placeholder="Uraikan prinsip kerja mekanis, keunggulan dibanding metode konvensional/soda api, dan performa di lapangan..."
+                      class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">{{ old('description') }}</textarea>
+        </div>
+
+        <!-- 5. Spesifikasi Teknis, Fitur Utama & Skenario Aplikasi -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+
+            <div>
+                <label for="features" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Fitur &amp; Keunggulan Utama (1 baris per poin)
+                </label>
+                <textarea name="features" id="features" rows="4" 
+                          placeholder="Kabel spiral baja karbon tempa anti-kinking&#10;Kopling aksi instan begitu tuas dilepas&#10;Aman melewati lekukan sifon leher angsa"
+                          class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-xs font-mono outline-hidden transition shadow-2xs">{{ old('features') }}</textarea>
+                <p class="text-[11px] text-slate-500 mt-1">Ditampilkan pada grid fitur halaman detail.</p>
+            </div>
+        </div>
+
+        <!-- 6. Aplikasi Titik Saluran & Standar SOP K3 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label for="applications" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Aplikasi Titik Saluran (1 baris per poin)
+                </label>
+                <textarea name="applications" id="applications" rows="3" 
+                          placeholder="Wastafel dapur mampet minyak &amp; kerak lemak&#10;Kloset duduk/jongkok tersumbat tisu basah&#10;Floor drain kamar mandi menggenang rambut"
+                          class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-xs font-mono outline-hidden transition shadow-2xs">{{ old('applications') }}</textarea>
+            </div>
+
+            <div>
+                <label for="safety_k3" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Standar Keselamatan &amp; SOP K3
+                </label>
+                <textarea name="safety_k3" id="safety_k3" rows="3" 
+                          placeholder="Sarung tangan kulit anti-lilit, kacamata pelindung, grounding kelistrikan, dan cover sepatu teknisi..."
+                          class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-xs outline-hidden transition shadow-2xs">{{ old('safety_k3') }}</textarea>
+            </div>
         </div>
 
         <!-- 6. Urutan & Status Aktif -->

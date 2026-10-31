@@ -29,7 +29,7 @@
             </div>
         </div>
 
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan saluran — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan saluran - geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"

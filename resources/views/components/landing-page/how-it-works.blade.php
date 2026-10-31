@@ -19,7 +19,7 @@
             </div>
         </div>
 
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Langkah penanganan — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Langkah penanganan - geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
@@ -66,7 +66,7 @@
             <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl p-7 border border-slate-200/80 shadow-xs hover:shadow-md hover:border-sky-300 transition-all card-lift reveal-soft stagger-3">
                 <div>
                     <div class="mb-5">
-                        <div class="w-11 h-11 rounded-lg bg-emerald-700 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
+                        <div class="w-11 h-11 rounded-lg bg-sky-700 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
                             03
                         </div>
                     </div>

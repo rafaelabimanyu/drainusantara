@@ -61,5 +61,18 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('navServices', collect());
             }
         });
+
+        // 3. Share dynamic contextual WhatsApp URL and message with layout components
+        View::composer(['layouts.app', 'components.layout.*'], function ($view) {
+            $msg = \App\Services\WhatsAppService::getContextualMessage();
+            $url = \App\Services\WhatsAppService::buildUrl($msg);
+            $number = \App\Services\WhatsAppService::getNumber();
+
+            $view->with([
+                'contextualWaMsg' => $msg,
+                'contextualWaUrl' => $url,
+                'whatsappNumber' => $number,
+            ]);
+        });
     }
 }

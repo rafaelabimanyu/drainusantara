@@ -14,7 +14,7 @@
                 <div class="pt-1 text-xs text-slate-400 space-y-1">
                     <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Workshop Pusat:</div>
                     <p class="leading-relaxed">Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440</p>
-                    <div class="text-[11px] text-emerald-400 font-semibold pt-0.5">
+                    <div class="text-[11px] text-sky-400 font-semibold pt-0.5">
                         Siaga 24 Jam Nonstop
                     </div>
                 </div>
@@ -25,23 +25,23 @@
                 <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-3.5 pb-2 border-b border-slate-800">Standar Mutu &amp; Jaminan</h3>
                 <ul class="space-y-2.5 text-xs text-slate-300">
                     <li class="flex items-start gap-2">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
                         <span>Sistem <strong>No Cure No Pay</strong> (Air lancar baru bayar)</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
                         <span>Garansi Tertulis 30 Hari Kalender</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
                         <span>100% Tanpa Bongkar Keramik Lantai</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
                         <span>Zero Chemical / Bebas Soda Api Korosif</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-emerald-400 font-bold select-none">[✓]</span>
+                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
                         <span>e-Faktur Pajak PPN &amp; Dokumen BAST B2B</span>
                     </li>
                 </ul>
@@ -54,10 +54,11 @@
                     Saluran air meluap darurat atau butuh survei grease trap gedung? Penugasan teknisi terdekat langsung dari posko siaga untuk respon cepat.
                 </p>
                 <div class="space-y-2.5">
-                    <a href="https://wa.me/{{ config('app.whatsapp_number') ?: '6285609009009' }}?text={{ rawurlencode('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.') }}"
-                       :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.')"
+                    <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.') }}"
+                       :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.')"
                        target="_blank" 
                        rel="noopener noreferrer" 
+                       data-track-location="footer"
                        class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2.5 rounded-lg border border-emerald-800 shadow-xs transition-colors btn-press">
                         <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
@@ -111,7 +112,7 @@
                         </h3>
                         <p class="text-xs text-slate-400 mt-0.5">Penugasan teknisi terdekat langsung dari posko siaga masing-masing kota untuk respon cepat.</p>
                     </div>
-                    <div class="inline-flex items-center px-3 py-1 bg-emerald-500/15 border border-emerald-500/30 rounded-md text-emerald-400 text-xs font-semibold shrink-0">
+                    <div class="text-sky-400 text-xs font-semibold shrink-0">
                         <span>Siaga 24 Jam Nonstop</span>
                     </div>
                 </div>
@@ -165,8 +166,8 @@
                     <!-- Card 3: Garansi & Transparansi Biaya -->
                     <div class="p-3.5 rounded-lg bg-slate-900/70 border border-slate-700/70 flex flex-col justify-between">
                         <div>
-                            <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs mb-2">
-                                <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div class="flex items-center gap-2 text-sky-400 font-bold text-xs mb-2">
+                                <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
                                 </svg>
                                 <span>Jaminan Layanan &amp; Biaya</span>
@@ -196,6 +197,7 @@
                        :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent('Halo Admin Drainusantara, saya membutuhkan info kedatangan teknisi ke alamat saya.')"
                        target="_blank" 
                        rel="noopener noreferrer" 
+                       data-track-location="footer_dispatch"
                        class="shrink-0 inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg transition-colors shadow-2xs btn-press">
                         <span>Hubungi Dispatch WhatsApp</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -215,6 +217,8 @@
                 <a href="{{ route('about.k3') }}" class="hover:text-white transition-colors">Standar K3</a>
                 <span>&bull;</span>
                 <a href="{{ route('about.faq') }}" class="hover:text-white transition-colors">FAQ</a>
+                <span>&bull;</span>
+                <a href="{{ route('sitemap.html') }}" class="hover:text-white transition-colors">Peta Situs</a>
             </div>
         </div>
     </div>

@@ -45,7 +45,7 @@
                         </template>
                     </div>
                     <div class="flex-1 w-full space-y-1">
-                        <input type="file" name="image" id="image" accept="image/*"
+                        <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/webp"
                                @change="const file = $event.target.files[0]; if (file) { previewUrl = URL.createObjectURL(file); }"
                                class="block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
                         <p class="text-[11px] text-slate-500">Format: JPG, PNG, WEBP, atau SVG (Maks. 5MB). Dikosongkan akan memakai ilustrasi default.</p>

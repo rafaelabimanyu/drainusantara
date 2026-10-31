@@ -63,7 +63,7 @@
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Profil Staff (Opsional)</span>
                     <p class="text-[11px] text-slate-500 mt-0.5">Jika tidak diunggah, kartu akan otomatis menampilkan inisial nama.</p>
                 </div>
-                <span class="text-[11px] text-sky-700 font-semibold bg-sky-50 px-2 py-0.5 rounded border border-sky-200">JPG, PNG, WEBP</span>
+                <span class="text-xs text-slate-500 font-medium">JPG, PNG, WEBP</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
@@ -84,7 +84,7 @@
                 <div class="sm:col-span-2 space-y-2">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Berkas Foto</label>
-                        <input type="file" name="photo" id="photo" accept="image/*"
+                        <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/webp"
                                @change="const f = $event.target.files[0]; if (f) { preview = URL.createObjectURL(f); }"
                                class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
                         @error('photo') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror

@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Traits\HasAutoOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Service extends Model
@@ -44,5 +45,10 @@ class Service extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function portfolios(): BelongsToMany
+    {
+        return $this->belongsToMany(Portfolio::class, 'partnership_service')->withTimestamps();
     }
 }

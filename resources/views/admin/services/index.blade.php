@@ -51,14 +51,10 @@
                             </td>
                             <td class="px-5 py-3.5">
                                 @if(!empty($service->features) && is_array($service->features))
-                                    <div class="flex flex-wrap gap-1">
-                                        @foreach(array_slice($service->features, 0, 2) as $feat)
-                                            <span class="inline-block bg-slate-100 border border-slate-200 text-slate-700 text-[11px] px-2 py-0.5 rounded-md font-medium">
-                                                {{ $feat }}
-                                            </span>
-                                        @endforeach
+                                    <div class="text-xs text-slate-600">
+                                        {{ implode(', ', array_slice($service->features, 0, 2)) }}
                                         @if(count($service->features) > 2)
-                                            <span class="text-[10px] text-slate-400 self-center">+{{ count($service->features) - 2 }}</span>
+                                            <span class="text-[11px] text-slate-400 font-medium ml-1">(+{{ count($service->features) - 2 }})</span>
                                         @endif
                                     </div>
                                 @else
@@ -67,12 +63,13 @@
                             </td>
                             <td class="px-5 py-3.5 whitespace-nowrap">
                                 @if($service->is_active)
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                                         Aktif
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
                                         Nonaktif
                                     </span>
                                 @endif

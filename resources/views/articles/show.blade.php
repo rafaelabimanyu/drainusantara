@@ -13,7 +13,7 @@
                 <span>Beranda</span>
             </a>
             <span class="text-slate-300">/</span>
-            <a href="{{ route('articles.index') }}" class="hover:text-sky-700 transition-colors shrink-0">Pengetahuan &amp; Edukasi</a>
+            <a href="{{ route('articles.index') }}" class="hover:text-sky-700 transition-colors shrink-0">Artikel</a>
             <span class="text-slate-300">/</span>
             <span class="text-slate-800 truncate font-semibold">{{ $article->title }}</span>
         </nav>
@@ -21,10 +21,11 @@
         <!-- Article Editorial Header Card -->
         <header class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-10 lg:p-12 mb-8 shadow-xs reveal-soft">
             <div class="max-w-4xl mx-auto">
-                <div class="flex flex-wrap items-center gap-2.5 mb-4">
-                    <span class="px-3 py-1 rounded-md text-xs font-bold bg-sky-50 text-sky-800 border border-sky-200 tracking-wide uppercase">
-                        {{ $article->category ?? 'Tips & Edukasi' }}
+                <div class="flex flex-wrap items-center gap-2 mb-4 text-xs">
+                    <span class="font-bold text-sky-800 tracking-wider uppercase">
+                        {{ $article->category_label }}
                     </span>
+                    <span class="text-slate-300">&bull;</span>
                     <span class="text-xs text-slate-500 font-medium">
                         Dipublikasikan {{ $article->published_at ? $article->published_at->format('d F Y') : $article->created_at->format('d F Y') }}
                     </span>
@@ -138,64 +139,6 @@
                     {!! $article->rendered_content !!}
                 </div>
 
-                <!-- Mid-Article Visual Safety Comparison Box -->
-                <div class="mt-12 p-6 sm:p-8 rounded-xl bg-amber-50/80 border border-amber-200/90 space-y-4">
-                    <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-0.5 rounded-md bg-amber-800 text-white text-[11px] font-bold uppercase tracking-wider">
-                            KOMPARASI TEKNIS SANITASI
-                        </span>
-                        <span class="text-xs sm:text-sm font-bold text-amber-950">Bahan Kimia Korosif vs Metode Mekanis Spiral Baja</span>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
-                        <div class="p-4 sm:p-5 rounded-lg bg-white border border-rose-200 space-y-2.5 shadow-2xs">
-                            <div class="font-bold text-rose-700 flex items-center gap-2">
-                                <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                </svg>
-                                <span>Bahan Kimia / Soda Api:</span>
-                            </div>
-                            <ul class="space-y-2 text-slate-600 text-xs leading-relaxed">
-                                <li class="flex items-start gap-1.5">
-                                    <span class="text-rose-500 font-bold">&times;</span>
-                                    <span>Reaksi panas eksotermik di atas 100°C melunakkan dan merusak pipa PVC.</span>
-                                </li>
-                                <li class="flex items-start gap-1.5">
-                                    <span class="text-rose-500 font-bold">&times;</span>
-                                    <span>Lem fitting mencair, memicu rembesan air limbah ke plafon atau bawah tanah.</span>
-                                </li>
-                                <li class="flex items-start gap-1.5">
-                                    <span class="text-rose-500 font-bold">&times;</span>
-                                    <span>Minyak bereaksi menjadi sabun keras seperti beton kapur yang mustahil larut.</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="p-4 sm:p-5 rounded-lg bg-white border border-emerald-200 space-y-2.5 shadow-2xs">
-                            <div class="font-bold text-emerald-800 flex items-center gap-2">
-                                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                </svg>
-                                <span>Mesin Spiral Baja Rotary Drainusantara:</span>
-                            </div>
-                            <ul class="space-y-2 text-slate-600 text-xs leading-relaxed">
-                                <li class="flex items-start gap-1.5">
-                                    <span class="text-emerald-600 font-bold">&check;</span>
-                                    <span>Kabel spiral pegas lentur meliuk bebas mengikuti lekukan leher angsa sifon.</span>
-                                </li>
-                                <li class="flex items-start gap-1.5">
-                                    <span class="text-emerald-600 font-bold">&check;</span>
-                                    <span>100% aman tanpa risiko merusak dinding pipa maupun sambungan fitting PVC.</span>
-                                </li>
-                                <li class="flex items-start gap-1.5">
-                                    <span class="text-emerald-600 font-bold">&check;</span>
-                                    <span>Mengeruk kerak lemak dan kotoran hingga tuntas bergaransi resmi 30 hari.</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Interactive Consultation CTA Banner -->
                 @php
                     $waMsg = rawurlencode("Halo Teknisi Drainusantara, saya baru membaca panduan '{$article->title}' dan ingin konsultasi penanganan saluran air mampet di rumah.");
@@ -219,34 +162,7 @@
                     </a>
                 </div>
 
-                <!-- Previous & Next Article Navigation -->
-                <div class="mt-12 pt-8 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    @if(isset($prevArticle) && $prevArticle)
-                        <a href="{{ route('articles.show', $prevArticle->slug) }}" 
-                           class="p-4 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/30 transition-all group flex flex-col justify-between">
-                            <span class="text-[11px] font-bold text-slate-400 group-hover:text-sky-700 transition-colors flex items-center gap-1 mb-1">
-                                &larr; Panduan Sebelumnya
-                            </span>
-                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-sky-700 transition-colors line-clamp-2">
-                                {{ $prevArticle->title }}
-                            </h4>
-                        </a>
-                    @else
-                        <div></div>
-                    @endif
-
-                    @if(isset($nextArticle) && $nextArticle)
-                        <a href="{{ route('articles.show', $nextArticle->slug) }}" 
-                           class="p-4 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/30 transition-all group flex flex-col justify-between text-right sm:items-end">
-                            <span class="text-[11px] font-bold text-slate-400 group-hover:text-sky-700 transition-colors flex items-center gap-1 mb-1">
-                                Panduan Selanjutnya &rarr;
-                            </span>
-                            <h4 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-sky-700 transition-colors line-clamp-2">
-                                {{ $nextArticle->title }}
-                            </h4>
-                        </a>
-                    @endif
-                </div>
+                
 
             </main>
 
@@ -275,11 +191,6 @@
 
                 <!-- 24-Hour Emergency Help Widget -->
                 <div class="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-xs space-y-4">
-                    <div class="flex items-center gap-2 text-amber-400">
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
-                        <span class="text-xs font-bold uppercase tracking-wider">POSKO SIAGA 24 JAM</span>
-                    </div>
-
                     <h3 class="text-base font-extrabold leading-snug">
                         Armada Teknisi Siaga Meluncur ke Alamat Anda
                     </h3>
@@ -304,10 +215,10 @@
                 <!-- Related Guides Sidebar Widget -->
                 @if(isset($recentArticles) && $recentArticles->isNotEmpty())
                     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-                        <div class="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
-                            <span class="text-xs font-bold uppercase text-sky-800 bg-sky-50 px-2 py-0.5 rounded-md border border-sky-200">
+                        <div class="mb-4 pb-3 border-b border-slate-100">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-sky-800">
                                 PANDUAN LAINNYA
-                            </span>
+                            </h3>
                         </div>
                         <div class="space-y-4">
                             @foreach($recentArticles->take(3) as $related)
@@ -346,7 +257,7 @@
 
                     <a href="{{ route('articles.index') }}" 
                        class="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors">
-                        <span>Lihat Semua Panduan</span>
+                        <span>Lihat Semua Artikel</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
@@ -371,7 +282,7 @@
                                     </div>
                                 @endif
                                 <span class="absolute top-2.5 left-2.5 bg-slate-900/85 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md border border-white/20">
-                                    {{ $related->category ?? 'Tips' }}
+                                    {{ $related->category_label }}
                                 </span>
                             </a>
                             <div class="p-5 flex-1 flex flex-col justify-between">

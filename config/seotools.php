@@ -24,7 +24,7 @@ return [
          * Webmaster tags are always added.
          */
         'webmaster_tags' => [
-            'google' => env('GOOGLE_SITE_VERIFICATION', 'aoHQ2ZJhlGecoaMyq4c-0pnAqdqj6AViTLZUPxDbKgw'),
+            'google' => env('GOOGLE_SITE_VERIFICATION') ?: 'aoHQ2ZJhlGecoaMyq4c-0pnAqdqj6AViTLZUPxDbKgw',
             'bing' => null,
             'alexa' => null,
             'pinterest' => null,

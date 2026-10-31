@@ -43,7 +43,7 @@
 
         @if($countTotal > 0)
         <!-- Responsive Grid on Desktop / Mobile Carousel -->
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Dokumentasi pekerjaan — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Dokumentasi pekerjaan - geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
@@ -55,11 +55,15 @@
                     $serviceTitle = is_object($item->service ?? null) ? $item->service->name : 'Pelancaran Pipa';
                     $waText = urlencode("Halo Tim Drainusantara, saya melihat dokumentasi '{$item->title}'. Saluran pipa saya ada kendala serupa, mohon info estimasi biaya dan kedatangan teknisi.");
                     $itemWaUrl = "https://wa.me/" . config('app.whatsapp_number', '6285609009009') . "?text={$waText}";
+                    $detailUrl = !empty($item->slug) ? route('case-study.show', $item->slug) : null;
                 @endphp
                 <div class="w-[84vw] sm:w-85 md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }} flex flex-col justify-between group">
                     <div>
                         <!-- Foto Dokumentasi Tajam (Tanpa Badge Kategori) -->
                         <div class="relative aspect-16/10 bg-slate-900 overflow-hidden border-b border-slate-100">
+                            @if($detailUrl)
+                                <a href="{{ $detailUrl }}" class="block w-full h-full focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600" title="Lihat detail studi kasus: {{ $item->title }}">
+                            @endif
                             @if($photo)
                                 <img 
                                     src="{{ $photo }}" 
@@ -75,13 +79,22 @@
                                     Foto Dokumentasi Lapangan
                                 </div>
                             @endif
+                            @if($detailUrl)
+                                </a>
+                            @endif
                         </div>
 
                         <!-- Keterangan Pekerjaan -->
                         <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
                             <div>
                                 <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2 leading-snug line-clamp-2 group-hover:text-sky-700 transition-colors">
-                                    {{ $item->title }}
+                                    @if($detailUrl)
+                                        <a href="{{ $detailUrl }}" class="hover:underline">
+                                            {{ $item->title }}
+                                        </a>
+                                    @else
+                                        {{ $item->title }}
+                                    @endif
                                 </h3>
                                 @if(!empty($item->description))
                                 <p class="text-sm text-slate-600 leading-relaxed line-clamp-3">
@@ -93,11 +106,22 @@
                     </div>
 
                     <!-- Action Bar -->
-                    <div class="p-4 sm:p-5 pt-3 border-t border-slate-100 flex items-center justify-end bg-slate-50/50">
+                    <div class="p-4 sm:p-5 pt-3 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
+                        @if($detailUrl)
+                            <a href="{{ $detailUrl }}" 
+                               class="text-xs sm:text-sm font-semibold text-sky-700 hover:text-sky-800 transition-colors inline-flex items-center gap-1">
+                                <span>Detail Kasus</span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
+                            </a>
+                        @else
+                            <span></span>
+                        @endif
                         <a href="{{ $itemWaUrl }}" 
                            target="_blank" 
                            rel="noopener noreferrer" 
-                           class="btn-press text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 underline underline-offset-2 min-h-9 inline-flex items-center gap-1 group/btn">
+                           class="btn-press text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 underline underline-offset-2 min-h-9 inline-flex items-center gap-1 group/btn">
                             <span>Konsultasi</span>
                             <svg class="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>

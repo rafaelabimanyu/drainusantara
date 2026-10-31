@@ -19,7 +19,7 @@
             </div>
         </div>
 
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Keunggulan layanan — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Keunggulan layanan - geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
@@ -27,7 +27,7 @@
              class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 lg:gap-6 pb-4 pt-1 px-1 -mx-1 sm:mx-0 sm:px-0">
             
             <!-- Card 1 (Featured: Col Span 2 on Desktop): Spiral Baja Tanpa Bongkar -->
-            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-2 shrink-0 snap-center p-6 sm:p-8 rounded-xl bg-linear-to-br from-sky-50/70 via-white to-slate-50/60 border border-sky-200/80 hover:border-sky-400 card-lift reveal-soft stagger-1 shadow-xs">
+            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-2 shrink-0 snap-center p-6 sm:p-8 rounded-xl bg-linear-to-br from-sky-50/70 via-white to-slate-50/60 border border-sky-200/80 hover:border-sky-500 card-lift reveal-soft stagger-1 shadow-xs">
                 <div>
                     <div class="mb-4">
                         <div class="w-11 h-11 rounded-lg bg-sky-100 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
@@ -44,7 +44,7 @@
             </div>
 
             <!-- Card 2: Inspeksi Visual Kamera CCTV 30M -->
-            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-slate-400 card-lift reveal-soft stagger-2 shadow-xs">
+            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-500 card-lift reveal-soft stagger-2 shadow-xs">
                 <div>
                     <div class="mb-4">
                         <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
@@ -61,10 +61,10 @@
             </div>
 
             <!-- Card 3: Biaya Transparan Mulai Rp 400.000 -->
-            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-emerald-500 card-lift reveal-soft stagger-3 shadow-xs">
+            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-500 card-lift reveal-soft stagger-3 shadow-xs">
                 <div>
                     <div class="mb-4">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                        <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
@@ -78,7 +78,7 @@
             </div>
 
             <!-- Card 4: Garansi Resmi 30 Hari -->
-            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-300 card-lift reveal-soft stagger-2 shadow-xs">
+            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-500 card-lift reveal-soft stagger-2 shadow-xs">
                 <div>
                     <div class="mb-4">
                         <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
@@ -95,7 +95,7 @@
             </div>
 
             <!-- Card 5: Kerja Higienis & APD Steril -->
-            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-300 card-lift reveal-soft stagger-3 shadow-xs">
+            <div class="w-[85vw] sm:w-85 md:w-auto lg:col-span-1 shrink-0 snap-center p-6 rounded-xl bg-white border border-slate-200/90 hover:border-sky-500 card-lift reveal-soft stagger-3 shadow-xs">
                 <div>
                     <div class="mb-4">
                         <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">

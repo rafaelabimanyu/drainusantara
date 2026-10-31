@@ -37,10 +37,10 @@
         </nav>
 
         <div class="max-w-3xl space-y-4">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 shadow-2xs reveal-fade">
-                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                <span>Armada Siaga &bull; Jabodetabek, Jawa Tengah, Lampung</span>
-            </div>
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-600 inline-block" aria-hidden="true"></span>
+                <span>Jaringan Armada Siaga &bull; Jabodetabek, Jawa Tengah, Lampung</span>
+            </p>
 
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight reveal-soft">
                 Pusat Jangkauan Layanan Drainusantara
@@ -68,11 +68,12 @@
             <div id="prov-{{ $provSlug }}" class="bg-slate-50 hover:bg-slate-50/80 rounded-xl p-6 sm:p-8 border border-slate-200 shadow-sm transition-all reveal-soft card-lift">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
                     <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="text-xs uppercase font-bold text-sky-800 bg-sky-50 px-3 py-0.5 rounded-md border border-sky-200">
+                        <div class="flex items-center gap-2 mb-2 text-xs">
+                            <span class="font-bold uppercase tracking-wider text-sky-800">
                                 PROVINSI
                             </span>
-                            <span class="text-xs text-slate-500 font-medium">{{ count($province['cities']) }} Kota / Wilayah Siaga</span>
+                            <span class="text-slate-300">&bull;</span>
+                            <span class="text-slate-500 font-medium">{{ count($province['cities']) }} Kota / Wilayah Siaga</span>
                         </div>
                         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                             {{ $province['name'] }}
@@ -98,11 +99,11 @@
                     @foreach($province['cities'] as $citySlug => $city)
                         <div class="bg-white rounded-xl border border-slate-200 hover:border-sky-300 hover:shadow-md p-6 transition-all flex flex-col justify-between group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                             <div>
-                                <div class="flex items-center justify-between mb-3">
-                                    <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-md border border-sky-200">
+                                <div class="flex items-center justify-between mb-3 text-xs">
+                                    <span class="font-bold uppercase tracking-wide text-sky-700">
                                         {{ $city['type'] }}
                                     </span>
-                                    <span class="text-[11px] text-emerald-800 font-bold bg-emerald-50 px-2.5 py-0.5 rounded-md border border-emerald-200 flex items-center gap-1">
+                                    <span class="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                         <span>Respon Cepat</span>
                                     </span>
@@ -161,9 +162,9 @@
 
 <section class="py-14 lg:py-20 bg-slate-900 text-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-fade">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-full uppercase tracking-wider mb-3">
+        <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
             KONSULTASI AREA
-        </span>
+        </p>
         <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             Wilayah Hunian Anda Belum Terdaftar?
         </h2>

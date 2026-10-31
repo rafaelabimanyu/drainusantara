@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Support\MediaLifecycle;
-
 use App\Models\Equipment;
+use App\Rules\OptimizedImage;
+use App\Support\MediaLifecycle;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class EquipmentController extends Controller
@@ -40,12 +42,17 @@ class EquipmentController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:equipments,slug'],
             'category' => ['nullable', 'string', 'max:100'],
             'badge' => ['nullable', 'string', 'max:100'],
-            'image' => $request->hasFile('image') ? ['nullable'] : ['nullable', 'string', 'max:255'],
+            'image' => $request->hasFile('image') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
             'image_url' => ['nullable', 'string', 'max:255'],
             'short_description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
             'specs' => ['nullable', 'string'],
+            'features' => ['nullable', 'string'],
+            'applications' => ['nullable', 'string'],
+            'safety_k3' => ['nullable', 'string'],
             'order' => ['nullable', 'integer', 'min:1'],
             'is_active' => ['nullable', 'boolean'],
         ]);
@@ -55,21 +62,27 @@ class EquipmentController extends Controller
         $media->run($record, function () use ($request, $validated, $media, $record): void {
             $imageUrl = $validated['image_url'] ?? null;
             if ($request->hasFile('image')) {
-                $request->validate(['image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
                 $imageUrl = $media->upload($request->file('image'), 'assets/TOOLKIT');
             } elseif (is_string($request->input('image')) && !empty($request->input('image'))) {
                 $imageUrl = $request->input('image');
             }
 
             $specsArray = $this->parseSpecsInput($request->input('specs'));
+            $featuresArray = $this->parseSpecsInput($request->input('features'));
+            $applicationsArray = $this->parseSpecsInput($request->input('applications'));
 
             $media->save($record, [
                 'name' => $validated['name'],
+                'slug' => !empty($validated['slug']) ? Str::slug($validated['slug']) : Str::slug($validated['name']),
                 'category' => $validated['category'] ?? null,
                 'badge' => $validated['badge'] ?? null,
                 'image' => $imageUrl,
                 'short_description' => $validated['short_description'] ?? null,
+                'description' => $validated['description'] ?? null,
                 'specs' => $specsArray,
+                'features' => $featuresArray,
+                'applications' => $applicationsArray,
+                'safety_k3' => $validated['safety_k3'] ?? null,
                 'order' => !empty($validated['order']) ? (int) $validated['order'] : Equipment::getNextAvailableOrder(),
                 'is_active' => $request->boolean('is_active'),
             ]);
@@ -94,12 +107,17 @@ class EquipmentController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', Rule::unique('equipments', 'slug')->ignore($equipment->id)],
             'category' => ['nullable', 'string', 'max:100'],
             'badge' => ['nullable', 'string', 'max:100'],
-            'image' => $request->hasFile('image') ? ['nullable'] : ['nullable', 'string', 'max:255'],
+            'image' => $request->hasFile('image') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
             'image_url' => ['nullable', 'string', 'max:255'],
             'short_description' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
             'specs' => ['nullable', 'string'],
+            'features' => ['nullable', 'string'],
+            'applications' => ['nullable', 'string'],
+            'safety_k3' => ['nullable', 'string'],
             'order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
         ]);
@@ -108,7 +126,6 @@ class EquipmentController extends Controller
         $media->run($equipment, function () use ($request, $validated, $media, $equipment): void {
             $imageUrl = $equipment->image;
             if ($request->hasFile('image')) {
-                $request->validate(['image' => ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']]);
                 $newImage = $media->upload($request->file('image'), 'assets/TOOLKIT');
                 $imageUrl = $newImage;
             } elseif (!empty($validated['image_url'])) {
@@ -116,14 +133,21 @@ class EquipmentController extends Controller
             }
 
             $specsArray = $this->parseSpecsInput($request->input('specs'));
+            $featuresArray = $this->parseSpecsInput($request->input('features'));
+            $applicationsArray = $this->parseSpecsInput($request->input('applications'));
 
             $media->save($equipment, [
                 'name' => $validated['name'],
+                'slug' => !empty($validated['slug']) ? Str::slug($validated['slug']) : ($equipment->slug ?: Str::slug($validated['name'])),
                 'category' => array_key_exists('category', $validated) ? $validated['category'] : $equipment->category,
                 'badge' => array_key_exists('badge', $validated) ? $validated['badge'] : $equipment->badge,
                 'image' => $imageUrl,
                 'short_description' => array_key_exists('short_description', $validated) ? $validated['short_description'] : $equipment->short_description,
+                'description' => array_key_exists('description', $validated) ? $validated['description'] : $equipment->description,
                 'specs' => $specsArray,
+                'features' => $featuresArray,
+                'applications' => $applicationsArray,
+                'safety_k3' => array_key_exists('safety_k3', $validated) ? $validated['safety_k3'] : $equipment->safety_k3,
                 'order' => $validated['order'] ?? 0,
                 'is_active' => $request->boolean('is_active'),
             ]);

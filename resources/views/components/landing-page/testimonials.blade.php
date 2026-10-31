@@ -24,7 +24,7 @@
             </p>
         </div>
 
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Pengalaman pelanggan — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Pengalaman pelanggan - geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"

@@ -19,7 +19,7 @@ class ArticleSeeder extends Seeder
                 'title' => 'Bahaya Menggunakan Soda Api untuk Saluran Mampet',
                 'slug' => 'bahaya-menggunakan-soda-api-saluran-mampet',
                 'thumbnail' => '/images/articles/bahaya-menuang-soda-api-pada-pipa-pvc-mampet.webp',
-                'category' => 'Tips & Edukasi',
+                'category' => 'Edukasi',
                 'excerpt' => 'Banyak orang tergoda menuang soda api saat wastafel mampet. Padahal, reaksi eksotermik kimianya berisiko melelehkan pipa PVC dan mengeraskan lemak menjadi gips.',
                 'content' => "Soda api (*Natrium Hidroksida* / NaOH) kerap dianggap sebagai jalan pintas murah ketika saluran pembuangan air di rumah tersumbat. Namun, dalam standar instalasi plumbing modern, soda api adalah salah satu faktor perusak utama sistem perpipaan PVC hunian.
 
@@ -54,7 +54,7 @@ Metode yang aman dan direkomendasikan secara internasional adalah **pembersihan 
                 'title' => '5 Kebiasaan Sepele Penyebab Utama Bak Cuci Piring Tersumbat',
                 'slug' => '5-kebiasaan-penyebab-bak-cuci-piring-tersumbat',
                 'thumbnail' => '/images/articles/kebiasaan-sepele-penyebab-bak-cuci-piring-kitchen-sink-mampet.webp',
-                'category' => 'Perawatan Rumah',
+                'category' => 'Edukasi',
                 'excerpt' => 'Minyak jelantah hingga ampas kopi sering dianggap sepele saat dibuang ke sink dapur. Simak cara merawat saluran wastafel agar bebas mampet bertahun-tahun.',
                 'content' => "Bak cuci piring (*kitchen sink*) adalah titik instalasi sanitasi dengan beban kerja terberat di rumah dan tempat usaha kuliner. Setiap hari, berbagai residu sisa pengolahan makanan mengalir melalui leher angsa sifon. Tanpa disadari, kebiasaan sehari-hari menjadi pemicu penumpukan endapan kronis.
 
@@ -91,7 +91,7 @@ Saringan bawaan wastafel sering kali memiliki lubang terlalu besar. Tanpa saring
                 'title' => 'Kapan Saluran Pipa Membutuhkan Inspeksi Kamera CCTV?',
                 'slug' => 'kapan-saluran-pipa-butuh-inspeksi-kamera-cctv',
                 'thumbnail' => '/images/articles/kapan-saluran-pipa-membutuhkan-inspeksi-kamera-cctv.webp',
-                'category' => 'Teknologi Plumbing',
+                'category' => 'Penguatan Brand',
                 'excerpt' => 'Jika saluran pipa Anda mampet berulang kali meski sudah sering dibersihkan, kemungkinan ada patahan, amblas tanah, atau akar pohon di dalam pipa.',
                 'content' => "Masalah pipa mampet yang kambuh setiap 2 hingga 3 minggu adalah tanda peringatan bahwa persoalannya bukan lagi sekadar sumbatan kotoran biasa, melainkan adanya anomali struktural pada instalasi pipa bawah tanah.
 
@@ -122,7 +122,7 @@ Kemiringan (*slope*) pipa yang salah (kurang dari 1-2%) membuat air limbah mengg
                 'title' => 'Panduan Perawatan & Kuras Grease Trap Dapur Restoran',
                 'slug' => 'panduan-perawatan-grease-trap-dapur-restoran',
                 'thumbnail' => '/images/articles/panduan-membersihkan-grease-trap-dapur-restoran.webp',
-                'category' => 'Perawatan Rumah',
+                'category' => 'Penguatan Brand',
                 'excerpt' => 'Bak penangkap lemak (grease trap) yang diabaikan dapat memicu bau busuk di area makan tamu dan denda regulasi sanitasi. Pelajari SOP kuras lemak profesional.',
                 'content' => "Bagi pengelola restoran, kafe, katering, dan hotel, unit **Grease Trap** (perangkap lemak) adalah benteng pertahanan utama agar limbah minyak tidak mencemari saluran got umum dan lingkungan sekitar.
 
@@ -152,7 +152,7 @@ Grease trap bekerja berdasarkan prinsip perbedaan berat jenis antara minyak/lema
                 'title' => 'Bahaya Menggunakan Kawat Gantungan Manual pada Pipa Belokan',
                 'slug' => 'bahaya-kawat-manual-saluran-pipa-mampet',
                 'thumbnail' => '/images/articles/bahaya-kawat-manual-saluran-pipa-mampet.webp',
-                'category' => 'Tips & Edukasi',
+                'category' => 'Edukasi',
                 'excerpt' => 'Mencoba melancarkan kloset atau wastafel dengan kawat jemuran yang ditekuk sering berujung petaka: kawat tersangkut patah di leher angsa atau menusuk pipa PVC.',
                 'content' => "Banyak pemilik rumah berinisiatif meluruskan gantungan baju kawat (*wire coat hanger*) ketika menghadapi saluran pembuangan air yang tersumbat. Meskipun terlihat sederhana dan hemat, metode darurat ini memiliki tingkat kegagalan tinggi dan risiko kerusakan fisik yang fatal.
 
@@ -177,6 +177,34 @@ Kabel pembersih saluran profesional (*drain snake / rooter*) dibuat dari **baja 
                 'meta_description' => 'Hindari kawat jemuran untuk melancarkan saluran pipa wastafel dan kloset. Pelajari risiko kawat tersangkut dan solusi mesin spiral lentur.',
                 'is_published' => true,
                 'published_at' => now()->subDays(18),
+            ],
+            [
+                'title' => 'Promo Paket Inspeksi Kamera CCTV & Pelancaran Saluran Rutin',
+                'slug' => 'promo-paket-inspeksi-cctv-pelancaran-saluran',
+                'thumbnail' => '/images/articles/kapan-saluran-pipa-membutuhkan-inspeksi-kamera-cctv.webp',
+                'category' => 'Promo Penawaran',
+                'excerpt' => 'Dapatkan penawaran harga spesial paket kombo inspeksi endoskopi pipa CCTV resolusi tinggi bersamaan dengan pelancaran mekanis rotary spiral bergaransi.',
+                'content' => "Drainusantara menghadirkan penawaran khusus bagi pemilik rumah tinggal, ruko, restoran, serta pengelola properti yang membutuhkan kepastian visual dan pembersihan tuntas tanpa tebak-tebak.
+
+## Paket Kombo Pelancaran + Inspeksi Kamera CCTV
+
+Sering kali sumbatan pipa yang kambuhan disebabkan oleh kendala struktural tersembunyi. Dengan paket promo ini, Anda mendapatkan layanan lengkap dalam satu kunjungan:
+
+### Fasilitas yang Termasuk:
+1. **Pelancaran Mekanis Rotary K-50:** Pembersihan jalur pipa pembuangan dari lemak mengeras, sisa makanan, dan rambut hingga air lancar 100%.
+2. **Inspeksi Kamera Endoskopi CCTV IP68:** Pengecekan visual menyeluruh sepanjang pipa hingga 30 meter sebelum dan sesudah pengerjaan.
+3. **Laporan Visual Digital:** File video rekaman resolusi tinggi kondisi dalam pipa dikirimkan langsung ke WhatsApp Anda.
+4. **Garansi Tertulis 30 Hari Kalender:** Jaminan pelancaran ulang bebas biaya jika terjadi sumbatan kembali dalam masa garansi.
+
+## Ketentuan & Cara Klaim Penawaran
+
+- Berlaku untuk seluruh area layanan Drainusantara di Jabodetabek, Semarang, dan sekitarnya.
+- Penjadwalan fleksibel termasuk hari libur dan malam hari tanpa biaya tambahan tersembunyi.
+- Konsultasikan kebutuhan titik saluran Anda melalui Customer Service WhatsApp resmi untuk mendapatkan kuota promo hari ini.",
+                'meta_title' => 'Promo Paket Inspeksi CCTV & Pelancaran Saluran - Drainusantara',
+                'meta_description' => 'Penawaran spesial paket kombo inspeksi endoscopic camera CCTV dan pembersihan pipa spiral rooter bergaransi 30 hari.',
+                'is_published' => true,
+                'published_at' => now()->subDays(1),
             ],
         ];
 

@@ -161,11 +161,18 @@ class AdminTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Area Jangkauan & Landing SEO Lokal', false);
 
-        // 2. Create area
+        // 2. Create area with hero_image and faqs
         $postResponse = $this->post('/admin/coverage-areas', [
             'city' => 'Jakarta Barat',
             'district' => 'Puri Indah',
             'postal_code' => '11610',
+            'hero_image_url' => 'https://domain.com/puri-indah.webp',
+            'faqs' => [
+                [
+                    'question' => 'Berapa lama teknisi sampai ke Puri Indah?',
+                    'answer' => 'Sekitar 30 menit dari posko terdekat.',
+                ],
+            ],
             'is_active' => '1',
         ]);
 
@@ -174,7 +181,32 @@ class AdminTest extends TestCase
             'city' => 'Jakarta Barat',
             'district' => 'Puri Indah',
             'slug' => 'jakarta-barat-puri-indah',
+            'hero_image' => 'https://domain.com/puri-indah.webp',
         ]);
+
+        $createdArea = \App\Models\CoverageArea::where('slug', 'jakarta-barat-puri-indah')->first();
+        $this->assertNotNull($createdArea);
+        $this->assertCount(1, $createdArea->faqs);
+        $this->assertEquals('Berapa lama teknisi sampai ke Puri Indah?', $createdArea->faqs[0]['question']);
+
+        // 3. Update area
+        $putResponse = $this->put("/admin/coverage-areas/{$createdArea->id}", [
+            'city' => 'Jakarta Barat',
+            'district' => 'Puri Indah',
+            'hero_image_url' => 'https://domain.com/puri-indah-updated.webp',
+            'faqs' => [
+                [
+                    'question' => 'Berapa biaya pipa mampet di Puri Indah?',
+                    'answer' => 'Mulai Rp 400.000 bergaransi 30 hari.',
+                ],
+            ],
+            'is_active' => '1',
+        ]);
+
+        $putResponse->assertRedirect('/admin/coverage-areas');
+        $createdArea->refresh();
+        $this->assertEquals('https://domain.com/puri-indah-updated.webp', $createdArea->hero_image);
+        $this->assertEquals('Berapa biaya pipa mampet di Puri Indah?', $createdArea->faqs[0]['question']);
     }
 
     public function test_admin_galleries_crud(): void

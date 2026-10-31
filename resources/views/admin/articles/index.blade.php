@@ -45,11 +45,10 @@
                         </td>
                         <td class="px-5 py-3.5">
                             <div class="font-bold text-slate-900 text-sm">{{ $article->title }}</div>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-sky-50 text-sky-700 border border-sky-200">
-                                    {{ $article->category ?? 'Umum' }}
-                                </span>
-                                <a href="{{ route('articles.show', $article->slug) }}" target="_blank" class="text-xs text-slate-500 hover:text-sky-700 font-mono">
+                            <div class="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                                <span class="font-medium text-slate-700">{{ $article->category_label }}</span>
+                                <span>&bull;</span>
+                                <a href="{{ route('articles.show', $article->slug) }}" target="_blank" class="hover:text-sky-700 font-mono">
                                     /artikel/{{ $article->slug }} ↗
                                 </a>
                             </div>
@@ -59,15 +58,16 @@
                         </td>
                         <td class="px-5 py-3.5 whitespace-nowrap">
                             @if($article->is_published)
-                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                                     Terbit
                                 </span>
-                                <div class="text-[11px] text-slate-500 mt-1">
+                                <div class="text-[11px] text-slate-400 mt-0.5">
                                     {{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}
                                 </div>
                             @else
-                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
                                     Draf
                                 </span>
                             @endif

@@ -36,22 +36,24 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             @if(count($galleries) > 0)
-            <div class="flex flex-wrap items-center justify-center gap-2 mb-10 reveal-soft delay-150">
-                <button type="button" @click="activeFilter = 'all'"
-                        :class="activeFilter === 'all' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
-                        class="px-5 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
-                    Semua Sektor ({{ count($galleries) }})
-                </button>
-                <button type="button" @click="activeFilter = 'rumahan'"
-                        :class="activeFilter === 'rumahan' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
-                        class="px-5 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
-                    Rumahan / Residensial ({{ $galleries->where('category', 'rumahan')->count() }})
-                </button>
-                <button type="button" @click="activeFilter = 'b2b'"
-                        :class="activeFilter === 'b2b' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold'"
-                        class="px-5 py-2.5 rounded-lg text-xs transition-colors cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[44px]">
-                    B2B / Komersial ({{ $galleries->where('category', 'b2b')->count() }})
-                </button>
+            <div class="flex justify-center mb-10 reveal-soft delay-150">
+                <div class="inline-flex p-1 bg-slate-100 rounded-lg border border-slate-200/80 max-w-full overflow-x-auto no-scrollbar shadow-2xs">
+                    <button type="button" @click="activeFilter = 'all'"
+                            :class="activeFilter === 'all' ? 'bg-white text-sky-700 font-bold shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                            class="px-4 py-2 rounded-md text-xs transition-all cursor-pointer whitespace-nowrap min-h-[40px] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                        Semua Sektor ({{ count($galleries) }})
+                    </button>
+                    <button type="button" @click="activeFilter = 'rumahan'"
+                            :class="activeFilter === 'rumahan' ? 'bg-white text-sky-700 font-bold shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                            class="px-4 py-2 rounded-md text-xs transition-all cursor-pointer whitespace-nowrap min-h-[40px] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                        Rumahan / Residensial ({{ $galleries->where('category', 'rumahan')->count() }})
+                    </button>
+                    <button type="button" @click="activeFilter = 'b2b'"
+                            :class="activeFilter === 'b2b' ? 'bg-white text-sky-700 font-bold shadow-xs border border-slate-200' : 'text-slate-600 hover:text-slate-900 font-medium'"
+                            class="px-4 py-2 rounded-md text-xs transition-all cursor-pointer whitespace-nowrap min-h-[40px] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                        B2B / Komersial ({{ $galleries->where('category', 'b2b')->count() }})
+                    </button>
+                </div>
             </div>
             @endif
 
@@ -60,6 +62,7 @@
                     @php
                         $photoUrl = $item->image ?: ($item->after_image ?: $item->before_image);
                         $isB2b = ($item->category ?? 'rumahan') === 'b2b';
+                        $detailUrl = !empty($item->slug) ? route('case-study.show', $item->slug) : null;
                     @endphp
                     <div x-show="activeFilter === 'all' || activeFilter === '{{ $item->category ?? 'rumahan' }}'"
                          x-transition:enter="transition ease-out duration-200"
@@ -68,6 +71,9 @@
                          class="bg-white rounded-xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col group card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }}">
                         
                         <div class="relative aspect-[16/10] bg-slate-950 overflow-hidden border-b border-slate-100 group/img">
+                            @if($detailUrl)
+                                <a href="{{ $detailUrl }}" class="block w-full h-full focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600" title="Lihat detail studi kasus: {{ $item->title }}">
+                            @endif
                             @if($photoUrl)
                                 <img src="{{ $photoUrl }}" 
                                      alt="{{ $item->title }}" 
@@ -84,39 +90,37 @@
                                     <span class="text-xs font-semibold">Foto Dokumentasi Lapangan Drainusantara</span>
                                 </div>
                             @endif
+                            @if($detailUrl)
+                                </a>
+                            @endif
 
-                            <!-- Sector Badge -->
+                            <!-- Sector Label -->
                             @if($isB2b)
-                                <div class="absolute top-2 left-2 sm:top-3 sm:left-3 bg-slate-950/85 backdrop-blur-xs border border-amber-500/40 text-amber-300 text-[10px] sm:text-[11px] font-bold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-xs flex items-center gap-1 sm:gap-1.5">
-                                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current shrink-0" viewBox="0 0 20 20">
-                                        <path d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h6v2H7V5zm6 4H7v2h6V9zm-6 4h6v2H7v-2z"/>
-                                    </svg>
-                                    <span class="hidden sm:inline">B2B Komersial</span>
-                                    <span class="sm:hidden">B2B</span>
-                                </div>
+                                <span class="absolute top-2 left-2 sm:top-3 sm:left-3 bg-slate-900/90 text-amber-300 text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-sm">
+                                    B2B Komersial
+                                </span>
                             @else
-                                <div class="absolute top-2 left-2 sm:top-3 sm:left-3 bg-slate-950/85 backdrop-blur-xs border border-sky-500/40 text-sky-300 text-[10px] sm:text-[11px] font-bold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-xs flex items-center gap-1 sm:gap-1.5">
-                                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current shrink-0" viewBox="0 0 20 20">
-                                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                                    </svg>
-                                    <span class="hidden sm:inline">Rumahan Residensial</span>
-                                    <span class="sm:hidden">Rumahan</span>
-                                </div>
+                                <span class="absolute top-2 left-2 sm:top-3 sm:left-3 bg-slate-900/90 text-sky-300 text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-sm">
+                                    Rumahan Residensial
+                                </span>
                             @endif
                         </div>
 
                         <!-- Content Details -->
                         <div class="p-3 sm:p-6 flex-1 flex flex-col justify-between">
                             <div>
-                                <div class="flex flex-wrap items-center justify-between gap-1.5 mb-2 sm:mb-3">
-                                    <span class="px-2 py-0.5 text-[10px] sm:text-xs font-bold bg-sky-50 text-sky-800 border border-sky-200 rounded-md truncate max-w-full">
-                                        {{ $item->service ? $item->service->name : 'Plumbing Spesialis' }}
-                                    </span>
-                                   
-                                </div>
+                                <p class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-sky-800 mb-1.5 truncate">
+                                    {{ $item->service ? $item->service->name : 'Plumbing Spesialis' }}
+                                </p>
 
                                 <h3 class="text-xs sm:text-lg md:text-xl font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug tracking-tight line-clamp-2">
-                                    {{ $item->title }}
+                                    @if($detailUrl)
+                                        <a href="{{ $detailUrl }}" class="hover:underline">
+                                            {{ $item->title }}
+                                        </a>
+                                    @else
+                                        {{ $item->title }}
+                                    @endif
                                 </h3>
 
                                 <p class="mt-1 sm:mt-2.5 text-slate-600 text-[11px] sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-3">
@@ -130,11 +134,19 @@
                                 $waUrl = "https://wa.me/{$whatsappNumber}?text={$waMessage}";
                             @endphp
                             <div class="mt-3 sm:mt-6 pt-2.5 sm:pt-4 border-t border-slate-100 flex items-center justify-between gap-2 sm:gap-3">
-                                
+                                @if($detailUrl)
+                                    <a href="{{ $detailUrl }}" 
+                                       class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-sky-700 hover:text-sky-800 transition-colors py-2">
+                                        <span>Lihat Detail</span>
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                        </svg>
+                                    </a>
+                                @endif
                                 <a href="{{ $waUrl }}" 
                                    target="_blank" 
                                    rel="noopener noreferrer" 
-                                   class="btn-press w-full md:w-auto inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs shadow-2xs transition-colors min-h-[38px] sm:min-h-[44px]">
+                                   class="btn-press {{ $detailUrl ? '' : 'w-full md:w-auto' }} inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs shadow-2xs transition-colors min-h-[38px] sm:min-h-[44px]">
                                     <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24">
                                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                                     </svg>
@@ -159,27 +171,54 @@
         </div>
     </section>
 
-    <section class="py-14 lg:py-20 bg-slate-900 text-white border-t border-slate-800">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-soft">
-            <span class="text-xs font-bold uppercase tracking-widest text-sky-400 block mb-2">
-                Konsultasi Bebas Biaya
-            </span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Saluran Pipa Rumah Anda Sedang Mampet?
-            </h2>
-            <p class="mt-3 text-slate-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-                Hindari risiko menuang soda api yang dapat merusak dan melengkungkan pipa PVC. Hubungi teknisi siaga Drainusantara untuk penanganan mekanis bebas bongkar.
-            </p>
-            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="{{ $generalWaUrl }}" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="btn-press inline-flex items-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-sm shadow-md transition-colors min-h-[48px]">
-                    <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
-                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                    </svg>
-                    <span>Hubungi Teknisi via WhatsApp (Konsultasi Gratis)</span>
-                </a>
+    <!-- EDUKASI SANITASI AMAN (BAHAYA SODA API) -->
+    <section class="py-14 lg:py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-10 shadow-2xs">
+                <div class="max-w-3xl mx-auto text-center mb-8">
+                    <p class="text-xs font-bold uppercase tracking-wider text-amber-800 mb-2">
+                        Peringatan Sanitasi Saluran
+                    </p>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                        Mengapa Harus Menghindari Penggunaan Soda Api?
+                    </h2>
+                    <p class="mt-2 text-slate-600 text-xs sm:text-sm leading-relaxed">
+                        Cairan atau bubuk kimia korosif seperti soda api sering kali memperparah kerusakan instalasi saluran pipa rumah tangga dan bisnis Anda.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-1.5">
+                        <span class="font-bold text-slate-900 block text-sm">1. Merusak &amp; Melelehkan Pipa PVC</span>
+                        <p class="text-slate-600 leading-relaxed">Reaksi soda api dengan air menghasilkan suhu panas ekstrem yang dapat melunakkan dan membengkokkan dinding pipa PVC.</p>
+                    </div>
+
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-1.5">
+                        <span class="font-bold text-slate-900 block text-sm">2. Melarutkan Lem Sambungan</span>
+                        <p class="text-slate-600 leading-relaxed">Panas tinggi melemahkan lem pada sambungan elbow pipa, memicu kebocoran tersembunyi di dalam dinding atau bawah lantai.</p>
+                    </div>
+
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-1.5">
+                        <span class="font-bold text-slate-900 block text-sm">3. Mengkristal Jadi Semen Batu</span>
+                        <p class="text-slate-600 leading-relaxed">Jika sumbatan tidak tembus, sisa soda api akan mengeras seperti semen batu yang menutup saluran secara permanen.</p>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-center sm:text-left">
+                        <h3 class="text-sm font-bold text-slate-900">Solusi Aman Mekanis Drainusantara</h3>
+                        <p class="text-xs text-slate-600 mt-0.5">Penanganan dengan mesin spiral rotary tanpa merusak pipa, bergaransi nota resmi 30 hari.</p>
+                    </div>
+                    <a href="{{ $generalWaUrl }}" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="btn-press shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm shadow-2xs transition-colors min-h-[46px]">
+                        <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                        <span>Konsultasi Penanganan Tanpa Kimia</span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>

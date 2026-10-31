@@ -27,6 +27,7 @@ class CacheService
         'equipments.all_active',
         'sitemap.xml',
         'llms.txt',
+        'ai-catalog.json',
     ];
 
     /**
@@ -36,6 +37,36 @@ class CacheService
     {
         foreach (self::PUBLIC_KEYS as $key) {
             Cache::forget($key);
+        }
+    }
+
+    /**
+     * Invalidate specific case study cache by slug.
+     */
+    public static function forgetCaseStudy(?string $slug): void
+    {
+        if ($slug) {
+            Cache::forget('case_study_' . $slug);
+        }
+    }
+
+    /**
+     * Invalidate specific partnership cache by slug.
+     */
+    public static function forgetPartnership(?string $slug): void
+    {
+        if ($slug) {
+            Cache::forget('partnership_' . $slug);
+        }
+    }
+
+    /**
+     * Invalidate specific equipment cache by slug.
+     */
+    public static function forgetEquipment(?string $slug): void
+    {
+        if ($slug) {
+            Cache::forget('equipment_' . $slug);
         }
     }
 }

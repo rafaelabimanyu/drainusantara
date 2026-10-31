@@ -13,8 +13,8 @@
         <!-- Header Status Card -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 md:p-12 text-center shadow-xs reveal-soft">
             
-            <!-- HTTP Status Badge -->
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-900 text-xs font-bold tracking-wide uppercase mb-6">
+            <!-- HTTP Status Eyebrow -->
+            <div class="inline-flex items-center gap-2 text-xs font-bold tracking-wider text-rose-800 uppercase mb-4">
                 <span class="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
                 <span>Status HTTP 500: Gangguan Sistem Sementara</span>
             </div>

@@ -6,10 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\StoreGalleryRequest;
 use App\Http\Requests\Admin\UpdateGalleryRequest;
+use App\Models\Equipment;
 use App\Models\Gallery;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use App\Support\MediaLifecycle;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class GalleryController extends Controller
@@ -30,8 +32,9 @@ class GalleryController extends Controller
     public function create(): View
     {
         $services = Service::where('is_active', true)->orderBy('name')->get();
+        $equipments = Equipment::where('is_active', true)->orderBy('name')->get();
 
-        return view('admin.galleries.create', compact('services'));
+        return view('admin.galleries.create', compact('services', 'equipments'));
     }
 
     /**
@@ -67,15 +70,24 @@ class GalleryController extends Controller
 
             $media->save($record, [
                 'title' => $validated['title'],
+                'slug' => !empty($validated['slug']) ? Str::slug($validated['slug']) : null,
                 'category' => $validated['category'] ?? 'rumahan',
+                'location' => $validated['location'] ?? null,
+                'property_type' => $validated['property_type'] ?? null,
+                'problem_type' => $validated['problem_type'] ?? null,
+                'severity' => $validated['severity'] ?? null,
+                'duration' => $validated['duration'] ?? null,
                 'service_id' => $validated['service_id'] ?? null,
                 'before_image' => $beforeImage,
                 'after_image' => $afterImage,
                 'image' => $image,
                 'description' => $validated['description'] ?? null,
+                'content' => $validated['content'] ?? null,
                 'order' => $validated['order'] ?? 0,
                 'is_active' => $request->boolean('is_active'),
             ]);
+
+            $record->equipment()->sync($validated['equipment_ids'] ?? []);
         });
 
         return redirect()->route('admin.galleries.index')
@@ -88,8 +100,9 @@ class GalleryController extends Controller
     public function edit(Gallery $gallery): View
     {
         $services = Service::where('is_active', true)->orderBy('name')->get();
+        $equipments = Equipment::where('is_active', true)->orderBy('name')->get();
 
-        return view('admin.galleries.edit', compact('gallery', 'services'));
+        return view('admin.galleries.edit', compact('gallery', 'services', 'equipments'));
     }
 
     /**
@@ -127,15 +140,24 @@ class GalleryController extends Controller
 
             $media->save($gallery, [
                 'title' => $validated['title'],
+                'slug' => !empty($validated['slug']) ? Str::slug($validated['slug']) : $gallery->slug,
                 'category' => $validated['category'] ?? $gallery->category ?? 'rumahan',
+                'location' => array_key_exists('location', $validated) ? $validated['location'] : $gallery->location,
+                'property_type' => array_key_exists('property_type', $validated) ? $validated['property_type'] : $gallery->property_type,
+                'problem_type' => array_key_exists('problem_type', $validated) ? $validated['problem_type'] : $gallery->problem_type,
+                'severity' => array_key_exists('severity', $validated) ? $validated['severity'] : $gallery->severity,
+                'duration' => array_key_exists('duration', $validated) ? $validated['duration'] : $gallery->duration,
                 'service_id' => $validated['service_id'] ?? null,
                 'before_image' => $beforeImage,
                 'after_image' => $afterImage,
                 'image' => $image,
                 'description' => array_key_exists('description', $validated) ? $validated['description'] : $gallery->description,
+                'content' => array_key_exists('content', $validated) ? $validated['content'] : $gallery->content,
                 'order' => $validated['order'] ?? 0,
                 'is_active' => $request->boolean('is_active'),
             ]);
+
+            $gallery->equipment()->sync($validated['equipment_ids'] ?? []);
         });
 
         return redirect()->route('admin.galleries.index')

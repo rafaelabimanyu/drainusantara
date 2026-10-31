@@ -12,6 +12,16 @@ class Article extends Model
 {
     use HasFactory;
 
+    public const CATEGORY_EDUKASI = 'Edukasi';
+    public const CATEGORY_BRAND = 'Penguatan Brand';
+    public const CATEGORY_PROMO = 'Promo Penawaran';
+
+    public const CATEGORIES = [
+        self::CATEGORY_EDUKASI,
+        self::CATEGORY_BRAND,
+        self::CATEGORY_PROMO,
+    ];
+
     protected $fillable = [
         'title',
         'slug',
@@ -92,6 +102,36 @@ class Article extends Model
         $words = str_word_count(strip_tags((string) $this->content));
 
         return max(1, (int) ceil($words / 200));
+    }
+
+    /**
+     * Normalized category slug for filtering ('edukasi', 'penguatan-brand', 'promo-penawaran').
+     */
+    public function getCategorySlugAttribute(): string
+    {
+        $raw = strtolower((string) $this->category);
+
+        if (str_contains($raw, 'promo') || str_contains($raw, 'penawaran') || str_contains($raw, 'diskon')) {
+            return 'promo-penawaran';
+        }
+
+        if (str_contains($raw, 'brand') || str_contains($raw, 'teknologi') || str_contains($raw, 'alat') || str_contains($raw, 'holding') || str_contains($raw, 'k3') || str_contains($raw, 'sop')) {
+            return 'penguatan-brand';
+        }
+
+        return 'edukasi';
+    }
+
+    /**
+     * Normalized category label for presentation.
+     */
+    public function getCategoryLabelAttribute(): string
+    {
+        return match ($this->category_slug) {
+            'promo-penawaran' => self::CATEGORY_PROMO,
+            'penguatan-brand' => self::CATEGORY_BRAND,
+            default => self::CATEGORY_EDUKASI,
+        };
     }
 
     /**

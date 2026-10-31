@@ -16,8 +16,8 @@ class BrandLogoTest extends TestCase
         $xpath = new \DOMXPath($dom);
         $footerClass = $xpath->evaluate('string(//footer//a[img]/@class)');
         $this->assertStringNotContainsString('bg-white', $footerClass);
-        $this->assertStringContainsString('bg-slate-300', $xpath->evaluate('string(//header/@class)'));
-        $this->assertStringContainsString('bg-slate-300', $xpath->evaluate('string(//*[@id="mobile-drawer-title"]/parent::div/@class)'));
+        $this->assertStringContainsString('bg-slate-900', $xpath->evaluate('string(//header/@class)'));
+        $this->assertStringContainsString('bg-slate-900', $xpath->evaluate('string(//*[@id="mobile-drawer-title"]/parent::div/@class)'));
     }
 
     public function test_public_layout_uses_supplied_brand_images(): void

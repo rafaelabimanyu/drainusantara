@@ -25,6 +25,8 @@ class AboutPageTest extends TestCase
         $resMain = $this->get('/tentang-kami');
         $resMain->assertStatus(200);
         $resMain->assertSee('Profil Resmi Drainusantara');
+        $resMain->assertSee('STANDAR PERALATAN TEKNISI');
+        $resMain->assertSee('Peralatan Mekanis &amp; Diagnosis Visual Armada', false);
 
         // 2. Struktur Holding J&J Group
         $resHolding = $this->get('/tentang-kami/holding');
@@ -53,6 +55,8 @@ class AboutPageTest extends TestCase
         $resEquip->assertSee('Peralatan Mekanis Spiral Baja &amp; Kamera Inspeksi CCTV', false);
         $resEquip->assertSee('Ridgid K-50 &amp; K-60', false);
         $resEquip->assertSee('IP68 30 Meter');
+        $resEquip->assertSee('Detail Spesifikasi &amp; SOP', false);
+        $resEquip->assertSee(route('equipment.show', 'mesin-rooter-ridgid-k-50-cable-spiral'));
 
         // 5. Klien & Portofolio: project details come from active CMS entries.
         \App\Models\Portfolio::create([

@@ -14,20 +14,19 @@
                     <span>Beranda</span>
                 </a>
                 <span class="text-slate-300">/</span>
-                <span class="text-sky-700 font-bold">Edukasi Sanitasi</span>
+                <span class="text-sky-700 font-bold">Artikel</span>
             </nav>
 
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 text-sky-800 text-[11px] sm:text-xs font-bold border border-sky-200 mb-3 tracking-wide uppercase reveal-fade">
-                <span class="w-2 h-2 rounded-full bg-sky-600"></span>
-                Pusat Pengetahuan &amp; Edukasi Sanitasi
-            </span>
+            <p class="text-xs font-bold text-sky-700 tracking-wider uppercase mb-2 reveal-fade">
+                Direktori Artikel &amp; Publikasi Resmi
+            </p>
 
             <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight max-w-3xl mx-auto leading-tight text-slate-900 reveal-soft">
                 Panduan Perawatan &amp; Tips <span class="text-sky-700">Saluran Pipa</span>
             </h1>
 
             <p class="mt-3 text-xs sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed reveal-soft delay-100">
-                Kumpulan panduan teknis perpipaan: mitigasi risiko reaksi kimia soda api, pembersihan lemak kitchen sink, protokol pemeliharaan grease trap, dan standar mekanis spiral baja.
+                Edukasi mitigasi pipa mampet, standar teknologi armada Drainusantara, serta info penawaran paket pemeliharaan berkala.
             </p>
 
             <!-- Search Bar Interaktif -->
@@ -66,25 +65,25 @@
                         @click="activeCategory = 'all'"
                         :class="activeCategory === 'all' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
                         class="px-3.5 sm:px-5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Semua Panduan ({{ count($articles) }})
+                    Semua Artikel ({{ count($articles) }})
                 </button>
                 <button type="button"
-                        @click="activeCategory = 'tips'"
-                        :class="activeCategory === 'tips' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
+                        @click="activeCategory = 'edukasi'"
+                        :class="activeCategory === 'edukasi' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
                         class="px-3.5 sm:px-5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Tips &amp; Edukasi
+                    Edukasi
                 </button>
                 <button type="button"
-                        @click="activeCategory = 'perawatan'"
-                        :class="activeCategory === 'perawatan' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
+                        @click="activeCategory = 'penguatan-brand'"
+                        :class="activeCategory === 'penguatan-brand' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
                         class="px-3.5 sm:px-5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Perawatan Rumah
+                    Penguatan Brand
                 </button>
                 <button type="button"
-                        @click="activeCategory = 'teknologi'"
-                        :class="activeCategory === 'teknologi' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
+                        @click="activeCategory = 'promo-penawaran'"
+                        :class="activeCategory === 'promo-penawaran' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
                         class="px-3.5 sm:px-5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
-                    Teknologi Plumbing
+                    Promo Penawaran
                 </button>
             </div>
 
@@ -99,15 +98,16 @@
                         <!-- Content Side -->
                         <div class="lg:col-span-7 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
                             <div>
-                                <div class="flex items-center gap-2.5 mb-3 flex-wrap">
-                                    <span class="px-2.5 py-0.5 text-[10px] sm:text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-200 rounded-md tracking-wider uppercase">
+                                <div class="flex items-center gap-2 mb-3 flex-wrap text-xs">
+                                    <span class="font-bold text-amber-900 tracking-wider uppercase">
                                         PANDUAN UTAMA PILIHAN
                                     </span>
-                                    <span class="text-xs text-slate-500 font-medium">
+                                    <span class="text-slate-300">&bull;</span>
+                                    <span class="text-slate-500 font-medium">
                                         {{ $featuredArticle->published_at ? $featuredArticle->published_at->format('d M Y') : $featuredArticle->created_at->format('d M Y') }}
                                     </span>
                                     <span class="text-slate-300">&bull;</span>
-                                    <span class="text-xs text-slate-500 font-medium">
+                                    <span class="text-slate-500 font-medium">
                                         {{ $featuredArticle->reading_time }} Menit Baca
                                     </span>
                                 </div>
@@ -164,7 +164,7 @@
                                 </div>
                             @endif
                             <div class="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-xs text-white text-[11px] font-bold px-2.5 py-1 rounded-md border border-white/20 shadow-xs">
-                                {{ $featuredArticle->category ?? 'Tips & Edukasi' }}
+                                {{ $featuredArticle->category_label }}
                             </div>
                         </div>
                     </div>
@@ -175,13 +175,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 @forelse($articles as $article)
                     @php
-                        $catRaw = strtolower($article->category ?? 'tips');
-                        $catSlug = 'tips';
-                        if (str_contains($catRaw, 'rumah') || str_contains($catRaw, 'perawatan')) {
-                            $catSlug = 'perawatan';
-                        } elseif (str_contains($catRaw, 'teknologi') || str_contains($catRaw, 'cctv') || str_contains($catRaw, 'plumbing')) {
-                            $catSlug = 'teknologi';
-                        }
+                        $catSlug = $article->category_slug;
                         $searchHaystack = strtolower($article->title . ' ' . ($article->excerpt ?? '') . ' ' . strip_tags($article->content));
                     @endphp
                     <article x-data="{
@@ -219,7 +213,7 @@
                             @endif
 
                             <span class="absolute top-3 left-3 bg-slate-900/85 backdrop-blur-xs text-white text-[11px] font-bold px-2.5 py-1 rounded-md border border-white/20 shadow-xs">
-                                {{ $article->category ?? 'Tips & Edukasi' }}
+                                {{ $article->category_label }}
                             </span>
                         </a>
 

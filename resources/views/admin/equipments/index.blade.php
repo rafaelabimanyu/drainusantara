@@ -52,14 +52,14 @@
                                 {{ $equipment->short_description ?? '-' }}
                             </div>
                             @if($equipment->category)
-                            <div class="inline-flex items-center px-1.5 py-0.5 mt-1 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                            <div class="text-[11px] font-medium text-slate-500 mt-1">
                                 {{ $equipment->category }}
                             </div>
                             @endif
                         </td>
                         <td class="px-5 py-3.5 whitespace-nowrap">
                             @if($equipment->badge)
-                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-sky-50 text-sky-800 border border-sky-200">
+                                <span class="text-xs font-medium text-slate-700">
                                     {{ $equipment->badge }}
                                 </span>
                             @else
@@ -69,12 +69,13 @@
                         <td class="px-5 py-3.5 whitespace-nowrap">
                             <div class="flex items-center gap-2">
                                 @if($equipment->is_active)
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                                         Tampil
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
                                         Disembunyikan
                                     </span>
                                 @endif
@@ -82,6 +83,15 @@
                             </div>
                         </td>
                         <td class="px-5 py-3.5 text-right whitespace-nowrap space-x-1.5">
+                            @if($equipment->slug)
+                            <a href="{{ route('equipment.show', $equipment->slug) }}" target="_blank" 
+                               class="inline-flex items-center gap-1 text-slate-700 hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-md transition-colors text-xs font-semibold" title="Lihat di Website">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                                <span>Lihat</span>
+                            </a>
+                            @endif
                             <a href="{{ route('admin.equipments.edit', $equipment) }}" 
                                class="inline-flex items-center gap-1 text-sky-700 hover:bg-sky-50 border border-sky-200 px-2.5 py-1 rounded-md transition-colors text-xs font-semibold" title="Edit Peralatan">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

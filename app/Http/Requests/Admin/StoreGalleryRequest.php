@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Admin;
 
+use App\Rules\OptimizedImage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreGalleryRequest extends FormRequest
@@ -20,18 +21,29 @@ class StoreGalleryRequest extends FormRequest
             'category' => ['nullable', 'string', 'in:rumahan,b2b'],
             'service_id' => ['nullable', 'exists:services,id'],
             'before_image' => $this->hasFile('before_image')
-                ? ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']
+                ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'before_image_url' => ['nullable', 'string', 'max:255'],
             'after_image' => $this->hasFile('after_image')
-                ? ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']
+                ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'after_image_url' => ['nullable', 'string', 'max:255'],
             'image' => $this->hasFile('image')
-                ? ['image', 'mimes:jpeg,png,jpg,webp,svg,gif', 'max:20480']
+                ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'image_url' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'location' => ['nullable', 'string', 'max:255'],
+            'property_type' => ['nullable', 'array'],
+            'property_type.*' => ['string', 'max:100'],
+            'problem_type' => ['nullable', 'array'],
+            'problem_type.*' => ['string', 'max:100'],
+            'severity' => ['nullable', 'string', 'max:50'],
+            'duration' => ['nullable', 'string', 'max:100'],
+            'content' => ['nullable', 'string'],
+            'equipment_ids' => ['nullable', 'array'],
+            'equipment_ids.*' => ['exists:equipments,id'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:galleries,slug'],
             'order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
         ];

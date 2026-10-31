@@ -84,7 +84,7 @@
                             <span class="text-[10px] text-sky-400 font-bold tracking-widest uppercase block">CMS Control Panel</span>
                         </div>
                     </div>
-                    <span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 text-[10px] font-bold border border-slate-700">v1.2</span>
+                    <span class="text-[11px] font-mono font-medium text-slate-400">v1.2</span>
                 </div>
 
                 <nav class="flex flex-1 flex-col py-2">

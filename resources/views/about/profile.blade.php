@@ -21,9 +21,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
             <div class="lg:col-span-7 reveal-soft">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                     PROFIL RESMI DRAINUSANTARA
-                </span>
+                </p>
                 
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-4">
                     Mitra Terpercaya Properti Residensial &amp; Sektor Komersial B2B
@@ -42,7 +42,7 @@
                 <div x-data="mobileCarousel(3, 4000)"
                      class="mt-8">
                     
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Pilar perusahaan — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Pilar perusahaan - geser untuk melihat lainnya"
                          @scroll.passive="onScroll()"
                          @touchstart="pause()"
                          @touchend="resume()"
@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-2">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 font-extrabold text-xs flex items-center justify-center mb-3 border border-emerald-100">
+                            <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 font-extrabold text-xs flex items-center justify-center mb-3 border border-emerald-100">
                                 02
                             </div>
                             <span class="text-xs font-bold text-slate-900 block mb-1">Bebas Bahan Kimia</span>
@@ -70,7 +70,7 @@
                         </div>
 
                         <div class="w-[85vw] sm:w-auto shrink-0 snap-center bg-white p-5 rounded-xl border border-slate-200 shadow-2xs card-lift reveal-soft stagger-3">
-                            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 font-extrabold text-xs flex items-center justify-center mb-3 border border-amber-100">
+                            <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 font-extrabold text-xs flex items-center justify-center mb-3 border border-amber-100">
                                 03
                             </div>
                             <span class="text-xs font-bold text-slate-900 block mb-1">Garansi 30 Hari</span>
@@ -100,7 +100,6 @@
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-700">
                         DATA ENTITAS BISNIS &amp; OPERASIONAL
                     </span>
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                 </div>
                 
                 <div class="space-y-3.5 text-xs sm:text-sm">
@@ -126,7 +125,7 @@
                     </div>
                     <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
                         <span class="text-slate-500 font-medium">Waktu Operasional</span>
-                        <span class="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">24 Jam Siaga Darurat</span>
+                        <span class="font-bold text-emerald-800">24 Jam Siaga Darurat</span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-slate-500 font-medium">Prinsip Layanan</span>
@@ -163,9 +162,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="max-w-3xl mb-12 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                 DISIPLIN KERJA &amp; HIGIENITAS
-            </span>
+            </p>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 4 Standar Mutu Pelayanan Teknisi Drainusantara
             </h2>
@@ -176,7 +175,7 @@
 
         <!-- 4 Standar Mutu Pelayanan (Mobile Carousel, Tablet/Desktop Grid) -->
         <div x-data="mobileCarousel(4, 4000)">
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Standar pelayanan — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Standar pelayanan - geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
@@ -215,8 +214,14 @@
                             Kabel spiral baja rotary dibersihkan dan disanitasi berkala pasca operasional, mencegah perpindahan kotoran atau kontaminasi silang antar lokasi kerja.
                         </p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-slate-200/80 text-[11px] font-bold text-slate-700">
-                        Higienitas Unit Mesin Terjaga
+                    <div class="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between text-[11px]">
+                        <span class="font-bold text-slate-700">Higienitas Unit Mesin Terjaga</span>
+                        <a href="{{ route('about.equipment') }}" class="font-bold text-sky-700 hover:text-sky-800 inline-flex items-center gap-1 group/link">
+                            <span>Katalog Peralatan</span>
+                            <svg class="w-3.5 h-3.5 transition-transform group-hover/link:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
@@ -279,9 +284,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="max-w-3xl mb-10 reveal-soft">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold rounded-md uppercase tracking-wider mb-3">
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
                 TIM &amp; TEKNISI KAMI
-            </span>
+            </p>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Staff &amp; Teknisi Lapangan Siaga
             </h2>
@@ -335,7 +340,7 @@
 
         <!-- Staff Cards Grid & Mobile Carousel -->
         <div x-data="mobileCarousel({{ count($staffMembers) }}, 4000)">
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Staf dan teknisi — geser untuk melihat lainnya"
+            <div x-ref="slider" tabindex="0" role="region" aria-label="Staf dan teknisi - geser untuk melihat lainnya"
                  @scroll.passive="onScroll()"
                  @touchstart="pause()"
                  @touchend="resume()"
@@ -361,7 +366,7 @@
                                     <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">{{ $mInitials }}</span>
                                 </div>
                             @endif
-                            <span class="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white" title="Siaga Aktif"></span>
+                            
                         </div>
                         
                         <!-- Nama Staf -->
@@ -393,13 +398,20 @@
     </div>
 </section>
 
+<!-- Subsection: Peralatan & Teknologi Armada -->
+<x-area.equipment-section 
+    title="Peralatan Mekanis & Diagnosis Visual Armada" 
+    eyebrow="STANDAR PERALATAN TEKNISI" 
+    bg-color="bg-white" 
+/>
+
 <section id="ekosistem" class="py-14 lg:py-16 bg-slate-900 text-white relative overflow-hidden reveal-soft">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="max-w-2xl">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-800 border border-slate-700 text-sky-400 text-xs font-bold rounded-md uppercase tracking-wider mb-2">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
                     SINERGI EKOSISTEM HOLDING
-                </span>
+                </p>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     Integritas Korporat di Bawah Naungan J&amp;J Group
                 </h2>

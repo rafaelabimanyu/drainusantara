@@ -11,19 +11,19 @@
             'title' => 'Layanan & Solusi Pipa Terkini',
             'desc' => 'Daftar penanganan pipa wastafel, kloset, talang air, dan saluran buang.',
             'url' => route('home'),
-            'badge' => 'Katalog Utama',
+           
         ],
         [
             'title' => 'Pusat Pengetahuan Sanitasi',
             'desc' => 'Artikel edukasi perawatan instalasi pipa PVC dan mitigasi risiko kimia.',
             'url' => route('articles.index'),
-            'badge' => 'Artikel Edukasi',
+           
         ],
         [
             'title' => 'Dokumentasi Galeri Kerja',
             'desc' => 'Bukti nyata hasil pembersihan endapan lemak dan kotoran pipa di lapangan.',
             'url' => route('gallery'),
-            'badge' => 'Foto Real',
+           
         ],
     ];
 @endphp
@@ -34,8 +34,8 @@
         <!-- Header Status Card -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 md:p-12 text-center shadow-xs reveal-soft">
             
-            <!-- HTTP Status Badge -->
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold tracking-wide uppercase mb-6">
+            <!-- HTTP Status Eyebrow -->
+            <div class="inline-flex items-center gap-2 text-xs font-bold tracking-wider text-amber-900 uppercase mb-4">
                 <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                 <span>Status HTTP 410: Konten Dinonaktifkan Permanen</span>
             </div>
@@ -117,9 +117,6 @@
                                     {{ $section['desc'] }}
                                 </p>
                             </div>
-                            <span class="mt-3 text-[10px] font-semibold text-sky-700 bg-sky-100/60 px-2 py-0.5 rounded-md self-start">
-                                {{ $section['badge'] }}
-                            </span>
                         </a>
                     @endforeach
                 </div>
