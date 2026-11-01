@@ -34,8 +34,15 @@
                 <label for="category" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Sektor Kategori *</label>
                 <select name="category" id="category" required
                         class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition bg-white shadow-2xs">
-                    <option value="rumahan" {{ old('category', $gallery->category) == 'rumahan' ? 'selected' : '' }}>Rumahan (Residensial / Hunian / Apartemen)</option>
-                    <option value="b2b" {{ old('category', $gallery->category) == 'b2b' ? 'selected' : '' }}>B2B (Komersial / Restoran F&amp;B / Ruko / Kantor)</option>
+                    <option value="rumahan" {{ old('category', $gallery->category) === 'rumahan' ? 'selected' : '' }}>Rumahan (Residensial / Hunian)</option>
+                    <option value="fnb" {{ old('category', $gallery->category) === 'fnb' ? 'selected' : '' }}>Restoran &amp; Kafe (FnB)</option>
+                    <option value="gedung" {{ old('category', $gallery->category) === 'gedung' ? 'selected' : '' }}>Gedung &amp; Apartemen</option>
+                    <option value="perkantoran" {{ old('category', $gallery->category) === 'perkantoran' ? 'selected' : '' }}>Perkantoran</option>
+                    <option value="pabrik" {{ old('category', $gallery->category) === 'pabrik' ? 'selected' : '' }}>Pabrik &amp; Industri</option>
+                    <option value="ruko" {{ old('category', $gallery->category) === 'ruko' ? 'selected' : '' }}>Ruko &amp; Komersial</option>
+                    @if($gallery->category === 'b2b')
+                        <option value="b2b" selected>Komersial / B2B (Legacy)</option>
+                    @endif
                 </select>
                 @error('category') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
@@ -121,7 +128,7 @@
                     <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/webp"
                            @change="const f = $event.target.files[0]; if (f) { preview = URL.createObjectURL(f); }"
                            class="block w-full text-xs text-slate-600 file:mr-2.5 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-800 hover:file:bg-slate-300 cursor-pointer">
-                    <p class="text-[11px] text-slate-500 mt-0.5">Pilih file baru untuk memperbarui foto utama.</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Pilih file baru untuk memperbarui foto utama (jika tidak menggunakan foto before-after).</p>
                 </div>
             </div>
             @error('image') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
@@ -134,25 +141,70 @@
             @error('description') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
-        {{-- 6. Lokasi Pengerjaan --}}
-        <div>
-            <label for="location" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Lokasi Pengerjaan</label>
-            <input type="text" name="location" id="location" value="{{ old('location', $gallery->location) }}"
-                   placeholder="Jl. Merdeka No. 12, Kec. Serpong, Tangerang Selatan"
-                   class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">
-            @error('location') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+        {{-- Lokasi & Spesifikasi Pengerjaan --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <label for="location" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Lokasi Pengerjaan *</label>
+                <input type="text" name="location" id="location" value="{{ old('location', $gallery->location) }}"
+                       placeholder="Misal: Kelapa Gading, Jakarta Utara"
+                       class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">
+                @error('location') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label for="drain_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Saluran yang Dikerjakan</label>
+                <input type="text" name="drain_type" id="drain_type" value="{{ old('drain_type', $gallery->drain_type) }}"
+                       placeholder="Misal: Pipa Wastafel Cuci Piring 2 Inch"
+                       class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">
+                @error('drain_type') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
         </div>
 
-        {{-- 7. Tipe Properti --}}
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+                <label for="method" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Metode Perbaikan</label>
+                <input type="text" name="method" id="method" value="{{ old('method', $gallery->method) }}"
+                       placeholder="Misal: Spiral Rotary Ridgid K-50"
+                       class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">
+                @error('method') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label for="price" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Biaya / Harga Pengerjaan (Rp)</label>
+                <input type="number" name="price" id="price" value="{{ old('price', $gallery->price) }}" min="0" step="10000"
+                       placeholder="Misal: 350000"
+                       class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">
+                @error('price') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div>
+                <label for="duration" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Durasi Pengerjaan</label>
+                <input type="text" name="duration" id="duration" value="{{ old('duration', $gallery->duration) }}"
+                       placeholder="Misal: 45 Menit / 1.5 Jam"
+                       class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">
+                @error('duration') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+        </div>
+
+        {{-- Diagnosa Masalah Saluran --}}
+        <div>
+            <label for="diagnosis" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Diagnosa Masalah Saluran (Penyebab Sumbatan)</label>
+            <textarea name="diagnosis" id="diagnosis" rows="2"
+                      placeholder="Misal: Kerak minyak jenuh beku tebal setebal 3 cm dan gumpalan sisa makanan yang menempel di lekukan pipa..."
+                      class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">{{ old('diagnosis', $gallery->diagnosis) }}</textarea>
+            @error('diagnosis') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+        </div>
+
+        {{-- Tipe Properti --}}
         @php
-            $propertyOptions = ['Rumah Tinggal', 'Restoran', 'Kantor', 'Apartemen', 'Hotel', 'Pabrik', 'Sekolah'];
+            $propertyOptions = ['Rumah Tinggal', 'Restoran & Kafe', 'Kantor', 'Apartemen', 'Hotel', 'Pabrik', 'Ruko', 'Sekolah'];
             $selectedProperties = (array) old('property_type', is_array($gallery->property_type) ? $gallery->property_type : (is_string($gallery->property_type) ? json_decode($gallery->property_type, true) ?? [] : []));
         @endphp
         <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Tipe Properti</label>
-            <div class="grid grid-cols-2 gap-2 bg-slate-50 border border-slate-200 rounded-lg p-3">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-50 border border-slate-200 rounded-lg p-3">
                 @foreach($propertyOptions as $opt)
-                    <label class="flex items-center gap-2 text-xs sm:text-sm text-slate-700 cursor-pointer">
+                    <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
                         <input type="checkbox" name="property_type[]" value="{{ $opt }}" 
                                {{ in_array($opt, $selectedProperties) ? 'checked' : '' }}
                                class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
@@ -163,27 +215,7 @@
             @error('property_type') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
-        {{-- 8. Jenis Kendala --}}
-        @php
-            $problemOptions = ['Saluran Mampet', 'Grease Trap Penuh', 'Pipa Bocor', 'WC Mampet', 'Wastafel Mampet', 'Got Tersumbat'];
-            $selectedProblems = (array) old('problem_type', is_array($gallery->problem_type) ? $gallery->problem_type : (is_string($gallery->problem_type) ? json_decode($gallery->problem_type, true) ?? [] : []));
-        @endphp
-        <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Jenis Kendala</label>
-            <div class="grid grid-cols-2 gap-2 bg-slate-50 border border-slate-200 rounded-lg p-3">
-                @foreach($problemOptions as $opt)
-                    <label class="flex items-center gap-2 text-xs sm:text-sm text-slate-700 cursor-pointer">
-                        <input type="checkbox" name="problem_type[]" value="{{ $opt }}" 
-                               {{ in_array($opt, $selectedProblems) ? 'checked' : '' }}
-                               class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
-                        <span>{{ $opt }}</span>
-                    </label>
-                @endforeach
-            </div>
-            @error('problem_type') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        {{-- 9. Tingkat Keparahan --}}
+        {{-- Tingkat Keparahan --}}
         <div>
             <label for="severity" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Tingkat Keparahan</label>
             <select name="severity" id="severity" 
@@ -196,25 +228,16 @@
             @error('severity') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
-        {{-- 10. Durasi --}}
+        {{-- Konten Naratif --}}
         <div>
-            <label for="duration" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Durasi Pengerjaan</label>
-            <input type="text" name="duration" id="duration" value="{{ old('duration', $gallery->duration) }}"
-                   placeholder="3 jam"
-                   class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">
-            @error('duration') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-        </div>
-
-        {{-- 11. Konten Naratif --}}
-        <div>
-            <label for="content" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Konten Naratif Pengerjaan</label>
-            <textarea name="content" id="content" rows="8"
+            <label for="content" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Catatan Teknis / Cerita Lengkap Pengerjaan</label>
+            <textarea name="content" id="content" rows="6"
                       placeholder="Cerita lengkap pengerjaan: kondisi awal, proses, hasil, tips..."
                       class="w-full px-3.5 py-2 text-sm rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 outline-hidden transition shadow-2xs">{{ old('content', $gallery->content) }}</textarea>
             @error('content') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
-        {{-- 12. Alat / Mesin --}}
+        {{-- Alat / Mesin --}}
         @php
             $equipmentList = $equipments ?? \App\Models\Equipment::where('is_active', true)->orderBy('name')->get();
             $selectedEquipments = (array) old('equipment_ids', $gallery->relationLoaded('equipment') ? $gallery->equipment->pluck('id')->toArray() : $gallery->equipment()->pluck('equipments.id')->toArray());
@@ -243,7 +266,7 @@
             @error('equipment_ids') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
 
-        {{-- 13. Slug --}}
+        {{-- Slug --}}
         <div>
             <label for="slug" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Slug URL</label>
             <input type="text" name="slug" id="slug" value="{{ old('slug', $gallery->slug) }}"

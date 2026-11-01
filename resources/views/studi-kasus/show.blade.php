@@ -79,13 +79,6 @@
 </script>
 @endpush
 
-@push('styles')
-<style>
-    @media (max-width: 1023px) {
-        .mobile-nav-dock { display: none !important; }
-    }
-</style>
-@endpush
 
 @section('content')
 <article class="bg-white text-slate-800">
@@ -102,7 +95,7 @@
                 </a>
                 <span class="text-slate-300" aria-hidden="true">/</span>
                 <a href="{{ route('gallery') }}" class="hover:text-sky-700 transition-colors shrink-0">
-                    <span>Studi Kasus</span>
+                    <span>Galeri Pengerjaan</span>
                 </a>
                 <span class="text-slate-300" aria-hidden="true">/</span>
                 <span class="text-slate-800 truncate font-semibold" aria-current="page">{{ $caseStudy->title }}</span>
@@ -110,18 +103,18 @@
 
             <!-- Context Eyebrow -->
             <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
-                Dokumentasi Teknis Lapangan
+                Studi Kasus &amp; Dokumentasi Lapangan
             </p>
 
             <!-- H1 -->
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight max-w-3xl leading-tight">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight max-w-4xl leading-tight">
                 {{ $caseStudy->title }}
             </h1>
 
             <!-- Subheadline -->
             @if(!empty($caseStudy->description))
-                <p class="mt-3 text-sm text-slate-600 max-w-2xl leading-relaxed">
-                    {{ \Illuminate\Support\Str::limit(strip_tags($caseStudy->description), 150) }}
+                <p class="mt-3 text-sm text-slate-600 max-w-3xl leading-relaxed">
+                    {{ \Illuminate\Support\Str::limit(strip_tags($caseStudy->description), 200) }}
                 </p>
             @endif
 
@@ -138,6 +131,9 @@
                     <span class="text-slate-300" aria-hidden="true">&bull;</span>
                 @endif
 
+                <span class="text-sky-800 font-semibold">{{ $caseStudy->category_label }}</span>
+                <span class="text-slate-300" aria-hidden="true">&bull;</span>
+
                 @if(!empty($propertyTypes))
                     <span>{{ implode(', ', $propertyTypes) }}</span>
                     <span class="text-slate-300" aria-hidden="true">&bull;</span>
@@ -153,15 +149,16 @@
         </div>
     </header>
 
-    <!-- 2. BEFORE/AFTER IMAGES SECTION -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10" aria-label="Foto Dokumentasi Sebelum dan Sesudah Pengerjaan">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Kiri: Foto Sebelum -->
-            <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-100 shadow-2xs">
-                <span class="absolute top-3 left-3 z-10 text-[11px] font-bold uppercase tracking-wider bg-slate-900/90 text-white px-2.5 py-1 rounded-sm">
-                    Kondisi Awal
-                </span>
-                @if(!empty($caseStudy->before_image))
+    <!-- 2. FOTO DOKUMENTASI (BEFORE-AFTER ATAU SINGLE FOTO CMS) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10" aria-label="Foto Dokumentasi Pengerjaan">
+        @if($caseStudy->hasBeforeAfter())
+            <!-- JIKA ADA FOTO BEFORE & AFTER: TAMPILKAN KOMPARASI 2 KOLOM -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Kiri: Foto Sebelum -->
+                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs">
+                    <span class="absolute top-3 left-3 z-10 text-[11px] font-bold uppercase tracking-wider bg-rose-900/90 text-white px-2.5 py-1 rounded-sm shadow-xs">
+                        Kondisi Awal (Tersumbat)
+                    </span>
                     <img src="{{ $caseStudy->before_image }}" 
                          alt="Foto sebelum pengerjaan: {{ !empty($problemTypes) ? implode(', ', $problemTypes) : 'kendala saluran pipa mampet' }} di {{ $caseStudy->location ?: 'lokasi kerja' }}"
                          width="800" 
@@ -169,26 +166,17 @@
                          loading="eager" 
                          decoding="async" 
                          class="object-cover w-full aspect-[4/3]">
-                @else
-                    <div class="w-full aspect-[4/3] bg-slate-100 flex flex-col items-center justify-center text-slate-400 p-6 text-center">
-                        <svg class="w-10 h-10 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="text-xs font-semibold text-slate-500">Foto sebelum pengerjaan belum tersedia</span>
+                    <div class="bg-white px-3.5 py-2.5 border-t border-slate-200 text-xs text-slate-700 flex items-center justify-between">
+                        <span class="font-medium text-slate-800">Titik Masalah: {{ $caseStudy->drain_type ?: (!empty($problemTypes) ? implode(', ', $problemTypes) : 'Saluran Pipa') }}</span>
+                        <span class="text-rose-700 font-bold">Mampet Total</span>
                     </div>
-                @endif
-                <div class="bg-white px-3.5 py-2 border-t border-slate-200 text-[11px] text-slate-600 flex items-center justify-between">
-                    <span class="font-medium text-slate-700">Titik Masalah: {{ !empty($problemTypes) ? implode(', ', $problemTypes) : 'Saluran Mampet' }}</span>
-                    <span class="text-rose-600 font-semibold">Tersumbat Total</span>
                 </div>
-            </div>
 
-            <!-- Kanan: Foto Sesudah -->
-            <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-100 shadow-2xs">
-                <span class="absolute top-3 left-3 z-10 text-[11px] font-bold uppercase tracking-wider bg-slate-900/90 text-white px-2.5 py-1 rounded-sm">
-                    Hasil Akhir
-                </span>
-                @if(!empty($caseStudy->after_image))
+                <!-- Kanan: Foto Sesudah -->
+                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs">
+                    <span class="absolute top-3 left-3 z-10 text-[11px] font-bold uppercase tracking-wider bg-emerald-900/90 text-white px-2.5 py-1 rounded-sm shadow-xs">
+                        Hasil Akhir (Lancar)
+                    </span>
                     <img src="{{ $caseStudy->after_image }}" 
                          alt="Foto sesudah pengerjaan: saluran lancar tuntas di {{ $caseStudy->location ?: 'lokasi kerja' }}"
                          width="800" 
@@ -196,20 +184,46 @@
                          loading="lazy" 
                          decoding="async" 
                          class="object-cover w-full aspect-[4/3]">
-                @else
-                    <div class="w-full aspect-[4/3] bg-slate-100 flex flex-col items-center justify-center text-slate-400 p-6 text-center">
-                        <svg class="w-10 h-10 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="text-xs font-semibold text-slate-500">Foto sesudah pengerjaan belum tersedia</span>
+                    <div class="bg-white px-3.5 py-2.5 border-t border-slate-200 text-xs text-slate-700 flex items-center justify-between">
+                        <span class="font-medium text-slate-800">Metode: {{ $caseStudy->method ?: 'Spiral Rotary Ridgid' }}</span>
+                        <span class="text-emerald-700 font-bold">Aliran Air Lancar 100%</span>
                     </div>
-                @endif
-                <div class="bg-white px-3.5 py-2 border-t border-slate-200 text-[11px] text-slate-600 flex items-center justify-between">
-                    <span class="font-medium text-slate-700">Metode: Spiral Baja Mekanis Rotary</span>
-                    <span class="text-emerald-700 font-semibold">Aliran Air Lancar 100%</span>
                 </div>
             </div>
-        </div>
+        @elseif($caseStudy->main_image)
+            <!-- JIKA TIDAK ADA BEFORE-AFTER: TAMPILKAN 1 FOTO UTAMA CMS SECARA TERPUSAT -->
+            <div class="max-w-4xl mx-auto">
+                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs">
+                    <img src="{{ $caseStudy->main_image }}" 
+                         alt="Foto dokumentasi: {{ $caseStudy->title }} di {{ $caseStudy->location ?: 'lokasi kerja' }}"
+                         width="1200" 
+                         height="700" 
+                         loading="eager" 
+                         decoding="async" 
+                         class="object-cover w-full max-h-[500px]">
+                    <div class="bg-white px-4 py-2.5 border-t border-slate-200 text-xs text-slate-700 flex flex-wrap items-center justify-between gap-2">
+                        <span class="font-medium text-slate-800 flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>Foto Dokumentasi Pelaksanaan Teknis di Lapangan</span>
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+        @else
+            <!-- PLACEHOLDER JIKA BELUM ADA FOTO -->
+            <div class="max-w-4xl mx-auto">
+                <div class="w-full aspect-[21/9] rounded-lg border border-slate-200 bg-slate-50 flex flex-col items-center justify-center text-slate-400 p-6 text-center">
+                    <svg class="w-10 h-10 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span class="text-xs font-semibold text-slate-500">Dokumentasi Teknis Lapangan Drainusantara</span>
+                </div>
+            </div>
+        @endif
     </section>
 
     <!-- CONTENT BODY: 2-COLUMN ON LG (CONTENT + SIDEBAR 320PX) -->
@@ -219,7 +233,7 @@
             <!-- KOLOM UTAMA (DATA TEKNIS, ALAT, NARASI) -->
             <div class="min-w-0 space-y-10">
                 
-                <!-- 3. LEMBAR DATA TEKNIS & DIAGNOSIS -->
+                <!-- 3. LEMBAR DATA TEKNIS & DIAGNOSIS LENGKAP -->
                 <section class="bg-white rounded-lg border border-slate-200 p-5 sm:p-6 shadow-2xs" aria-label="Lembar Kerja Teknis Lapangan">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
                         <div class="flex items-center gap-2.5">
@@ -230,63 +244,107 @@
                             </div>
                             <div>
                                 <h2 class="text-sm font-bold text-slate-900 tracking-tight">Lembar Data Teknis &amp; Diagnosis Pengerjaan</h2>
-                                <p class="text-[11px] text-slate-500">Spesifikasi penanganan di lokasi hunian / tempat usaha</p>
+                                <p class="text-[11px] text-slate-500">Spesifikasi komprehensif penanganan saluran di lokasi</p>
                             </div>
                         </div>
-                        <span class="text-xs font-semibold text-emerald-700 flex items-center gap-1.5 self-start sm:self-auto">
-                            <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                            </svg>
-                            <span>Metode Tanpa Bongkar Lantai</span>
-                        </span>
+                       
                     </div>
 
+                    <!-- Grid Data Spesifikasi Teknis -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-5 gap-x-6 text-xs">
-                        <!-- Titik & Area Kerja -->
+                        
+                        <!-- 1. Metode Perbaikan -->
                         <div class="space-y-1">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Titik &amp; Area Kerja</span>
-                            <p class="text-sm font-semibold text-slate-900">{{ $caseStudy->location ?: 'Area Layanan Terdaftar' }}</p>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Metode Perbaikan</span>
+                            <p class="text-sm font-semibold text-slate-900">
+                                {{ $caseStudy->method ?: 'Mesin Spiral Rotary Ridgid K-50 / K-60' }}
+                            </p>
                         </div>
 
-                        <!-- Tipe Properti -->
+                        <!-- 2. Saluran yang Dikerjakan -->
                         <div class="space-y-1">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Tipe Properti</span>
-                            <p class="text-sm font-semibold text-slate-900">{{ !empty($propertyTypes) ? implode(', ', $propertyTypes) : '-' }}</p>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Saluran yang Dikerjakan</span>
+                            <p class="text-sm font-semibold text-slate-900">
+                                {{ $caseStudy->drain_type ?: (optional($caseStudy->service)->name ?: 'Pipa Pembuangan Air Kotor') }}
+                            </p>
                         </div>
 
-                        <!-- Jenis Hambatan -->
+                        <!-- 3. Layanan yang Dipilih -->
                         <div class="space-y-1">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Diagnosis Hambatan</span>
-                            <p class="text-sm font-semibold text-slate-900">{{ !empty($problemTypes) ? implode(', ', $problemTypes) : 'Pipa Tersumbat' }}</p>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Layanan yang Dipilih</span>
+                            @if($caseStudy->service)
+                                <a href="{{ url('/#layanan') }}" 
+                                   class="text-sm font-semibold text-sky-700 hover:text-sky-800 underline inline-flex items-center gap-1">
+                                    <span>{{ $caseStudy->service->name }}</span>
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                    </svg>
+                                </a>
+                            @else
+                                <p class="text-sm font-semibold text-slate-900">Spesialis Plumbing Pelancar Pipa</p>
+                            @endif
                         </div>
 
-                        <!-- Tingkat Keparahan -->
+                        <!-- 4. Estimasi Biaya / Harga Pengerjaan -->
                         <div class="space-y-1">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Tingkat Hambatan</span>
-                            <p class="text-sm font-semibold text-slate-900">Tingkat {{ $severityLabel }}</p>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Biaya / Harga Pengerjaan</span>
+                            <p class="text-sm font-bold text-slate-900">
+                                {{ $caseStudy->formatted_price ?: (optional($caseStudy->service)->price ? 'Mulai ' . optional($caseStudy->service)->formatted_price : 'Estimasi Sesuai Titik') }}
+                            </p>
                         </div>
 
-                        <!-- Durasi Pengerjaan -->
+                        <!-- 5. Durasi Pengerjaan -->
                         <div class="space-y-1">
                             <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Durasi Pengerjaan</span>
-                            <p class="text-sm font-semibold text-slate-900">{{ $caseStudy->duration ?: 'Estimasi 1 - 2 Jam' }}</p>
+                            <p class="text-sm font-semibold text-slate-900">
+                                {{ $caseStudy->duration ?: 'Estimasi 35 - 60 Menit' }}
+                            </p>
                         </div>
 
-                        <!-- Kategori Layanan -->
+                        <!-- 6. Titik & Area Kerja (Lokasi) -->
                         <div class="space-y-1">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Kategori Layanan</span>
-                            <p class="text-sm font-semibold text-slate-900">{{ optional($caseStudy->service)->name ?: 'Spesialis Pipa' }}</p>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Lokasi Pengerjaan</span>
+                            <p class="text-sm font-semibold text-slate-900">
+                                {{ $caseStudy->location ?: 'Area Layanan Terdaftar' }}
+                            </p>
+                        </div>
+
+                        <!-- 7. Tipe Sektor & Properti -->
+                        <div class="space-y-1">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Sektor &amp; Properti</span>
+                            <p class="text-sm font-semibold text-slate-900">
+                                {{ $caseStudy->category_label }} {{ !empty($propertyTypes) ? '(' . implode(', ', $propertyTypes) . ')' : '' }}
+                            </p>
+                        </div>
+
+                        <!-- 8. Tingkat Hambatan -->
+                        <div class="space-y-1">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Tingkat Hambatan</span>
+                            <p class="text-sm font-semibold text-slate-900">
+                                Tingkat {{ $severityLabel }}
+                            </p>
+                        </div>
+
+                        <!-- 9. Garansi Pengerjaan -->
+                        <div class="space-y-1">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Status Garansi</span>
+                            <p class="text-sm font-semibold text-emerald-700">
+                                Garansi Nota Resmi 30 Hari
+                            </p>
                         </div>
                     </div>
 
-                    <!-- Technical Guarantee Banner -->
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600 bg-slate-50 -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 p-4 rounded-b-lg border-t">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
-                            <span><strong>Garansi Nota 30 Hari:</strong> Jika saluran mampet kembali dalam masa garansi, teknisi datang tanpa biaya.</span>
-                        </div>
-                        <span class="text-[11px] text-slate-500 font-medium">Bebas Soda Api & Kimia Korosif</span>
+                    <!-- Diagnosa Masalah Saluran (Box Khusus) -->
+                    <div class="mt-6 p-4 rounded-lg bg-slate-50 border border-slate-200">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-700 block mb-1">
+                            Diagnosa Hambatan Masalah Saluran:
+                        </span>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                            {{ $caseStudy->diagnosis ?: (!empty($problemTypes) ? 'Sumbatan disebabkan oleh ' . implode(', ', $problemTypes) . ' yang menumpuk pada dinding pipa saluran pembuangan.' : 'Penumpukan kerak dan sisa residu yang menghambat laju debit air kotor di belokan pipa.') }}
+                        </p>
                     </div>
+
+                   
                 </section>
 
                 <!-- 4. ALAT/MESIN DIGUNAKAN -->
@@ -342,8 +400,8 @@
 
             </div>
 
-            <!-- 6. SIDEBAR CTA (DESKTOP: STICKY) -->
-            <aside class="hidden lg:block lg:sticky lg:top-24">
+            <!-- 6. SIDEBAR CTA (DESKTOP: STICKY, MOBILE: IN-FLOW) -->
+            <aside class="mt-8 lg:mt-0 lg:sticky lg:top-24">
                 <div class="bg-white rounded-lg border border-slate-200 p-5 space-y-4 shadow-2xs">
                     <div>
                         <p class="text-[11px] font-bold uppercase tracking-wider text-sky-800 mb-1">
@@ -351,7 +409,7 @@
                         </p>
                         <h3 class="text-sm font-bold text-slate-900 leading-snug">Saluran Mengalami Kendala Serupa?</h3>
                         <p class="mt-1.5 text-xs text-slate-600 leading-relaxed">
-                            Konsultasikan titik mampet saluran Anda. Teknisi Drainusantara siaga meluncur dengan mesin spiral baja rotary tanpa membongkar lantai hunian Anda.
+                            Konsultasikan titik mampet saluran Anda di {{ $caseStudy->location ?: 'lokasi Anda' }}. Teknisi Drainusantara siaga meluncur dengan mesin spiral rotary tanpa membongkar keramik.
                         </p>
                     </div>
 
@@ -371,7 +429,7 @@
                             <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            <span>Dikerjakan dengan mesin spiral rotary</span>
+                            <span>Dikerjakan mesin spiral rotary Ridgid</span>
                         </div>
                         <div class="flex items-center gap-1.5">
                             <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -386,25 +444,6 @@
         </div>
     </div>
 
-    <!-- 6. MOBILE FIXED BOTTOM CTA BAR (< lg) -->
-    <div class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 px-4 py-3 shadow-md" aria-label="Aksi Cepat Mobile">
-        <div class="max-w-md mx-auto flex items-center justify-between gap-3">
-            <div class="min-w-0 flex-1">
-                <p class="text-xs font-bold text-slate-900 truncate">Saluran Mampet di Rumah Anda?</p>
-                <p class="text-[11px] text-slate-600 truncate">Teknisi siaga dengan mesin spiral rotary</p>
-            </div>
-            <a href="{{ $waUrl }}" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="shrink-0 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs rounded-lg px-4 py-2.5 min-h-[48px] flex items-center justify-center gap-2 shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
-                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                </svg>
-                <span>Hubungi WA</span>
-            </a>
-        </div>
-    </div>
-
     <!-- 7. RELATED CASE STUDIES SECTION -->
     @if(isset($relatedCaseStudies) && $relatedCaseStudies->isNotEmpty())
     <section class="bg-slate-50 border-t border-slate-200 py-12" aria-label="Studi Kasus Lainnya">
@@ -413,25 +452,28 @@
                 Studi Kasus Lainnya
             </h2>
             
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($relatedCaseStudies as $item)
-                @php
-                    $thumb = $item->before_image ?: ($item->image ?: $item->after_image);
-                @endphp
-                <x-case-study-card 
-                    :slug="$item->slug" 
-                    :title="$item->title" 
-                    :location="$item->location" 
-                    :propertyTypes="$item->property_type" 
-                    :beforeImage="$thumb" 
-                    :duration="$item->duration" 
-                    :problemTypes="$item->problem_type" 
-                />
-            @endforeach
-        </div>
+            <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0">
+                @foreach($relatedCaseStudies as $item)
+                    @php
+                        $thumb = $item->image ?: ($item->after_image ?: $item->before_image);
+                    @endphp
+                    <div class="w-[82vw] max-w-[340px] shrink-0 snap-center sm:w-auto">
+                        <x-case-study-card 
+                            :slug="$item->slug" 
+                            :title="$item->title" 
+                            :location="$item->location" 
+                            :propertyTypes="$item->property_type" 
+                            :beforeImage="$thumb" 
+                            :duration="$item->duration" 
+                            :problemTypes="$item->problem_type" 
+                            :category="$item->category_label"
+                            :drainType="$item->drain_type"
+                        />
+                    </div>
+                @endforeach
+            </div>
         </div>
     </section>
     @endif
 </article>
 @endsection
-

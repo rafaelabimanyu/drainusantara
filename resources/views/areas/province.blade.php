@@ -1,5 +1,23 @@
 @extends('layouts.app')
 
+@push('head')
+    @php
+        $firstCityKey = array_key_first($provinceData['cities'] ?? []);
+        $provCentroid = \App\Services\RegionService::centroid($firstCityKey ?? 'jakarta-timur');
+        $isoRegion = \App\Services\RegionService::isoRegion($provinceData['slug'] ?? null);
+    @endphp
+    <meta name="geo.region" content="{{ $isoRegion }}">
+    <meta name="geo.placename" content="{{ $provinceData['name'] }}, Indonesia">
+    <meta name="geo.position" content="{{ $provCentroid['lat'] }};{{ $provCentroid['lng'] }}">
+    <meta name="ICBM" content="{{ $provCentroid['lat'] }}, {{ $provCentroid['lng'] }}">
+
+    <!-- OpenGraph Location Tags -->
+    <meta property="og:latitude" content="{{ $provCentroid['lat'] }}">
+    <meta property="og:longitude" content="{{ $provCentroid['lng'] }}">
+    <meta property="og:locality" content="{{ $provinceData['name'] }}">
+    <meta property="og:country-name" content="Indonesia">
+@endpush
+
 @section('content')
 @php
     $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
@@ -144,8 +162,8 @@
                      loading="eager"
                      decoding="async"
                      class="w-full h-full object-cover object-center opacity-60 md:opacity-75 scale-105 transition-transform duration-700">
-                <div class="absolute inset-0 bg-linear-to-r from-slate-50 via-slate-50/85 to-slate-50/20"></div>
-                <div class="absolute inset-0 bg-linear-to-t from-slate-50 via-transparent to-slate-50/30"></div>
+                <div class="absolute inset-0 bg-linear-to-r from-slate-50/40 via-slate-50/80 to-slate-50/45"></div>
+                <div class="absolute inset-0 bg-linear-to-t from-slate-50/40 via-transparent to-slate-50/40"></div>
             </div>
         @endif
 
@@ -167,9 +185,8 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                 <div class="lg:col-span-8 space-y-5 sm:space-y-6">
-                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-600 inline-block" aria-hidden="true"></span>
-                        <span>Posko Wilayah Resmi: Provinsi {{ $provinceData['name'] }}</span>
+                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade">
+                        Posko Wilayah Resmi: Provinsi {{ $provinceData['name'] }}
                     </p>
 
                     <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight sm:leading-tight reveal-soft">
@@ -262,132 +279,196 @@
         </div>
     </section>
 
-    <section id="layanan" class="py-14 lg:py-20 bg-white border-b border-slate-200" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4500)">
+    @php
+        $serviceChunks = $itemsLayanan->chunk(4);
+    @endphp
+    <section id="layanan" class="py-14 lg:py-20 bg-white border-b border-slate-200"
+             x-data="{
+                 activeDesktop: 0,
+                 totalDesktop: {{ $serviceChunks->count() }},
+                 activeMobile: 0,
+                 totalMobile: {{ $itemsLayanan->count() }},
+                 isMobile: window.innerWidth < 640,
+                 scrollLeft() {
+                     if (this.isMobile) {
+                         if (this.activeMobile > 0) {
+                             this.activeMobile--;
+                             this.scrollToMobile(this.activeMobile);
+                         }
+                     } else {
+                         if (this.activeDesktop > 0) {
+                             this.activeDesktop--;
+                             this.scrollToDesktop(this.activeDesktop);
+                         }
+                     }
+                 },
+                 scrollRight() {
+                     if (this.isMobile) {
+                         if (this.activeMobile < this.totalMobile - 1) {
+                             this.activeMobile++;
+                             this.scrollToMobile(this.activeMobile);
+                         }
+                     } else {
+                         if (this.activeDesktop < this.totalDesktop - 1) {
+                             this.activeDesktop++;
+                             this.scrollToDesktop(this.activeDesktop);
+                         }
+                     }
+                 },
+                 scrollToDesktop(index) {
+                     const container = this.$refs.provinceServiceCarousel;
+                     if (!container) return;
+                     const target = container.children[index];
+                     if (target) {
+                         target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                     }
+                 },
+                 scrollToMobile(index) {
+                     const container = this.$refs.provinceServiceCarouselMobile;
+                     if (!container) return;
+                     const target = container.children[index];
+                     if (target) {
+                         target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                     }
+                 },
+                 onDesktopScroll() {
+                     const container = this.$refs.provinceServiceCarousel;
+                     if (!container) return;
+                     const width = container.clientWidth;
+                     if (width > 0) {
+                         this.activeDesktop = Math.round(container.scrollLeft / width);
+                     }
+                 },
+                 onMobileScroll() {
+                     const container = this.$refs.provinceServiceCarouselMobile;
+                     if (!container) return;
+                     const scrollLeft = container.scrollLeft;
+                     const first = container.firstElementChild;
+                     if (first) {
+                         const cardWidth = first.offsetWidth + 14;
+                         if (cardWidth > 0) {
+                             this.activeMobile = Math.min(this.totalMobile - 1, Math.max(0, Math.round(scrollLeft / cardWidth)));
+                         }
+                     }
+                 }
+             }"
+             @resize.window.debounce.100ms="isMobile = window.innerWidth < 640">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14">
-                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
-                    KATALOG SPESIALIS MASALAH PIPA
-                </p>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-                    Layanan Saluran Pipa Mampet di {{ $provinceData['name'] }}
-                </h2>
-                <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
-                    Pembersihan kerak minyak masakan, endapan busa sabun, dan sumbatan kotoran menggunakan mesin spiral rotary baja elastis. Dikerjakan langsung dari lubang pipa eksisting tanpa merusak keramik lantai maupun dinding.
-                </p>
-                <div class="flex md:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
-                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                    </svg>
-                    <span>Geser untuk layanan lainnya &bull; Auto-scroll aktif</span>
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
+                        KATALOG SPESIALIS MASALAH PIPA
+                    </p>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+                        Layanan Saluran Pipa Mampet di {{ $provinceData['name'] }}
+                    </h2>
+                    <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-3xl leading-relaxed">
+                        Pembersihan kerak minyak masakan, endapan busa sabun, dan sumbatan kotoran menggunakan mesin spiral rotary baja elastis. Dikerjakan langsung dari lubang pipa eksisting tanpa merusak keramik lantai maupun dinding.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 self-end sm:self-auto"
+                     x-show="(isMobile && totalMobile > 1) || (!isMobile && totalDesktop > 1)">
+                    <button type="button" @click="scrollLeft()" 
+                            :disabled="isMobile ? activeMobile === 0 : activeDesktop === 0" 
+                            aria-label="Geser layanan ke kiri"
+                            :class="(isMobile ? activeMobile === 0 : activeDesktop === 0) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-50 cursor-pointer'"
+                            class="w-9 h-9 rounded-lg border border-slate-300 bg-white text-slate-700 flex items-center justify-center transition-colors shadow-2xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button type="button" @click="scrollRight()" 
+                            :disabled="isMobile ? activeMobile >= totalMobile - 1 : activeDesktop >= totalDesktop - 1" 
+                            aria-label="Geser layanan ke kanan"
+                            :class="(isMobile ? activeMobile >= totalMobile - 1 : activeDesktop >= totalDesktop - 1) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-50 cursor-pointer'"
+                            class="w-9 h-9 rounded-lg border border-slate-300 bg-white text-slate-700 flex items-center justify-center transition-colors shadow-2xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
                 </div>
             </div>
 
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Layanan provinsi, geser untuk melihat lainnya"
-                 @scroll.passive="onScroll()"
-                 @touchstart="pause()"
-                 @touchend="resume()"
-             @touchcancel="resume()"
-                 class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
-                @foreach($itemsLayanan as $catalog)
-                    @php
-                        $isModel = $catalog instanceof \App\Models\Service;
-                        $title = $isModel ? $catalog->name : $catalog['title'];
-                        $slug = $isModel ? $catalog->slug : \Illuminate\Support\Str::slug($catalog['title']);
-                        $desc = $isModel ? ($catalog->short_description ?: ($catalog->description ?: 'Pelancaran saluran mampet tanpa bongkar keramik.')) : $catalog['desc'];
-                        $price = $isModel ? $catalog->price_starting_from : $catalog['price'];
-                        $features = $isModel ? ($catalog->features ?: []) : ($catalog['specs'] ?? []);
-
-                        $category = 'Layanan Spesialis';
-                        $lowerName = strtolower($title);
-                        if (str_contains($lowerName, 'wastafel') || str_contains($lowerName, 'dapur') || str_contains($lowerName, 'sink')) {
-                            $category = 'Dapur & Residensial';
-                        } elseif (str_contains($lowerName, 'kloset') || str_contains($lowerName, 'wc') || str_contains($lowerName, 'toilet')) {
-                            $category = 'Toilet & Kamar Mandi';
-                        } elseif (str_contains($lowerName, 'floor drain') || str_contains($lowerName, 'kamar mandi')) {
-                            $category = 'Kamar Mandi & Lantai';
-                        } elseif (str_contains($lowerName, 'cctv') || str_contains($lowerName, 'kamera')) {
-                            $category = 'Diagnostik & Jalur Pipa';
-                        } elseif (str_contains($lowerName, 'grease') || str_contains($lowerName, 'lemak') || str_contains($lowerName, 'resto')) {
-                            $category = 'Komersial F&B & Restoran';
-                        } elseif (str_contains($lowerName, 'talang') || str_contains($lowerName, 'atap')) {
-                            $category = 'Talang & Saluran Atap';
-                        } elseif (!$isModel && isset($catalog['category'])) {
-                            $category = $catalog['category'];
-                        }
-
-                        $rawImage = $isModel ? $catalog->image : ($catalog['image'] ?? null);
-                        $fallbackImage = asset('assets/placeholders/service.svg');
-                        if (empty($rawImage) || str_contains($rawImage, 'placehold.co') || str_contains($rawImage, 'unsplash.com')) {
-                            $imageSrc = $fallbackImage;
-                        } else {
-                            $imageSrc = str_starts_with($rawImage, 'http://') || str_starts_with($rawImage, 'https://')
-                                ? $rawImage : asset(ltrim($rawImage, '/'));
-                        }
-
-                        $waMessage = "Halo Drainusantara, saya butuh penanganan untuk {$title} di Provinsi {$provinceData['name']}. Mohon info estimasi biaya dan kedatangan teknisi.";
-                        $itemWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($waMessage);
-                    @endphp
-                    <div class="w-[84vw] sm:w-[320px] md:w-auto shrink-0 snap-center service-card bg-white rounded-lg border border-slate-200 shadow-2xs hover:border-sky-300 hover:shadow-xs transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 group card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
-                        <div>
-                            <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-4 border border-slate-100">
-                                <img src="{{ $imageSrc }}" 
-                                     alt="{{ $title }}" 
-                                     width="600"
-                                     height="375"
-                                     loading="lazy" 
-                                     decoding="async"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
-                                     onerror="this.onerror=null; this.src='{{ $fallbackImage }}';">
-                            </div>
-
-                            <h3 class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-sky-700 transition-colors mb-2">
-                                {{ $title }}
-                            </h3>
-
-                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
-                                {{ $desc }}
-                            </p>
-
-                            @if(!empty($features) && is_array($features))
-                                <ul class="space-y-1.5 text-xs text-slate-600 mb-4 pt-3 border-t border-slate-100">
-                                    @foreach(array_slice($features, 0, 3) as $feat)
-                                        <li class="flex items-start gap-1.5">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mt-1.5 shrink-0"></span>
-                                            <span>{{ $feat }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
+            <!-- 1-Row Mobile Carousel (< sm) -->
+            <div class="block sm:hidden">
+                <div x-ref="provinceServiceCarouselMobile"
+                     @scroll.debounce.50ms="onMobileScroll()"
+                     tabindex="0" role="region" aria-label="Katalog layanan provinsi 1 baris"
+                     class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 pt-1 px-4 gap-3.5 -mx-4">
+                    @foreach($itemsLayanan as $catalog)
+                        <div class="w-[82vw] max-w-[340px] shrink-0 snap-center flex flex-col">
+                            <x-area.service-card 
+                                :catalog="$catalog"
+                                :location-name="'Provinsi ' . $provinceData['name']"
+                                :whatsapp-number="$whatsappNumber"
+                                button-text="Pesan Penanganan"
+                            />
                         </div>
+                    @endforeach
+                </div>
 
-                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3 mt-2">
-                            <div>
-                                <span class="text-[10px] text-slate-500 font-medium block">Biaya Mulai Dari</span>
-                                <span class="text-sm font-extrabold text-slate-900">{{ $price > 0 ? 'Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}</span>
-                            </div>
-                            <a href="{{ $itemWaUrl }}" 
-                               target="_blank" 
-                               rel="noopener noreferrer" 
-                               class="inline-flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3.5 py-2.5 rounded-lg shadow-2xs transition-colors min-h-11">
-                                <span>Pesan Penanganan</span>
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                                </svg>
-                            </a>
+                @if($itemsLayanan->count() > 1)
+                    <div class="flex items-center justify-between mt-3 px-1 text-xs text-slate-500 font-mono">
+                        <div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-sans">
+                            <svg class="w-3.5 h-3.5 text-sky-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            <span>Geser untuk layanan lain</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" @click="if (activeMobile > 0) { activeMobile--; scrollToMobile(activeMobile); }"
+                                    :disabled="activeMobile === 0"
+                                    :class="activeMobile === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                                    aria-label="Layanan sebelumnya">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+                            <span class="text-slate-600"><strong class="text-slate-900" x-text="activeMobile + 1">1</strong>/{{ $itemsLayanan->count() }}</span>
+                            <button type="button" @click="if (activeMobile < totalMobile - 1) { activeMobile++; scrollToMobile(activeMobile); }"
+                                    :disabled="activeMobile >= totalMobile - 1"
+                                    :class="activeMobile >= totalMobile - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                                    aria-label="Layanan berikutnya">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </button>
                         </div>
                     </div>
-                @endforeach
+                @endif
             </div>
 
-            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-4">
-                @for($i = 0; $i < count($itemsLayanan); $i++)
-                    <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
-                            @click="goTo({{ $i }})"
-                            class="carousel-dot"
+            <!-- 2x2 Grid Carousel Container (>= sm) -->
+            <div class="hidden sm:block">
+                <div x-ref="provinceServiceCarousel"
+                     @scroll.debounce.50ms="onDesktopScroll()"
+                     tabindex="0" role="region" aria-label="Katalog layanan provinsi bergeser horizontal 2x2"
+                     class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 pt-1 px-4">
+                    @foreach($serviceChunks as $chunk)
+                        <div class="w-full shrink-0 snap-start grid grid-cols-2 gap-4 lg:gap-4.5">
+                            @foreach($chunk as $catalog)
+                                <x-area.service-card 
+                                    :catalog="$catalog"
+                                    :location-name="'Provinsi ' . $provinceData['name']"
+                                    :whatsapp-number="$whatsappNumber"
+                                    button-text="Pesan Penanganan"
+                                />
+                            @endforeach
+                        </div>
+                    @endforeach
+                </div>
 
-                            aria-label="Layanan {{ $i + 1 }}">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
-                @endfor
+                @if($serviceChunks->count() > 1)
+                    <div class="flex items-center justify-center gap-3 mt-5 text-xs text-slate-500 font-mono">
+                        <button type="button" @click="if (activeDesktop > 0) { activeDesktop--; scrollToDesktop(activeDesktop); }"
+                                :disabled="activeDesktop === 0"
+                                :class="activeDesktop === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                                class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                                aria-label="Halaman sebelumnya">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <span>Halaman <strong class="text-slate-900" x-text="activeDesktop + 1">1</strong> dari {{ $serviceChunks->count() }}</span>
+                        <button type="button" @click="if (activeDesktop < totalDesktop - 1) { activeDesktop++; scrollToDesktop(activeDesktop); }"
+                                :disabled="activeDesktop >= totalDesktop - 1"
+                                :class="activeDesktop >= totalDesktop - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                                class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                                aria-label="Halaman berikutnya">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                @endif
             </div>
         </div>
     </section>
@@ -439,7 +520,12 @@
                     </button>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                <div class="flex md:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mb-4 px-1" aria-hidden="true">
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <span>Geser dokumentasi</span>
+                </div>
+
+                <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-8 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
                     @foreach($displayGalleries as $item)
                         @php
                             $isB2b = ($item->category ?? 'rumahan') === 'b2b';
@@ -449,7 +535,7 @@
                             $itemWaUrl = "https://wa.me/{$whatsappNumber}?text={$waText}";
                         @endphp
                         <div x-show="activeCategory === 'all' || activeCategory === '{{ $item->category ?? 'rumahan' }}'"
-                             class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
+                             class="w-[84vw] max-w-[360px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between card-lift reveal-soft stagger-{{ ($loop->iteration % 3) + 1 }}">
                             <div>
                                 <div class="relative aspect-16/10 bg-slate-900 overflow-hidden border-b border-slate-100">
                                     @if($photo)
@@ -514,7 +600,7 @@
                 </div>
             @else
                 <div class="py-12 px-6 text-center bg-white rounded-xl border border-slate-200 text-slate-500">
-                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+                    <div class="w-12 h-12 mx-auto mb-3 rounded-lg bg-slate-100 text-slate-400 flex items-center justify-center border border-slate-200">
                         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
@@ -551,9 +637,14 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="flex lg:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mb-4 px-1" aria-hidden="true">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <span>Geser untuk melihat kota &amp; kabupaten lain</span>
+            </div>
+
+            <div class="flex lg:grid lg:grid-cols-2 overflow-x-auto lg:overflow-visible snap-x snap-mandatory no-scrollbar gap-5 lg:gap-6 pb-3 pt-1 px-4 -mx-4 lg:mx-0 lg:px-0">
                 @foreach($provinceData['cities'] as $citySlug => $city)
-                    <div class="bg-white city-card rounded-lg border border-slate-200 p-6 sm:p-7 hover:border-sky-300 flex flex-col justify-between shadow-2xs card-lift reveal-soft stagger-{{ ($loop->iteration % 2) + 1 }}">
+                    <div class="w-[86vw] max-w-[420px] lg:w-auto shrink-0 snap-center bg-white city-card rounded-lg border border-slate-200 p-5 sm:p-7 hover:border-sky-300 flex flex-col justify-between shadow-2xs card-lift reveal-soft stagger-{{ ($loop->iteration % 2) + 1 }}">
                         <div>
                             <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 pb-5 border-b border-slate-100">
                                 <div>
@@ -562,9 +653,8 @@
                                             {{ $city['type'] }}
                                         </span>
                                         <span class="text-slate-300">&bull;</span>
-                                        <span class="text-xs text-emerald-700 font-semibold flex items-center gap-1">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                                            <span>Armada Siaga</span>
+                                        <span class="text-xs text-emerald-700 font-semibold">
+                                            Armada Siaga
                                         </span>
                                     </div>
                                     <h3 class="text-xl font-bold text-slate-900 tracking-tight">
@@ -597,7 +687,6 @@
                                         @endphp
                                         <a href="{{ route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]) }}" 
                                            class="p-2.5 rounded-lg bg-slate-50 hover:bg-sky-50 border border-slate-200 hover:border-sky-300 text-slate-800 hover:text-sky-700 font-semibold transition-all truncate flex items-center gap-1.5 min-h-11 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0"></span>
                                             <span class="truncate">{{ $district }}</span>
                                         </a>
                                     @endforeach

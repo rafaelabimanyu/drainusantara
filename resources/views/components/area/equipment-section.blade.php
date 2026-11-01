@@ -125,7 +125,7 @@
                         <div class="space-y-1.5 text-[11px] text-slate-700 border-t border-slate-100 pt-3">
                             @foreach(array_slice($specs, 0, 3) as $spec)
                             <div class="flex items-start gap-1.5 text-slate-600">
-                                <span class="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1 shrink-0"></span>
+                                <span class="text-sky-600 font-bold shrink-0">&bull;</span>
                                 <span class="line-clamp-1">{{ $spec }}</span>
                             </div>
                             @endforeach
@@ -148,16 +148,33 @@
             @endforeach
         </div>
 
-        <div class="flex md:hidden justify-center items-center flex-wrap gap-1 mt-4">
-            @for($i = 0; $i < $equipCount; $i++)
-                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
-                        @click="goTo({{ $i }})"
-                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
-                        aria-label="Peralatan {{ $i + 1 }}">
-                    <span class="h-2 rounded-full transition-all duration-300 block"
-                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>
-                </button>
-            @endfor
+        <!-- Mobile Slide Counter & Pagination -->
+        <div class="flex items-center justify-center gap-2 mt-4 md:hidden text-xs text-slate-500 font-mono">
+            <button type="button" @click="goTo(Math.max(0, active - 1))"
+                    :disabled="active === 0"
+                    :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                    aria-label="Peralatan sebelumnya">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="flex items-center gap-1">
+                @for($i = 0; $i < $equipCount; $i++)
+                    <button type="button" 
+                            @click="goTo({{ $i }})"
+                            :class="active === {{ $i }} ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:bg-slate-100'"
+                            class="w-6 h-6 rounded-md text-xs flex items-center justify-center border border-slate-200 transition-colors cursor-pointer"
+                            aria-label="Peralatan {{ $i + 1 }}">
+                        {{ $i + 1 }}
+                    </button>
+                @endfor
+            </div>
+            <button type="button" @click="goTo(Math.min({{ $equipCount - 1 }}, active + 1))"
+                    :disabled="active === {{ $equipCount - 1 }}"
+                    :class="active === {{ $equipCount - 1 }} ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                    aria-label="Peralatan berikutnya">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
         </div>
         @else
         <!-- Fallback if empty in DB -->

@@ -71,11 +71,20 @@ class ShowcaseController extends Controller
             ->limit(3)
             ->get();
 
+        if ($relatedCaseStudies->count() < 3) {
+            $extra = Gallery::where('is_active', true)
+                ->where('id', '!=', $caseStudy->id)
+                ->whereNotIn('id', $relatedCaseStudies->pluck('id'))
+                ->limit(3 - $relatedCaseStudies->count())
+                ->get();
+            $relatedCaseStudies = $relatedCaseStudies->concat($extra);
+        }
+
         PageMetadata::title($caseStudy->title.' | Studi Kasus Drainusantara');
         SEOMeta::setDescription(Str::limit(strip_tags((string) ($caseStudy->description ?? $caseStudy->content ?? '')), 160));
         SEOMeta::setCanonical(route('case-study.show', $slug));
 
-        $imageUrl = asset($caseStudy->after_image ?? $caseStudy->before_image ?? 'images/default.webp');
+        $imageUrl = asset($caseStudy->main_image ?? 'images/default.webp');
 
         OpenGraph::setDescription(Str::limit(strip_tags((string) ($caseStudy->description ?? $caseStudy->content ?? '')), 160));
         OpenGraph::setUrl(route('case-study.show', $slug));
@@ -110,6 +119,15 @@ class ShowcaseController extends Controller
             ->where('client_type', $partnership->client_type)
             ->limit(3)
             ->get();
+
+        if ($relatedPartnerships->count() < 3) {
+            $extra = Portfolio::where('is_active', true)
+                ->where('id', '!=', $partnership->id)
+                ->whereNotIn('id', $relatedPartnerships->pluck('id'))
+                ->limit(3 - $relatedPartnerships->count())
+                ->get();
+            $relatedPartnerships = $relatedPartnerships->concat($extra);
+        }
 
         $serviceNames = $partnership->services->pluck('name')->implode(', ');
         $serviceSuffix = $serviceNames !== '' ? ' | '.$serviceNames : '';

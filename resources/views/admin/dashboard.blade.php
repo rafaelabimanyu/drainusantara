@@ -9,8 +9,7 @@
     <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <div class="flex items-center gap-2 mb-1">
-                <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700">
-                    <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-800">
                     Sistem Operasional
                 </span>
                 <span class="text-xs text-slate-400">&bull;</span>

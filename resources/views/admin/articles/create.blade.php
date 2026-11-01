@@ -45,11 +45,41 @@
                 </div>
             </div>
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label for="published_at" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Tanggal Publikasi / Upload</label>
+                    <input type="datetime-local" name="published_at" id="published_at" value="{{ old('published_at', now()->format('Y-m-d\TH:i')) }}"
+                           class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs bg-white">
+                    <p class="text-[11px] text-slate-500 mt-1">Tanggal upload resmi yang tampil di kartu dan detail artikel.</p>
+                    @error('published_at') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label for="image_placement" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Posisi Gambar di Halaman Detail</label>
+                    <select name="image_placement" id="image_placement"
+                            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs bg-white">
+                        <option value="content" {{ old('image_placement', 'content') === 'content' ? 'selected' : '' }}>Di Tengah Konten (Kompak &amp; Rapi)</option>
+                        <option value="hero" {{ old('image_placement') === 'hero' ? 'selected' : '' }}>Di Hero Section (Header Atas)</option>
+                    </select>
+                    <p class="text-[11px] text-slate-500 mt-1">Pilih apakah gambar tampil di header atas atau di dalam badan artikel.</p>
+                    @error('image_placement') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+            </div>
+
             <x-form.image-upload 
                 name="thumbnail" 
                 label="Gambar Thumbnail Artikel"
                 help="Pilih file gambar resolusi tinggi (16:9 disarankan, maks 5MB)."
             />
+
+            <div>
+                <label for="tags" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Tag Pendukung</label>
+                <input type="text" name="tags" id="tags" value="{{ old('tags') }}"
+                       placeholder="Misal: Pipa PVC, Wastafel Dapur, Soda Api, CCTV Drainase (pisahkan dengan tanda koma)"
+                       class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
+                <p class="text-[11px] text-slate-500 mt-1">Tag topik pendukung yang muncul di bagian akhir artikel detail.</p>
+                @error('tags') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
 
             <div>
                 <label for="excerpt" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Ringkasan Singkat (Excerpt)</label>
@@ -60,10 +90,14 @@
             </div>
 
             <div>
-                <label for="content" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Isi Konten Artikel *</label>
-                <textarea name="content" id="content" rows="10" required
-                          placeholder="Tuliskan konten artikel lengkap di sini (mendukung format paragraf atau Markdown)..."
+                <div class="flex items-center justify-between mb-1.5">
+                    <label for="content" class="block text-xs font-bold uppercase tracking-wider text-slate-700">Isi Konten Artikel *</label>
+                    <span class="text-[11px] text-sky-700 font-medium">Mendukung Markdown &amp; Tag HTML Lengkap</span>
+                </div>
+                <textarea name="content" id="content" rows="12" required
+                          placeholder="Tuliskan konten artikel lengkap di sini (mendukung format paragraf, Markdown, dan tag HTML seperti &lt;b&gt;, &lt;ul&gt;, &lt;table&gt;, &lt;iframe&gt;)..."
                           class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs font-sans">{{ old('content') }}</textarea>
+                <p class="text-[11px] text-slate-500 mt-1">Anda dapat menyisipkan tag HTML langsung (misal: embed iframe YouTube, tabel spesifikasi pipa, atau callout info) maupun sintaks Markdown biasa.</p>
                 @error('content') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 

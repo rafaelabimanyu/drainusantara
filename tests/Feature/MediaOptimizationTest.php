@@ -196,6 +196,7 @@ class MediaOptimizationTest extends TestCase
         }
         $this->assertSame($old, $record->fresh()->getAttribute($field));
         $this->assertSame('blocked directory', file_get_contents($target));
+        File::delete($target);
     }
 
     public function test_memory_budget_is_checked_before_decode(): void
@@ -289,6 +290,9 @@ class MediaOptimizationTest extends TestCase
     #[DataProvider('resources')]
     public function test_create_and_replace_uploads_store_real_resized_webp(string $model, string $route, string $field, array $payload): void
     {
+        if (File::exists(Storage::disk('public')->path(''))) {
+            File::cleanDirectory(Storage::disk('public')->path(''));
+        }
         $source = $this->jpeg();
         $this->post(route('admin.'.$route.'.store'), $payload + [$field => UploadedFile::fake()->createWithContent('photo.jpg', $source)])
             ->assertSessionHasNoErrors()->assertRedirect();

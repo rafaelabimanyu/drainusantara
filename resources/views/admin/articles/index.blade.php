@@ -62,7 +62,7 @@
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
                                     Terbit
                                 </span>
-                                <div class="text-[11px] text-slate-400 mt-0.5">
+                                <div class="text-[11px] text-slate-500 mt-0.5">
                                     {{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}
                                 </div>
                             @else
@@ -71,6 +71,9 @@
                                     Draf
                                 </span>
                             @endif
+                            <div class="text-[11px] text-sky-700 font-semibold mt-0.5">
+                                {{ number_format($article->views_count) }}x tayang
+                            </div>
                         </td>
                         <td class="px-5 py-3.5 text-right whitespace-nowrap space-x-1.5">
                             <a href="{{ route('articles.show', $article->slug) }}" target="_blank"

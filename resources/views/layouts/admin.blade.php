@@ -129,8 +129,8 @@
                         </div>
                         <div class="hidden md:block text-left">
                             <span class="text-xs font-bold text-slate-900 block leading-tight">{{ Auth::user()?->name ?? 'Drainusantara@admin' }}</span>
-                            <span class="inline-flex items-center gap-1 text-[11px] text-emerald-700 font-medium">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Online
+                            <span class="text-[11px] text-slate-500 font-medium">
+                                Sesi Aktif
                             </span>
                         </div>
                     </div>

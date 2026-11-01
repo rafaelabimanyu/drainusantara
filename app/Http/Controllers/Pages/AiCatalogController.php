@@ -75,6 +75,19 @@ class AiCatalogController extends Controller
             $provincesData = RegionService::all();
             $provinceNames = array_values(array_map(fn ($p) => $p['name'], $provincesData));
             $totalActiveAreas = CoverageArea::where('is_active', true)->count();
+            $coverageCities = [];
+            foreach ($provincesData as $prov) {
+                foreach ($prov['cities'] as $city) {
+                    $coverageCities[] = [
+                        'city' => $city['name'],
+                        'slug' => $city['slug'],
+                        'province' => $city['province_name'],
+                        'posko' => $city['posko_address'] ?? "Posko Armada {$city['name']}",
+                        'url' => route('area.city', ['city' => $city['slug']]),
+                        'districtsCount' => count($city['districts'] ?? []),
+                    ];
+                }
+            }
 
             // 3. Dynamic active equipment
             $equipments = Equipment::where('is_active', true)
@@ -184,6 +197,7 @@ class AiCatalogController extends Controller
                         'description' => 'Area jangkauan mobilisasi teknisi siaga di seluruh Jabodetabek, Semarang, dan Bandar Lampung.',
                         'data' => [
                             'provinces' => $provinceNames,
+                            'cities' => $coverageCities,
                             'totalActiveAreas' => $totalActiveAreas,
                             'emergencyResponseMinutes' => 60,
                             'directoryUrl' => route('area.index'),

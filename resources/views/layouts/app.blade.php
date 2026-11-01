@@ -19,7 +19,8 @@
 
     <!-- Preload Critical LCP Hero Image (WebP) -->
     @if(request()->routeIs('home'))
-    <link rel="preload" as="image" href="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional-mobile.webp') }}" type="image/webp" media="(max-width: 640px)" fetchpriority="high">
+    <link rel="preload" as="image" href="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" type="image/webp" media="(min-width: 641px)" fetchpriority="high">
     @endif
 
     <!-- Global Application State Data (Lightweight, Non-blocking) -->

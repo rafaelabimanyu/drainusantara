@@ -93,7 +93,7 @@
                         <div class="space-y-2 text-xs text-slate-700 border-t border-slate-100 pt-4">
                             @foreach($specs as $spec)
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span>{{ $spec }}</span>
                             </div>
                             @endforeach
@@ -114,17 +114,24 @@
                 @endforeach
             </div>
 
-            <!-- Mobile Carousel Indicators -->
+            <!-- Mobile Slide Counter -->
             @if($mainMachines->count() > 1)
-            <div class="flex items-center justify-center gap-2 mt-4 md:hidden">
-                <template x-for="i in total" :key="i">
-                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                            @click="goTo(i - 1)"
-                            class="carousel-dot"
-
-                            :aria-label="'Peralatan ' + i">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
-                </template>
+            <div class="flex items-center justify-center gap-3 mt-4 md:hidden text-xs text-slate-500 font-mono">
+                <button type="button" @click="goTo(Math.max(0, active - 1))"
+                        :disabled="active === 0"
+                        :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Peralatan sebelumnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span>Unit <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                        :disabled="active === total - 1"
+                        :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Peralatan berikutnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
             @endif
         </div>
@@ -173,15 +180,15 @@
                         
                         <div class="space-y-2 text-xs text-slate-700 border-t border-slate-100 pt-4">
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Jangkauan:</strong> Hingga 30 meter sambung modular</span>
                             </div>
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Diameter Pipa:</strong> Efektif untuk pipa 1.5 sampai 6 inci</span>
                             </div>
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Aksi Kerja:</strong> Mengikis lemak padat, menarik rambut, dan memotong akar</span>
                             </div>
                         </div>
@@ -231,15 +238,15 @@
                         
                         <div class="space-y-2 text-xs text-slate-700 border-t border-slate-100 pt-4">
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Jangkauan:</strong> Push-rod fiberglass tahan tekuk 30M</span>
                             </div>
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Pencahayaan:</strong> 12 LED ultra-bright + lensa safir</span>
                             </div>
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-sky-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Dokumentasi:</strong> Video MP4 &amp; foto detail posisi sumbatan</span>
                             </div>
                         </div>
@@ -289,15 +296,15 @@
                         
                         <div class="space-y-2 text-xs text-slate-700 border-t border-slate-100 pt-4">
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Tekanan Air:</strong> 100 - 200 Bar nozel multifungsi</span>
                             </div>
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Target Masalah:</strong> Grease trap, pipa dapur resto, sedimentasi pasir</span>
                             </div>
                             <div class="flex items-start gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5 shrink-0"></span>
+                                <span class="font-mono text-slate-400 font-bold">&bull;</span>
                                 <span><strong>Hasil:</strong> Dinding pipa bersih total seperti baru dipasang</span>
                             </div>
                         </div>
@@ -316,16 +323,23 @@
 
             </div>
 
-            <!-- Mobile Carousel Indicators -->
-            <div class="flex items-center justify-center gap-2 mt-4 md:hidden">
-                <template x-for="i in total" :key="i">
-                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                            @click="goTo(i - 1)"
-                            class="carousel-dot"
-
-                            :aria-label="'Peralatan ' + i">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
-                </template>
+            <!-- Mobile Slide Counter -->
+            <div class="flex items-center justify-center gap-3 mt-4 md:hidden text-xs text-slate-500 font-mono">
+                <button type="button" @click="goTo(Math.max(0, active - 1))"
+                        :disabled="active === 0"
+                        :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Peralatan sebelumnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span>Unit <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                        :disabled="active === total - 1"
+                        :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Peralatan berikutnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
         @endif

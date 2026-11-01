@@ -26,6 +26,7 @@
                     <tr>
                         <th class="px-5 py-3.5">Dokumentasi</th>
                         <th class="px-5 py-3.5">Judul &amp; Sektor</th>
+                        <th class="px-5 py-3.5">Lokasi &amp; Biaya</th>
                         <th class="px-5 py-3.5">Deskripsi Hasil</th>
                         <th class="px-5 py-3.5">Status</th>
                         <th class="px-5 py-3.5 text-right">Aksi</th>
@@ -54,10 +55,14 @@
                         <td class="px-5 py-3.5">
                             <div class="font-bold text-slate-900 text-sm">{{ $gallery->title }}</div>
                             <div class="flex items-center gap-2 mt-1 text-xs text-slate-500">
-                                <span class="font-medium text-slate-700">{{ $gallery->category === 'b2b' ? 'B2B Komersial' : 'Residensial' }}</span>
+                                <span class="font-semibold text-sky-800">{{ $gallery->category_label }}</span>
                                 <span>&bull;</span>
                                 <span>{{ $gallery->service ? $gallery->service->name : 'Umum' }}</span>
                             </div>
+                        </td>
+                        <td class="px-5 py-3.5 whitespace-nowrap text-xs">
+                            <div class="font-medium text-slate-800">{{ $gallery->location ?: '-' }}</div>
+                            <div class="text-slate-500 mt-0.5">{{ $gallery->formatted_price ?: '-' }}</div>
                         </td>
                         <td class="px-5 py-3.5 max-w-sm truncate text-slate-600 text-xs">
                             {{ $gallery->description ?? '-' }}

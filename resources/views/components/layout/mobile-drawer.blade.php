@@ -78,7 +78,9 @@
        
         <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 shrink-0 bg-slate-900">
             <h2 id="mobile-drawer-title" class="min-w-0 pr-3">
-                <img src="{{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }}" srcset="{{ asset('images/logo/TEKSBRAND-TAGLINE-224.webp') }} 224w, {{ asset('images/logo/TEKSBRAND-TAGLINE-448.webp') }} 448w, {{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }} 1198w" sizes="224px" alt="Drainusantara: Menu &amp; Layanan" class="block h-auto w-52 max-w-full object-contain" width="1198" height="208">
+                <div class="inline-flex items-center px-2.5 py-1.5 rounded-md">
+                    <img src="{{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }}" srcset="{{ asset('images/logo/TEKSBRAND-TAGLINE-224.webp') }} 224w, {{ asset('images/logo/TEKSBRAND-TAGLINE-448.webp') }} 448w, {{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }} 1198w" sizes="224px" alt="Drainusantara: Menu &amp; Layanan" class="block h-auto w-44 max-w-full object-contain" width="1198" height="208">
+                </div>
             </h2>
             <button @click="sidebarOpen = false" 
                     x-ref="closeButton"
@@ -93,10 +95,18 @@
 
        
         <div class="flex-1 overflow-y-auto px-4 py-3 flex flex-col justify-start space-y-1">
+            @php
+                $isDrawerHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*');
+                $isDrawerGallery = request()->is('galeri*') || request()->routeIs('gallery') || request()->is('studi-kasus*') || request()->routeIs('case-study*');
+                $isDrawerHowItWorks = request()->routeIs('how-it-works') || request()->is('cara-kerja*') || request()->is('proses-kerja*');
+                $isDrawerBlog = request()->is('artikel*') || request()->is('pengetahuan*') || request()->is('blog*') || request()->routeIs('articles*');
+                $isDrawerAbout = request()->is('tentang-kami*') || request()->routeIs('about*') || $isDrawerHowItWorks || request()->routeIs('equipment.show') || request()->is('kemitraan*') || request()->routeIs('partnership.show');
+            @endphp
+
             <!-- 1. Beranda -->
             <a href="{{ route('home') }}" 
                @click="sidebarOpen = false" 
-               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('area*') && !request()->is('tentang-kami*') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
+               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ $isDrawerHome ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,10 +120,10 @@
                 </svg>
             </a>
 
-          
+            <!-- 2. Hasil Kerja & Dokumentasi -->
             <a href="{{ route('gallery') }}" 
                @click="sidebarOpen = false" 
-               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->is('galeri*') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
+               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ $isDrawerGallery ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,8 +137,28 @@
                 </svg>
             </a>
 
-            
-            <a href="{{ route('about.warranty') }}" 
+            <!-- 3. Cara Kerja & Standar Proses -->
+            <a href="{{ route('how-it-works') }}" 
+               @click="sidebarOpen = false" 
+               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ $isDrawerHowItWorks ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold block leading-tight">Cara Kerja</span>
+                        <span class="text-xs text-slate-500 font-normal">5 tahap proses tanpa bongkar</span>
+                    </div>
+                </div>
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a> 
+
+            <!-- 4. Garansi 30 Hari -->
+            <a href="{{ route('about.warranty') }}"
                @click="sidebarOpen = false" 
                class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.warranty') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
                 <div class="flex items-center gap-3">
@@ -147,7 +177,7 @@
                 </svg>
             </a>
 
-           
+            <!-- 5. Tanya Jawab (FAQ) -->
             <a href="{{ route('about.faq') }}" 
                @click="sidebarOpen = false" 
                class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.faq') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
@@ -164,24 +194,24 @@
                 </svg>
             </a>
 
-           
+            <!-- 6. Blog & Edukasi -->
             <a href="{{ route('articles.index') }}" 
                @click="sidebarOpen = false" 
-               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->is('artikel*') || request()->is('pengetahuan*') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
+               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ $isDrawerBlog ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
-                    <span class="text-sm font-semibold">Artikel &amp; Edukasi</span>
+                    <span class="text-sm font-semibold">Blog</span>
                 </div>
                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
             </a>
 
-            <!-- 8. Profil Perusahaan & Legalitas (Accordion Ringkas untuk Info Korporat) -->
+            <!-- 7. Profil Perusahaan & Legalitas (Accordion Ringkas untuk Info Korporat) -->
             <div class="rounded-lg border border-transparent transition-all mt-1"
                  :class="{ 'bg-slate-50 border-slate-200/80 p-1': tentangDrawerOpen }">
                 <button type="button" 
@@ -189,7 +219,7 @@
                         aria-expanded="false" :aria-expanded="tentangDrawerOpen"
                         aria-controls="drawer-company-links"
                         class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 transition-all btn-press min-h-11 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-sky-600"
-                        :class="{ 'text-sky-700 font-bold bg-sky-50/70': tentangDrawerOpen || {{ request()->routeIs('about*') && !request()->routeIs('about.warranty') && !request()->routeIs('about.faq') ? 'true' : 'false' }} }">
+                        :class="{ 'text-sky-700 font-bold bg-sky-50/70': tentangDrawerOpen || {{ ($isDrawerAbout && !request()->routeIs('about.warranty') && !request()->routeIs('about.faq') && !$isDrawerHowItWorks) ? 'true' : 'false' }} }">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 border border-slate-200" aria-hidden="true">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,32 +237,32 @@
                 <div id="drawer-company-links" x-cloak x-show="tentangDrawerOpen" class="pt-1 pb-1 pl-3 pr-1 space-y-0.5 border-t border-slate-200/70 mt-1">
                     <a href="{{ route('about.profile') }}" 
                        @click="sidebarOpen = false" 
-                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-11 transition-colors focus:outline-hidden focus:ring-2 focus:ring-sky-600">
+                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold transition-colors min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.profile') || (request()->routeIs('about') && !request()->routeIs('about.holding') && !request()->routeIs('about.k3') && !request()->routeIs('about.equipment') && !request()->routeIs('about.portfolio')) ? 'bg-sky-50 text-sky-700 font-bold border border-sky-200/60' : 'text-slate-700 hover:text-sky-700 hover:bg-white' }}">
                         <span>Profil Perusahaan</span>
                     </a>
 
                     <a href="{{ route('about.holding') }}" 
                        @click="sidebarOpen = false" 
-                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-11 transition-colors focus:outline-hidden focus:ring-2 focus:ring-sky-600">
+                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold transition-colors min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.holding') ? 'bg-sky-50 text-sky-700 font-bold border border-sky-200/60' : 'text-slate-700 hover:text-sky-700 hover:bg-white' }}">
                         <span>Struktur Holding J&amp;J Group</span>
                     </a>
 
                     <a href="{{ route('about.k3') }}" 
                        @click="sidebarOpen = false" 
-                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-11 transition-colors focus:outline-hidden focus:ring-2 focus:ring-sky-600">
+                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold transition-colors min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.k3') ? 'bg-sky-50 text-sky-700 font-bold border border-sky-200/60' : 'text-slate-700 hover:text-sky-700 hover:bg-white' }}">
                         <span>Standar Operasional &amp; SOP K3</span>
                     </a>
 
                     <a href="{{ route('about.equipment') }}" 
                        @click="sidebarOpen = false" 
-                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-11 transition-colors focus:outline-hidden focus:ring-2 focus:ring-sky-600">
+                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold transition-colors min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.equipment') || request()->routeIs('equipment.show') ? 'bg-sky-50 text-sky-700 font-bold border border-sky-200/60' : 'text-slate-700 hover:text-sky-700 hover:bg-white' }}">
                         <span>Peralatan &amp; Mesin Rooter</span>
                     </a>
 
                     <a href="{{ route('about.portfolio') }}" 
                        @click="sidebarOpen = false" 
-                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold text-slate-700 hover:text-sky-700 hover:bg-white active:bg-sky-50 min-h-11 transition-colors focus:outline-hidden focus:ring-2 focus:ring-sky-600">
-                        <span>Portofolio Klien &amp; B2B</span>
+                       class="flex items-center px-3 py-2 rounded-md text-xs font-semibold transition-colors min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.portfolio') || request()->routeIs('partnership.show') || request()->is('kemitraan*') ? 'bg-sky-50 text-sky-700 font-bold border border-sky-200/60' : 'text-slate-700 hover:text-sky-700 hover:bg-white' }}">
+                        <span>Kemitraan</span>
                     </a>
                 </div>
             </div>

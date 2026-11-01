@@ -36,6 +36,54 @@ class NavbarActiveStateTest extends TestCase
         );
     }
 
+    public function test_desktop_navbar_renders_tentang_kami_active_on_tentang_kami_pages(): void
+    {
+        $response = $this->get(route('about.profile'));
+        $response->assertOk();
+
+        $content = $response->getContent();
+        $this->assertMatchesRegularExpression(
+            '/<button[^>]*class="[^"]*text-sky-400 font-bold bg-slate-800\/90[^"]*"[^>]*>[\s\S]*?Tentang kami/m',
+            $content
+        );
+    }
+
+    public function test_desktop_navbar_renders_tentang_kami_active_on_cara_kerja_page(): void
+    {
+        $response = $this->get(route('how-it-works'));
+        $response->assertOk();
+
+        $content = $response->getContent();
+        $this->assertMatchesRegularExpression(
+            '/<button[^>]*class="[^"]*text-sky-400 font-bold bg-slate-800\/90[^"]*"[^>]*>[\s\S]*?Tentang kami/m',
+            $content
+        );
+    }
+
+    public function test_desktop_navbar_renders_hasil_kerja_active_on_gallery_page(): void
+    {
+        $response = $this->get(route('gallery'));
+        $response->assertOk();
+
+        $content = $response->getContent();
+        $this->assertMatchesRegularExpression(
+            '/<a[^>]*class="[^"]*text-sky-400 font-bold bg-slate-800\/90[^"]*"[^>]*>[\s\S]*?Hasil Kerja/m',
+            $content
+        );
+    }
+
+    public function test_desktop_navbar_renders_blog_active_on_articles_page(): void
+    {
+        $response = $this->get(route('articles.index'));
+        $response->assertOk();
+
+        $content = $response->getContent();
+        $this->assertMatchesRegularExpression(
+            '/<a[^>]*class="[^"]*text-sky-400 font-bold bg-slate-800\/90[^"]*"[^>]*>[\s\S]*?Blog/m',
+            $content
+        );
+    }
+
     public function test_mobile_dock_has_active_state_bindings_for_layanan_and_area(): void
     {
         $response = $this->get('/');

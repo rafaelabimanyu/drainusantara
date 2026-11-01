@@ -15,11 +15,15 @@ class AboutPageTest extends TestCase
         $resProfile = $this->get('/tentang-kami/profil');
         $resProfile->assertStatus(200);
         $resProfile->assertSee('Profil Resmi Drainusantara');
+        $resProfile->assertSee('PT JAWA JAYA ROOTER');
         $resProfile->assertSee('100% Non-Destruktif');
         $resProfile->assertSee('Bebas Bahan Kimia');
         $resProfile->assertSee('Staff &amp; Teknisi Lapangan Siaga', false);
         $resProfile->assertSee('Agus Santoso');
         $resProfile->assertSee('Bambang Wijaya');
+        $resProfile->assertSee('1. Leader');
+        $resProfile->assertSee('2. Staff');
+        $resProfile->assertSee('3. Teknisi');
 
         // Main alias /tentang-kami
         $resMain = $this->get('/tentang-kami');
@@ -32,6 +36,7 @@ class AboutPageTest extends TestCase
         $resHolding = $this->get('/tentang-kami/holding');
         $resHolding->assertStatus(200);
         $resHolding->assertSee('Sinergi Ekosistem J&amp;J Group', false);
+        $resHolding->assertSee('PT JAWA JAYA ROOTER');
         $resHolding->assertSee('Transparansi Harga Total');
         $resHolding->assertSee('Formalitas Kelengkapan Administrasi &amp; Kemitraan Korporat', false);
         $resHolding->assertSee('NIB (Nomor Induk Berusaha)');
@@ -82,6 +87,16 @@ class AboutPageTest extends TestCase
         $resFaq->assertStatus(200);
         $resFaq->assertSee('Tanya Jawab Seputar Layanan &amp; Prosedur Pengerjaan', false);
         $resFaq->assertSee('Mengapa pemakaian soda api sangat dilarang');
+
+        // 8. Cara Kerja & Standar Proses
+        $resHow = $this->get('/cara-kerja');
+        $resHow->assertStatus(200);
+        $resHow->assertSee('5 Tahapan Pelancaran Saluran Pipa Mekanis');
+        $resHow->assertSee('PT JAWA JAYA ROOTER');
+        $resHow->assertSee('Ridgid Rotary Rooter');
+        $resHow->assertSee('No Cure No Pay');
+        $resHow->assertSee('Diagnosa &amp; Inspeksi Visual Endoskopi CCTV', false);
+        $resHow->assertSee('Sanitasi Area Kerja &amp; Penerbitan Surat Garansi 30 Hari', false);
     }
 
     public function test_navbar_contains_tentang_kami_dropdown_linking_to_dedicated_pages_without_pills(): void
@@ -104,10 +119,15 @@ class AboutPageTest extends TestCase
         $response->assertSee(route('about.holding'));
         $response->assertSee(route('about.k3'));
         $response->assertSee(route('about.profile'));
+        $response->assertSee(route('how-it-works'));
         $response->assertSee(route('about.equipment'));
         $response->assertSee(route('about.portfolio'));
         $response->assertSee(route('about.warranty'));
         $response->assertSee(route('about.faq'));
+
+        // Footer hotline & official legal name
+        $response->assertSee('PT JAWA JAYA ROOTER');
+        $response->assertSee('0856-0900-9009');
 
         // Mobile drawer accordion trigger
         $response->assertSee('tentangDrawerOpen', false);

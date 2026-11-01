@@ -59,16 +59,23 @@
                     </div>
                 </div>
 
-                <!-- Dots indicator for 4 pilar on mobile/tablet -->
-                <div class="flex lg:hidden justify-center items-center flex-wrap gap-1.5 mt-3">
-                    <template x-for="i in total" :key="i">
-                        <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                                @click="goTo(i - 1)"
-                                class="carousel-dot"
-
-                                :aria-label="'Pilar ' + i">
-                        <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
-                    </template>
+                <!-- Mobile Slide Counter -->
+                <div class="flex items-center justify-center gap-3 mt-4 lg:hidden text-xs text-slate-500 font-mono">
+                    <button type="button" @click="goTo(Math.max(0, active - 1))"
+                            :disabled="active === 0"
+                            :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                            class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                            aria-label="Pilar sebelumnya">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <span>Pilar <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                    <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                            :disabled="active === total - 1"
+                            :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                            class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                            aria-label="Pilar berikutnya">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
                 </div>
             </div>
 
@@ -80,7 +87,7 @@
 
                 <div class="space-y-6 text-xs sm:text-sm">
                     <div class="flex items-start gap-3">
-                        <div class="w-7 h-7 rounded-full bg-sky-100 text-sky-800 font-bold flex items-center justify-center shrink-0 text-xs">
+                        <div class="w-7 h-7 rounded-md bg-slate-900 text-white font-mono font-bold flex items-center justify-center shrink-0 text-xs border border-slate-800">
                             1
                         </div>
                         <div>
@@ -90,7 +97,7 @@
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
-                        <div class="w-7 h-7 rounded-full bg-sky-100 text-sky-800 font-bold flex items-center justify-center shrink-0 text-xs">
+                        <div class="w-7 h-7 rounded-md bg-slate-900 text-white font-mono font-bold flex items-center justify-center shrink-0 text-xs border border-slate-800">
                             2
                         </div>
                         <div>
@@ -99,7 +106,7 @@
                         </div>
                     </div>
                     <div class="flex items-start gap-3">
-                        <div class="w-7 h-7 rounded-full bg-sky-100 text-sky-800 font-bold flex items-center justify-center shrink-0 text-xs">
+                        <div class="w-7 h-7 rounded-md bg-slate-900 text-white font-mono font-bold flex items-center justify-center shrink-0 text-xs border border-slate-800">
                             3
                         </div>
                         <div>
@@ -226,16 +233,23 @@
                 </div>
             </div>
 
-            <!-- Dots indicator for 3 cards on mobile -->
-            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-5">
-                <template x-for="i in total" :key="i">
-                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                            @click="goTo(i - 1)"
-                            class="carousel-dot"
-
-                            :aria-label="'Syarat ' + i">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
-                </template>
+            <!-- Mobile Slide Counter -->
+            <div class="flex items-center justify-center gap-3 mt-5 md:hidden text-xs text-slate-500 font-mono">
+                <button type="button" @click="goTo(Math.max(0, active - 1))"
+                        :disabled="active === 0"
+                        :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Syarat sebelumnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span>Syarat <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                        :disabled="active === total - 1"
+                        :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Syarat berikutnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
     </div>

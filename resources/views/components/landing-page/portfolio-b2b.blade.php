@@ -133,16 +133,23 @@
             $b2bDotCount = max(1, (int) ceil(count($b2bProjects) / 3));
         @endphp
         @if($b2bDotCount > 1)
-        <div class="flex justify-center items-center gap-1 mt-5">
-            @for($p = 0; $p < $b2bDotCount; $p++)
-                <button :aria-current="active === {{ $p }} ? 'true' : 'false'" type="button"
-                        @click="goTo({{ $p }})"
-                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
-                        aria-label="Halaman Portofolio {{ $p + 1 }}">
-                    <span class="h-2 rounded-full transition-all duration-300 block"
-                          :class="active === {{ $p }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
-                </button>
-            @endfor
+        <!-- Slide Counter -->
+        <div class="flex items-center justify-center gap-3 mt-5 text-xs text-slate-500 font-mono">
+            <button type="button" @click="goTo(Math.max(0, active - 1))"
+                    :disabled="active === 0"
+                    :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                    aria-label="Halaman portofolio sebelumnya">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <span>Halaman <strong class="text-slate-900" x-text="active + 1">1</strong> dari {{ $b2bDotCount }}</span>
+            <button type="button" @click="goTo(Math.min({{ $b2bDotCount - 1 }}, active + 1))"
+                    :disabled="active === {{ $b2bDotCount - 1 }}"
+                    :class="active === {{ $b2bDotCount - 1 }} ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                    aria-label="Halaman portofolio berikutnya">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
         </div>
         @endif
 

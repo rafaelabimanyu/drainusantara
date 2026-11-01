@@ -64,4 +64,22 @@ class PortfolioVisibilityTest extends TestCase
             $response->assertDontSee($brand);
         }
     }
+
+    public function test_portfolio_page_renders_two_column_mobile_grid_and_pagination_state(): void
+    {
+        for ($i = 1; $i <= 7; $i++) {
+            Portfolio::create([
+                'client_name' => "Klien Kemitraan {$i}",
+                'slug' => "klien-kemitraan-{$i}",
+                'is_active' => true,
+            ]);
+        }
+
+        $response = $this->get('/tentang-kami/portofolio')->assertOk();
+
+        $response->assertSee('grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3', false);
+        $response->assertSee('perPageMobile: 6', false);
+        $response->assertSee('isInCurrentMobilePage', false);
+        $response->assertSee('Hal <strong class="text-slate-900" x-text="currentPage">1</strong>', false);
+    }
 }

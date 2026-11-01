@@ -56,6 +56,10 @@ class ArticleController extends Controller
             $metaDescription = !empty($validated['meta_description']) ? $validated['meta_description'] : Str::limit(strip_tags($validated['content']), 150);
 
             $isPublished = $request->boolean('is_published');
+            $publishedAt = null;
+            if ($isPublished) {
+                $publishedAt = !empty($validated['published_at']) ? \Carbon\Carbon::parse($validated['published_at']) : now();
+            }
 
             $thumbnailUrl = $validated['thumbnail_url'] ?? null;
             if ($request->hasFile('thumbnail')) {
@@ -70,13 +74,15 @@ class ArticleController extends Controller
                 'title' => $validated['title'],
                 'slug' => $slug,
                 'thumbnail' => $thumbnailUrl,
+                'image_placement' => $validated['image_placement'] ?? 'content',
                 'category' => $validated['category'] ?? 'Tips & Edukasi',
+                'tags' => $validated['tags'] ?? null,
                 'excerpt' => $validated['excerpt'] ?? Str::limit(strip_tags($validated['content']), 120),
                 'content' => $validated['content'],
                 'meta_title' => $metaTitle,
                 'meta_description' => $metaDescription,
                 'is_published' => $isPublished,
-                'published_at' => $isPublished ? now() : null,
+                'published_at' => $publishedAt,
             ]);
         });
 
@@ -102,6 +108,14 @@ class ArticleController extends Controller
         $media = new MediaLifecycle;
         $media->run($article, function () use ($request, $validated, $media, $article): void {
             $isPublished = $request->boolean('is_published');
+            $publishedAt = null;
+            if ($isPublished) {
+                if (!empty($validated['published_at'])) {
+                    $publishedAt = \Carbon\Carbon::parse($validated['published_at']);
+                } else {
+                    $publishedAt = $article->published_at ?? now();
+                }
+            }
 
             $thumbnailUrl = $article->thumbnail;
             if ($request->hasFile('thumbnail')) {
@@ -114,12 +128,14 @@ class ArticleController extends Controller
                 'title' => $validated['title'],
                 'category' => array_key_exists('category', $validated) ? $validated['category'] : $article->category,
                 'thumbnail' => $thumbnailUrl,
+                'image_placement' => $validated['image_placement'] ?? ($article->image_placement ?? 'content'),
+                'tags' => array_key_exists('tags', $validated) ? $validated['tags'] : $article->tags,
                 'excerpt' => array_key_exists('excerpt', $validated) ? $validated['excerpt'] : $article->excerpt,
                 'content' => $validated['content'],
                 'meta_title' => array_key_exists('meta_title', $validated) ? $validated['meta_title'] : $article->meta_title,
                 'meta_description' => array_key_exists('meta_description', $validated) ? $validated['meta_description'] : $article->meta_description,
                 'is_published' => $isPublished,
-                'published_at' => $isPublished ? ($article->published_at ?? now()) : null,
+                'published_at' => $publishedAt,
             ]);
         });
 

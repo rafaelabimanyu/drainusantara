@@ -24,6 +24,13 @@
         $clientInitials = \Illuminate\Support\Str::upper(mb_substr($partnership->client_name, 0, 2));
     }
 
+    $heroBgImage = null;
+    if (!empty($partnership->image)) {
+        $heroBgImage = (filter_var($partnership->image, FILTER_VALIDATE_URL) || str_starts_with($partnership->image, '/'))
+            ? $partnership->image
+            : asset($partnership->image);
+    }
+
     $seoImage = $partnership->image ?: ($partnership->logo ?: asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
     $seoImageUrl = filter_var($seoImage, FILTER_VALIDATE_URL) ? $seoImage : asset($seoImage);
 
@@ -67,72 +74,78 @@
 </script>
 @endpush
 
-@push('styles')
-<style>
-    @media (max-width: 1023px) {
-        .mobile-nav-dock { display: none !important; }
-    }
-</style>
-@endpush
-
 @section('content')
-<article class="bg-white text-slate-800">
+<article class="bg-white text-slate-800 pb-20 lg:pb-0">
     
     <!-- 1. HERO SECTION -->
-    <header class="bg-slate-50 border-b border-slate-200 pt-10 pb-12 text-center">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="relative bg-slate-950 border-b border-slate-800 pt-10 pb-12 sm:pt-14 sm:pb-16 text-center overflow-hidden text-white">
+        @if(!empty($heroBgImage))
+            <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+                <img src="{{ $heroBgImage }}" 
+                     alt="{{ $partnership->client_name }}" 
+                     loading="eager" 
+                     decoding="async" 
+                     class="w-full h-full object-cover object-center filter brightness-90 scale-105">
+                <!-- Overlay gelap tergradasi untuk menjamin kontras WCAG AAA tajam -->
+                <div class="absolute inset-0 bg-linear-to-b from-slate-950/90 via-slate-950/85 to-slate-950/95"></div>
+            </div>
+        @endif
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
             <!-- Breadcrumb Navigation -->
-            <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-6 font-medium overflow-x-auto no-scrollbar" aria-label="Breadcrumb">
-                <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5 shrink-0">
+            <nav class="flex items-center justify-center gap-2 text-xs text-slate-300 mb-6 font-medium overflow-x-auto no-scrollbar" aria-label="Breadcrumb">
+                <a href="{{ url('/') }}" class="hover:text-white transition-colors flex items-center gap-1.5 shrink-0">
                     <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
                     <span>Beranda</span>
                 </a>
-                <span class="text-slate-300" aria-hidden="true">/</span>
-                <a href="{{ route('about.portfolio') }}" class="hover:text-sky-700 transition-colors shrink-0">
+                <span class="text-slate-500" aria-hidden="true">/</span>
+                <a href="{{ route('about.portfolio') }}" class="hover:text-white transition-colors shrink-0">
                     <span>Kemitraan</span>
                 </a>
-                <span class="text-slate-300" aria-hidden="true">/</span>
-                <span class="text-slate-800 truncate font-semibold" aria-current="page">{{ $partnership->client_name }}</span>
+                <span class="text-slate-500" aria-hidden="true">/</span>
+                <span class="text-white truncate font-semibold" aria-current="page">{{ $partnership->client_name }}</span>
             </nav>
 
             <!-- Logo Klien atau Fallback Inisial -->
             @if(!empty($partnership->logo))
                 <div class="mb-4 flex items-center justify-center">
-                    <img src="{{ $partnership->logo }}" 
-                         alt="Logo {{ $partnership->client_name }}" 
-                         width="140"
-                         height="70"
-                         loading="eager"
-                         decoding="async"
-                         class="max-w-[140px] max-h-20 h-auto object-contain mx-auto rounded-md">
+                    <div class="bg-white/95 rounded-lg p-2.5 inline-flex items-center justify-center border border-slate-200/40 shadow-xs">
+                        <img src="{{ $partnership->logo }}" 
+                             alt="Logo {{ $partnership->client_name }}" 
+                             width="140"
+                             height="70"
+                             loading="eager"
+                             decoding="async"
+                             class="max-w-[140px] max-h-20 h-auto object-contain mx-auto rounded-md">
+                    </div>
                 </div>
             @else
-                <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-sky-50 border-2 border-sky-100 flex items-center justify-center text-sky-700 font-bold text-2xl shadow-2xs" aria-hidden="true">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-xl bg-slate-900/90 border border-slate-700 flex items-center justify-center text-sky-400 font-bold text-2xl shadow-xs" aria-hidden="true">
                     {{ $clientInitials }}
                 </div>
             @endif
 
             <!-- Context Eyebrow -->
-            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
-                Portofolio Kemitraan &amp; B2B
-            </p>
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-sky-950/80 border border-sky-500/30 text-sky-300 text-xs font-semibold mb-2">
+                <span>Portofolio Kemitraan &amp; B2B</span>
+            </div>
 
             <!-- Nama Bisnis H1 -->
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
                 {{ $partnership->client_name }}
             </h1>
 
             <!-- Kemitraan Type Subtitle -->
-            <p class="text-xs font-bold text-amber-800 mt-2 uppercase tracking-wide">
+            <p class="text-xs font-bold text-amber-400 mt-2 uppercase tracking-wide">
                 {{ $partnerTypeLabel }}
             </p>
 
             <!-- Lokasi -->
             @if(!empty($partnership->location))
-                <p class="text-sm text-slate-600 mt-2 flex items-center justify-center gap-1.5 font-medium">
+                <p class="text-sm text-slate-300 mt-2 flex items-center justify-center gap-1.5 font-medium">
                     <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -142,7 +155,7 @@
             @endif
 
             @if(!empty($partnership->description))
-                <p class="mt-3 text-sm text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                <p class="mt-3 text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
                     {{ $partnership->description }}
                 </p>
             @endif
@@ -211,7 +224,7 @@
                     <!-- B2B SLA Notice -->
                     <div class="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600 bg-slate-50 -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 p-4 rounded-b-lg border-t">
                         <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                            <span class="text-emerald-700 font-bold shrink-0">&bull;</span>
                             <span><strong>Kepatuhan B2B:</strong> Dilengkapi Berita Acara Pengerjaan (BAP), Dokumentasi Foto, & Faktur Resmi.</span>
                         </div>
                         <span class="text-[11px] text-slate-500 font-medium">Bebas Gangguan Tamu</span>
@@ -334,30 +347,7 @@
         </div>
     </div>
 
-    <!-- 5. MOBILE FIXED BOTTOM CTA BAR (< lg) -->
-    <div class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 px-4 py-3 shadow-md" aria-label="Aksi Kemitraan Mobile">
-        <div class="max-w-md mx-auto flex items-center justify-between gap-3">
-            <div class="min-w-0 flex-1">
-                <p class="text-xs font-bold text-slate-900 truncate">Solusi Saluran Bisnis &amp; F&amp;B</p>
-                <p class="text-[11px] text-slate-600 truncate">Konsultasi kontrak perawatan berkala</p>
-            </div>
-            <a href="{{ $waUrl }}" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="shrink-0 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-xs rounded-lg px-4 py-2.5 min-h-[48px] flex items-center justify-center gap-2 shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
-                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                </svg>
-                <span>Hubungi WA</span>
-            </a>
-        </div>
-    </div>
-                 
-            </a>
-        </div>
-    </div>
-
-    <!-- 6. RELATED PARTNERSHIPS SECTION -->
+    <!-- 5. RELATED PARTNERSHIPS SECTION -->
     @if(isset($relatedPartnerships) && $relatedPartnerships->isNotEmpty())
     <section class="bg-slate-50 border-t border-slate-200 py-12" aria-label="Kemitraan Lainnya">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -365,22 +355,24 @@
                 Kemitraan Lainnya
             </h2>
             
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($relatedPartnerships as $item)
-                @php
-                    $relServices = ($item->relationLoaded('services') ? $item->services : collect())->pluck('name')->toArray();
-                @endphp
-                <x-partnership-card 
-                    :slug="$item->slug" 
-                    :businessName="$item->client_name" 
-                    :logoUrl="$item->logo" 
-                    :businessType="$item->client_type" 
-                    :partnershipType="$item->partnership_type" 
-                    :location="$item->location" 
-                    :services="$relServices" 
-                />
-            @endforeach
-        </div>
+            <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-4 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible sm:pb-0">
+                @foreach($relatedPartnerships as $item)
+                    @php
+                        $relServices = ($item->relationLoaded('services') ? $item->services : collect())->pluck('name')->toArray();
+                    @endphp
+                    <div class="w-[82vw] max-w-[340px] shrink-0 snap-center sm:w-auto">
+                        <x-partnership-card 
+                            :slug="$item->slug" 
+                            :businessName="$item->client_name" 
+                            :logoUrl="$item->logo" 
+                            :businessType="$item->client_type" 
+                            :partnershipType="$item->partnership_type" 
+                            :location="$item->location" 
+                            :services="$relServices" 
+                        />
+                    </div>
+                @endforeach
+            </div>
         </div>
     </section>
     @endif

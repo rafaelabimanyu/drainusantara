@@ -6,6 +6,8 @@
     'beforeImage' => null,
     'duration' => null,
     'problemTypes' => [],
+    'category' => null,
+    'drainType' => null,
 ])
 
 @php
@@ -22,11 +24,11 @@
     $imageUrl = $beforeImage ? (filter_var($beforeImage, FILTER_VALIDATE_URL) ? $beforeImage : asset($beforeImage)) : null;
 @endphp
 
-<a href="/studi-kasus/{{ $slug }}" 
+<a href="{{ route('case-study.show', $slug) }}" 
    class="block bg-white rounded-lg border border-slate-200 overflow-hidden hover:border-sky-300 transition-colors group shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
     
     <!-- Bagian Atas: Gambar Thumbnail -->
-    <div class="w-full aspect-[16/10] bg-slate-100 overflow-hidden relative">
+    <div class="w-full aspect-[16/10] bg-slate-900 overflow-hidden relative">
         @if($imageUrl)
             <img src="{{ $imageUrl }}" 
                  alt="Studi kasus: {{ $title }}" 
@@ -43,6 +45,12 @@
                 <span class="text-[11px] font-medium text-slate-500">Foto belum tersedia</span>
             </div>
         @endif
+
+        @if(!empty($category))
+            <span class="absolute top-2.5 left-2.5 bg-slate-900/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded-sm">
+                {{ $category }}
+            </span>
+        @endif
     </div>
 
     <!-- Bagian Bawah: Konten & Detail -->
@@ -56,12 +64,12 @@
             <!-- Metadata Row (Lokasi & Durasi) -->
             <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
                 @if(!empty($location))
-                    <span class="font-medium text-slate-700 flex items-center gap-1">
+                    <span class="font-medium text-slate-700 flex items-center gap-1 truncate">
                         <svg class="w-3.5 h-3.5 text-sky-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        <span>{{ $location }}</span>
+                        <span class="truncate">{{ $location }}</span>
                     </span>
                 @endif
 
@@ -70,9 +78,16 @@
                 @endif
 
                 @if(!empty($duration))
-                    <span>{{ $duration }}</span>
+                    <span class="shrink-0">{{ $duration }}</span>
                 @endif
             </div>
+
+            <!-- Drain type jika ada -->
+            @if(!empty($drainType))
+                <p class="text-[11px] text-sky-800 font-semibold mb-2 truncate">
+                    Saluran: {{ $drainType }}
+                </p>
+            @endif
 
             <!-- Ringkasan Properti & Kendala -->
             @php
@@ -86,4 +101,3 @@
         </div>
     </div>
 </a>
-

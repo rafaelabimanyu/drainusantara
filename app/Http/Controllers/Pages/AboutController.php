@@ -311,5 +311,28 @@ class AboutController extends Controller
 
         return view('about.faq');
     }
+
+    /**
+     * Sub-Page / Standalone Page: Cara Kerja & Standar Proses Non-Destruktif
+     */
+    public function howItWorks(): View
+    {
+        PageMetadata::title('Cara Kerja & Proses Pelancaran Pipa Tanpa Bongkar');
+        SEOMeta::setDescription('Pelajari 5 tahap proses kerja mekanis Drainusantara: deteksi CCTV endoskopi, penetrasi spiral baja Ridgid, pengikisan kerak pipa, uji alir debit air, dan garansi 30 hari.');
+        SEOMeta::setCanonical(route('how-it-works'));
+
+        OpenGraph::setDescription('Standar kerja profesional 100% mekanis tanpa bongkar keramik lantai dan bebas soda api korosif.');
+        OpenGraph::setUrl(route('how-it-works'));
+        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+
+        TwitterCard::setDescription('Metodologi sistematis penanganan saluran pipa mampet tanpa bongkar bergaransi 30 hari.');
+        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+
+        JsonLdMulti::setTitle('Cara Kerja & Standar Proses Pelancaran Pipa - Drainusantara');
+        JsonLdMulti::setType('HowTo');
+        $this->addAboutBreadcrumb('Cara Kerja & Proses', 'how-it-works');
+
+        return view('about.how-it-works');
+    }
 }
 

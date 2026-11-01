@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="mt-6 pt-4 border-t border-slate-200/80 flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-full bg-white border border-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
+                        <div class="w-9 h-9 rounded-md bg-white border border-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
                             {{ mb_strtoupper(mb_substr($story->customer_name, 0, 1)) }}
                         </div>
                         <div>
@@ -59,16 +59,23 @@
             @endforeach
         </div>
 
-        <div class="flex md:hidden justify-center items-center flex-wrap gap-1 mt-4">
-            @for($i = 0; $i < count($displayStories); $i++)
-                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
-                        @click="goTo({{ $i }})"
-                        class="carousel-dot min-w-[28px] min-h-[28px] p-2 inline-flex items-center justify-center cursor-pointer"
-                        aria-label="Cerita {{ $i + 1 }}">
-                    <span class="h-2 rounded-full transition-all duration-300 block"
-                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span>
-                </button>
-            @endfor
+        <!-- Mobile Slide Counter -->
+        <div class="flex items-center justify-center gap-3 mt-4 md:hidden text-xs text-slate-500 font-mono">
+            <button type="button" @click="goTo(Math.max(0, active - 1))"
+                    :disabled="active === 0"
+                    :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                    aria-label="Cerita sebelumnya">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <span>Ulasan <strong class="text-slate-900" x-text="active + 1">1</strong> dari {{ count($displayStories) }}</span>
+            <button type="button" @click="goTo(Math.min({{ count($displayStories) - 1 }}, active + 1))"
+                    :disabled="active === {{ count($displayStories) - 1 }}"
+                    :class="active === {{ count($displayStories) - 1 }} ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                    aria-label="Cerita berikutnya">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
         </div>
 
     </div>

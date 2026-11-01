@@ -20,14 +20,14 @@ class ArticleController extends Controller
     use HasPageSeo;
 
     /**
-     * Display the Articles & Education listing page.
+     * Display the Blog & Education listing page.
      */
     public function articles(): View
     {
         $page = \Illuminate\Pagination\Paginator::resolveCurrentPage();
         $canonical = route('articles.index', $page > 1 ? ['page' => $page] : []);
         PageMetadata::title('Panduan & Edukasi Perawatan Saluran Pipa');
-        SEOMeta::setDescription('Kumpulan artikel teknis: cara melancarkan wastafel, bahaya soda api pada pipa PVC cor, dan perawatan sanitasi rumah tangga tanpa bongkar keramik.');
+        SEOMeta::setDescription('Blog resmi Drainusantara: panduan teknis pelancaran wastafel, bahaya soda api pada pipa PVC, teknologi mesin spiral rotary, kamera CCTV drainase, dan tips sanitasi.');
         SEOMeta::setCanonical($canonical);
 
         OpenGraph::setDescription('Tips ahli dan panduan seputar perawatan saluran pembuangan air, wastafel, toilet, dan drainase rumah.');
@@ -36,17 +36,41 @@ class ArticleController extends Controller
 
         TwitterCard::setDescription('Tips ahli dan panduan seputar perawatan saluran pembuangan air, wastafel, toilet, dan drainase rumah.');
         TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
-        $this->addBreadcrumb(['Pengetahuan & Edukasi', route('articles.index')]);
+        $this->addBreadcrumb(['Blog', route('articles.index')]);
 
         $articles = Article::where('is_published', true)
             ->latest('published_at')
-            ->paginate(9);
+            ->paginate(12);
 
         $featuredArticle = Article::where('is_published', true)
             ->latest('published_at')
             ->first();
 
-        return view('articles.index', compact('articles', 'featuredArticle'));
+        $youtubeVideos = [
+            [
+                'id' => 'uE_yM6aK1S0',
+                'title' => 'Teknik Rooter Spiral Baja Melancarkan Pipa Wastafel Membatu',
+                'description' => 'Melihat langsung daya puntir kabel spiral baja lentur menembus endapan lemak sisa cucian yang membatu di leher angsa pipa tanpa merusak dinding.',
+                'duration' => '04:15',
+                'tag' => 'Mesin Spiral Rotary',
+            ],
+            [
+                'id' => 'kX9nCjZ0q2U',
+                'title' => 'Inspeksi Kamera CCTV IP68 Mendeteksi Sumbatan Titik Terdalam',
+                'description' => 'Navigasi lensa kamera endoskopi pipa tahan air untuk mengidentifikasi lokasi sumbatan akar pohon dan keretakan jalur pipa secara akurat.',
+                'duration' => '05:30',
+                'tag' => 'Inspeksi Kamera CCTV',
+            ],
+            [
+                'id' => 'w4bT1c_d9qQ',
+                'title' => 'Penanganan Grease Trap Lemak Beku Restoran Komersial',
+                'description' => 'Prosedur pembersihan sedimentasi minyak dan lemak kental pada bak kontrol dapur komersial untuk mencegah luapan air kotor saat jam operasional.',
+                'duration' => '06:10',
+                'tag' => 'Solusi Restoran & B2B',
+            ],
+        ];
+
+        return view('articles.index', compact('articles', 'featuredArticle', 'youtubeVideos'));
     }
 
     /**
@@ -57,6 +81,12 @@ class ArticleController extends Controller
         $article = Article::where('slug', $slug)
             ->where('is_published', true)
             ->firstOrFail();
+
+        $sessionKey = 'viewed_article_' . $article->id;
+        if (!session()->has($sessionKey)) {
+            $article->increment('views_count');
+            session()->put($sessionKey, true);
+        }
 
         $rawTitle = $article->meta_title ?: $article->title;
         $cleanTitle = PageMetadata::cleanTitle($rawTitle);
@@ -115,7 +145,7 @@ class ArticleController extends Controller
         $breadcrumb->addValues([
             'itemListElement' => [
                 ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
-                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Pengetahuan & Edukasi', 'item' => route('articles.index')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Blog', 'item' => route('articles.index')],
                 ['@type' => 'ListItem', 'position' => 3, 'name' => $article->title, 'item' => url()->current()],
             ],
         ]);

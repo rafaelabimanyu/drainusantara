@@ -18,7 +18,7 @@ class StoreGalleryRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'category' => ['nullable', 'string', 'in:rumahan,b2b'],
+            'category' => ['nullable', 'string', 'in:rumahan,fnb,gedung,perkantoran,pabrik,ruko,b2b'],
             'service_id' => ['nullable', 'exists:services,id'],
             'before_image' => $this->hasFile('before_image')
                 ? [new OptimizedImage]
@@ -40,6 +40,10 @@ class StoreGalleryRequest extends FormRequest
             'problem_type.*' => ['string', 'max:100'],
             'severity' => ['nullable', 'string', 'max:50'],
             'duration' => ['nullable', 'string', 'max:100'],
+            'price' => ['nullable', 'integer', 'min:0'],
+            'method' => ['nullable', 'string', 'max:255'],
+            'drain_type' => ['nullable', 'string', 'max:255'],
+            'diagnosis' => ['nullable', 'string'],
             'content' => ['nullable', 'string'],
             'equipment_ids' => ['nullable', 'array'],
             'equipment_ids.*' => ['exists:equipments,id'],

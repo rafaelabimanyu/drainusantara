@@ -1,5 +1,5 @@
 @php
-    $isHome = Request::is('/');
+    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*');
     $isArea = request()->is('area*');
 @endphp
 <nav class="fixed bottom-3 inset-x-4 max-w-md mx-auto z-50 bg-slate-900/95 backdrop-blur-xs text-white rounded-2xl shadow-xl border border-slate-800 px-1.5 py-1 grid grid-cols-5 items-end lg:hidden mobile-nav-dock transition-all duration-300 ease-in-out"
@@ -27,10 +27,12 @@
     <a href="{{ url('/#layanan') }}" 
        @click="activeSection = 'layanan'"
        class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center text-slate-300 hover:text-white transition-colors btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg"
+       @if($isHome)
        :class="{
            'text-sky-400 font-bold': activeSection === 'layanan',
            'text-slate-300': activeSection !== 'layanan'
        }"
+       @endif
        aria-label="Layanan">
         <svg class="w-5 h-5 mb-1 shrink-0 transition-transform group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -64,8 +66,8 @@
             type="button" 
             class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center hover:text-white transition-colors cursor-pointer btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg {{ $isArea ? 'text-sky-400 font-bold' : 'text-slate-300' }}" 
             :class="{
-                'text-sky-400 font-bold': {{ $isArea ? 'true' : 'false' }} || activeSection === 'area' || mobileSearchOpen,
-                'text-slate-300': !{{ $isArea ? 'true' : 'false' }} && activeSection !== 'area' && !mobileSearchOpen
+                'text-sky-400 font-bold': {{ $isArea ? 'true' : 'false' }} || ({{ $isHome ? 'true' : 'false' }} && activeSection === 'area') || mobileSearchOpen,
+                'text-slate-300': !{{ $isArea ? 'true' : 'false' }} && (!{{ $isHome ? 'true' : 'false' }} || activeSection !== 'area') && !mobileSearchOpen
             }"
             aria-label="Area - Cari Wilayah">
         <svg class="w-5 h-5 mb-1 shrink-0 transition-transform group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24">

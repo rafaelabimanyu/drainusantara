@@ -14,8 +14,7 @@
         <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 md:p-12 text-center shadow-xs reveal-soft">
             
             <!-- HTTP Status Eyebrow -->
-            <div class="inline-flex items-center gap-2 text-xs font-bold tracking-wider text-rose-800 uppercase mb-4">
-                <span class="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-slate-200 bg-slate-50 text-xs font-mono font-bold tracking-wider text-slate-700 uppercase mb-4">
                 <span>Status HTTP 500: Gangguan Sistem Sementara</span>
             </div>
 

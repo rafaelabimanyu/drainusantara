@@ -14,6 +14,16 @@ class Gallery extends Model
 {
     use HasFactory;
 
+    public const CATEGORIES = [
+        'rumahan' => 'Rumahan Residensial',
+        'fnb' => 'Restoran & Kafe (FnB)',
+        'gedung' => 'Gedung & Apartemen',
+        'perkantoran' => 'Perkantoran',
+        'pabrik' => 'Pabrik & Industri',
+        'ruko' => 'Ruko & Komersial',
+        'b2b' => 'B2B Komersial',
+    ];
+
     protected $fillable = [
         'title',
         'slug',
@@ -23,6 +33,10 @@ class Gallery extends Model
         'problem_type',
         'severity',
         'duration',
+        'price',
+        'method',
+        'drain_type',
+        'diagnosis',
         'service_id',
         'before_image',
         'after_image',
@@ -40,6 +54,7 @@ class Gallery extends Model
             'is_active' => 'boolean',
             'property_type' => 'array',
             'problem_type' => 'array',
+            'price' => 'integer',
         ];
     }
 
@@ -64,16 +79,35 @@ class Gallery extends Model
 
     public function getCategoryLabelAttribute(): string
     {
-        return $this->category === 'b2b' ? 'B2B Komersial' : 'Rumahan Residensial';
+        return self::CATEGORIES[$this->category] ?? (ucfirst((string) $this->category) ?: 'Rumahan / Residensial');
+    }
+
+    public function getFormattedPriceAttribute(): ?string
+    {
+        if ($this->price !== null && $this->price > 0) {
+            return 'Rp ' . number_format($this->price, 0, ',', '.');
+        }
+
+        return null;
+    }
+
+    public function hasBeforeAfter(): bool
+    {
+        return !empty($this->before_image) && !empty($this->after_image);
+    }
+
+    public function getMainImageAttribute(): ?string
+    {
+        return $this->image ?: ($this->after_image ?: $this->before_image);
     }
 
     public function isB2b(): bool
     {
-        return $this->category === 'b2b';
+        return in_array($this->category, ['b2b', 'fnb', 'gedung', 'perkantoran', 'pabrik', 'ruko'], true);
     }
 
     public function isRumahan(): bool
     {
-        return $this->category !== 'b2b';
+        return $this->category === 'rumahan';
     }
 }

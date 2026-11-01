@@ -11,7 +11,7 @@
     active-title="Struktur Holding"
     eyebrow="Tata Kelola & Ekosistem Korporat"
     heading="Sinergi Ekosistem J&J Group"
-    subheading="Drainusantara beroperasi sebagai unit spesialis pelancaran pipa mekanis terpadu di bawah naungan ekosistem J&J Group, memadukan keandalan teknis lapangan dengan tata kelola administrasi korporat yang akuntabel."
+    subheading="Drainusantara beroperasi sebagai unit spesialis pelancaran pipa mekanis terpadu di bawah naungan PT JAWA JAYA ROOTER (dikenal secara luas melalui holding J&J Group), memadukan keandalan teknis armada lapangan dengan tata kelola administrasi perseroan yang transparan dan akuntabel."
     :bg-image="asset('assets/banner/hero-JnJ-drainusantara.webp')"
 />
 
@@ -20,16 +20,16 @@
         
         <div class="max-w-3xl mb-12 reveal-soft">
             <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
-                SINERGI EKOSISTEM BISNIS
+                SINERGI EKOSISTEM BISNIS &bull; PT JAWA JAYA ROOTER
             </p>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Sinergi Infrastruktur Industri &amp; Layanan Presisi Tanpa Bongkar
             </h2>
             <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
-                Sebagai bagian terintegrasi dari J&amp;J Group, Drainusantara memadukan disiplin manajemen korporat yang akuntabel dengan keahlian rekayasa sanitasi modern. Kami hadir untuk menuntaskan permasalahan saluran pipa tersumbat secara mekanis tanpa membongkar keramik lantai maupun struktur beton hunian.
+                Sebagai bagian terintegrasi dari <strong>PT JAWA JAYA ROOTER</strong> (J&amp;J Group), Drainusantara memadukan disiplin manajemen korporat yang akuntabel dengan keahlian rekayasa sanitasi pipa modern. Nama <strong>J&amp;J Group</strong> merupakan singkatan dari entitas induk perseroan kami, <strong>PT JAWA JAYA ROOTER</strong>, yang memayungi operasional perpipaan mekanis, rantai pasok mesin rotary Ridgid, serta pengembangan teknologi inspeksi visual drainase di Indonesia.
             </p>
             <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
-                Dukungan manajemen pusat dari J&amp;J Group memungkinkan Drainusantara menyediakan armada teknisi siaga yang terstandarisasi APD K3 lengkap, legalitas administrasi e-Faktur PPN resmi, serta perlindungan garansi pengerjaan 30 hari kalender.
+                Dukungan legalitas perseroan resmi dan manajemen pusat dari <strong>PT JAWA JAYA ROOTER</strong> memungkinkan Drainusantara menyediakan armada teknisi siaga yang terstandarisasi APD K3 lengkap, legalitas administrasi e-Faktur PPN resmi, penerbitan BAST/SPK untuk B2B, serta perlindungan garansi pengerjaan 30 hari kalender.
             </p>
         </div>
 
@@ -91,16 +91,23 @@
                 </div>
             </div>
 
-            <!-- Mobile Carousel Indicators -->
-            <div class="flex items-center justify-center gap-2 mt-4 sm:hidden">
-                <template x-for="i in total" :key="i">
-                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                            @click="goTo(i - 1)"
-                            class="carousel-dot"
-
-                            :aria-label="'Pilar ' + i">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
-                </template>
+            <!-- Mobile Slide Counter -->
+            <div class="flex items-center justify-center gap-3 mt-4 sm:hidden text-xs text-slate-500 font-mono">
+                <button type="button" @click="goTo(Math.max(0, active - 1))"
+                        :disabled="active === 0"
+                        :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Pilar sebelumnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span>Pilar <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                        :disabled="active === total - 1"
+                        :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Pilar berikutnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
     </div>
@@ -175,29 +182,36 @@
 
             </div>
 
-            <!-- Mobile Carousel Indicators -->
-            <div class="flex items-center justify-center gap-2 mt-4 md:hidden">
-                <template x-for="i in total" :key="i">
-                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                            @click="goTo(i - 1)"
-                            class="carousel-dot"
-
-                            :aria-label="'Dokumen ' + i">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
-                </template>
+            <!-- Mobile Slide Counter -->
+            <div class="flex items-center justify-center gap-3 mt-4 md:hidden text-xs text-slate-500 font-mono">
+                <button type="button" @click="goTo(Math.max(0, active - 1))"
+                        :disabled="active === 0"
+                        :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Dokumen sebelumnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span>Dokumen <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                        :disabled="active === total - 1"
+                        :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Dokumen berikutnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
 
         <div class="mt-12 bg-slate-900 text-white p-6 sm:p-8 rounded-xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-6 reveal-soft">
             <div class="max-w-2xl">
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-400 block mb-1">
-                    Pengadaan Resmi &amp; Kemitraan Korporat
+                    Pengadaan Resmi &amp; Kemitraan Korporat &bull; PT JAWA JAYA ROOTER
                 </span>
                 <h3 class="text-xl font-bold text-white tracking-tight">
-                    Butuh Penawaran Jasa Sanitasi Pipa &amp; Dokumen Perpajakan Lengkap?
+                    Kerja Sama Pengadaan &amp; Kemitraan B2B PT JAWA JAYA ROOTER
                 </h3>
                 <p class="text-slate-300 text-xs sm:text-sm mt-1 leading-relaxed">
-                    Tim administrasi kami siap menerbitkan Surat Penawaran Resmi, SPK, dan e-Faktur PPN 11% untuk kebutuhan audit pengadaan instansi dan perusahaan Anda.
+                    Tim administrasi dan legal PT JAWA JAYA ROOTER siap menerbitkan Surat Penawaran Resmi, SPK berkala, dokumen BAST, dan e-Faktur PPN 11% untuk kebutuhan audit pengadaan instansi dan perusahaan Anda.
                 </p>
             </div>
             <div class="shrink-0">

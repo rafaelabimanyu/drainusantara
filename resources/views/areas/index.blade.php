@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@push('head')
+    <meta name="geo.region" content="ID">
+    <meta name="geo.placename" content="Jabodetabek, Semarang, Lampung, Indonesia">
+    <meta name="geo.position" content="-6.2250;106.9004">
+    <meta name="ICBM" content="-6.2250, 106.9004">
+@endpush
+
 @section('content')
 @php
     $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
@@ -20,8 +27,8 @@
                  loading="eager"
                  decoding="async"
                  class="w-full h-full object-cover object-center opacity-60 md:opacity-75 scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-linear-to-r from-slate-50 via-slate-50/85 to-slate-50/25"></div>
-            <div class="absolute inset-0 bg-linear-to-t from-slate-50 via-transparent to-slate-50/30"></div>
+            <div class="absolute inset-0 bg-linear-to-r from-slate-50/40 via-slate-50/80 to-slate-50/45"></div>
+                <div class="absolute inset-0 bg-linear-to-t from-slate-50/40 via-transparent to-slate-50/40"></div>
         </div>
     @endif
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -37,9 +44,8 @@
         </nav>
 
         <div class="max-w-3xl space-y-4">
-            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-600 inline-block" aria-hidden="true"></span>
-                <span>Jaringan Armada Siaga &bull; Jabodetabek, Jawa Tengah, Lampung</span>
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade">
+                Jaringan Armada Siaga &bull; Jabodetabek, Jawa Tengah, Lampung
             </p>
 
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight reveal-soft">
@@ -53,7 +59,6 @@
             <div class="pt-2 flex flex-wrap gap-2 reveal-soft delay-150">
                 @foreach($provinces as $provSlug => $province)
                     <a href="#prov-{{ $provSlug }}" class="px-3.5 py-1.5 rounded-lg bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 text-xs font-semibold border border-slate-200 hover:border-sky-300 shadow-2xs transition-all flex items-center gap-1.5 btn-press">
-                        <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
                         <span>{{ $province['name'] }}</span>
                     </a>
                 @endforeach
@@ -103,9 +108,8 @@
                                     <span class="font-bold uppercase tracking-wide text-sky-700">
                                         {{ $city['type'] }}
                                     </span>
-                                    <span class="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                        <span>Respon Cepat</span>
+                                    <span class="text-[11px] text-emerald-700 font-semibold">
+                                        Respon Cepat
                                     </span>
                                 </div>
 

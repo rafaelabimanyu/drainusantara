@@ -122,6 +122,18 @@
     <x-landing-page.how-it-works />
 
     <!-- Interactive Quick Quote CRO Section -->
+    
+
+    <x-landing-page.services :services="$services ?? null" :problem-catalogs="$problemCatalogs" :whatsapp-number="$whatsappNumber" />
+   
+    <x-landing-page.advantages />
+    <x-landing-page.documentation :galleries="$galleries ?? null" />
+    <x-landing-page.portfolio-b2b :portfolios="$portfolios ?? null" :whatsapp-number="$whatsappNumber" />
+    <x-landing-page.articles :articles="$articles ?? []" />
+    <x-landing-page.coverage-areas :whatsapp-number="$whatsappNumber" />
+    <x-landing-page.equipment />
+    <x-landing-page.testimonials :reviews="$reviews ?? null" />
+    <x-landing-page.faq />
     <section class="py-12 sm:py-16 bg-slate-100 border-b border-slate-200" id="estimasi">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-8">
@@ -139,16 +151,5 @@
             <x-conversion.quick-quote />
         </div>
     </section>
-
-    <x-landing-page.services :services="$services ?? null" :problem-catalogs="$problemCatalogs" :whatsapp-number="$whatsappNumber" />
-   
-    <x-landing-page.advantages />
-    <x-landing-page.documentation :galleries="$galleries ?? null" />
-    <x-landing-page.portfolio-b2b :portfolios="$portfolios ?? null" :whatsapp-number="$whatsappNumber" />
-    <x-landing-page.articles :articles="$articles ?? []" />
-    <x-landing-page.coverage-areas :whatsapp-number="$whatsappNumber" />
-    <x-landing-page.equipment />
-    <x-landing-page.testimonials :reviews="$reviews ?? null" />
-    <x-landing-page.faq />
     <x-landing-page.bottom-cta :general-wa-url="$generalWaUrl" />
 @endsection

@@ -47,7 +47,7 @@
              decoding="async"
              class="w-16 h-16 object-contain rounded-md bg-slate-50 p-2 mx-auto mb-3 border border-slate-100 group-hover:scale-105 transition-transform duration-300">
     @else
-        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-sky-50 border-2 border-sky-100 flex items-center justify-center text-sky-700 font-bold text-xl shadow-2xs group-hover:scale-105 transition-transform duration-300" aria-hidden="true">
+        <div class="w-16 h-16 mx-auto mb-3 rounded-lg bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-700 font-bold text-xl shadow-2xs group-hover:scale-105 transition-transform duration-300" aria-hidden="true">
             {{ $initials }}
         </div>
     @endif

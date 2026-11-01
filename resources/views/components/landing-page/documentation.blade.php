@@ -132,20 +132,37 @@
             @endforeach
         </div>
 
-        <div class="flex md:hidden justify-center items-center flex-wrap gap-1 mt-4">
-            @for($i = 0; $i < $countTotal; $i++)
-                <button :aria-current="active === {{ $i }} ? 'true' : 'false'" type="button"
-                        @click="goTo({{ $i }})"
-                        class="carousel-dot min-w-7 min-h-7 p-2 inline-flex items-center justify-center cursor-pointer active:scale-90"
-                        aria-label="Dokumentasi {{ $i + 1 }}">
-                    <span class="h-2 rounded-full transition-all duration-300 block"
-                          :class="active === {{ $i }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span>
-                </button>
-            @endfor
+        <!-- Mobile Slide Counter & Pagination -->
+        <div class="flex items-center justify-center gap-2 mt-4 md:hidden text-xs text-slate-500 font-mono">
+            <button type="button" @click="goTo(Math.max(0, active - 1))"
+                    :disabled="active === 0"
+                    :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                    aria-label="Dokumentasi sebelumnya">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="flex items-center gap-1">
+                @for($i = 0; $i < $countTotal; $i++)
+                    <button type="button" 
+                            @click="goTo({{ $i }})"
+                            :class="active === {{ $i }} ? 'bg-slate-900 text-white font-bold' : 'text-slate-600 hover:bg-slate-100'"
+                            class="w-6 h-6 rounded-md text-xs flex items-center justify-center border border-slate-200 transition-colors cursor-pointer"
+                            aria-label="Dokumentasi {{ $i + 1 }}">
+                        {{ $i + 1 }}
+                    </button>
+                @endfor
+            </div>
+            <button type="button" @click="goTo(Math.min({{ $countTotal - 1 }}, active + 1))"
+                    :disabled="active === {{ $countTotal - 1 }}"
+                    :class="active === {{ $countTotal - 1 }} ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                    aria-label="Dokumentasi berikutnya">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
         </div>
         @else
         <div class="py-14 px-6 text-center bg-white rounded-xl border border-slate-200 text-slate-500 reveal-soft">
-            <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+            <div class="w-12 h-12 mx-auto mb-3 rounded-lg border border-slate-200 bg-slate-100 text-slate-400 flex items-center justify-center">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>

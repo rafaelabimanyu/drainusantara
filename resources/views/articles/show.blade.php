@@ -13,13 +13,13 @@
                 <span>Beranda</span>
             </a>
             <span class="text-slate-300">/</span>
-            <a href="{{ route('articles.index') }}" class="hover:text-sky-700 transition-colors shrink-0">Artikel</a>
+            <a href="{{ route('articles.index') }}" class="hover:text-sky-700 transition-colors shrink-0">Blog</a>
             <span class="text-slate-300">/</span>
             <span class="text-slate-800 truncate font-semibold">{{ $article->title }}</span>
         </nav>
 
         <!-- Article Editorial Header Card -->
-        <header class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-10 lg:p-12 mb-8 shadow-xs reveal-soft">
+        <header class="bg-white rounded-xl border border-slate-200 p-6 sm:p-10 mb-8 shadow-xs reveal-soft">
             <div class="max-w-4xl mx-auto">
                 <div class="flex flex-wrap items-center gap-2 mb-4 text-xs">
                     <span class="font-bold text-sky-800 tracking-wider uppercase">
@@ -36,22 +36,41 @@
                         </svg>
                         <span>{{ $article->reading_time }} Menit Baca</span>
                     </span>
+                    <span class="text-slate-300">&bull;</span>
+                    <span class="text-xs text-slate-500 font-medium flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5 text-slate-400 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        <span>{{ number_format($article->views_count) }}x Dilihat</span>
+                    </span>
                 </div>
 
                 <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
                     {{ $article->title }}
                 </h1>
 
-                @if($article->excerpt)
-                    <p class="mt-4 sm:mt-6 text-base sm:text-xl text-slate-600 leading-relaxed font-normal border-l-4 border-sky-700 pl-4 sm:pl-6 bg-sky-50/40 py-3.5 rounded-r-xl">
-                        {{ $article->excerpt }}
-                    </p>
+                <!-- Placement: Hero Image jika dipilih hero di CMS -->
+                @if($article->thumbnail && $article->image_placement === 'hero')
+                    <figure class="mt-6 rounded-xl overflow-hidden border border-slate-200 bg-white shadow-2xs max-w-3xl mx-auto">
+                        <img src="{{ $article->thumbnail }}" 
+                             alt="{{ $article->title }}" 
+                             width="900" 
+                             height="450" 
+                             loading="eager" 
+                             decoding="async" 
+                             class="w-full max-h-[340px] object-cover">
+                        <figcaption class="px-4 py-2 bg-slate-50 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
+                            <span>Dokumentasi Resmi Sanitasi &amp; Pemipaan Drainusantara</span>
+                            <span class="font-medium text-slate-600">Standar Teknis Lapangan</span>
+                        </figcaption>
+                    </figure>
                 @endif
 
                 <!-- Author Bio Bar -->
                 <div class="mt-6 sm:mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-full bg-slate-900 text-sky-400 font-extrabold flex items-center justify-center text-sm border-2 border-slate-800 shadow-2xs">
+                        <div class="w-10 h-10 rounded-md bg-slate-900 text-sky-400 font-extrabold flex items-center justify-center text-xs border border-slate-800 shadow-2xs">
                             DN
                         </div>
                         <div>
@@ -83,29 +102,44 @@
             </div>
         </header>
 
-        <!-- Featured Cover Image Hero -->
-        @if($article->thumbnail)
-            <figure class="mb-10 sm:mb-12 rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-xs reveal-soft">
-                <img src="{{ $article->thumbnail }}" 
-                     alt="{{ $article->title }}" 
-                     width="1200" 
-                     height="630" 
-                     loading="eager" 
-                     decoding="async" 
-                     class="w-full max-h-[520px] object-cover">
-                <figcaption class="px-5 py-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-500 flex items-center justify-between">
-                    <span>Dokumentasi Resmi Sanitasi &amp; Pemipaan Drainusantara</span>
-                    <span class="font-medium text-slate-600">Standar Teknis 2026</span>
-                </figcaption>
-            </figure>
-        @endif
-
         <!-- 2-Column Editorial Grid: Content (Left) + Sticky Sidebar (Right) -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
             <!-- Main Content Column -->
-            <main class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-6 sm:p-10 lg:p-12 shadow-xs reveal-soft">
+            <main class="lg:col-span-8 bg-white rounded-xl border border-slate-200 p-6 sm:p-10 shadow-xs reveal-soft">
                 
+                <!-- Placement: Image di Konten (Tengah, Ukuran Kompak & Proporsional) -->
+                @if($article->thumbnail && $article->image_placement !== 'hero')
+                    <figure class="mb-8 rounded-xl overflow-hidden border border-slate-200 bg-white shadow-2xs max-w-2xl mx-auto">
+                        <img src="{{ $article->thumbnail }}" 
+                             alt="{{ $article->title }}" 
+                             width="800" 
+                             height="450" 
+                             loading="eager" 
+                             decoding="async" 
+                             class="w-full max-h-[320px] object-cover">
+                        <figcaption class="px-4 py-2 bg-slate-50 border-t border-slate-100 text-[11px] text-slate-500 flex items-center justify-between">
+                            <span>Dokumentasi Sanitasi &amp; Pemipaan Drainusantara</span>
+                            <span class="font-medium text-slate-600">Standar Teknis Lapangan</span>
+                        </figcaption>
+                    </figure>
+                @endif
+
+                <!-- Excerpt Takeaway Box (Intisari Panduan) -->
+                @if($article->excerpt)
+                    <div class="mb-8 p-4 sm:p-5 rounded-xl bg-sky-50/70 border-l-4 border-sky-700 border-t border-r border-b border-sky-100 text-slate-800">
+                        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-sky-800 mb-1.5">
+                            <svg class="w-4 h-4 text-sky-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>Intisari Panduan</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                            {{ $article->excerpt }}
+                        </p>
+                    </div>
+                @endif
+
                 <!-- Table of Contents for Mobile View (Collapsible) -->
                 @if(!empty($article->table_of_contents) && count($article->table_of_contents) > 0)
                     <div class="block lg:hidden mb-8 p-5 rounded-xl bg-slate-50 border border-slate-200" x-data="{ openToc: false }">
@@ -134,36 +168,28 @@
                     </div>
                 @endif
 
-                <!-- Rendered Markdown Content with Rich Typography -->
+                <!-- Rendered Markdown & HTML Content with Rich Typography -->
                 <div class="article-content">
                     {!! $article->rendered_content !!}
                 </div>
 
-                <!-- Interactive Consultation CTA Banner -->
-                @php
-                    $waMsg = rawurlencode("Halo Teknisi Drainusantara, saya baru membaca panduan '{$article->title}' dan ingin konsultasi penanganan saluran air mampet di rumah.");
-                    $waLink = "https://wa.me/" . config('app.whatsapp_number', '6285609009009') . "?text={$waMsg}";
-                @endphp
-                <div class="mt-12 p-6 sm:p-8 rounded-2xl bg-slate-900 border border-slate-800 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
-                    <div>
-                        <span class="text-[11px] uppercase tracking-widest text-sky-400 font-bold block mb-1">KONSULTASI BEBAS BIAYA</span>
-                        <h3 class="text-lg sm:text-xl font-extrabold tracking-tight">Pipa Rumah Anda Sedang Terlanjur Mampet?</h3>
-                        <p class="text-xs sm:text-sm text-slate-400 mt-1.5 max-w-md leading-relaxed">
-                            Hindari penuangan zat kimia korosif. Konsultasikan langsung kendala saluran Anda dengan teknisi siaga Drainusantara: tanpa bongkar lantai, hasil tuntas, dan bergaransi 30 hari.
-                        </p>
+                <!-- Tag Pendukung di Bawah Artikel -->
+                @if(!empty($article->tags_list))
+                    <div class="mt-10 pt-6 border-t border-slate-100">
+                        <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+                            Topik Terkait:
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            @foreach($article->tags_list as $tag)
+                                <span class="inline-flex items-center text-xs font-medium px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+                                    #{{ $tag }}
+                                </span>
+                            @endforeach
+                        </div>
                     </div>
-
-                    <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" 
-                       class="btn-press inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-colors shrink-0 w-full sm:w-auto min-h-[48px]">
-                        <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
-                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                        </svg>
-                        <span>Hubungi Teknisi via WA</span>
-                    </a>
-                </div>
+                @endif
 
                 
-
             </main>
 
             <!-- Sticky Sidebar Column -->
@@ -171,7 +197,7 @@
                 
                 <!-- Table of Contents Widget (Desktop View) -->
                 @if(!empty($article->table_of_contents) && count($article->table_of_contents) > 0)
-                    <div class="hidden lg:block bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+                    <div class="hidden lg:block bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
                         <div class="flex items-center gap-2 mb-4 pb-3 border-b border-slate-100">
                             <svg class="w-4 h-4 text-sky-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
@@ -190,7 +216,7 @@
                 @endif
 
                 <!-- 24-Hour Emergency Help Widget -->
-                <div class="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-xs space-y-4">
+                <div class="bg-slate-900 text-white rounded-xl p-6 border border-slate-800 shadow-xs space-y-4">
                     <h3 class="text-base font-extrabold leading-snug">
                         Armada Teknisi Siaga Meluncur ke Alamat Anda
                     </h3>
@@ -203,7 +229,7 @@
                         <a href="https://wa.me/{{ config('app.whatsapp_number', '6285609009009') }}?text={{ rawurlencode('Halo Admin Drainusantara, saya membutuhkan kedatangan teknisi pelancar saluran pipa ke alamat saya.') }}"
                            target="_blank"
                            rel="noopener noreferrer"
-                           class="btn-press w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-xs transition-colors min-h-[44px]">
+                           class="btn-press w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-xs transition-colors min-h-[44px]">
                             <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
                                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                             </svg>
@@ -214,7 +240,7 @@
 
                 <!-- Related Guides Sidebar Widget -->
                 @if(isset($recentArticles) && $recentArticles->isNotEmpty())
-                    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+                    <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
                         <div class="mb-4 pb-3 border-b border-slate-100">
                             <h3 class="text-xs font-bold uppercase tracking-wider text-sky-800">
                                 PANDUAN LAINNYA
@@ -230,9 +256,11 @@
                                     <h4 class="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug line-clamp-2">
                                         {{ $related->title }}
                                     </h4>
-                                    <span class="text-[11px] text-slate-400 mt-1 block">
-                                        {{ $related->reading_time }} Menit Baca
-                                    </span>
+                                    <div class="flex items-center gap-2 text-[11px] text-slate-400 mt-1">
+                                        <span>{{ $related->reading_time }} mnt baca</span>
+                                        <span>&bull;</span>
+                                        <span>{{ number_format($related->views_count) }}x</span>
+                                    </div>
                                 </a>
                             @endforeach
                         </div>
@@ -257,14 +285,14 @@
 
                     <a href="{{ route('articles.index') }}" 
                        class="hidden sm:inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 transition-colors">
-                        <span>Lihat Semua Artikel</span>
+                        <span>Lihat Semua di Blog</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                         </svg>
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6">
                     @foreach($relatedArticles as $related)
                         <article class="bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-sky-300 hover:shadow-md transition-all flex flex-col group card-lift overflow-hidden">
                             <a href="{{ route('articles.show', $related->slug) }}" class="block relative overflow-hidden aspect-16/10 bg-slate-100">
@@ -281,27 +309,29 @@
                                         Panduan Sanitasi
                                     </div>
                                 @endif
-                                <span class="absolute top-2.5 left-2.5 bg-slate-900/85 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md border border-white/20">
+                                <span class="absolute top-2 left-2 bg-slate-900/85 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md border border-white/20">
                                     {{ $related->category_label }}
                                 </span>
                             </a>
-                            <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div class="p-3 sm:p-5 flex-1 flex flex-col justify-between">
                                 <div>
-                                    <div class="flex items-center gap-2 text-xs text-slate-400 mb-2 font-medium">
+                                    <div class="flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-400 mb-1.5 sm:mb-2 font-medium flex-wrap">
                                         <span>{{ $related->published_at ? $related->published_at->format('d M Y') : $related->created_at->format('d M Y') }}</span>
                                         <span>&bull;</span>
-                                        <span>{{ $related->reading_time }} Menit Baca</span>
+                                        <span>{{ $related->reading_time }} mnt</span>
+                                        <span>&bull;</span>
+                                        <span>{{ number_format($related->views_count) }}x</span>
                                     </div>
-                                    <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug line-clamp-2">
+                                    <h3 class="text-xs sm:text-base font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug line-clamp-2">
                                         <a href="{{ route('articles.show', $related->slug) }}">
                                             {{ $related->title }}
                                         </a>
                                     </h3>
-                                    <p class="mt-2 text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                                    <p class="mt-1.5 text-xs text-slate-600 line-clamp-2 leading-relaxed hidden sm:block">
                                         {{ $related->excerpt ?? Str::limit(strip_tags($related->content), 80) }}
                                     </p>
                                 </div>
-                                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                                <div class="mt-3 pt-2 sm:mt-4 sm:pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] sm:text-xs">
                                     <span class="font-bold text-sky-700 group-hover:text-sky-800 inline-flex items-center gap-1 transition-colors">
                                         Baca Panduan &rarr;
                                     </span>

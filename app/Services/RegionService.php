@@ -440,4 +440,165 @@ class RegionService
 
         return $items;
     }
+
+    /**
+     * Map province slug to official ISO 3166-2 Indonesian subdivision code.
+     */
+    public static function isoRegion(?string $provinceSlug): string
+    {
+        return match ($provinceSlug) {
+            'dki-jakarta' => 'ID-JK',
+            'jawa-barat' => 'ID-JB',
+            'banten' => 'ID-BT',
+            'jawa-tengah' => 'ID-JT',
+            'lampung' => 'ID-LA',
+            default => 'ID',
+        };
+    }
+
+    /**
+     * Get official centroid geographic coordinates for a given city and optional district.
+     * Always returns valid latitude and longitude for 100% Geo SEO coverage.
+     *
+     * @return array{lat: float, lng: float}
+     */
+    public static function centroid(string $citySlug, ?string $districtName = null): array
+    {
+        $cityCentroids = [
+            'jakarta-timur' => ['lat' => -6.2250, 'lng' => 106.9004],
+            'jakarta-selatan' => ['lat' => -6.2615, 'lng' => 106.8106],
+            'jakarta-barat' => ['lat' => -6.1683, 'lng' => 106.7589],
+            'jakarta-utara' => ['lat' => -6.1384, 'lng' => 106.8640],
+            'jakarta-pusat' => ['lat' => -6.1865, 'lng' => 106.8341],
+            'bogor' => ['lat' => -6.5971, 'lng' => 106.8060],
+            'depok-cinere' => ['lat' => -6.4025, 'lng' => 106.7942],
+            'bekasi-cikarang' => ['lat' => -6.2383, 'lng' => 106.9756],
+            'bandung' => ['lat' => -6.9175, 'lng' => 107.6191],
+            'tangerang-kota' => ['lat' => -6.1783, 'lng' => 106.6319],
+            'tangerang-selatan' => ['lat' => -6.2887, 'lng' => 106.7179],
+            'semarang' => ['lat' => -6.9667, 'lng' => 110.4167],
+            'bandar-lampung' => ['lat' => -5.4500, 'lng' => 105.2667],
+        ];
+
+        $districtCentroids = [
+            'tebet' => ['lat' => -6.2297, 'lng' => 106.8553],
+            'cilandak' => ['lat' => -6.2941, 'lng' => 106.7997],
+            'kebayoran-baru' => ['lat' => -6.2435, 'lng' => 106.8041],
+            'kebayoran-lama' => ['lat' => -6.2577, 'lng' => 106.7758],
+            'mampang-prapatan' => ['lat' => -6.2541, 'lng' => 106.8256],
+            'pancoran' => ['lat' => -6.2514, 'lng' => 106.8483],
+            'pasar-minggu' => ['lat' => -6.2858, 'lng' => 106.8378],
+            'pesanggrahan' => ['lat' => -6.2483, 'lng' => 106.7611],
+            'setiabudi' => ['lat' => -6.2117, 'lng' => 106.8292],
+            'jagakarsa' => ['lat' => -6.3314, 'lng' => 106.8236],
+            'ciracas' => ['lat' => -6.3317, 'lng' => 106.8778],
+            'duren-sawit' => ['lat' => -6.2274, 'lng' => 106.9189],
+            'cakung' => ['lat' => -6.1917, 'lng' => 106.9450],
+            'rawamangun' => ['lat' => -6.1964, 'lng' => 106.8872],
+            'jatinegara' => ['lat' => -6.2297, 'lng' => 106.8731],
+            'kramat-jati' => ['lat' => -6.2731, 'lng' => 106.8681],
+            'matraman' => ['lat' => -6.2056, 'lng' => 106.8583],
+            'pasar-rebo' => ['lat' => -6.3214, 'lng' => 106.8617],
+            'pulo-gadung' => ['lat' => -6.1906, 'lng' => 106.8964],
+            'cipayung' => ['lat' => -6.3208, 'lng' => 106.9022],
+            'makasar' => ['lat' => -6.2742, 'lng' => 106.8833],
+            'kebon-jeruk' => ['lat' => -6.1951, 'lng' => 106.7722],
+            'puri-kembangan' => ['lat' => -6.1883, 'lng' => 106.7450],
+            'kembangan' => ['lat' => -6.1883, 'lng' => 106.7450],
+            'grogol-petamburan' => ['lat' => -6.1667, 'lng' => 106.7867],
+            'palmerah' => ['lat' => -6.1950, 'lng' => 106.7933],
+            'cengkareng' => ['lat' => -6.1517, 'lng' => 106.7317],
+            'kalideres' => ['lat' => -6.1483, 'lng' => 106.7033],
+            'tambora' => ['lat' => -6.1467, 'lng' => 106.8050],
+            'taman-sari' => ['lat' => -6.1433, 'lng' => 106.8183],
+            'kelapa-gading' => ['lat' => -6.1627, 'lng' => 106.9061],
+            'pantai-indah-kapuk' => ['lat' => -6.1111, 'lng' => 106.7408],
+            'sunter' => ['lat' => -6.1417, 'lng' => 106.8750],
+            'pluit' => ['lat' => -6.1217, 'lng' => 106.7917],
+            'tanjung-priok' => ['lat' => -6.1214, 'lng' => 106.8825],
+            'penjaringan' => ['lat' => -6.1283, 'lng' => 106.7850],
+            'pademangan' => ['lat' => -6.1367, 'lng' => 106.8400],
+            'koja' => ['lat' => -6.1283, 'lng' => 106.9083],
+            'cilincing' => ['lat' => -6.1250, 'lng' => 106.9400],
+            'kemayoran' => ['lat' => -6.1583, 'lng' => 106.8583],
+            'cempaka-putih' => ['lat' => -6.1800, 'lng' => 106.8700],
+            'menteng' => ['lat' => -6.1983, 'lng' => 106.8333],
+            'gambir' => ['lat' => -6.1750, 'lng' => 106.8250],
+            'sawah-besar' => ['lat' => -6.1550, 'lng' => 106.8300],
+            'senen' => ['lat' => -6.1867, 'lng' => 106.8450],
+            'tanah-abang' => ['lat' => -6.1917, 'lng' => 106.8167],
+            'johar-baru' => ['lat' => -6.1850, 'lng' => 106.8550],
+            'cibinong' => ['lat' => -6.4817, 'lng' => 106.8542],
+            'sentul-city' => ['lat' => -6.5583, 'lng' => 106.8833],
+            'kota-bogor' => ['lat' => -6.5971, 'lng' => 106.8060],
+            'bojonggede' => ['lat' => -6.4950, 'lng' => 106.7983],
+            'gunung-putri' => ['lat' => -6.4467, 'lng' => 106.9200],
+            'cileungsi' => ['lat' => -6.4167, 'lng' => 106.9667],
+            'sukaraja' => ['lat' => -6.5667, 'lng' => 106.8500],
+            'babakan-madang' => ['lat' => -6.5667, 'lng' => 106.9000],
+            'cinere' => ['lat' => -6.3250, 'lng' => 106.7833],
+            'margonda' => ['lat' => -6.3725, 'lng' => 106.8322],
+            'sawangan' => ['lat' => -6.4167, 'lng' => 106.7667],
+            'beji' => ['lat' => -6.3717, 'lng' => 106.8217],
+            'pancoran-mas' => ['lat' => -6.3983, 'lng' => 106.8117],
+            'sukmajaya' => ['lat' => -6.4017, 'lng' => 106.8450],
+            'cimanggis' => ['lat' => -6.3667, 'lng' => 106.8750],
+            'tapos' => ['lat' => -6.4250, 'lng' => 106.8833],
+            'cikarang-selatan' => ['lat' => -6.3417, 'lng' => 107.1333],
+            'cikarang-utara' => ['lat' => -6.2667, 'lng' => 107.1667],
+            'bekasi-barat' => ['lat' => -6.2367, 'lng' => 106.9800],
+            'bekasi-timur' => ['lat' => -6.2550, 'lng' => 107.0150],
+            'bekasi-selatan' => ['lat' => -6.2617, 'lng' => 106.9867],
+            'bekasi-utara' => ['lat' => -6.2083, 'lng' => 107.0083],
+            'tambun-selatan' => ['lat' => -6.2650, 'lng' => 107.0583],
+            'harapan-indah' => ['lat' => -6.1833, 'lng' => 106.9833],
+            'cibitung' => ['lat' => -6.2667, 'lng' => 107.1000],
+            'cipondoh' => ['lat' => -6.1833, 'lng' => 106.6833],
+            'karawaci' => ['lat' => -6.2167, 'lng' => 106.6000],
+            'ciledug' => ['lat' => -6.2283, 'lng' => 106.7117],
+            'tangerang' => ['lat' => -6.1783, 'lng' => 106.6319],
+            'batuceper' => ['lat' => -6.1667, 'lng' => 106.6667],
+            'benda' => ['lat' => -6.1250, 'lng' => 106.6833],
+            'pinang' => ['lat' => -6.2250, 'lng' => 106.6833],
+            'cibodas' => ['lat' => -6.2000, 'lng' => 106.5833],
+            'larangan' => ['lat' => -6.2417, 'lng' => 106.7333],
+            'serpong' => ['lat' => -6.3167, 'lng' => 106.6667],
+            'bsd-city' => ['lat' => -6.3017, 'lng' => 106.6533],
+            'bintaro' => ['lat' => -6.2833, 'lng' => 106.7167],
+            'pondok-aren' => ['lat' => -6.2750, 'lng' => 106.7083],
+            'pamulang' => ['lat' => -6.3417, 'lng' => 106.7333],
+            'ciputat' => ['lat' => -6.3117, 'lng' => 106.7483],
+            'setu' => ['lat' => -6.3483, 'lng' => 106.6833],
+            'candisari' => ['lat' => -7.0167, 'lng' => 110.4333],
+            'banyumanik' => ['lat' => -7.0667, 'lng' => 110.4167],
+            'simpang-lima' => ['lat' => -6.9903, 'lng' => 110.4228],
+            'tembalang' => ['lat' => -7.0500, 'lng' => 110.4500],
+            'gajahmungkur' => ['lat' => -7.0117, 'lng' => 110.4117],
+            'semarang-tengah' => ['lat' => -6.9800, 'lng' => 110.4200],
+            'semarang-barat' => ['lat' => -6.9833, 'lng' => 110.3833],
+            'pedurungan' => ['lat' => -7.0083, 'lng' => 110.4750],
+            'ngaliyan' => ['lat' => -7.0000, 'lng' => 110.3333],
+            'kedaton' => ['lat' => -5.3833, 'lng' => 105.2500],
+            'tanjung-karang-pusat' => ['lat' => -5.4167, 'lng' => 105.2583],
+            'tanjung-karang-timur' => ['lat' => -5.4117, 'lng' => 105.2750],
+            'way-halim' => ['lat' => -5.3883, 'lng' => 105.2833],
+            'teluk-betung' => ['lat' => -5.4500, 'lng' => 105.2667],
+            'sukarame' => ['lat' => -5.3833, 'lng' => 105.3000],
+            'rajabasa' => ['lat' => -5.3583, 'lng' => 105.2333],
+            'kemiling' => ['lat' => -5.4000, 'lng' => 105.2167],
+        ];
+
+        if ($districtName !== null) {
+            $districtSlug = Str::slug($districtName);
+            if (isset($districtCentroids[$districtSlug])) {
+                return $districtCentroids[$districtSlug];
+            }
+        }
+
+        if (isset($cityCentroids[$citySlug])) {
+            return $cityCentroids[$citySlug];
+        }
+
+        return ['lat' => -6.2250, 'lng' => 106.9004]; // Default to Jakarta pusat/timur hub
+    }
 }

@@ -226,7 +226,7 @@
             <div class="pt-2 flex justify-end">
                 <button type="button" 
                         @click="goToStep(2)" 
-                        class="btn-press inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer min-h-[44px]">
+                        class="btn-press inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-sky-700 hover:bg-sky-800 active:bg-sky-900 text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer min-h-[44px]">
                     <span>Lanjut ke Lokasi &amp; Kondisi</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -329,7 +329,7 @@
 
                 <button type="button" 
                         @click="goToStep(3)" 
-                        class="btn-press inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer min-h-[44px]">
+                        class="btn-press inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-sky-700 hover:bg-sky-800 active:bg-sky-900 text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer min-h-[44px]">
                     <span>Lanjut ke Rincian Kontak</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>

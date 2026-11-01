@@ -119,9 +119,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         @foreach($features as $feature)
                         <div class="flex items-start gap-3 p-3.5 rounded-lg bg-slate-50 border border-slate-200/80">
-                            <div class="w-5 h-5 rounded-full text-sky-700 flex items-center justify-center shrink-0 mt-0.5" aria-hidden="true">
-                               <span>&#11044;</span>
-                            </div>
+                            <svg class="w-4 h-4 text-sky-700 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             <span class="text-xs sm:text-sm text-slate-800 font-medium leading-snug">
                                 {{ $feature }}
                             </span>
@@ -148,8 +146,8 @@
 
                     <ul class="space-y-2.5">
                         @foreach($applications as $app)
-                        <li class="flex items-start gap-3 text-xs sm:text-sm text-slate-700">
-                            <span class="w-2 h-2 rounded-full bg-sky-700 mt-1.5 shrink-0" aria-hidden="true"></span>
+                        <li class="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700">
+                            <span class="font-mono text-slate-400 font-bold">&bull;</span>
                             <span>{{ $app }}</span>
                         </li>
                         @endforeach

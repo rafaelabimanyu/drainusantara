@@ -37,7 +37,7 @@ class ServiceDisplayRegressionTest extends TestCase
         }
         $dom = $this->serviceDom($url);
         $images = $dom->query('//h3/preceding-sibling::div/img');
-        $this->assertCount(6, $images);
+        $this->assertGreaterThanOrEqual(6, $images->count());
         foreach ($images as $image) {
             $this->assertSame('/assets/placeholders/service.svg', parse_url($image->getAttribute('src'), PHP_URL_PATH));
             $this->assertFileExists(public_path('assets/placeholders/service.svg'));

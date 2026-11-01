@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\Route;
 // Public Frontend Routes
 Route::get('/', [Pages\HomeController::class, 'index'])->name('home');
 
+// Cara Kerja & Standar Proses Non-Destruktif
+Route::get('/cara-kerja', [Pages\AboutController::class, 'howItWorks'])->name('how-it-works');
+Route::get('/proses-kerja', fn () => redirect()->route('how-it-works', [], 301));
+
 // Hierarchical Area Routes: Index -> Province -> City -> District
 Route::get('/area', [Pages\AreaController::class, 'areasIndex'])->name('area.index');
 Route::get('/area/provinsi/{province}', [Pages\AreaController::class, 'province'])->name('area.province');
@@ -52,8 +56,9 @@ if (app()->environment('local', 'testing')) {
     Route::get('/preview-cards', fn () => view('preview-cards'))->name('preview.cards');
 }
 
-// Artikel & Edukasi Pengetahuan
+// Blog, Artikel & Edukasi Pengetahuan
 Route::get('/pengetahuan', [Pages\ArticleController::class, 'articles'])->name('articles.index');
+Route::get('/blog', fn () => redirect()->route('articles.index', [], 301))->name('articles.blog');
 Route::get('/artikel', fn () => redirect()->route('articles.index', [], 301))->name('articles.legacy');
 Route::get('/artikel/{slug}', [Pages\ArticleController::class, 'articleDetail'])->name('articles.show');
 

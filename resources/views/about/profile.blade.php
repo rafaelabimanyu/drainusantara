@@ -9,9 +9,9 @@
 
 <x-about.subnav 
     active-title="Profil Perusahaan"
-    eyebrow="Profil Entitas"
+    eyebrow="Profil Entitas Legal"
     heading="Profil Resmi Drainusantara"
-    subheading="Drainusantara merupakan entitas bisnis resmi yang beroperasi secara sah di bawah naungan J&J Group, didukung oleh kelengkapan legalitas dan ketaatan pada regulasi yang berlaku."
+    subheading="Drainusantara merupakan entitas bisnis spesialis pelancaran dan pemeliharaan saluran pipa pembuangan modern yang beroperasi secara sah di bawah naungan PT JAWA JAYA ROOTER (dikenal secara luas sebagai J&J Group). Didukung legalitas perseroan resmi, NIB OSS, dan tertib administrasi e-Faktur PPN, kami menghadirkan standar penanganan mekanis berstandar industri tanpa bongkar keramik lantai dan bebas zat kimia berbahaya, siap melayani sektor properti residensial maupun fasilitas komersial B2B dengan jaminan garansi tertulis 30 hari kalender."
     :bg-image="asset('assets/banner/hero-profil-perusahaan-drainusantara.webp')"
 />
 
@@ -22,7 +22,7 @@
             
             <div class="lg:col-span-7 reveal-soft">
                 <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
-                    PROFIL RESMI DRAINUSANTARA
+                    PROFIL RESMI DRAINUSANTARA &bull; PT JAWA JAYA ROOTER
                 </p>
                 
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-4">
@@ -31,10 +31,10 @@
                 
                 <div class="space-y-4 text-sm sm:text-base text-slate-600 leading-relaxed">
                     <p>
-                        Sejak awal beroperasi, Drainusantara menerapkan metode perbaikan pipa mekanis tanpa pembongkaran struktur. Sebagai bagian dari J&amp;J Group, seluruh operasional kami didukung legalitas usaha yang sah, siap melayani pengadaan B2B, penerbitan SPK serta Faktur PPN resmi, dan penyesuaian terhadap kualifikasi SLA gedung/fasilitas.
+                        Sejak awal beroperasi, Drainusantara menerapkan metode perbaikan pipa mekanis tanpa pembongkaran struktur di bawah badan hukum resmi <strong>PT JAWA JAYA ROOTER</strong>. Nama <strong>J&amp;J Group</strong> merupakan singkatan dan identitas holding ekosistem sanitasi yang menaungi divisi teknologi perpipaan, rantai pasok mesin rotary berstandar internasional, serta armada penanganan cepat. Seluruh operasional kami didukung legalitas usaha yang sah, siap melayani pengadaan B2B, penerbitan SPK, BAST, serta Faktur PPN resmi untuk kualifikasi SLA gedung dan fasilitas industri.
                     </p>
                     <p>
-                        Kami hadir menyelesaikan keresahan pemilik properti terhadap metode konvensional yang berisiko merusak instalasi, mulai dari pembongkaran keramik lantai berbiaya mahal hingga penggunaan soda api yang memicu panas eksotermik pelunak pipa PVC. Mengandalkan unit mesin spiral rotary berstandar industri dan kamera endoskopi pipa CCTV IP68 jangkauan 30 meter, setiap penanganan diselesaikan secara presisi, higienis, dan terukur.
+                        Sebagai pilar operasional dari <strong>PT JAWA JAYA ROOTER</strong>, kami hadir menyelesaikan keresahan pemilik properti terhadap metode konvensional yang merusak instalasi, mulai dari pembongkaran keramik lantai berbiaya tinggi hingga bahaya penggunaan soda api yang merusak pipa PVC akibat reaksi eksotermik. Mengandalkan unit mesin spiral rotary berstandar industri dan kamera endoskopi pipa CCTV IP68 jangkauan 30 meter, setiap penanganan diselesaikan secara presisi, higienis, dan terukur.
                     </p>
                 </div>
 
@@ -80,16 +80,23 @@
                         </div>
                     </div>
 
-                    <!-- Mobile Carousel Indicators -->
-                    <div class="flex items-center justify-center gap-2 mt-4 sm:hidden">
-                        <template x-for="i in total" :key="i">
-                            <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                                    @click="goTo(i - 1)"
-                                    class="carousel-dot"
-
-                                    :aria-label="'Pilar ' + i">
-                            <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
-                        </template>
+                    <!-- Mobile Slide Counter -->
+                    <div class="flex items-center justify-center gap-3 mt-4 sm:hidden text-xs text-slate-500 font-mono">
+                        <button type="button" @click="goTo(Math.max(0, active - 1))"
+                                :disabled="active === 0"
+                                :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                                class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                                aria-label="Pilar sebelumnya">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <span>Pilar <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                        <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                                :disabled="active === total - 1"
+                                :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                                class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                                aria-label="Pilar berikutnya">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -108,8 +115,12 @@
                         <span class="font-bold text-slate-900">Drainusantara</span>
                     </div>
                     <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Induk Ekosistem</span>
-                        <span class="font-bold text-sky-800">J&amp;J Group</span>
+                        <span class="text-slate-500 font-medium">Badan Hukum (PT)</span>
+                        <span class="font-bold text-sky-800">PT JAWA JAYA ROOTER</span>
+                    </div>
+                    <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
+                        <span class="text-slate-500 font-medium">Induk Holding</span>
+                        <span class="font-bold text-slate-800">J&amp;J Group</span>
                     </div>
                     <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
                         <span class="text-slate-500 font-medium">Legalitas &amp; Pajak</span>
@@ -136,7 +147,7 @@
                 <div class="mt-6 pt-4 border-t border-slate-100 space-y-2.5">
                     <a href="{{ route('about.holding') }}" 
                        class="btn-press w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors min-h-[44px] shadow-2xs">
-                        <span>Pelajari Struktur Holding J&amp;J Group</span>
+                        <span>Legalitas PT JAWA JAYA ROOTER &amp; Holding</span>
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
@@ -148,7 +159,7 @@
                         <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
                             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                         </svg>
-                        <span>Konsultasi Teknis via WhatsApp</span>
+                        <span>Konsultasi Hotline PT JAWA JAYA ROOTER</span>
                     </a>
                 </div>
             </div>
@@ -263,16 +274,23 @@
 
             </div>
 
-            <!-- Mobile Carousel Indicators -->
-            <div class="flex items-center justify-center gap-2 mt-4 md:hidden">
-                <template x-for="i in total" :key="i">
-                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                            @click="goTo(i - 1)"
-                            class="carousel-dot"
-
-                            :aria-label="'Standar ' + i">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"></span></button>
-                </template>
+            <!-- Mobile Slide Counter -->
+            <div class="flex items-center justify-center gap-3 mt-4 md:hidden text-xs text-slate-500 font-mono">
+                <button type="button" @click="goTo(Math.max(0, active - 1))"
+                        :disabled="active === 0"
+                        :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Standar sebelumnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span>Standar <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                        :disabled="active === total - 1"
+                        :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Standar berikutnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
 
@@ -280,18 +298,18 @@
 </section>
 
 <!-- Subsection: Staff Kami -->
-<section id="staff-kami" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
+<section id="staff-kami" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200" x-data="{ activeTab: 'all' }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="max-w-3xl mb-10 reveal-soft">
+        <div class="max-w-3xl mb-8 reveal-soft">
             <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
-                TIM &amp; TEKNISI KAMI
+                TIM &amp; TEKNISI PT JAWA JAYA ROOTER
             </p>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Staff &amp; Teknisi Lapangan Siaga
             </h2>
             <p class="text-slate-600 text-sm sm:text-base mt-2.5 leading-relaxed">
-                Tenaga kerja profesional dan berdedikasi tinggi yang siap melayani penanganan saluran pipa mampet Anda dengan respon cepat dan standar kerja higienis.
+                Struktur organisasi terpadu dari pimpinan operasional, tim customer service dispatch, hingga teknisi pipa berlisensi yang siap melayani penanganan darurat 24 jam dengan standar kerja higienis.
             </p>
         </div>
 
@@ -300,97 +318,215 @@
                 $staffMembers = [
                     (object)[
                         'name' => 'Agus Santoso',
-                        'role' => 'Teknisi Senior Rooter Spiral',
+                        'role' => 'Koordinator Lapangan & Lead Plumbing Senior',
                         'initials' => 'AS',
                         'photo' => null,
+                        'category' => 'leader',
                     ],
                     (object)[
                         'name' => 'Bambang Wijaya',
-                        'role' => 'Spesialis Inspeksi CCTV Pipa',
+                        'role' => 'Supervisor Mutu & Spesialis Inspeksi CCTV',
                         'initials' => 'BW',
                         'photo' => null,
+                        'category' => 'leader',
+                    ],
+                    (object)[
+                        'name' => 'Ghaitsaa Kahla',
+                        'role' => 'Customer Care & Dispatch Operasional',
+                        'initials' => 'GK',
+                        'photo' => null,
+                        'category' => 'staff',
+                    ],
+                    (object)[
+                        'name' => 'Yero Virdhan',
+                        'role' => 'IT & Sistem Administrasi Operasional',
+                        'initials' => 'YV',
+                        'photo' => null,
+                        'category' => 'staff',
                     ],
                     (object)[
                         'name' => 'Rian Pratama',
                         'role' => 'Teknisi Pelancar Kloset & Floor Drain',
                         'initials' => 'RP',
                         'photo' => null,
+                        'category' => 'teknisi',
                     ],
                     (object)[
                         'name' => 'Hendra Kusuma',
                         'role' => 'Teknisi Grease Trap & Restoran',
                         'initials' => 'HK',
                         'photo' => null,
+                        'category' => 'teknisi',
                     ],
                     (object)[
                         'name' => 'Dedi Kurniawan',
                         'role' => 'Teknisi Saluran Talang & Pipa Atap',
                         'initials' => 'DK',
                         'photo' => null,
+                        'category' => 'teknisi',
                     ],
                     (object)[
                         'name' => 'Fajar Nugraha',
-                        'role' => 'Teknisi Hydro Jetting Komersial',
+                        'role' => 'Teknisi Hydro Jetting & Spiral Rotary',
                         'initials' => 'FN',
                         'photo' => null,
+                        'category' => 'teknisi',
                     ],
                 ];
             }
+
+            $categorizedStaff = [
+                'leader' => [],
+                'staff' => [],
+                'teknisi' => [],
+            ];
+
+            foreach ($staffMembers as $member) {
+                $mRole = is_object($member) ? ($member->role ?? '') : ($member['role'] ?? '');
+                $mName = is_object($member) ? ($member->name ?? '') : ($member['name'] ?? '');
+                $mCat = is_object($member) ? ($member->category ?? null) : ($member['category'] ?? null);
+
+                if (!$mCat) {
+                    $lowerRole = strtolower($mRole);
+                    $lowerName = strtolower($mName);
+                    if (str_contains($lowerRole, 'lead') || str_contains($lowerRole, 'supervisor') || str_contains($lowerRole, 'kepala') || str_contains($lowerRole, 'koordinator') || str_contains($lowerName, 'abimanyu') || str_contains($lowerName, 'santoso') || str_contains($lowerRole, 'plumbing senior')) {
+                        $mCat = 'leader';
+                    } elseif (str_contains($lowerRole, 'it') || str_contains($lowerRole, 'marketing') || str_contains($lowerRole, 'customer') || str_contains($lowerRole, 'admin') || str_contains($lowerRole, 'sosial media') || str_contains($lowerRole, 'manage') || str_contains($lowerRole, 'staff')) {
+                        $mCat = 'staff';
+                    } else {
+                        $mCat = 'teknisi';
+                    }
+                }
+                $categorizedStaff[$mCat][] = $member;
+            }
         @endphp
 
-        <!-- Staff Cards Grid & Mobile Carousel -->
-        <div x-data="mobileCarousel({{ count($staffMembers) }}, 4000)">
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Staf dan teknisi - geser untuk melihat lainnya"
-                 @scroll.passive="onScroll()"
-                 @touchstart="pause()"
-                 @touchend="resume()"
-             @touchcancel="resume()"
-                 class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-4 pt-1 px-1 -mx-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 lg:grid-cols-6 sm:overflow-visible sm:pb-0">
-                @foreach($staffMembers as $member)
+        <!-- Simple Clean Tabs (No AI Slop Dots or Badges) -->
+        <div class="flex flex-wrap items-center gap-2 mb-8 border-b border-slate-200">
+            <button type="button" 
+                    @click="activeTab = 'all'"
+                    :class="activeTab === 'all' ? 'border-b-2 border-slate-900 text-slate-900 font-bold pb-3 px-3' : 'text-slate-600 hover:text-slate-900 pb-3 px-3'"
+                    class="text-xs transition-colors cursor-pointer">
+                Semua Bagian ({{ count($staffMembers) }})
+            </button>
+            <button type="button" 
+                    @click="activeTab = 'leader'"
+                    :class="activeTab === 'leader' ? 'border-b-2 border-sky-800 text-sky-800 font-bold pb-3 px-3' : 'text-slate-600 hover:text-slate-900 pb-3 px-3'"
+                    class="text-xs transition-colors cursor-pointer">
+                1. Leader ({{ count($categorizedStaff['leader']) }})
+            </button>
+            <button type="button" 
+                    @click="activeTab = 'staff'"
+                    :class="activeTab === 'staff' ? 'border-b-2 border-indigo-800 text-indigo-800 font-bold pb-3 px-3' : 'text-slate-600 hover:text-slate-900 pb-3 px-3'"
+                    class="text-xs transition-colors cursor-pointer">
+                2. Staff &amp; Dispatch ({{ count($categorizedStaff['staff']) }})
+            </button>
+            <button type="button" 
+                    @click="activeTab = 'teknisi'"
+                    :class="activeTab === 'teknisi' ? 'border-b-2 border-emerald-800 text-emerald-800 font-bold pb-3 px-3' : 'text-slate-600 hover:text-slate-900 pb-3 px-3'"
+                    class="text-xs transition-colors cursor-pointer">
+                3. Teknisi Lapangan ({{ count($categorizedStaff['teknisi']) }})
+            </button>
+        </div>
+
+        <!-- Bagian 1: Leader -->
+        <div x-show="activeTab === 'all' || activeTab === 'leader'" x-cloak class="mb-10">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900">1. Pimpinan &amp; Koordinator Operasional (Leader)</h3>
+                <span class="text-xs text-slate-500 font-medium">{{ count($categorizedStaff['leader']) }} orang</span>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach($categorizedStaff['leader'] as $member)
                     @php
                         $mName = is_object($member) ? $member->name : ($member['name'] ?? '');
-                        $mRole = is_object($member) ? ($member->role ?? 'Teknisi Lapangan Siaga') : ($member['role'] ?? 'Teknisi Lapangan Siaga');
+                        $mRole = is_object($member) ? ($member->role ?? 'Lead Koordinator') : ($member['role'] ?? 'Lead Koordinator');
                         $mPhoto = is_object($member) ? $member->photo : ($member['photo'] ?? null);
-                        $mInitials = is_object($member) ? $member->initials : ($member['initials'] ?? 'ST');
+                        $mInitials = is_object($member) ? $member->initials : ($member['initials'] ?? 'LD');
                     @endphp
-                    <div class="w-[58vw] sm:w-auto shrink-0 snap-center bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-sky-300 transition-all duration-300 flex flex-col items-center text-center group card-lift h-full reveal-soft stagger-{{ ($loop->iteration % 6) + 1 }}">
-                        <!-- Foto / Avatar Staf -->
-                        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 mb-3.5 relative flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 hover:border-slate-300 transition-all flex flex-col items-center text-center">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 mb-3 flex items-center justify-center">
                             @if(!empty($mPhoto))
-                                <img src="{{ $mPhoto }}" alt="{{ $mName }}" width="112" height="112" loading="lazy" decoding="async" class="w-full h-full object-cover">
+                                <img src="{{ $mPhoto }}" alt="{{ $mName }}" width="96" height="96" loading="lazy" decoding="async" class="w-full h-full object-cover">
                             @else
-                                <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-sky-50 to-slate-100 text-sky-800">
-                                    <svg class="w-12 h-12 text-sky-700/80 mb-0.5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                    </svg>
-                                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">{{ $mInitials }}</span>
-                                </div>
+                                <span class="text-xs font-bold uppercase text-slate-500 font-mono">{{ $mInitials }}</span>
                             @endif
-                            
                         </div>
-                        
-                        <!-- Nama Staf -->
-                        <h3 class="text-xs sm:text-sm font-bold text-slate-900 tracking-tight group-hover:text-sky-700 transition-colors line-clamp-1">
+                        <h4 class="text-xs sm:text-sm font-bold text-slate-900 tracking-tight line-clamp-1">
                             {{ $mName }}
-                        </h3>
-
-                        <!-- Spesialisasi / Peran -->
-                        <p class="text-[11px] font-medium text-slate-600 leading-snug mt-1 line-clamp-2">
+                        </h4>
+                        <p class="text-[11px] text-slate-600 mt-1 line-clamp-2">
                             {{ $mRole }}
                         </p>
                     </div>
                 @endforeach
             </div>
+        </div>
 
-            <!-- Mobile Carousel Dots Indicator -->
-            <div class="flex flex-wrap items-center justify-center gap-1.5 mt-5 sm:hidden">
-                @foreach($staffMembers as $idx => $m)
-                    <button :aria-current="active === {{ $idx }} ? 'true' : 'false'" type="button"
-                            @click="goTo({{ $idx }})"
-                            class="carousel-dot"
+        <!-- Bagian 2: Staff -->
+        <div x-show="activeTab === 'all' || activeTab === 'staff'" x-cloak class="mb-10">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900">2. Staff Dispatch &amp; Layanan Pelanggan (Staff)</h3>
+                <span class="text-xs text-slate-500 font-medium">{{ count($categorizedStaff['staff']) }} orang</span>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach($categorizedStaff['staff'] as $member)
+                    @php
+                        $mName = is_object($member) ? $member->name : ($member['name'] ?? '');
+                        $mRole = is_object($member) ? ($member->role ?? 'Staff Operasional') : ($member['role'] ?? 'Staff Operasional');
+                        $mPhoto = is_object($member) ? $member->photo : ($member['photo'] ?? null);
+                        $mInitials = is_object($member) ? $member->initials : ($member['initials'] ?? 'ST');
+                    @endphp
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 hover:border-slate-300 transition-all flex flex-col items-center text-center">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 mb-3 flex items-center justify-center">
+                            @if(!empty($mPhoto))
+                                <img src="{{ $mPhoto }}" alt="{{ $mName }}" width="96" height="96" loading="lazy" decoding="async" class="w-full h-full object-cover">
+                            @else
+                                <span class="text-xs font-bold uppercase text-slate-500 font-mono">{{ $mInitials }}</span>
+                            @endif
+                        </div>
+                        <h4 class="text-xs sm:text-sm font-bold text-slate-900 tracking-tight line-clamp-1">
+                            {{ $mName }}
+                        </h4>
+                        <p class="text-[11px] text-slate-600 mt-1 line-clamp-2">
+                            {{ $mRole }}
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
-                            aria-label="Staff {{ $idx + 1 }}">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 cursor-pointer" :class="active === {{ $idx }} ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
+        <!-- Bagian 3: Teknisi -->
+        <div x-show="activeTab === 'all' || activeTab === 'teknisi'" x-cloak class="mb-4">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900">3. Teknisi Lapangan Berpengalaman (Teknisi)</h3>
+                <span class="text-xs text-slate-500 font-medium">{{ count($categorizedStaff['teknisi']) }} orang</span>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach($categorizedStaff['teknisi'] as $member)
+                    @php
+                        $mName = is_object($member) ? $member->name : ($member['name'] ?? '');
+                        $mRole = is_object($member) ? ($member->role ?? 'Teknisi Lapangan') : ($member['role'] ?? 'Teknisi Lapangan');
+                        $mPhoto = is_object($member) ? $member->photo : ($member['photo'] ?? null);
+                        $mInitials = is_object($member) ? $member->initials : ($member['initials'] ?? 'TK');
+                    @endphp
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 hover:border-slate-300 transition-all flex flex-col items-center text-center">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 mb-3 flex items-center justify-center">
+                            @if(!empty($mPhoto))
+                                <img src="{{ $mPhoto }}" alt="{{ $mName }}" width="96" height="96" loading="lazy" decoding="async" class="w-full h-full object-cover">
+                            @else
+                                <span class="text-xs font-bold uppercase text-slate-500 font-mono">{{ $mInitials }}</span>
+                            @endif
+                        </div>
+                        <h4 class="text-xs sm:text-sm font-bold text-slate-900 tracking-tight line-clamp-1">
+                            {{ $mName }}
+                        </h4>
+                        <p class="text-[11px] text-slate-600 mt-1 line-clamp-2">
+                            {{ $mRole }}
+                        </p>
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -410,27 +546,29 @@
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div class="max-w-2xl">
                 <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
-                    SINERGI EKOSISTEM HOLDING
+                    BADAN HUKUM RESMI: PT JAWA JAYA ROOTER
                 </p>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                    Integritas Korporat di Bawah Naungan J&amp;J Group
+                    Solusi Sanitasi Pipa Bergaransi &amp; Kemitraan Korporat B2B
                 </h2>
-                <p class="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">
-                    Pelajari lebih dalam tata kelola administrasi legal, armada logistik, serta standar keselamatan kerja yang diterapkan pada seluruh jaringan operasional Drainusantara.
+                <p class="text-slate-300 text-xs sm:text-sm mt-2 leading-relaxed">
+                    Dikelola secara profesional oleh <strong>PT JAWA JAYA ROOTER</strong> (holding J&amp;J Group). Kami melayani proyek tender, SPK berkala pengelola gedung perkantoran, hotel, restoran, hingga panggilan darurat saluran perumahan dengan standar mekanis tanpa bongkar.
                 </p>
             </div>
             
             <div class="shrink-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <a href="{{ route('about.holding') }}" 
-                   class="min-h-[48px] inline-flex items-center justify-center gap-2 bg-sky-700 hover:bg-sky-800 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-lg shadow-sm transition-all btn-press focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
-                    <span>Struktur Holding J&amp;J Group</span>
-                    <svg class="w-4 h-4 text-sky-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                <a href="https://wa.me/{{ $whatsappNumber }}?text={{ rawurlencode('Halo Tim Legal & Operasional PT JAWA JAYA ROOTER, kami bermaksud mendiskusikan pengadaan jasa pemeliharaan pipa / kerja sama B2B.') }}" 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="min-h-[44px] inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-lg shadow-sm transition-all btn-press focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
+                    <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                     </svg>
+                    <span>Kerja Sama B2B PT JAWA JAYA ROOTER</span>
                 </a>
-                <a href="{{ route('about.k3') }}" 
-                   class="min-h-[48px] inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs sm:text-sm px-5 py-3 rounded-lg border border-slate-700 transition-colors btn-press focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <span>Standar SOP K3</span>
+                <a href="{{ route('about.holding') }}" 
+                   class="min-h-[44px] inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs sm:text-sm px-5 py-3 rounded-lg border border-slate-700 transition-colors btn-press focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                    <span>Struktur Korporat Holding</span>
                 </a>
             </div>
         </div>

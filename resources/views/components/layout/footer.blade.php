@@ -6,16 +6,26 @@
             <!-- Kolom 1: Profil & Workshop Pusat -->
             <div class="space-y-3.5">
                 <a href="{{ url('/') }}" class="inline-block max-w-full rounded-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400">
-                    <img src="{{ asset('images/logo/LOGOFULL.webp') }}" alt="Drainusantara" class="block h-auto w-52 max-w-full object-contain" width="687" height="363" loading="lazy" decoding="async">
+                    <img src="{{ asset('images/logo/LOGOFULL.webp') }}" alt="Drainusantara - PT Jawa Jaya Rooter" class="block h-auto w-52 max-w-full object-contain" width="687" height="363" loading="lazy" decoding="async">
                 </a>
+                <p class="text-xs font-bold text-white tracking-wide">
+                    PT JAWA JAYA ROOTER
+                </p>
                 <p class="text-xs text-slate-400 leading-relaxed">
                     Spesialis pelancaran saluran pipa mampet mekanis profesional 100% tanpa bongkar keramik dan bebas bahan kimia korosif soda api.
                 </p>
-                <div class="pt-1 text-xs text-slate-400 space-y-1">
-                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Workshop Pusat:</div>
-                    <p class="leading-relaxed">Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440</p>
-                    <div class="text-[11px] text-sky-400 font-semibold pt-0.5">
-                        Siaga 24 Jam Nonstop
+                <div class="pt-1 text-xs text-slate-400 space-y-1.5">
+                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Kontak &amp; Dispatch Hotline:</div>
+                    <div>
+                        <a href="tel:085609009009" class="text-sky-400 hover:text-sky-300 font-bold text-xs inline-flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            <span>0856-0900-9009 / (021) 8560-9009</span>
+                        </a>
+                    </div>
+                    <div class="text-[11px] text-slate-400">
+                        Siaga 24 Jam Nonstop &bull; Respon Cepat dari Posko Terdekat
                     </div>
                 </div>
             </div>
@@ -25,23 +35,23 @@
                 <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-3.5 pb-2 border-b border-slate-800">Standar Mutu &amp; Jaminan</h3>
                 <ul class="space-y-2.5 text-xs text-slate-300">
                     <li class="flex items-start gap-2">
-                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
+                        <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         <span>Sistem <strong>No Cure No Pay</strong> (Air lancar baru bayar)</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
+                        <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         <span>Garansi Tertulis 30 Hari Kalender</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
+                        <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         <span>100% Tanpa Bongkar Keramik Lantai</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
+                        <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         <span>Zero Chemical / Bebas Soda Api Korosif</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="text-sky-400 font-bold select-none">&#11044;</span>
+                        <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         <span>e-Faktur Pajak PPN &amp; Dokumen BAST B2B</span>
                     </li>
                 </ul>
@@ -53,7 +63,7 @@
                 <p class="text-xs text-slate-400 leading-relaxed mb-3.5">
                     Saluran air meluap darurat atau butuh survei grease trap gedung? Penugasan teknisi terdekat langsung dari posko siaga untuk respon cepat.
                 </p>
-                <div class="space-y-2.5">
+                <div class="space-y-2">
                     <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.') }}"
                        :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat untuk penanganan saluran mampet.')"
                        target="_blank" 
@@ -65,7 +75,17 @@
                         </svg>
                         <span>Chat WhatsApp Dispatch</span>
                     </a>
-                    <div class="text-[11px] text-slate-400">
+                    <div>
+                        <a href="tel:085609009009"
+                           data-track-location="footer_call"
+                           class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-4 py-2 rounded-lg border border-slate-700 shadow-xs transition-colors btn-press">
+                            <svg class="w-3.5 h-3.5 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            <span>Hotline: 0856-0900-9009</span>
+                        </a>
+                    </div>
+                    <div class="text-[11px] text-slate-400 pt-0.5">
                         Posko respon darurat se-Jabodetabek, Semarang, &amp; Lampung
                     </div>
                 </div>
@@ -86,13 +106,13 @@
                     <div class="rounded-lg overflow-hidden border border-slate-700 aspect-16/10 bg-slate-950 relative shadow-inner">
                         <iframe 
                             title="Peta Lokasi Workshop Pusat Drainusantara"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126920.28318721204!2d106.82056!3d-6.2297464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e46c757c23%3A0xa6436e2f694dc50!2sJakarta%20Timur%2C%20Kota%20Jakarta%20Timur%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                            src=""
                             class="w-full h-full border-0 contrast-125 opacity-90 hover:opacity-100 transition-opacity" 
                             loading="lazy" 
                             referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
                         <div class="absolute bottom-2 left-2 right-2 bg-slate-950/90 backdrop-blur-xs text-white text-[11px] p-2 rounded-lg border border-slate-700 flex items-center justify-between">
-                            <span class="truncate">📍 Jl. Duren Sawit Raya No. 45, Jaktim</span>
+                            <!-- <span class="truncate">Jl. Duren Sawit Raya No. 45, Jaktim</span> -->
                             <a href="https://maps.google.com/?q=Jakarta+Timur" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 font-semibold shrink-0 ml-2">Buka Peta ↗</a>
                         </div>
                     </div>
@@ -210,8 +230,10 @@
 
         <!-- Footer Bottom Note -->
         <div class="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs text-slate-400">
-            <p>&copy; {{ date('Y') }} Drainusantara. Rooter &amp; Plumbing Engineering. 100% Tanpa Bongkar Keramik &amp; Bebas Bahan Kimia Korosif.</p>
+            <p>&copy; {{ date('Y') }} PT JAWA JAYA ROOTER &bull; Drainusantara. Rooter &amp; Plumbing Engineering. 100% Tanpa Bongkar Keramik &amp; Bebas Bahan Kimia Korosif.</p>
             <div class="flex items-center gap-4 text-slate-400 text-[11px]">
+                <a href="{{ route('how-it-works') }}" class="hover:text-white transition-colors">Cara Kerja</a>
+                <span>&bull;</span>
                 <a href="{{ route('about.warranty') }}" class="hover:text-white transition-colors">Ketentuan Garansi</a>
                 <span>&bull;</span>
                 <a href="{{ route('about.k3') }}" class="hover:text-white transition-colors">Standar K3</a>

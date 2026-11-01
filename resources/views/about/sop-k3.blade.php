@@ -91,16 +91,23 @@
                 </div>
             </div>
 
-            <!-- Dots indicator for 4 APD cards on mobile -->
-            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-5">
-                <template x-for="i in total" :key="i">
-                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                            @click="goTo(i - 1)"
-                            class="carousel-dot"
-
-                            :aria-label="'SOP ' + i">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
-                </template>
+            <!-- Mobile Slide Counter -->
+            <div class="flex items-center justify-center gap-3 mt-5 md:hidden text-xs text-slate-500 font-mono">
+                <button type="button" @click="goTo(Math.max(0, active - 1))"
+                        :disabled="active === 0"
+                        :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="SOP sebelumnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span>SOP <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                        :disabled="active === total - 1"
+                        :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="SOP berikutnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
     </div>
@@ -177,16 +184,23 @@
                 </div>
             </div>
 
-            <!-- Dots indicator for 3 Desinfeksi cards on mobile -->
-            <div class="flex md:hidden justify-center items-center flex-wrap gap-1.5 mt-5">
-                <template x-for="i in total" :key="i">
-                    <button :aria-current="active === i - 1 ? 'true' : 'false'" type="button"
-                            @click="goTo(i - 1)"
-                            class="carousel-dot"
-
-                            :aria-label="'Desinfeksi ' + i">
-                    <span aria-hidden="true" class="h-2 rounded-full transition-all duration-300 ease-out cursor-pointer active:scale-75" :class="active === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300 hover:bg-slate-400'"></span></button>
-                </template>
+            <!-- Mobile Slide Counter -->
+            <div class="flex items-center justify-center gap-3 mt-5 md:hidden text-xs text-slate-500 font-mono">
+                <button type="button" @click="goTo(Math.max(0, active - 1))"
+                        :disabled="active === 0"
+                        :class="active === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Desinfeksi sebelumnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <span>Desinfeksi <strong class="text-slate-900" x-text="active + 1">1</strong> dari <span x-text="total"></span></span>
+                <button type="button" @click="goTo(Math.min(total - 1, active + 1))"
+                        :disabled="active === total - 1"
+                        :class="active === total - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+                        class="p-1.5 rounded-md border border-slate-200 transition-colors"
+                        aria-label="Desinfeksi berikutnya">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
         </div>
     </div>
@@ -211,7 +225,7 @@
 
         <div class="bg-white rounded-xl border border-slate-200 divide-y divide-slate-200 shadow-xs mb-10 reveal-soft">
             <div class="p-5 sm:p-6 flex items-start gap-4">
-                <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                <div class="w-8 h-8 rounded-md bg-sky-700 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-slate-800">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
@@ -224,13 +238,11 @@
                         Pengujian penggelontoran air volume tinggi selama 5 hingga 10 menit secara terus menerus disaksikan langsung oleh pelanggan untuk memastikan tidak ada backflow (air meluap balik) dan vortex pusaran air di mulut pipa berjalan lancar.
                     </p>
                 </div>
-                <span class="hidden sm:inline-flex text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
-                    Mandatori
-                </span>
+              
             </div>
 
             <div class="p-5 sm:p-6 flex items-start gap-4">
-                <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                <div class="w-8 h-8 rounded-md bg-sky-700 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-slate-800">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
@@ -243,13 +255,11 @@
                         Seluruh sisa cipratan air limbah atau kotoran di lantai, keramik dinding, bak kontrol, atau area kolong kitchen sink dibersihkan dan dipel menggunakan karbol desinfektan wangi hingga kering dan higienis.
                     </p>
                 </div>
-                <span class="hidden sm:inline-flex text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
-                    Higienitas
-                </span>
+               
             </div>
 
             <div class="p-5 sm:p-6 flex items-start gap-4">
-                <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                <div class="w-8 h-8 rounded-md bg-sky-700 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-slate-800">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
@@ -262,13 +272,11 @@
                         Pemasangan kembali sifon atau sambungan pipa wastafel diperiksa teliti. Teknisi memastikan seal paking kedap air terpasang presisi tanpa ada rembesan atau tetesan air di bawah instalasi pipa.
                     </p>
                 </div>
-                <span class="hidden sm:inline-flex text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
-                    Bebas Bocor
-                </span>
+              
             </div>
 
             <div class="p-5 sm:p-6 flex items-start gap-4">
-                <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                <div class="w-8 h-8 rounded-md bg-sky-700 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-slate-800">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
@@ -281,13 +289,11 @@
                         Penandatanganan lembar Berita Acara Penyelesaian Pekerjaan (BAPP) dan pencatatan nomor resi garansi resmi 30 hari kalender. Pelanggan memegang bukti fisik atau digital untuk perlindungan pasca pengerjaan.
                     </p>
                 </div>
-                <span class="hidden sm:inline-flex text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
-                    Proteksi
-                </span>
+               
             </div>
 
             <div class="p-5 sm:p-6 flex items-start gap-4">
-                <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
+                <div class="w-8 h-8 rounded-md bg-sky-700 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-slate-800">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
@@ -300,9 +306,7 @@
                         Pemberian nota rincian biaya transparan sesuai penawaran awal tanpa biaya tersembunyi. Bagi klien korporat atau restoran berbadan hukum, invoice dan faktur pajak PPN 11% diproses sesuai ketentuan perpajakan resmi.
                     </p>
                 </div>
-                <span class="hidden sm:inline-flex text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
-                    Administrasi
-                </span>
+                
             </div>
         </div>
 

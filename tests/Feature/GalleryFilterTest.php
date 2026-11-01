@@ -192,4 +192,28 @@ class GalleryFilterTest extends TestCase
         $responseGallery->assertSee('Dokumentasi Belum Tersedia');
         $responseGallery->assertDontSee('Semua Sektor (');
     }
+
+    public function test_gallery_index_renders_mobile_pagination_every_10_cards(): void
+    {
+        for ($i = 1; $i <= 15; $i++) {
+            Gallery::create([
+                'title' => "Dokumentasi Proyek {$i}",
+                'slug' => "dokumentasi-proyek-{$i}",
+                'category' => 'rumahan',
+                'service_id' => $this->service->id,
+                'is_active' => true,
+                'order' => $i,
+            ]);
+        }
+
+        $response = $this->get('/galeri');
+
+        $response->assertStatus(200);
+        $response->assertSee('id="gallery-cards-grid"', false);
+        $response->assertSee('perPageMobile: 10');
+        $response->assertSee('aria-label="Paginasi Galeri Mobile"', false);
+        $response->assertSee('goToPage(currentPage - 1)', false);
+        $response->assertSee('goToPage(currentPage + 1)', false);
+        $response->assertSee('x-show="isVisible(', false);
+    }
 }

@@ -26,11 +26,14 @@ class Article extends Model
         'title',
         'slug',
         'thumbnail',
+        'image_placement',
         'excerpt',
         'content',
         'category',
+        'tags',
         'meta_title',
         'meta_description',
+        'views_count',
         'is_published',
         'published_at',
     ];
@@ -38,13 +41,14 @@ class Article extends Model
     protected function casts(): array
     {
         return [
+            'views_count' => 'integer',
             'is_published' => 'boolean',
             'published_at' => 'datetime',
         ];
     }
 
     /**
-     * Render Markdown content to safe HTML with auto-generated IDs on headings for TOC anchors.
+     * Render Markdown and HTML content to safe HTML with auto-generated IDs on headings for TOC anchors.
      */
     public function getRenderedContentAttribute(): string
     {
@@ -53,11 +57,14 @@ class Article extends Model
         }
 
         $html = Str::markdown($this->content, [
-            'html_input' => 'strip',
+            'html_input' => 'allow',
             'allow_unsafe_links' => false,
+            'disallowed_raw_html' => [
+                'disallowed_tags' => ['script', 'style', 'textarea', 'noembed', 'noframes', 'plaintext'],
+            ],
         ]);
 
-        return (string) preg_replace_callback('/<(h[23])>(.*?)<\/\1>/is', function (array $matches): string {
+        return (string) preg_replace_callback('/<(h[23])(?:\s+[^>]*)?>(.*?)<\/\1>/is', function (array $matches): string {
             $tag = $matches[1];
             $inner = $matches[2];
             $cleanTitle = trim(strip_tags($inner));
@@ -68,7 +75,7 @@ class Article extends Model
     }
 
     /**
-     * Extract structured Table of Contents from Markdown headings (h2 and h3).
+     * Extract structured Table of Contents from headings (Markdown and HTML h2/h3).
      *
      * @return array<int, array{id: string, title: string, level: int}>
      */
@@ -91,7 +98,33 @@ class Article extends Model
             }
         }
 
+        if (empty($items) && preg_match_all('/<(h[23])(?:\s+[^>]*)?>(.*?)<\/\1>/is', $this->content, $htmlMatches, PREG_SET_ORDER)) {
+            foreach ($htmlMatches as $match) {
+                $level = (int) substr($match[1], 1);
+                $title = trim(strip_tags($match[2]));
+                $items[] = [
+                    'id' => Str::slug($title),
+                    'title' => $title,
+                    'level' => $level,
+                ];
+            }
+        }
+
         return $items;
+    }
+
+    /**
+     * List of tags parsed from comma-separated string.
+     *
+     * @return array<int, string>
+     */
+    public function getTagsListAttribute(): array
+    {
+        if (empty($this->tags)) {
+            return [];
+        }
+
+        return array_values(array_filter(array_map('trim', explode(',', (string) $this->tags))));
     }
 
     /**
@@ -132,6 +165,17 @@ class Article extends Model
             'penguatan-brand' => self::CATEGORY_BRAND,
             default => self::CATEGORY_EDUKASI,
         };
+    }
+
+    /**
+     * Scope a query to only include published articles.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
     }
 
     /**

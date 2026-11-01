@@ -26,17 +26,15 @@ class ArticleCategoryAndNavbarTest extends TestCase
         ]);
     }
 
-    public function test_desktop_navbar_and_mobile_drawer_display_artikel_label(): void
+    public function test_desktop_navbar_and_mobile_drawer_display_blog_label(): void
     {
         $response = $this->get('/');
         $response->assertOk();
 
-        // Desktop navbar
-        $response->assertSee('Artikel');
+        // Desktop navbar & Mobile drawer display Blog
+        $response->assertSee('Blog');
+        $response->assertSee('Kemitraan');
         $response->assertSee(route('articles.index'));
-
-        // Mobile drawer
-        $response->assertSee('Artikel &amp; Edukasi', false);
     }
 
     public function test_article_model_normalizes_categories_and_slugs(): void
@@ -116,5 +114,16 @@ class ArticleCategoryAndNavbarTest extends TestCase
         $editResponse->assertOk();
         $editResponse->assertSee('<select name="category"', false);
         $editResponse->assertSee('selected', false);
+    }
+
+    public function test_articles_index_renders_two_column_youtube_video_showcase_on_mobile(): void
+    {
+        $response = $this->get(route('articles.index'));
+        $response->assertOk();
+
+        // 2-column mobile YouTube grid check
+        $response->assertSee('grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3', false);
+        $response->assertSee('DOKUMENTASI TINDAKAN LAPANGAN');
+        $response->assertSee('Video Praktik Pelancaran &amp; Cara Kerja Mesin Rooter', false);
     }
 }

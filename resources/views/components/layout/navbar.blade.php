@@ -1,38 +1,21 @@
 @props(['navServices' => null])
 @php
     $navRegions = \App\Services\RegionService::all();
-    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('area*') && !request()->is('tentang-kami*');
-    $isArea = request()->is('area*');
+    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*');
+    $isAbout = request()->is('tentang-kami*') || request()->routeIs('about*') || request()->routeIs('how-it-works') || request()->is('cara-kerja*') || request()->is('proses-kerja*') || request()->routeIs('equipment.show') || request()->is('kemitraan*') || request()->routeIs('partnership.show');
+    $isGallery = request()->is('galeri*') || request()->routeIs('gallery') || request()->is('studi-kasus*') || request()->routeIs('case-study*');
+    $isArea = request()->is('area*') || request()->routeIs('area*');
+    $isBlog = request()->is('artikel*') || request()->is('pengetahuan*') || request()->is('blog*') || request()->routeIs('articles*');
 @endphp
 
 <header class="border-b border-slate-800 bg-slate-900/95 backdrop-blur-md sticky top-0 z-40 transition-all shadow-md text-slate-100"
         @click.outside="activeMenu = null">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 sm:h-20">
-            <a href="{{ url('/') }}" class="flex min-h-11 shrink-0 items-center rounded-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
-                <img src="{{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }}" srcset="{{ asset('images/logo/TEKSBRAND-TAGLINE-224.webp') }} 224w, {{ asset('images/logo/TEKSBRAND-TAGLINE-448.webp') }} 448w, {{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }} 1198w" sizes="224px" alt="Drainusantara: Jasa Saluran Tanpa Bongkar" class="block h-auto w-44 sm:w-56 max-w-full object-contain" width="1198" height="208">
+            <a href="{{ url('/') }}" class="flex min-h-11 shrink-0 items-center px-2.5 py-1.5 rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
+                <img src="{{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }}" srcset="{{ asset('images/logo/TEKSBRAND-TAGLINE-224.webp') }} 224w, {{ asset('images/logo/TEKSBRAND-TAGLINE-448.webp') }} 448w, {{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }} 1198w" sizes="224px" alt="Drainusantara: Jasa Saluran Tanpa Bongkar" class="block h-auto w-40 sm:w-48 max-w-full object-contain" width="1198" height="208">
             </a>
-
-            <!-- Mobile Header Controls (Search & Menu Trigger) -->
-            <div class="flex items-center gap-1 sm:gap-2 lg:hidden">
-                <button @click="mobileSearchOpen = true; activeMenu = null"
-                        type="button"
-                        aria-label="Cari Wilayah Layanan"
-                        class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800/80 rounded-lg transition-colors cursor-pointer btn-press active:scale-95 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-
-                <button @click="sidebarOpen = true"
-                        type="button"
-                        aria-label="Buka Menu Navigasi"
-                        class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-800/80 rounded-lg transition-colors cursor-pointer btn-press active:scale-95 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
+            
 
             <!-- Desktop Navigation Items -->
             <nav class="hidden lg:flex items-center space-x-1 lg:space-x-1.5 text-sm font-semibold text-slate-300" aria-label="Navigasi Utama">
@@ -53,13 +36,16 @@
                 <div class="relative" @click.outside="activeMenu = (activeMenu === 'tentang' ? null : activeMenu)">
                     <button @click="activeMenu = (activeMenu === 'tentang' ? null : 'tentang')"
                             type="button" 
-                            class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg hover:text-white hover:bg-slate-800/60 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer"
-                            :class="{ 'text-sky-400 font-bold bg-slate-800/90 border border-slate-700/80': activeMenu === 'tentang' || {{ request()->is('tentang-kami*') ? 'true' : 'false' }} }"
+                            class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer {{ $isAbout ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
+                            :class="{
+                                'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeMenu === 'tentang' || {{ $isAbout ? 'true' : 'false' }},
+                                'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent': activeMenu !== 'tentang' && !{{ $isAbout ? 'true' : 'false' }}
+                            }"
                             aria-expanded="false"
                             :aria-expanded="activeMenu === 'tentang' ? 'true' : 'false'"
                             aria-haspopup="true">
                         <span>Tentang kami</span>
-                        <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-400': activeMenu === 'tentang' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180 text-sky-400': activeMenu === 'tentang', 'text-sky-400': {{ $isAbout ? 'true' : 'false' }}, 'text-slate-400': activeMenu !== 'tentang' && !{{ $isAbout ? 'true' : 'false' }} }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
@@ -81,46 +67,56 @@
                             </span>
                         </div>
 
-                        <div class="space-y-0.5 max-h-95 overflow-y-auto pr-1">
-                             <a href="{{ route('about.profile') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-800/80 transition-colors group">
-                                <div class="text-xs font-bold text-slate-100 group-hover:text-sky-400 mb-0.5">Profil Perusahaan</div>
-                                <p class="text-[11px] text-slate-400 leading-snug">Visi, misi, dan komitmen spesialis pipa tanpa bongkar.</p>
+                        <div class="space-y-0.5 max-h-95 overflow-y-auto pr-1 custom-scrollbar-sky">
+                            @php
+                                $isProfile = request()->routeIs('about.profile') || (request()->routeIs('about') && !request()->routeIs('about.holding') && !request()->routeIs('about.k3') && !request()->routeIs('about.equipment') && !request()->routeIs('about.portfolio') && !request()->routeIs('about.warranty') && !request()->routeIs('about.faq'));
+                                $isHowItWorks = request()->routeIs('how-it-works') || request()->is('cara-kerja*') || request()->is('proses-kerja*');
+                                $isHolding = request()->routeIs('about.holding');
+                                $isK3 = request()->routeIs('about.k3');
+                                $isEquip = request()->routeIs('about.equipment') || request()->routeIs('equipment.show');
+                                $isPortfolio = request()->routeIs('about.portfolio') || request()->routeIs('partnership.show') || request()->is('kemitraan*');
+                                $isWarranty = request()->routeIs('about.warranty');
+                                $isFaq = request()->routeIs('about.faq');
+                            @endphp
+
+                            <a href="{{ route('about.profile') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isProfile ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
+                                <div class="text-xs font-bold {{ $isProfile ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Profil Perusahaan</div>
+                                <p class="text-[11px] {{ $isProfile ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Visi, misi, dan komitmen spesialis pipa tanpa bongkar.</p>
                             </a>
                             
-                         
-                            <a href="{{ route('about.holding') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-800/80 transition-colors group">
-                                <div class="text-xs font-bold text-slate-100 group-hover:text-sky-400 mb-0.5">Struktur Holding J&amp;J Group</div>
-                                <p class="text-[11px] text-slate-400 leading-snug">Induk perusahaan &amp; jaringan ekosistem sanitasi.</p>
+                            <a href="{{ route('how-it-works') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isHowItWorks ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
+                                <div class="text-xs font-bold {{ $isHowItWorks ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Cara Kerja &amp; Standar Proses</div>
+                                <p class="text-[11px] {{ $isHowItWorks ? 'text-slate-300' : 'text-slate-400' }} leading-snug">5 tahapan mekanis tanpa bongkar keramik &amp; inspeksi CCTV.</p>
+                            </a>
+                            
+                            <a href="{{ route('about.holding') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isHolding ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
+                                <div class="text-xs font-bold {{ $isHolding ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Struktur Holding J&amp;J Group</div>
+                                <p class="text-[11px] {{ $isHolding ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Induk perusahaan &amp; jaringan ekosistem sanitasi.</p>
                             </a>
 
-                          
-                            <a href="{{ route('about.k3') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-800/80 transition-colors group">
-                                <div class="text-xs font-bold text-slate-100 group-hover:text-sky-400 mb-0.5">SOP K3</div>
-                                <p class="text-[11px] text-slate-400 leading-snug">Standar APD teknisi, cover sepatu, &amp; sanitasi pasca kerja.</p>
+                            <a href="{{ route('about.k3') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isK3 ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
+                                <div class="text-xs font-bold {{ $isK3 ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">SOP K3</div>
+                                <p class="text-[11px] {{ $isK3 ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Standar APD teknisi, cover sepatu, &amp; sanitasi pasca kerja.</p>
                             </a>
 
-                           
-                            <a href="{{ route('about.equipment') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-800/80 transition-colors group">
-                                <div class="text-xs font-bold text-slate-100 group-hover:text-sky-400 mb-0.5">Peralatan &amp; Teknologi</div>
-                                <p class="text-[11px] text-slate-400 leading-snug">Mesin spiral rotary Ridgid &amp; kamera inspeksi CCTV IP68.</p>
+                            <a href="{{ route('about.equipment') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isEquip ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
+                                <div class="text-xs font-bold {{ $isEquip ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Peralatan &amp; Teknologi</div>
+                                <p class="text-[11px] {{ $isEquip ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Mesin spiral rotary Ridgid &amp; kamera inspeksi CCTV IP68.</p>
                             </a>
 
-                          
-                            <a href="{{ route('about.portfolio') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-800/80 transition-colors group">
-                                <div class="text-xs font-bold text-slate-100 group-hover:text-sky-400 mb-0.5">Perusahaan &amp; Portofolio Klien</div>
-                                <p class="text-[11px] text-slate-400 leading-snug">Daftar perusahaan &amp; mitra B2B yang menggunakan jasa Drainusantara.</p>
+                            <a href="{{ route('about.portfolio') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isPortfolio ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
+                                <div class="text-xs font-bold {{ $isPortfolio ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Perusahaan &amp; Portofolio Klien</div>
+                                <p class="text-[11px] {{ $isPortfolio ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Daftar perusahaan &amp; mitra B2B yang menggunakan jasa Drainusantara.</p>
                             </a>
 
-                         
-                            <a href="{{ route('about.warranty') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-800/80 transition-colors group">
-                                <div class="text-xs font-bold text-slate-100 group-hover:text-sky-400 mb-0.5">Ketentuan Garansi 30 Hari</div>
-                                <p class="text-[11px] text-slate-400 leading-snug">Jaminan tertulis, No Cure No Pay, &amp; alur klaim re-visit gratis.</p>
+                            <a href="{{ route('about.warranty') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isWarranty ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
+                                <div class="text-xs font-bold {{ $isWarranty ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Ketentuan Garansi 30 Hari</div>
+                                <p class="text-[11px] {{ $isWarranty ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Jaminan tertulis, No Cure No Pay, &amp; alur klaim re-visit gratis.</p>
                             </a>
 
-                         
-                            <a href="{{ route('about.faq') }}" @click="activeMenu = null" class="block p-2 rounded-lg hover:bg-slate-800/80 transition-colors group">
-                                <div class="text-xs font-bold text-slate-100 group-hover:text-sky-400 mb-0.5">FAQ</div>
-                                <p class="text-[11px] text-slate-400 leading-snug">Tanya jawab seputar metode tanpa bongkar, biaya, &amp; soda api.</p>
+                            <a href="{{ route('about.faq') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isFaq ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
+                                <div class="text-xs font-bold {{ $isFaq ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">FAQ</div>
+                                <p class="text-[11px] {{ $isFaq ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Tanya jawab seputar metode tanpa bongkar, biaya, &amp; soda api.</p>
                             </a>
                         </div>
                     </div>
@@ -130,15 +126,17 @@
                 <a href="{{ url('/#layanan') }}" 
                    @click="activeSection = 'layanan'"
                    class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent"
+                   @if($isHome)
                    :class="{
                        'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeSection === 'layanan',
                        'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent': activeSection !== 'layanan'
-                   }">
+                   }"
+                   @endif>
                     Layanan
                 </a>
                 <!-- 4. Hasil Kerja -->
                 <a href="{{ route('gallery') }}" 
-                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ request()->is('galeri*') ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
+                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isGallery ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
                     Hasil Kerja
                 </a>
 
@@ -148,17 +146,18 @@
                             type="button" 
                             class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer {{ $isArea ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
                             :class="{
-                                'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeMenu === 'wilayah' || {{ $isArea ? 'true' : 'false' }} || activeSection === 'area',
-                                'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent': activeMenu !== 'wilayah' && !{{ $isArea ? 'true' : 'false' }} && activeSection !== 'area'
+                                'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeMenu === 'wilayah' || {{ $isArea ? 'true' : 'false' }} || ({{ $isHome ? 'true' : 'false' }} && activeSection === 'area'),
+                                'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent': activeMenu !== 'wilayah' && !{{ $isArea ? 'true' : 'false' }} && (!{{ $isHome ? 'true' : 'false' }} || activeSection !== 'area')
                             }"
                             aria-expanded="false"
                             :aria-expanded="activeMenu === 'wilayah' ? 'true' : 'false'"
                             aria-haspopup="true">
                         <span>Area Jangkauan</span>
-                        <svg class="w-4 h-4 transition-transform duration-200 text-slate-400" :class="{ 'rotate-180 text-sky-400': activeMenu === 'wilayah' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180 text-sky-400': activeMenu === 'wilayah', 'text-sky-400': {{ $isArea ? 'true' : 'false' }}, 'text-slate-400': activeMenu !== 'wilayah' && !{{ $isArea ? 'true' : 'false' }} }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
+                        
 
                     <!-- Compact Popover Menu -->
                     <div x-cloak 
@@ -187,7 +186,10 @@
                                 </div>
                                 <div class="space-y-0.5">
                                     @foreach ($navRegions['dki-jakarta']['cities'] as $city)
-                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors font-medium">
+                                        @php
+                                            $isCityActive = request()->is('area/' . $city['slug'] . '*');
+                                        @endphp
+                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md transition-colors font-medium {{ $isCityActive ? 'bg-slate-800 text-sky-400 font-bold border border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
                                             {{ $city['name'] }}
                                         </a>
                                     @endforeach
@@ -201,8 +203,11 @@
                                 </div>
                                 <div class="space-y-0.5">
                                     @foreach (['bogor', 'depok-cinere', 'tangerang-kota', 'tangerang-selatan', 'bekasi-cikarang'] as $slug)
-                                        @php($city = $navRegions[$slug === 'tangerang-kota' || $slug === 'tangerang-selatan' ? 'banten' : 'jawa-barat']['cities'][$slug])
-                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors font-medium">
+                                        @php
+                                            $city = $navRegions[$slug === 'tangerang-kota' || $slug === 'tangerang-selatan' ? 'banten' : 'jawa-barat']['cities'][$slug];
+                                            $isCityActive = request()->is('area/' . $city['slug'] . '*');
+                                        @endphp
+                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md transition-colors font-medium {{ $isCityActive ? 'bg-slate-800 text-sky-400 font-bold border border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
                                             {{ $city['name'] }}
                                         </a>
                                     @endforeach
@@ -216,8 +221,11 @@
                                 </div>
                                 <div class="space-y-0.5 mb-2">
                                     @foreach (['semarang' => 'jawa-tengah', 'bandar-lampung' => 'lampung'] as $slug => $province)
-                                        @php($city = $navRegions[$province]['cities'][$slug])
-                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors font-medium">
+                                        @php
+                                            $city = $navRegions[$province]['cities'][$slug];
+                                            $isCityActive = request()->is('area/' . $city['slug'] . '*');
+                                        @endphp
+                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md transition-colors font-medium {{ $isCityActive ? 'bg-slate-800 text-sky-400 font-bold border border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
                                             {{ $city['name'] }}
                                         </a>
                                     @endforeach
@@ -234,10 +242,10 @@
                     </div>
                 </div>
 
-                <!-- 6. Artikel -->
+                <!-- 6. Blog -->
                 <a href="{{ route('articles.index') }}" 
-                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ request()->is('artikel*') || request()->is('pengetahuan*') ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
-                    Artikel
+                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isBlog ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
+                    Blog
                 </a>
             </nav>
 
