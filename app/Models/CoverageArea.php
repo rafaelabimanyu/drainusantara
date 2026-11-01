@@ -14,6 +14,8 @@ class CoverageArea extends Model
     use HasFactory;
 
     protected $fillable = [
+        'type',
+        'province_name',
         'city',
         'district',
         'slug',
@@ -26,6 +28,9 @@ class CoverageArea extends Model
         'longitude',
         'content',
         'hero_image',
+        'presence_image',
+        'presence_description',
+        'gallery_ids',
         'posko_name',
         'posko_address',
         'posko_coverage_radius',
@@ -48,9 +53,12 @@ class CoverageArea extends Model
     protected function casts(): array
     {
         return [
+            'type' => 'string',
             'starting_price' => 'integer',
             'latitude' => 'float',
             'longitude' => 'float',
+            'presence_description' => 'string',
+            'gallery_ids' => 'array',
             'faqs' => 'array',
             'advantages' => 'array',
             'service_categories' => 'array',
@@ -100,6 +108,47 @@ class CoverageArea extends Model
         return RegionService::isoRegion($provinceSlug);
     }
 
+    public function isProvince(): bool
+    {
+        return $this->type === 'province' || $this->district === '[PROVINSI]';
+    }
+
+    public function isCity(): bool
+    {
+        return $this->type === 'city' || $this->district === '[KOTA]';
+    }
+
+    public function isDistrict(): bool
+    {
+        return ! $this->isProvince() && ! $this->isCity();
+    }
+
+    /**
+     * Get resolved galleries (hasil pengerjaan) chosen via CMS, or empty collection if none selected.
+     *
+     * @return \Illuminate\Support\Collection<int, \App\Models\Gallery>
+     */
+    public function getResolvedGalleries(?int $limit = 3): \Illuminate\Support\Collection
+    {
+        if (! empty($this->gallery_ids) && is_array($this->gallery_ids)) {
+            $ids = array_values(array_filter(array_map('intval', $this->gallery_ids)));
+            if (! empty($ids)) {
+                $selected = Gallery::where('is_active', true)
+                    ->with('service')
+                    ->whereIn('id', $ids)
+                    ->get();
+
+                if ($selected->isNotEmpty()) {
+                    $idOrder = array_flip($ids);
+                    $ordered = $selected->sortBy(fn ($item) => $idOrder[$item->id] ?? 999)->values();
+                    return $limit !== null ? $ordered->take($limit) : $ordered;
+                }
+            }
+        }
+
+        return collect();
+    }
+
     /**
      * Get resolved FAQs either from custom CMS entries or dynamic local templates.
      *
@@ -120,6 +169,57 @@ class CoverageArea extends Model
         $district = $this->district ?: 'wilayah Anda';
         $city = $this->city ?: 'sekitarnya';
         $priceFormatted = 'Rp ' . number_format($this->resolved_price, 0, ',', '.');
+
+        if ($this->isProvince()) {
+            $provName = $this->province_name ?: $this->city;
+            return [
+                [
+                    'question' => "Berapa lama estimasi kedatangan teknisi Drainusantara di wilayah {$provName}?",
+                    'answer' => "Posko armada kami tersebar di kota-kota strategis {$provName}. Teknisi siaga langsung meluncur ke lokasi Anda secepatnya setelah konfirmasi pesanan via WhatsApp.",
+                ],
+                [
+                    'question' => "Apakah pengerjaan saluran mampet di {$provName} membongkar lantai keramik?",
+                    'answer' => "Sama sekali tidak (100% tanpa bongkar ubin/keramik). Kami menggunakan mesin spiral rotary Ridgid USA berkecepatan 400 RPM yang meliuk fleksibel menembus leher angsa dan pipa PVC tanpa merusak struktur lantai hunian.",
+                ],
+                [
+                    'question' => "Jenis saluran pipa apa saja yang ditangani armada {$provName}?",
+                    'answer' => "Kami menangani saluran wastafel cuci piring dapur, kloset/toilet duduk & jongkok, floor drain kamar mandi, bak kontrol, talang air hujan, hingga grease trap restoran dan saluran komersial ruko.",
+                ],
+                [
+                    'question' => "Berapa biaya jasa pelancaran pipa mampet di {$provName}?",
+                    'answer' => "Biaya jasa penanganan transparan mulai dari {$priceFormatted} dengan sistem No Cure No Pay. Jika saluran air gagal mengalir lancar, Anda bebas dari biaya jasa pengerjaan.",
+                ],
+                [
+                    'question' => "Bagaimana ketentuan garansi pengerjaan pipa di {$provName}?",
+                    'answer' => "Setiap pekerjaan yang selesai tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi kendala berulang pada titik yang sama selama masa garansi, teknisi kami datang kembali untuk perbaikan tuntas tanpa biaya tambahan.",
+                ],
+            ];
+        }
+
+        if ($this->isCity()) {
+            return [
+                [
+                    'question' => "Berapa lama estimasi teknisi Drainusantara tiba di lokasi {$city}?",
+                    'answer' => "Armada siaga teknisi kami di posko {$city} bergerak cepat menuju lokasi Anda secepatnya setelah konfirmasi pemesanan, menyesuaikan rute lalu lintas terdekat.",
+                ],
+                [
+                    'question' => "Apakah pengerjaan saluran mampet di {$city} membongkar lantai keramik?",
+                    'answer' => "Sama sekali tidak (100% tanpa bongkar ubin/keramik). Kami menggunakan mesin spiral baja rotary Ridgid berdaya puntir tinggi yang meliuk mengikuti alur pipa PVC hingga titik sumbatan terdalam tanpa merusak struktur ubin lantai.",
+                ],
+                [
+                    'question' => "Jenis saluran apa saja yang dilayani di {$city}?",
+                    'answer' => "Kami menangani wastafel cuci piring, kloset toilet duduk/jongkok, floor drain kamar mandi, bak kontrol perumahan, talang pipa atap, hingga pembersihan rutin grease trap restoran & ruko di seluruh area {$city}.",
+                ],
+                [
+                    'question' => "Berapa biaya jasa pelancaran pipa mampet di {$city}?",
+                    'answer' => "Biaya jasa penanganan transparan mulai dari {$priceFormatted} dengan komitmen No Cure No Pay (jika saluran gagal mengalir plong, Anda bebas dari biaya jasa pengerjaan).",
+                ],
+                [
+                    'question' => "Apakah ada garansi resmi untuk pengerjaan saluran di {$city}?",
+                    'answer' => "Ya, setiap pengerjaan yang dinyatakan tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi sumbatan ulang di titik yang sama dalam masa garansi, tim kami melancarkan ulang gratis tanpa biaya tambahan.",
+                ],
+            ];
+        }
 
         return [
             [
@@ -146,7 +246,7 @@ class CoverageArea extends Model
     }
 
     /**
-     * Get resolved advantages (Keunggulan) with local area context.
+     * Get resolved advantages (Keunggulan / Standar Operasional Wilayah) with local area context.
      *
      * @return array<int, array{title: string, description: string, icon?: string}>
      */
@@ -159,27 +259,69 @@ class CoverageArea extends Model
             }
         }
 
-        $district = $this->district ?: $this->city;
+        $locationName = $this->isProvince() 
+            ? ($this->province_name ?: $this->city) 
+            : ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]' ? $this->district : $this->city);
 
         return [
             [
-                'title' => "Teknisi Siaga di Area {$district}",
-                'description' => "Posko armada terdekat bergerak cepat, teknisi menuju ke lokasi anda secepatnya.",
-                'icon' => 'truck',
-            ],
-            [
-                'title' => 'Rotary Spiral Tempered Tanpa Kimia',
-                'description' => 'Meliuk fleksibel membersihkan lemak dan endapan tanpa risiko pipa PVC meleleh atau keramik terbongkar.',
+                'title' => 'Rotary Ridgid 400 RPM Tanpa Bongkar',
+                'code' => 'SOP-01',
+                'badge' => 'Standar Terverifikasi',
+                'description' => 'Kabel spiral baja tempered meliuk fleksibel menembus leher angsa sifon hingga 30 meter. Mengikis kerak lemak beku tanpa membongkar keramik lantai hunian.',
+                'checkpoints' => [
+                    'Kabel baja tempered elastis 16mm - 20mm',
+                    'Jangkauan penetrasi fleksibel hingga 30 meter',
+                    '100% keramik lantai dan dinding utuh aman',
+                ],
                 'icon' => 'tool',
             ],
             [
-                'title' => 'Garansi Resmi 30 Hari Kalender',
-                'description' => 'Dilindungi nota garansi digital. Apabila terjadi kendala berulang di titik yang sama, kami perbaiki gratis.',
+                'title' => '100% Bebas Soda Api & Kimia Korosif',
+                'code' => 'SOP-02',
+                'badge' => 'KEAMANAN PIPA PVC',
+                'description' => 'Menghindari risiko panas reaksi kimia keras (NaOH) yang melunakkan pipa PVC, memicu deformasi jalur, atau merusak fitting lem pipa di bawah cor semen beton.',
+                'checkpoints' => [
+                    'Bebas risiko sambungan fitting pipa melorot',
+                    'Aman dari uap panas kimia beracun di ruangan',
+                    'Mencegah kerusakan struktur pipa di bawah semen',
+                ],
                 'icon' => 'shield',
             ],
             [
-                'title' => 'Transparansi Biaya No Cure No Pay',
-                'description' => 'Kepastian biaya sejak awal. Bebas biaya jasa jika saluran air gagal kami lancarkan secara tuntas.',
+                'title' => 'Protokol Higienis & SOP K3 Teknisi',
+                'code' => 'SOP-03',
+                'badge' => 'STANDAR K3 & SANITASI',
+                'description' => 'Teknisi berseragam rapi, mengenakan sarung tangan nitril steril, wajib memakai pelindung sepatu (cover shoes) di dalam hunian, dan membersihkan area kerja.',
+                'checkpoints' => [
+                    'Wajib cover shoes & sarung tangan nitril steril',
+                    'Pembersihan & desinfeksi area kerja usai tindakan',
+                    'Teknisi berseragam resmi dengan identitas jelas',
+                ],
+                'icon' => 'truck',
+            ],
+            [
+                'title' => 'Uji Alir Sanitasi Debit Penuh',
+                'code' => 'SOP-04',
+                'badge' => 'QUALITY FLOW TEST',
+                'description' => 'Pengujian aliran air debit maksimal di hadapan pemilik properti sebelum serah terima untuk memastikan saluran mengalir plong tanpa sumbatan tersisa.',
+                'checkpoints' => [
+                    'Flushing debit air maksimal bersama pemilik',
+                    'Memastikan sisa kerak terdorong tuntas ke bak kontrol',
+                    'Verifikasi tidak ada rembesan pada jalur sifon',
+                ],
+                'icon' => 'check',
+            ],
+            [
+                'title' => 'Komitmen No Cure No Pay & Garansi 30 Hari',
+                'code' => 'SOP-05',
+                'badge' => 'JAMINAN RESMI TERTULIS',
+                'description' => "Kepastian tarif transparan di {$locationName}. Bebas biaya pengerjaan jika saluran gagal lancar, serta dilindungi nota garansi resmi 30 hari kalender.",
+                'checkpoints' => [
+                    'Bebas biaya jika saluran gagal lancar (No Cure No Pay)',
+                    'Nota fisik resmi dengan stempel garansi 30 hari',
+                    'Layanan komplain prioritas bebas biaya tambahan',
+                ],
                 'icon' => 'currency',
             ],
         ];
@@ -325,6 +467,14 @@ class CoverageArea extends Model
             return null;
         }
 
+        if ($this->isProvince()) {
+            return route('area.province', ['province' => $this->slug]);
+        }
+
+        if ($this->isCity()) {
+            return route('area.city', ['city' => $this->slug]);
+        }
+
         $city = collect(RegionService::all())
             ->flatMap(fn (array $province) => $province['cities'])
             ->first(fn (array $city) => $city['name'] === $this->city);
@@ -351,10 +501,83 @@ class CoverageArea extends Model
 
         $provinces = RegionService::all();
 
-        foreach ($provinces as $province) {
-            foreach ($province['cities'] as $city) {
+        foreach ($provinces as $provSlug => $province) {
+            $provName = $province['name'];
+
+            // 1. Sync Province level
+            $provArea = self::where(function ($query) use ($provName, $provSlug) {
+                $query->where('slug', $provSlug)
+                    ->orWhere(function ($q) use ($provName) {
+                        $q->where('city', $provName)->where('district', '[PROVINSI]');
+                    });
+            })->first();
+
+            if (! $provArea) {
+                self::create([
+                    'type' => 'province',
+                    'province_name' => $provName,
+                    'city' => $provName,
+                    'district' => '[PROVINSI]',
+                    'slug' => $provSlug,
+                    'meta_title' => "Jasa Saluran Mampet {$provName} - Drainusantara Bergaransi",
+                    'meta_description' => "Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah {$provName}. Armada siaga di seluruh kota dengan garansi resmi 30 hari.",
+                    'content' => "Layanan penanganan saluran pipa mampet berstandar profesional di seluruh kota/kabupaten Provinsi {$provName}. Didukung armada mekanis spiral rotary tanpa bongkar keramik.",
+                    'posko_name' => "Posko Siaga Regional {$provName}",
+                    'posko_address' => "Pusat Koordinasi Armada Siaga Wilayah {$provName}",
+                    'posko_coverage_radius' => "Jangkauan Seluruh Kota/Kabupaten di {$provName}",
+                    'cta_headline' => "Saluran Air di {$provName} Tersumbat Hari Ini?",
+                    'cta_button_text' => "Panggil Teknisi via WhatsApp",
+                    'cta_whatsapp_text' => "Halo Admin Drainusantara, saya ingin konsultasi penanganan pipa mampet di Provinsi {$provName}. Mohon info armada terdekat.",
+                    'is_active' => true,
+                ]);
+                $created++;
+            } else {
+                if ($provArea->type !== 'province' || empty($provArea->province_name)) {
+                    $provArea->update(['type' => 'province', 'province_name' => $provName]);
+                }
+                $existing++;
+            }
+
+            // 2. Sync Cities & Districts
+            foreach ($province['cities'] as $citySlug => $city) {
                 $cityName = $city['name'];
 
+                // City Level record
+                $cityArea = self::where(function ($query) use ($cityName, $citySlug) {
+                    $query->where('slug', $citySlug)
+                        ->orWhere(function ($q) use ($cityName) {
+                            $q->where('city', $cityName)->whereIn('district', ['[KOTA]', '', null]);
+                        });
+                })->first();
+
+                if (! $cityArea) {
+                    self::create([
+                        'type' => 'city',
+                        'province_name' => $provName,
+                        'city' => $cityName,
+                        'district' => '[KOTA]',
+                        'slug' => $citySlug,
+                        'meta_title' => "Jasa Saluran Mampet {$cityName} - Drainusantara Bergaransi",
+                        'meta_description' => "Jasa pelancaran wastafel, kloset toilet, dan saluran mampet di {$cityName} tanpa bongkar keramik & garansi 30 hari. Hubungi teknisi terdekat sekarang!",
+                        'content' => "Layanan penanganan saluran pipa mampet di seluruh wilayah {$cityName} dan sekitarnya.",
+                        'posko_name' => "Posko Armada Siaga {$cityName}",
+                        'posko_address' => $city['posko_address'] ?? "Posko Armada Siaga {$cityName}",
+                        'posko_coverage_radius' => "Radius Jangkauan 15-20 KM • Teknisi Siaga Menuju Lokasi",
+                        'cta_headline' => "Saluran Air di {$cityName} Mampet?",
+                        'cta_button_text' => "Panggil Teknisi via WhatsApp",
+                        'cta_whatsapp_text' => "Halo teknisi Drainusantara, saya butuh layanan darurat pelancaran saluran pipa mampet di area {$cityName}. Mohon info jadwal teknisi terdekat.",
+                        'presence_description' => "Drainusantara hadir di {$cityName} dengan posko armada siaga untuk melayani perumahan, ruko, restoran, dan gedung tanpa bongkar lantai keramik.",
+                        'is_active' => true,
+                    ]);
+                    $created++;
+                } else {
+                    if ($cityArea->type !== 'city' || empty($cityArea->province_name)) {
+                        $cityArea->update(['type' => 'city', 'province_name' => $provName]);
+                    }
+                    $existing++;
+                }
+
+                // District Level records
                 foreach ($city['districts'] as $district) {
                     $slug = Str::slug("{$cityName} {$district}");
 
@@ -365,11 +588,16 @@ class CoverageArea extends Model
                     })->first();
 
                     if ($area) {
+                        if ($area->type !== 'district' || empty($area->province_name)) {
+                            $area->update(['type' => 'district', 'province_name' => $provName]);
+                        }
                         $existing++;
                         continue;
                     }
 
                     self::create([
+                        'type' => 'district',
+                        'province_name' => $provName,
                         'city' => $cityName,
                         'district' => $district,
                         'slug' => $slug,

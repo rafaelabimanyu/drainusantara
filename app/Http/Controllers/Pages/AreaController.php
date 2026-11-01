@@ -72,10 +72,33 @@ class AreaController extends Controller
             abort(404, 'Provinsi tidak ditemukan dalam cakupan armada kami.');
         }
 
-        $title = "Jasa Saluran Mampet {$provinceData['name']}";
-        $description = "Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah {$provinceData['name']}. Armada siaga di seluruh kota dengan garansi resmi 30 hari.";
+        $area = CoverageArea::where(function ($q) use ($provinceData, $province) {
+            $q->where('slug', $provinceData['slug'])
+              ->orWhere('slug', $province)
+              ->orWhere(function ($sub) use ($provinceData) {
+                  $sub->where('city', $provinceData['name'])->where('district', '[PROVINSI]');
+              });
+        })->first();
 
-        PageMetadata::title($title);
+        if (! $area) {
+            $area = new CoverageArea([
+                'type' => 'province',
+                'province_name' => $provinceData['name'],
+                'city' => $provinceData['name'],
+                'district' => '[PROVINSI]',
+                'slug' => $provinceData['slug'],
+                'meta_title' => "Jasa Saluran Mampet {$provinceData['name']}",
+                'meta_description' => "Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah {$provinceData['name']}. Armada siaga di seluruh kota dengan garansi resmi 30 hari.",
+                'content' => "Layanan pelancaran saluran pipa mampet profesional untuk wilayah Provinsi {$provinceData['name']}.",
+                'is_active' => true,
+            ]);
+        }
+
+        $rawTitle = $area->meta_title ?: "Jasa Saluran Mampet {$provinceData['name']}";
+        $cleanTitle = PageMetadata::cleanTitle($rawTitle);
+        $description = $area->meta_description ?: "Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah {$provinceData['name']}. Armada siaga di seluruh kota dengan garansi resmi 30 hari.";
+
+        PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
         SEOMeta::setCanonical(url()->current());
         SEOMeta::addKeyword([
@@ -104,7 +127,7 @@ class AreaController extends Controller
             'name' => "Drainusantara Provinsi {$provinceData['name']}",
             'areaServed' => $provinceData['name'],
             'telephone' => $this->formatInternationalPhone(),
-            'priceRange' => 'Mulai Rp 400.000',
+            'priceRange' => 'Mulai Rp ' . number_format($area->resolved_price, 0, ',', '.'),
             'openingHours' => 'Mo-Su 00:00-24:00',
             'geo' => [
                 '@type' => 'GeoCoordinates',
@@ -128,21 +151,48 @@ class AreaController extends Controller
             ],
         ]);
 
+        $faqs = $area->resolved_faqs;
+        if (! empty($faqs)) {
+            $faqSchema = JsonLdMulti::newJsonLd();
+            $faqSchema->setType('FAQPage');
+            $faqSchema->addValues([
+                'mainEntity' => array_map(static fn (array $faq): array => [
+                    '@type' => 'Question',
+                    'name' => $faq['question'],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => $faq['answer'],
+                    ],
+                ], $faqs),
+            ]);
+        }
+
         $services = Cache::remember('services.all_active', 86400, function () {
             return Service::where('is_active', true)->orderBy('order')->get();
         });
         $reviews = Cache::remember('reviews.top3', 86400, function () {
             return Review::where('is_active', true)->latest()->take(3)->get();
         });
-        $galleries = Cache::remember('galleries.top3', 86400, function () {
-            return Gallery::where('is_active', true)
-                ->with('service')
-                ->orderBy('order')
-                ->take(3)
-                ->get();
+        $equipments = Cache::remember('equipments.all_active', 86400, function () {
+            return Equipment::where('is_active', true)->orderBy('order')->get();
         });
+        $galleries = $area->getResolvedGalleries(3);
+        if ($galleries->isEmpty()) {
+            $galleries = Cache::remember('galleries.top3', 86400, function () {
+                return Gallery::where('is_active', true)
+                    ->with('service')
+                    ->orderBy('order')
+                    ->take(3)
+                    ->get();
+            });
+        }
 
-        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries'));
+        $articles = Article::where('is_published', true)
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries', 'area', 'faqs', 'equipments', 'articles'));
     }
 
     /**
@@ -173,10 +223,36 @@ class AreaController extends Controller
         $cityData = RegionService::findCity($city);
         abort_unless($cityData && $city === $cityData['slug'], 404);
 
-        $title = "Jasa Pipa Mampet {$cityData['name']}";
-        $description = "Pelancaran wastafel, kloset, & floor drain mampet di {$cityData['name']} tanpa bongkar keramik. Layanan respons chat sigap via WhatsApp, garansi resmi 30 hari.";
+        $area = CoverageArea::where(function ($q) use ($cityData, $city) {
+            $q->where('slug', $cityData['slug'])
+              ->orWhere('slug', $city)
+              ->orWhere(function ($sub) use ($cityData) {
+                  $sub->where('city', $cityData['name'])
+                      ->where(function ($d) {
+                          $d->whereNull('district')->orWhere('district', '')->orWhere('district', '[KOTA]');
+                      });
+              });
+        })->first();
 
-        PageMetadata::title($title);
+        if (! $area) {
+            $area = new CoverageArea([
+                'type' => 'city',
+                'province_name' => $cityData['province_name'] ?? null,
+                'city' => $cityData['name'],
+                'district' => '[KOTA]',
+                'slug' => $cityData['slug'],
+                'meta_title' => "Jasa Pipa Mampet {$cityData['name']}",
+                'meta_description' => "Jasa pelancaran wastafel, kloset toilet, dan saluran mampet di {$cityData['name']} tanpa bongkar keramik & garansi 30 hari. Hubungi teknisi terdekat sekarang!",
+                'content' => "Layanan penanganan saluran pipa mampet di seluruh wilayah {$cityData['name']} dan sekitarnya.",
+                'is_active' => true,
+            ]);
+        }
+
+        $rawTitle = $area->meta_title ?: "Jasa Pipa Mampet {$cityData['name']}";
+        $cleanTitle = PageMetadata::cleanTitle($rawTitle);
+        $description = $area->meta_description ?: "Pelancaran wastafel, kloset, & floor drain mampet di {$cityData['name']} tanpa bongkar keramik. Layanan respons chat sigap via WhatsApp, garansi resmi 30 hari.";
+
+        PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
         SEOMeta::setCanonical(url()->current());
         SEOMeta::addKeyword([
@@ -195,24 +271,6 @@ class AreaController extends Controller
 
         TwitterCard::setDescription($description);
         TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
-
-        $area = CoverageArea::where('city', $cityData['name'])
-            ->where(function ($q) {
-                $q->whereNull('district')->orWhere('district', '')->orWhere('district', '[KOTA]');
-            })
-            ->first();
-
-        if (! $area) {
-            $area = new CoverageArea([
-                'city' => $cityData['name'],
-                'district' => $cityData['name'],
-                'slug' => $cityData['slug'],
-                'meta_title' => "Jasa Saluran Mampet {$cityData['name']} - Drainusantara Bergaransi",
-                'meta_description' => "Jasa pelancaran wastafel, kloset toilet, dan saluran mampet di {$cityData['name']} tanpa bongkar keramik & garansi 30 hari. Hubungi teknisi terdekat sekarang!",
-                'content' => "Layanan penanganan saluran pipa mampet di seluruh wilayah {$cityData['name']} dan sekitarnya.",
-                'is_active' => true,
-            ]);
-        }
 
         $resolvedCoords = $area->resolved_coordinates;
         $districtsServed = array_map(fn ($d) => [
@@ -288,6 +346,22 @@ class AreaController extends Controller
             ],
         ]);
 
+        $faqs = $area->resolved_faqs;
+        if (! empty($faqs)) {
+            $faqSchema = JsonLdMulti::newJsonLd();
+            $faqSchema->setType('FAQPage');
+            $faqSchema->addValues([
+                'mainEntity' => array_map(static fn (array $faq): array => [
+                    '@type' => 'Question',
+                    'name' => $faq['question'],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => $faq['answer'],
+                    ],
+                ], $faqs),
+            ]);
+        }
+
         $services = Cache::remember('services.all_active', 86400, function () {
             return Service::where('is_active', true)->orderBy('order')->get();
         });
@@ -299,22 +373,25 @@ class AreaController extends Controller
             return Equipment::where('is_active', true)->orderBy('order')->get();
         });
 
-        $galleries = Gallery::where('is_active', true)
-            ->with('service')
-            ->where('location', 'like', "%{$cityData['name']}%")
-            ->latest()
-            ->take(3)
-            ->get();
-
-        if ($galleries->count() < 3) {
-            $fallbackGalleries = Gallery::where('is_active', true)
+        $galleries = $area->getResolvedGalleries(3);
+        if ($galleries->isEmpty()) {
+            $galleries = Gallery::where('is_active', true)
                 ->with('service')
-                ->whereNotIn('id', $galleries->pluck('id'))
-                ->orderBy('order')
+                ->where('location', 'like', "%{$cityData['name']}%")
                 ->latest()
-                ->take(3 - $galleries->count())
+                ->take(3)
                 ->get();
-            $galleries = $galleries->concat($fallbackGalleries);
+
+            if ($galleries->count() < 3) {
+                $fallbackGalleries = Gallery::where('is_active', true)
+                    ->with('service')
+                    ->whereNotIn('id', $galleries->pluck('id'))
+                    ->orderBy('order')
+                    ->latest()
+                    ->take(3 - $galleries->count())
+                    ->get();
+                $galleries = $galleries->concat($fallbackGalleries);
+            }
         }
 
         $articles = Article::where('is_published', true)
@@ -322,7 +399,7 @@ class AreaController extends Controller
             ->take(3)
             ->get();
 
-        return view('areas.city', compact('cityData', 'services', 'reviews', 'area', 'equipments', 'galleries', 'articles'));
+        return view('areas.city', compact('cityData', 'services', 'reviews', 'area', 'faqs', 'equipments', 'galleries', 'articles'));
     }
 
     /**
@@ -542,25 +619,28 @@ class AreaController extends Controller
             return Equipment::where('is_active', true)->orderBy('order')->get();
         });
 
-        $galleries = Gallery::where('is_active', true)
-            ->with('service')
-            ->where(function ($q) use ($area) {
-                $q->where('location', 'like', "%{$area->district}%")
-                  ->orWhere('location', 'like', "%{$area->city}%");
-            })
-            ->latest()
-            ->take(3)
-            ->get();
-
-        if ($galleries->count() < 3) {
-            $fallbackGalleries = Gallery::where('is_active', true)
+        $galleries = $area->getResolvedGalleries(3);
+        if ($galleries->isEmpty()) {
+            $galleries = Gallery::where('is_active', true)
                 ->with('service')
-                ->whereNotIn('id', $galleries->pluck('id'))
-                ->orderBy('order')
+                ->where(function ($q) use ($area) {
+                    $q->where('location', 'like', "%{$area->district}%")
+                      ->orWhere('location', 'like', "%{$area->city}%");
+                })
                 ->latest()
-                ->take(3 - $galleries->count())
+                ->take(3)
                 ->get();
-            $galleries = $galleries->concat($fallbackGalleries);
+
+            if ($galleries->count() < 3) {
+                $fallbackGalleries = Gallery::where('is_active', true)
+                    ->with('service')
+                    ->whereNotIn('id', $galleries->pluck('id'))
+                    ->orderBy('order')
+                    ->latest()
+                    ->take(3 - $galleries->count())
+                    ->get();
+                $galleries = $galleries->concat($fallbackGalleries);
+            }
         }
 
         $articles = Article::where('is_published', true)

@@ -258,8 +258,8 @@ class GalleryEnhancementsTest extends TestCase
         $response->assertDontSee('.mobile-nav-dock { display: none !important; }', false);
         $response->assertSee('mobile-nav-dock', false);
         $response->assertSee('Navigasi Mobile Floating Dock');
-        $response->assertSee('Cari Wilayah Layanan');
-        $response->assertSee('Buka Menu Navigasi');
+        $response->assertSee('Area - Cari Wilayah');
+        $response->assertSee('Menu Lengkap');
     }
 
     public function test_frontend_case_study_detail_page_renders_related_case_studies_carousel(): void

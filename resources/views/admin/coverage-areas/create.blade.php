@@ -20,16 +20,57 @@
         @csrf
 
         <!-- SECTION 1: INFORMASI WILAYAH & HARGA -->
-        <div class="space-y-4">
+        <div class="space-y-4" x-data="{
+            areaType: '{{ old('type', 'district') }}'
+        }">
             <div class="border-b border-slate-200 pb-2">
-                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">1. Wilayah &amp; Tarif Layanan</h2>
-                <p class="text-xs text-slate-500">Pengaturan lokasi dasar dan diferensiasi harga mulai penanganan pipa.</p>
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">1. Level Wilayah &amp; Tarif Layanan</h2>
+                <p class="text-xs text-slate-500">Pilih tingkat hierarki (Provinsi, Kota, atau Area / Kawasan) dan atur cakupan halaman landing.</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
+            <!-- Area Type Selector -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Tingkat / Level Area *</label>
+                <div class="grid grid-cols-3 gap-3 max-w-lg">
+                    <label class="flex items-center gap-2.5 p-3 rounded-lg border cursor-pointer transition-all"
+                           :class="areaType === 'province' ? 'bg-indigo-50 border-indigo-500 text-indigo-900 font-bold shadow-2xs' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'">
+                        <input type="radio" name="type" value="province" x-model="areaType" class="text-indigo-600 focus:ring-indigo-500">
+                        <span class="text-xs">Provinsi</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-3 rounded-lg border cursor-pointer transition-all"
+                           :class="areaType === 'city' ? 'bg-sky-50 border-sky-500 text-sky-900 font-bold shadow-2xs' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'">
+                        <input type="radio" name="type" value="city" x-model="areaType" class="text-sky-600 focus:ring-sky-500">
+                        <span class="text-xs">Kota / Kab</span>
+                    </label>
+                    <label class="flex items-center gap-2.5 p-3 rounded-lg border cursor-pointer transition-all"
+                           :class="areaType === 'district' ? 'bg-slate-100 border-slate-500 text-slate-900 font-bold shadow-2xs' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'">
+                        <input type="radio" name="type" value="district" x-model="areaType" class="text-slate-600 focus:ring-slate-500">
+                        <span class="text-xs">Area / Kawasan</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+                <div x-show="areaType === 'province'">
+                    <label for="province_name_input" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Provinsi *</label>
+                    <input type="text" name="province_name" id="province_name_input" value="{{ old('province_name') }}" placeholder="Contoh: DKI Jakarta, Jawa Barat, dll" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-700 focus:ring-2 focus:ring-indigo-700/20 outline-hidden transition shadow-2xs">
+                    <p class="text-[11px] text-slate-500 mt-1">Landing page publik: <code>/area/provinsi/{slug}</code></p>
+                </div>
+
+                <div x-show="areaType === 'city'">
+                    <label for="city_name_input" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Kota / Kabupaten *</label>
+                    <input type="text" name="city" id="city_name_input" value="{{ old('city') }}" placeholder="Contoh: Jakarta Selatan, Kota Semarang, dll" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
+                    <p class="text-[11px] text-slate-500 mt-1">Landing page publik: <code>/area/{slug}</code></p>
+                </div>
+
+                <div x-show="areaType === 'city'">
+                    <label for="city_province_input" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Provinsi Induk (Opsional)</label>
+                    <input type="text" name="province_name" id="city_province_input" value="{{ old('province_name') }}" placeholder="Contoh: DKI Jakarta" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
+                </div>
+
+                <div x-show="areaType === 'district'">
                     <label for="city" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Kota / Wilayah *</label>
-                    <select name="city" id="city" required class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden bg-white transition shadow-2xs">
+                    <select name="city" id="city" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden bg-white transition shadow-2xs">
                         <option value="">-- Pilih Wilayah Operasional --</option>
                         <optgroup label="JABODETABEK">
                             <option value="Jakarta Selatan" {{ old('city') == 'Jakarta Selatan' ? 'selected' : '' }}>Jakarta Selatan</option>
@@ -51,9 +92,9 @@
                     @error('city') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
-                <div>
-                    <label for="district" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Area / Wilayah *</label>
-                    <input type="text" name="district" id="district" required value="{{ old('district') }}" placeholder="Contoh: Tebet, Sukarame, dll" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
+                <div x-show="areaType === 'district'">
+                    <label for="district" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Nama Area *</label>
+                    <input type="text" name="district" id="district" value="{{ old('district') }}" placeholder="Contoh: Tebet, Sukarame, dll" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
                     @error('district') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
                 </div>
 
@@ -119,6 +160,135 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2.5: KEHADIRAN LOKAL (DRAINTUSANTARA HADIR DI WILAYAH/KOTA) -->
+        <div class="space-y-4">
+            <div class="border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">2.5. Kehadiran Lokal ("Drainusantara Hadir di [Kota/Wilayah]")</h2>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-50 text-sky-800 border border-sky-200">Landing Kota &amp; Provinsi</span>
+                </div>
+                <p class="text-xs text-slate-500">Foto dokumentasi posko/armada kota dan narasi kehadiran teknisi yang tampil pada landing page kota (/area/{kota}).</p>
+            </div>
+
+            <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-4" x-data="{ presencePreview: null }">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+                    <div class="w-full aspect-4/3 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden relative shadow-2xs">
+                        <template x-if="presencePreview">
+                            <img :src="presencePreview" class="w-full h-full object-cover">
+                        </template>
+                        <template x-if="!presencePreview">
+                            <div class="text-center p-2 text-slate-400">
+                                <svg class="w-7 h-7 mx-auto mb-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                </svg>
+                                <span class="text-[11px] font-medium">Foto Armada Posko Kota</span>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="sm:col-span-2 space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Foto Kehadiran / Posko Kota</label>
+                            <input type="file" name="presence_image" id="presence_image" accept="image/jpeg,image/png,image/webp"
+                                   @change="const f = $event.target.files[0]; if (f) { presencePreview = URL.createObjectURL(f); }"
+                                   class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
+                            <p class="text-[11px] text-slate-500 mt-1">Format WebP, JPG, atau PNG (maks 5MB). Dikonversi otomatis menjadi WebP teroptimasi.</p>
+                            @error('presence_image') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="presence_description" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Deskripsi Kehadiran Drainusantara di Wilayah Ini</label>
+                            <textarea name="presence_description" id="presence_description" rows="3" placeholder="Jaringan armada siaga Drainusantara hadir melayani seluruh penjuru wilayah..." class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('presence_description') }}</textarea>
+                            <p class="text-[11px] text-slate-500 mt-1">Ditampilkan pada section 'Drainusantara Hadir di [Kota]' di landing page kota.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION PILIHAN GALERI HASIL PENGERJAAN -->
+        <div class="space-y-4">
+            <div class="border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">Pilihan Galeri Hasil Pengerjaan (Dokumentasi Lapangan)</h2>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-50 text-sky-800 border border-sky-200">Provinsi, Kota &amp; Area</span>
+                </div>
+                <p class="text-xs text-slate-500">Pilih hasil pengerjaan dari database dokumentasi teknisi yang ingin ditampilkan pada section 'Hasil Pengerjaan Teknisi di Lapangan'. Jika tidak ada yang dipilih, sistem otomatis memilih secara cerdas berdasarkan kecocokan wilayah / order terbaru.</p>
+            </div>
+
+            @php
+                $selectedGalleryIds = old('gallery_ids', []);
+                if (!is_array($selectedGalleryIds)) {
+                    $selectedGalleryIds = [];
+                }
+            @endphp
+
+            <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3"
+                 x-data="{
+                     search: '',
+                     selectedCount: {{ count($selectedGalleryIds) }},
+                     updateCount() {
+                         this.selectedCount = document.querySelectorAll('input[name=\'gallery_ids[]\']:checked').length;
+                     }
+                 }">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="relative flex-1 max-w-sm">
+                        <input type="text"
+                               x-model="search"
+                               placeholder="Cari dokumentasi (judul, lokasi, kategori)..."
+                               class="w-full rounded-lg border border-slate-300 pl-8 pr-3 py-1.5 text-xs focus:border-sky-700 focus:ring-1 focus:ring-sky-700 outline-hidden bg-white">
+                        <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="font-bold text-sky-800 bg-sky-100 px-2.5 py-1 rounded border border-sky-200">
+                            <span x-text="selectedCount"></span> Terpilih
+                        </span>
+                        <span class="text-slate-500 text-[11px]">(Default otomatis jika 0 terpilih)</span>
+                    </div>
+                </div>
+
+                @if(isset($availableGalleries) && $availableGalleries->isNotEmpty())
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-80 overflow-y-auto pr-1">
+                        @foreach($availableGalleries as $g)
+                            @php
+                                $isChecked = in_array($g->id, $selectedGalleryIds);
+                                $thumb = !empty($g->image) ? asset($g->image) : (!empty($g->after_image) ? asset($g->after_image) : asset('assets/placeholders/service.svg'));
+                                $keywords = strtolower($g->title . ' ' . $g->location . ' ' . $g->category_label);
+                            @endphp
+                            <label class="flex items-start gap-3 p-2.5 rounded-lg border border-slate-200 bg-white hover:border-sky-400 transition-colors cursor-pointer select-none"
+                                   x-show="!search || {{ json_encode($keywords) }}.includes(search.toLowerCase())">
+                                <input type="checkbox"
+                                       name="gallery_ids[]"
+                                       value="{{ $g->id }}"
+                                       {{ $isChecked ? 'checked' : '' }}
+                                       @change="updateCount()"
+                                       class="mt-1 w-4 h-4 rounded text-sky-700 border-slate-300 focus:ring-sky-600 shrink-0">
+                                <div class="w-14 h-14 rounded overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
+                                    <img src="{{ $thumb }}" alt="{{ $g->title }}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="text-xs font-bold text-slate-800 line-clamp-1 leading-snug">{{ $g->title }}</p>
+                                    <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                                            {{ $g->category_label }}
+                                        </span>
+                                        @if($g->location)
+                                            <span class="text-[10px] text-slate-500 truncate max-w-[120px]">{{ $g->location }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-xs text-slate-500 italic py-2">Belum ada dokumentasi hasil pengerjaan di database galeri.</p>
+                @endif
+                @error('gallery_ids') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
         </div>
 
@@ -223,7 +393,100 @@
             </div>
         </div>
 
-        <!-- SECTION 7: STATUS AKTIF & SIMPAN -->
+        <!-- SECTION 7: FAQ DINAMIS WILAYAH -->
+        @php
+            $existingFaqs = old('faqs', []);
+            if (!is_array($existingFaqs)) {
+                $existingFaqs = [];
+            }
+        @endphp
+        <div class="space-y-4" x-data="{
+            faqs: {{ Illuminate\Support\Js::from($existingFaqs) }},
+            addFaq(q = '', a = '') {
+                this.faqs.push({ question: q, answer: a });
+            },
+            removeFaq(index) {
+                this.faqs.splice(index, 1);
+            },
+            loadTemplate() {
+                const areaType = document.querySelector('input[name=type]:checked')?.value || 'district';
+                const provinceInput = document.getElementById('province_name_input')?.value || document.getElementById('city_province_input')?.value || 'Provinsi';
+                const cityInput = document.getElementById('city_name_input')?.value || document.getElementById('city')?.value || 'Kota';
+                const districtInput = document.getElementById('district')?.value || 'Wilayah';
+                const price = 'Rp 400.000';
+
+                if (areaType === 'province') {
+                    this.faqs = [
+                        { question: `Berapa lama estimasi armada teknisi tiba di kota/kabupaten dalam Provinsi ${provinceInput}?`, answer: `Dengan posko armada terdistribusi di setiap kota strategis di Provinsi ${provinceInput}, teknisi kami dapat tiba di lokasi dalam rentang waktu 30 hingga 60 menit setelah konfirmasi pesanan.` },
+                        { question: `Apakah pengerjaan di seluruh Provinsi ${provinceInput} dilindungi garansi resmi?`, answer: `Ya, seluruh penanganan pipa mampet di Provinsi ${provinceInput} dilindungi garansi tertulis 30 hari kalender. Jika terjadi kendala berulang pada titik yang sama, perbaikan ulang dilakukan tanpa biaya tambahan.` },
+                        { question: `Mengapa metode rotary spiral mekanis tanpa bongkar lebih aman dibanding bahan kimia?`, answer: `Zat kimia keras dapat melarutkan fitting sambungan pipa PVC dan memicu kebocoran di bawah struktur semen. Metode spiral baja rotary 100% mekanis dan aman untuk pipa segala usia.` },
+                        { question: `Bagaimana sistem pembayaran No Cure No Pay di Provinsi ${provinceInput}?`, answer: `Jika tim teknisi kami tidak berhasil melancarkan sumbatan saluran pipa Anda, Anda tidak dikenakan biaya jasa pengerjaan sepeser pun.` },
+                        { question: `Layanan saluran pipa apa saja yang dilayani di Provinsi ${provinceInput}?`, answer: `Kami melayani kloset WC, wastafel cuci piring, floor drain kamar mandi, bak kontrol, talang air hujan, hingga pembersihan rutin grease trap ruko dan resto di seluruh wilayah ${provinceInput}.` }
+                    ];
+                } else if (areaType === 'city') {
+                    this.faqs = [
+                        { question: `Berapa lama estimasi kedatangan teknisi di ${cityInput}?`, answer: `Armada siaga teknisi kami di posko ${cityInput} umumnya tiba di lokasi alamat Anda dalam waktu 30 hingga 45 menit tergantung kondisi rute jalan terdekat.` },
+                        { question: `Apakah pengerjaan pipa mampet di ${cityInput} membutuhkan pembongkaran lantai keramik?`, answer: `Tidak ada pembongkaran keramik sama sekali (100% non-destruktif). Kami memakai mesin spiral rotary berdaya puntir tinggi yang meliuk fleksibel hingga titik mampet terdalam.` },
+                        { question: `Kategori properti apa saja yang dilayani di ${cityInput}?`, answer: `Kami melayani hunian rumah tinggal, ruko, restoran, kafe F&B, gedung kantor, hingga fasilitas pergudangan dan pabrik di seluruh area di ${cityInput}.` },
+                        { question: `Berapa tarif jasa pengerjaan pipa mampet di ${cityInput}?`, answer: `Tarif penanganan mulai dari ${price} dengan jaminan No Cure No Pay (tidak lancar plong, gratis biaya jasa pengerjaan).` },
+                        { question: `Bagaimana prosedur klaim garansi 30 hari di ${cityInput}?`, answer: `Cukup tunjukkan nota invoice digital atau konfirmasi nomor WhatsApp pemesanan Anda. Teknisi posko ${cityInput} akan segera dijadwalkan ulang untuk inspeksi dan pelancaran gratis.` }
+                    ];
+                } else {
+                    this.faqs = [
+                        { question: `Berapa lama estimasi teknisi Drainusantara tiba di area ${districtInput}, ${cityInput}?`, answer: `Armada siaga teknisi kami di posko ${cityInput} umumnya dapat tiba di lokasi Anda di area ${districtInput} dalam waktu 30 hingga 60 menit setelah konfirmasi pemesanan, menyesuaikan rute lalu lintas terdekat.` },
+                        { question: `Apakah pengerjaan saluran mampet di ${districtInput} membongkar lantai keramik?`, answer: `Sama sekali tidak (100% tanpa bongkar ubin/keramik). Kami menggunakan mesin spiral baja rotary berdaya puntir tinggi yang meliuk mengikuti alur pipa PVC hingga titik sumbatan terdalam tanpa merusak struktur lantai.` },
+                        { question: `Jenis saluran apa saja yang dilayani di ${districtInput}?`, answer: `Kami menangani pelancaran wastafel sink cuci piring, kloset toilet duduk/jongkok, floor drain kamar mandi, bak kontrol rumah, talang pipa atap, hingga pembersihan rutin grease trap restoran & ruko di seluruh area ${districtInput}.` },
+                        { question: `Berapa biaya jasa pelancaran pipa mampet di ${districtInput}?`, answer: `Biaya jasa penanganan mulai dari ${price} dengan skema No Cure No Pay (jika saluran gagal mengalir lancar, Anda bebas dari biaya jasa pengerjaan).` },
+                        { question: `Apakah ada garansi resmi untuk pengerjaan di ${districtInput}?`, answer: `Ya, setiap pengerjaan yang dinyatakan tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi sumbatan ulang di titik yang sama dalam masa garansi, tim kami melancarkan ulang tanpa biaya tambahan.` }
+                    ];
+                }
+            }
+        }">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                <div>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">7. Tanya Jawab (FAQ) Dinamis Wilayah</h2>
+                    <p class="text-xs text-slate-500">FAQ yang tampil di landing page provinsi, kota, atau area lokal. Otomatis memakai template kontekstual jika kosong.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" @click="loadTemplate()" class="px-2.5 py-1 text-xs font-semibold rounded-md border border-sky-300 text-sky-700 bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer">
+                        Gunakan Template FAQ
+                    </button>
+                    <button type="button" @click="addFaq()" class="px-2.5 py-1 text-xs font-semibold rounded-md bg-sky-700 hover:bg-sky-800 text-white transition-colors cursor-pointer flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        <span>Tambah FAQ</span>
+                    </button>
+                </div>
+            </div>
+
+            <template x-if="faqs.length === 0">
+                <div class="p-4 rounded-lg bg-slate-50 border border-dashed border-slate-300 text-center text-xs text-slate-500">
+                    Belum ada FAQ kustom. Halaman publik otomatis menampilkan template FAQ cerdas berbasis nama area &amp; harga lokal.
+                </div>
+            </template>
+
+            <div class="space-y-3">
+                <template x-for="(faq, index) in faqs" :key="index">
+                    <div class="p-3.5 bg-slate-50/75 rounded-lg border border-slate-200 space-y-2 relative shadow-2xs">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[11px] font-bold text-sky-700" x-text="`FAQ #${index + 1}`"></span>
+                            <button type="button" @click="removeFaq(index)" class="text-slate-400 hover:text-rose-600 transition-colors p-1" title="Hapus pertanyaan ini">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Pertanyaan</label>
+                            <input type="text" :name="`faqs[${index}][question]`" x-model="faq.question" placeholder="Contoh: Berapa lama estimasi teknisi tiba?" class="w-full px-3 py-1.5 rounded-md border border-slate-300 text-xs text-slate-900 focus:border-sky-700 outline-hidden">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Jawaban</label>
+                            <textarea :name="`faqs[${index}][answer]`" x-model="faq.answer" rows="2" placeholder="Jawaban..." class="w-full px-3 py-1.5 rounded-md border border-slate-300 text-xs text-slate-900 focus:border-sky-700 outline-hidden"></textarea>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- SECTION 8: STATUS AKTIF & SIMPAN -->
         <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-center gap-2.5">
                 <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }} class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">

@@ -50,17 +50,22 @@
                                 ? asset("images/areas/provinces/{$provinceSlug}.jpg")
                                 : null))))));
 
+    $presencePhoto = !empty($area->presence_image) 
+        ? (filter_var($area->presence_image, FILTER_VALIDATE_URL) ? $area->presence_image : asset($area->presence_image))
+        : ($heroBgImage ?: asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+
     $areaFaqs = $area->resolved_faqs;
     $posko = $area->resolved_posko;
     $advantages = $area->resolved_advantages;
     $comparisons = $area->resolved_comparison;
     $serviceCategories = $area->resolved_service_categories;
+    $displayGalleries = ($galleries ?? collect())->take(3);
 @endphp
 
 @push('styles')
 <style>
     .area-detail-page .area-hero { background: #f8fafc; border-bottom-color: #cbd5e1; }
-    .area-detail-page .area-hero h1 { max-width: 14ch; letter-spacing: -0.045em; }
+    .area-detail-page .area-hero h1 { max-width: 15ch; letter-spacing: -0.045em; }
     .area-detail-page .hero-proof { border-left: 3px solid #0369a1; padding-left: 1rem; }
     .area-detail-page .service-card { border-radius: 0.5rem; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -69,7 +74,7 @@
 @endpush
 
 <div class="area-detail-page pb-24 md:pb-0">
-    <!-- 1. HERO SECTION -->
+    <!-- 1. HERO SECTION KECAMATAN -->
     <section class="relative area-hero bg-slate-50 border-b border-slate-200 pt-5 pb-10 sm:pt-8 sm:pb-14 lg:pt-12 lg:pb-18 overflow-hidden">
         @if(!empty($heroBgImage))
             <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
@@ -78,7 +83,7 @@
                      loading="eager"
                      decoding="async"
                      class="w-full h-full object-cover object-center opacity-45 md:opacity-60 scale-105 transition-transform duration-700">
-                  <div class="absolute inset-0 bg-linear-to-r from-slate-50/40 via-slate-50/80 to-slate-50/45"></div>
+                <div class="absolute inset-0 bg-linear-to-r from-slate-50/40 via-slate-50/80 to-slate-50/45"></div>
                 <div class="absolute inset-0 bg-linear-to-t from-slate-50/40 via-transparent to-slate-50/40"></div>
             </div>
         @endif
@@ -123,8 +128,6 @@
                         <p class="text-xs font-bold uppercase tracking-wider text-sky-800">
                             Wilayah Layanan: {{ $districtLabel }}, {{ $area->city }}
                         </p>
-                       
-                       
                     </div>
 
                     <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight">
@@ -135,21 +138,26 @@
                         Pelancaran wastafel cuci piring, kloset toilet, dan pipa saluran pembuangan di <strong>{{ $area->district }}, {{ $area->city }}</strong>. Penanganan mekanis spiral rotary tanpa bongkar keramik lantai, bebas zat kimia perusak pipa PVC, dan bergaransi resmi 30 hari.
                     </p>
 
-                    <!-- Proof Metrics -->
-                    <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
-                        <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
+                    <!-- 4-Grid Feature Badges -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 max-w-2xl pt-1">
+                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
+                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Biaya Mulai</div>
+                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">Mulai {{ $startingPriceFormatted }}</div>
+                        </div>
+
+                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
                             <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Respon Armada</div>
                             <div class="text-xs sm:text-sm font-extrabold text-slate-900">Siaga 24 Jam</div>
                         </div>
 
-                        <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
-                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Jaminan Tuntas</div>
+                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
+                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Perlindungan</div>
                             <div class="text-xs sm:text-sm font-extrabold text-slate-900">Garansi 30 Hari</div>
                         </div>
 
-                        <div class="bg-white p-2.5 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
-                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Metode Tanpa Bongkar</div>
-                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">100% Non-Destruktif</div>
+                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
+                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Metode Kerja</div>
+                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">Metode Tanpa Bongkar</div>
                         </div>
                     </div>
 
@@ -163,9 +171,17 @@
                             <span>{{ $cta['button_text'] }}</span>
                         </a>
 
-                        <a href="#layanan-area" 
+                        <a href="tel:085609009009" 
+                           class="min-h-12 inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg border border-slate-800 shadow-2xs transition-colors">
+                            <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            <span>Hotline: 0856-0900-9009</span>
+                        </a>
+
+                        <a href="#layanan-kecamatan" 
                            class="min-h-12 inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg border border-slate-300 shadow-2xs transition-colors">
-                            <span>Katalog Layanan &amp; Toolkit</span>
+                            <span>Katalog Layanan</span>
                             <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
@@ -202,7 +218,90 @@
         </div>
     </section>
 
-    <!-- 2. SECTION LAYANAN CAROUSEL KE SAMPING -->
+    <!-- 2. SECTION DRAINUSANTARA HADIR DI KECAMATAN (TANPA CTA & HOTLINE) -->
+    <section id="kehadiran-lokal-kecamatan" data-section="hadir-kecamatan" class="py-12 lg:py-16 bg-white border-b border-slate-200 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                <!-- Visual Foto Presence -->
+                <div class="lg:col-span-5 order-2 lg:order-1">
+                    <div class="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-900 shadow-sm aspect-4/3">
+                        <img 
+                            src="{{ $presencePhoto }}" 
+                            alt="Operasional Teknisi Drainusantara Hadir di {{ $area->district }}, {{ $area->city }}"
+                            loading="lazy"
+                            decoding="async"
+                            class="w-full h-full object-cover"
+                        >
+                        <div class="absolute inset-0 bg-linear-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none"></div>
+                        <div class="absolute bottom-3 left-3 right-3 text-white">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-600 text-white uppercase tracking-wider">
+                                Posko Siaga {{ $area->district }}
+                            </span>
+                            <p class="text-xs font-semibold mt-1 text-slate-200">
+                                Armada siap meluncur dengan perlengkapan lengkap ke seluruh kelurahan di {{ $area->district }}.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copywriting & 3 Poin Kehadiran -->
+                <div class="lg:col-span-7 order-1 lg:order-2 space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold uppercase tracking-wider">
+                        <span>LAYANAN RESMI TINGKAT KECAMATAN</span>
+                    </div>
+
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        Drainusantara Hadir di <span class="text-sky-700">{{ $area->district }}</span>, {{ $area->city }}
+                    </h2>
+
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        {{ $area->presence_description ?: "Drainusantara hadir secara resmi melayani kawasan {$area->district}, {$area->city} dengan posko armada reaksi cepat. Mengatasi keluhan wastafel tumpat, toilet mampet, dan pipa got pembuangan secara higienis, bersih, dan berstandar teknis profesional tanpa risiko kerusakan struktur lantai hunian Anda." }}
+                    </p>
+
+                    <!-- Hint Geser di Mobile -->
+                    <div class="flex sm:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium pt-1" aria-hidden="true">
+                        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        <span>Geser untuk melihat keunggulan kehadiran kami</span>
+                    </div>
+
+                    <!-- 3 Highlight Points (Carousel di Mobile, Grid di Desktop) -->
+                    <div class="flex sm:grid sm:grid-cols-3 overflow-x-auto sm:overflow-visible snap-x snap-mandatory no-scrollbar gap-3 pt-2 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+                        <div class="w-[78vw] max-w-[280px] sm:w-auto shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
+                            <div>
+                                <div class="w-7 h-7 rounded-md bg-sky-100 text-sky-800 flex items-center justify-center font-bold text-xs mb-1.5">
+                                    01
+                                </div>
+                                <h3 class="text-xs font-bold text-slate-900">Posko Siaga Terdekat</h3>
+                                <p class="text-[11px] text-slate-600 leading-relaxed">Armada lokal di {{ $area->district }} siaga dengan mobilisasi cepat ke lokasi Anda.</p>
+                            </div>
+                        </div>
+
+                        <div class="w-[78vw] max-w-[280px] sm:w-auto shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
+                            <div>
+                                <div class="w-7 h-7 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs mb-1.5">
+                                    02
+                                </div>
+                                <h3 class="text-xs font-bold text-slate-900">Spiral Baja Non-Bongkar</h3>
+                                <p class="text-[11px] text-slate-600 leading-relaxed">Endapan lemak dan kotoran dirontokkan langsung dari leher pipa tanpa bongkar keramik.</p>
+                            </div>
+                        </div>
+
+                        <div class="w-[78vw] max-w-[280px] sm:w-auto shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
+                            <div>
+                                <div class="w-7 h-7 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs mb-1.5">
+                                    03
+                                </div>
+                                <h3 class="text-xs font-bold text-slate-900">Transparan &amp; Garansi</h3>
+                                <p class="text-[11px] text-slate-600 leading-relaxed">Sistem No Cure No Pay dilindungi nota garansi resmi 30 hari penuh.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SECTION LAYANAN 1 BARIS CAROUSEL -->
     @php
         $defaultServices = [
             [
@@ -239,79 +338,36 @@
             ],
         ];
         $itemsLayanan = (isset($services) && $services->isNotEmpty()) ? $services : collect($defaultServices);
-        $serviceChunks = $itemsLayanan->chunk(4);
     @endphp
-    <section id="layanan-area" class="py-12 sm:py-16 bg-white border-b border-slate-200"
+
+    <section id="layanan-kecamatan" class="py-12 sm:py-16 bg-white border-b border-slate-200"
              x-data="{
-                 activeDesktop: 0,
-                 totalDesktop: {{ $serviceChunks->count() }},
-                 activeMobile: 0,
-                 totalMobile: {{ $itemsLayanan->count() }},
-                 isMobile: window.innerWidth < 640,
+                 active: 0,
+                 total: {{ $itemsLayanan->count() }},
                  scrollLeft() {
-                     if (this.isMobile) {
-                         if (this.activeMobile > 0) {
-                             this.activeMobile--;
-                             this.scrollToMobile(this.activeMobile);
-                         }
-                     } else {
-                         if (this.activeDesktop > 0) {
-                             this.activeDesktop--;
-                             this.scrollToDesktop(this.activeDesktop);
-                         }
+                     const container = this.$refs.districtServiceCarousel;
+                     if (container) {
+                         container.scrollBy({ left: -340, behavior: 'smooth' });
                      }
                  },
                  scrollRight() {
-                     if (this.isMobile) {
-                         if (this.activeMobile < this.totalMobile - 1) {
-                             this.activeMobile++;
-                             this.scrollToMobile(this.activeMobile);
-                         }
-                     } else {
-                         if (this.activeDesktop < this.totalDesktop - 1) {
-                             this.activeDesktop++;
-                             this.scrollToDesktop(this.activeDesktop);
-                         }
+                     const container = this.$refs.districtServiceCarousel;
+                     if (container) {
+                         container.scrollBy({ left: 340, behavior: 'smooth' });
                      }
                  },
-                 scrollToDesktop(index) {
-                     const container = this.$refs.serviceCarousel;
-                     if (!container) return;
-                     const target = container.children[index];
-                     if (target) {
-                         target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                     }
-                 },
-                 scrollToMobile(index) {
-                     const container = this.$refs.serviceCarouselMobile;
-                     if (!container) return;
-                     const target = container.children[index];
-                     if (target) {
-                         target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                     }
-                 },
-                 onDesktopScroll() {
-                     const container = this.$refs.serviceCarousel;
-                     if (!container) return;
-                     const width = container.clientWidth;
-                     if (width > 0) {
-                         this.activeDesktop = Math.round(container.scrollLeft / width);
-                     }
-                 },
-                 onMobileScroll() {
-                     const container = this.$refs.serviceCarouselMobile;
+                 onScroll() {
+                     const container = this.$refs.districtServiceCarousel;
                      if (!container) return;
                      const scrollLeft = container.scrollLeft;
                      const first = container.firstElementChild;
-                     if (first) {
-                         const cardWidth = first.offsetWidth + 14;
-                         if (cardWidth > 0) {
-                             this.activeMobile = Math.min(this.totalMobile - 1, Math.max(0, Math.round(scrollLeft / cardWidth)));
-                         }
+                     const cardWidth = first ? first.offsetWidth + 20 : 340;
+                     if (cardWidth > 0) {
+                         this.active = Math.min(this.total - 1, Math.max(0, Math.round(scrollLeft / cardWidth)));
                      }
                  }
-             }"
-             @resize.window.debounce.100ms="isMobile = window.innerWidth < 640">
+             }">
+        <span id="layanan-area" class="sr-only"></span>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
                 <div>
@@ -325,280 +381,122 @@
                         Pilihan penanganan mekanis bergaransi resmi. Tuntas tanpa bongkar keramik hunian Anda.
                     </p>
                 </div>
-                <div class="flex items-center gap-2 self-end sm:self-auto"
-                     x-show="(isMobile && totalMobile > 1) || (!isMobile && totalDesktop > 1)">
+                <div class="flex items-center gap-3 self-end sm:self-auto">
+                    <span class="text-xs text-slate-500 font-mono hidden sm:inline-block">
+                        Layanan <span class="font-bold text-slate-900" x-text="active + 1">1</span> dari {{ $itemsLayanan->count() }}
+                    </span>
                     <button type="button" @click="scrollLeft()" 
-                            :disabled="isMobile ? activeMobile === 0 : activeDesktop === 0" 
                             aria-label="Geser layanan ke kiri"
-                            :class="(isMobile ? activeMobile === 0 : activeDesktop === 0) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-50 cursor-pointer'"
-                            class="w-9 h-9 rounded-lg border border-slate-300 bg-white text-slate-700 flex items-center justify-center transition-colors shadow-2xs">
+                            class="w-9 h-9 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 flex items-center justify-center transition-colors shadow-2xs cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                     </button>
                     <button type="button" @click="scrollRight()" 
-                            :disabled="isMobile ? activeMobile >= totalMobile - 1 : activeDesktop >= totalDesktop - 1" 
                             aria-label="Geser layanan ke kanan"
-                            :class="(isMobile ? activeMobile >= totalMobile - 1 : activeDesktop >= totalDesktop - 1) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-50 cursor-pointer'"
-                            class="w-9 h-9 rounded-lg border border-slate-300 bg-white text-slate-700 flex items-center justify-center transition-colors shadow-2xs">
+                            class="w-9 h-9 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 flex items-center justify-center transition-colors shadow-2xs cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </button>
                 </div>
             </div>
 
-            <!-- 1-Row Mobile Carousel (< sm) -->
-            <div class="block sm:hidden">
-                <div x-ref="serviceCarouselMobile"
-                     @scroll.debounce.50ms="onMobileScroll()"
-                     tabindex="0" role="region" aria-label="Katalog layanan area 1 baris"
-                     class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 pt-1 px-4 gap-3.5 -mx-4">
-                    @foreach($itemsLayanan as $catalog)
-                        <div class="w-[82vw] max-w-[340px] shrink-0 snap-center flex flex-col">
-                            <x-area.service-card 
-                                :catalog="$catalog"
-                                :location-name="$area->district . ', ' . $area->city"
-                                :whatsapp-number="$whatsappNumber"
-                                :area-price="$area->resolved_price"
-                                button-text="Pesan Teknisi"
-                            />
-                        </div>
-                    @endforeach
-                </div>
-
-                @if($itemsLayanan->count() > 1)
-                    <div class="flex items-center justify-between mt-3 px-1 text-xs text-slate-500 font-mono">
-                        <div class="flex items-center gap-1.5 text-[11px] text-slate-500 font-sans">
-                            <svg class="w-3.5 h-3.5 text-sky-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                            <span>Geser untuk layanan lain</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button type="button" @click="if (activeMobile > 0) { activeMobile--; scrollToMobile(activeMobile); }"
-                                    :disabled="activeMobile === 0"
-                                    :class="activeMobile === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
-                                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
-                                    aria-label="Layanan sebelumnya">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                            </button>
-                            <span class="text-slate-600"><strong class="text-slate-900" x-text="activeMobile + 1">1</strong>/{{ $itemsLayanan->count() }}</span>
-                            <button type="button" @click="if (activeMobile < totalMobile - 1) { activeMobile++; scrollToMobile(activeMobile); }"
-                                    :disabled="activeMobile >= totalMobile - 1"
-                                    :class="activeMobile >= totalMobile - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
-                                    class="p-1.5 rounded-md border border-slate-200 transition-colors"
-                                    aria-label="Layanan berikutnya">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                            </button>
-                        </div>
+            <!-- 1-Row Carousel Container (Desktop & Mobile) -->
+            <div x-ref="districtServiceCarousel"
+                 @scroll.debounce.50ms="onScroll()"
+                 tabindex="0" role="region" aria-label="Katalog layanan kecamatan 1 baris"
+                 class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-4 pt-1 px-4 gap-4 sm:gap-5 -mx-4 sm:mx-0 sm:px-0">
+                @foreach($itemsLayanan as $catalog)
+                    <div class="w-[84vw] sm:w-[275px] lg:w-[285px] shrink-0 snap-start flex flex-col">
+                        <x-area.service-card 
+                            :catalog="$catalog"
+                            :location-name="$area->district . ', ' . $area->city"
+                            :whatsapp-number="$whatsappNumber"
+                            :area-price="$area->resolved_price"
+                            button-text="Pesan Teknisi"
+                        />
                     </div>
-                @endif
-            </div>
-
-            <!-- 2x2 Grid Carousel Container (>= sm) -->
-            <div class="hidden sm:block">
-                <div x-ref="serviceCarousel"
-                     @scroll.debounce.50ms="onDesktopScroll()"
-                     tabindex="0" role="region" aria-label="Katalog layanan bergeser horizontal 2x2"
-                     class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 pt-1 px-4">
-                    @foreach($serviceChunks as $chunk)
-                        <div class="w-full shrink-0 snap-start grid grid-cols-2 gap-4 lg:gap-4.5">
-                            @foreach($chunk as $catalog)
-                                <x-area.service-card 
-                                    :catalog="$catalog"
-                                    :location-name="$area->district . ', ' . $area->city"
-                                    :whatsapp-number="$whatsappNumber"
-                                    :area-price="$area->resolved_price"
-                                    button-text="Pesan Teknisi"
-                                />
-                            @endforeach
-                        </div>
-                    @endforeach
-                </div>
-
-                @if($serviceChunks->count() > 1)
-                    <div class="flex items-center justify-center gap-3 mt-5 text-xs text-slate-500 font-mono">
-                        <button type="button" @click="if (activeDesktop > 0) { activeDesktop--; scrollToDesktop(activeDesktop); }"
-                                :disabled="activeDesktop === 0"
-                                :class="activeDesktop === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
-                                class="p-1.5 rounded-md border border-slate-200 transition-colors"
-                                aria-label="Halaman sebelumnya">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                        </button>
-                        <span>Halaman <strong class="text-slate-900" x-text="activeDesktop + 1">1</strong> dari {{ $serviceChunks->count() }}</span>
-                        <button type="button" @click="if (activeDesktop < totalDesktop - 1) { activeDesktop++; scrollToDesktop(activeDesktop); }"
-                                :disabled="activeDesktop >= totalDesktop - 1"
-                                :class="activeDesktop >= totalDesktop - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
-                                class="p-1.5 rounded-md border border-slate-200 transition-colors"
-                                aria-label="Halaman berikutnya">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </button>
-                    </div>
-                @endif
+                @endforeach
             </div>
         </div>
     </section>
 
-    <!-- 3. SECTION PERALATAN / TOOLKIT CAROUSEL KE SAMPING -->
+    <!-- 4. SECTION PERALATAN 1 BARIS CAROUSEL -->
+    <div id="peralatan-area">
+        <x-area.equipment-section 
+            section-id="peralatan-kecamatan"
+            :area-name="$area->district . ', ' . $area->city"
+            bg-color="bg-slate-50"
+            eyebrow="STANDAR ALAT INDUSTRI SIAGA DI {{ strtoupper($area->district) }}"
+            title="Peralatan Mekanis Teknisi Drainusantara"
+            description="Didukung peralatan standar internasional yang menjamin pipa lancar plong tanpa perlu membongkar keramik lantai hunian Anda."
+        />
+    </div>
+
+    <!-- 5. SECTION STANDAR OPERASIONAL WILAYAH (5 PILAR) -->
     @php
-        $defaultEquipments = [
-            [
-                'name' => 'Mesin Spiral Rotary Ridgid K-6200',
-                'badge' => 'PENGHANCUR LEMAK BEKU',
-                'short_description' => 'Motor torsi tinggi dengan kabel baja tempered 16mm-20mm yang meliuk fleksibel di dalam pipa PVC hingga 30 meter tanpa memecahkan sambungan fitting.',
-                'image' => asset('images/equipments/mesin-spiral-rotary-ridgid-k6200.webp'),
-            ],
-            [
-                'name' => 'Hand Rooter Ridgid K-50 Elektrik',
-                'badge' => 'SPESIALIS WASTAFEL & SINK',
-                'short_description' => 'Alat rotasi presisi untuk saluran diameter 2 - 3 inci seperti kitchen sink, floor drain kamar mandi, dan pipa talang sempit.',
-                'image' => asset('images/equipments/hand-rooter-ridgid-k50.webp'),
-            ],
-            [
-                'name' => 'Kamera Inspeksi CCTV Endoskopi 30M',
-                'badge' => 'DIAGNOSTIK DIGITAL',
-                'short_description' => 'Kamera water-proof resolusi tinggi dengan lampu LED sorot untuk melihat titik retak, akar pohon, atau pipa melorot di bawah lantai semen.',
-                'image' => asset('images/equipments/kamera-inspeksi-cctv-saluran-pipa.webp'),
-            ],
-            [
-                'name' => 'High-Pressure Hydro Jetting Unit',
-                'badge' => 'PEMBERSIH TOTAL GOT & LEMAK',
-                'short_description' => 'Semburan air bertekanan terarah untuk mengikis kerak minyak restoran dan lumpur got hingga dinding pipa bersih total 100%.',
-                'image' => asset('images/equipments/hydro-jetting-high-pressure.webp'),
-            ],
-        ];
-        $itemsEquipment = (isset($equipments) && $equipments->isNotEmpty()) ? $equipments : collect($defaultEquipments);
+        $advantages = $area->resolved_advantages ?? $advantages;
     @endphp
-    <section id="peralatan-area" class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200"
-             x-data="{
-                 activeSlide: 0,
-                 totalSlides: {{ $itemsEquipment->count() }},
-                 scrollLeft() {
-                     if (this.activeSlide > 0) {
-                         this.activeSlide--;
-                         this.scrollToSlide(this.activeSlide);
-                     }
-                 },
-                 scrollRight() {
-                     if (this.activeSlide < this.totalSlides - 1) {
-                         this.activeSlide++;
-                         this.scrollToSlide(this.activeSlide);
-                     }
-                 },
-                 scrollToSlide(index) {
-                     const container = this.$refs.toolCarousel;
-                     const target = container.children[index];
-                     if (target) {
-                         target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-                     }
-                 },
-                 onScroll() {
-                     const container = this.$refs.toolCarousel;
-                     const width = container.clientWidth;
-                     if (width > 0) {
-                         this.activeSlide = Math.round(container.scrollLeft / width);
-                     }
-                 }
-             }">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
-                <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
-                        STANDAR ALAT INDUSTRI SIAGA DI {{ strtoupper($area->district) }}
-                    </p>
-                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                        Peralatan Mekanis Teknisi Drainusantara
-                    </h2>
-                    <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                        Didukung peralatan standar internasional yang menjamin pipa lancar plong tanpa perlu membongkar keramik lantai.
-                    </p>
+    <section id="keunggulan-area" data-section="standar-operasional-kecamatan" class="py-14 lg:py-20 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold uppercase tracking-wider mb-2.5">
+                    <svg class="w-4 h-4 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                    <span>SOP TEKNISI RESMI</span>
                 </div>
-                <div class="flex items-center gap-2 self-end sm:self-auto">
-                    <span class="text-xs font-semibold text-slate-500 mr-1">
-                        Alat <span x-text="activeSlide + 1"></span> dari <span x-text="totalSlides"></span>
-                    </span>
-                    <button type="button" @click="scrollLeft()" :disabled="activeSlide === 0" aria-label="Geser peralatan ke kiri"
-                            :class="activeSlide === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 cursor-pointer'"
-                            class="w-9 h-9 rounded-lg border border-slate-300 bg-white text-slate-700 flex items-center justify-center transition-colors shadow-2xs">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                    </button>
-                    <button type="button" @click="scrollRight()" :disabled="activeSlide === totalSlides - 1" aria-label="Geser peralatan ke kanan"
-                            :class="activeSlide === totalSlides - 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 cursor-pointer'"
-                            class="w-9 h-9 rounded-lg border border-slate-300 bg-white text-slate-700 flex items-center justify-center transition-colors shadow-2xs">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    </button>
-                </div>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Standar Operasional Wilayah {{ $area->district }}
+                </h2>
+                <p class="text-xs sm:text-sm md:text-base text-slate-600 mt-2 leading-relaxed">
+                    Setiap penanganan saluran pipa mampet di {{ $area->district }}, {{ $area->city }} dijalankan dengan 5 pilar operasional: metode mekanis non-destruktif, transparansi biaya No Cure No Pay, dan garansi tertulis 30 hari.
+                </p>
             </div>
 
-            <!-- 1x1 Single-Item Spotlight Carousel Container -->
-            <div x-ref="toolCarousel"
-                 @scroll.debounce.50ms="onScroll()"
-                 tabindex="0" role="region" aria-label="Katalog toolkit bergeser 1x1 horizontal"
-                 class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar pb-3 pt-1 px-4">
-                @foreach($itemsEquipment as $tool)
-                    @php
-                        $toolName = is_object($tool) ? $tool->name : $tool['name'];
-                        $toolBadge = is_object($tool) ? ($tool->badge ?? 'ALAT STANDAR') : ($tool['badge'] ?? 'ALAT STANDAR');
-                        $toolDesc = is_object($tool) ? ($tool->short_description ?: $tool->description) : $tool['short_description'];
-                        $toolImage = is_object($tool) ? $tool->image : ($tool['image'] ?? null);
-                        if (empty($toolImage) || str_contains($toolImage, 'placehold.co')) {
-                            $toolImageSrc = asset('assets/placeholders/service.svg');
-                        } else {
-                            $toolImageSrc = str_starts_with($toolImage, 'http') ? $toolImage : asset(ltrim($toolImage, '/'));
-                        }
-                    @endphp
-                    <div class="w-full shrink-0 snap-start">
-                        <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-7 md:p-8 shadow-2xs grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-                            <div class="lg:col-span-5">
-                                <div class="relative w-full aspect-16/10 lg:aspect-4/3 rounded-lg overflow-hidden bg-slate-900 border border-slate-200 shadow-2xs">
-                                    <img src="{{ $toolImageSrc }}" onerror="this.onerror=null; this.src='{{ asset('assets/placeholders/service.svg') }}';"
-                                         alt="{{ $toolName }}" 
-                                         width="600"
-                                         height="450"
-                                         loading="lazy" 
-                                         decoding="async"
-                                         class="w-full h-full object-cover">
-                                    <span class="absolute top-2.5 left-2.5 bg-slate-900/85 backdrop-blur-xs text-white text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded border border-white/10 uppercase tracking-wider">
-                                        {{ $toolBadge }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
-                                <div>
-                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200 mb-2">
-                                        STANDAR ALAT INDUSTRI
-                                    </div>
-                                    <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight leading-snug">
-                                        {{ $toolName }}
-                                    </h3>
-                                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mt-2.5">
-                                        {{ $toolDesc }}
-                                    </p>
-                                </div>
+            <div class="flex md:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mb-3 px-1" aria-hidden="true">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <span>Geser untuk melihat standar SOP lain</span>
+            </div>
 
-                                
-
-                                <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
-                                    <span class="text-xs text-slate-500">
-                                        Dibawa langsung oleh teknisi armada di wilayah {{ $area->district }}, {{ $area->city }}.
-                                    </span>
-                                    <a href="{{ $emergencyWaUrl }}" target="_blank" rel="noopener noreferrer" 
-                                       class="inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs py-2 px-3.5 rounded-lg shadow-2xs transition-all">
-                                        <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                                        </svg>
-                                        <span>Konsultasi Alat</span>
-                                    </a>
-                                </div>
+            <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-5 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
+                @foreach($advantages as $idx => $adv)
+                    <div class="w-[84vw] max-w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 border-t-2 border-t-sky-700 p-5 sm:p-6 shadow-2xs hover:border-sky-500 transition-all card-lift flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-md bg-sky-50 border border-sky-200 text-sky-800 font-extrabold text-[11px] flex items-center gap-1.5 font-mono">
+                                    <svg class="w-3.5 h-3.5 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    {{ $adv['code'] ?? ('SOP-0' . ($idx + 1)) }}
+                                </span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                    {{ $adv['badge'] ?? 'Standar Terverifikasi' }}
+                                </span>
                             </div>
+                            <h3 class="text-base font-extrabold text-slate-900 tracking-tight mb-2">
+                                {{ $adv['title'] }}
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3">
+                                {{ $adv['description'] }}
+                            </p>
+
+                            @if(!empty($adv['checkpoints']))
+                            <div class="mt-4 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-700">
+                                @foreach($adv['checkpoints'] as $cp)
+                                <div class="flex items-start gap-2">
+                                    <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span class="text-slate-600 font-medium text-[11px] sm:text-xs leading-snug">{{ $cp }}</span>
+                                </div>
+                                @endforeach
+                            </div>
+                            @endif
                         </div>
                     </div>
                 @endforeach
             </div>
-
-           
-        </div>
-    </section>
         </div>
     </section>
 
-    <!-- 4. SECTION KATEGORI SEKTOR LAYANAN (RUMAHAN, RESTORAN, GEDUNG, PABRIK, RUKO) -->
-    <section id="sektor-layanan" class="py-12 sm:py-16 bg-white border-b border-slate-200">
+    <!-- 6. SECTION SOLUSI PIPA UNTUK BERAGAM KATEGORI BANGUNAN -->
+    <section id="sektor-layanan" data-section="sektor-layanan-kecamatan" class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-10">
                 <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
@@ -654,7 +552,7 @@
                             ],
                         };
                     @endphp
-                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-lg border border-slate-200 p-5 space-y-3 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
+                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 p-5 space-y-3 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
                         <div>
                             <div class="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-200/70">
                                 <div class="flex items-center gap-2.5">
@@ -671,11 +569,11 @@
                                 {{ $sector['scope'] }}
                             </h3>
                             <div class="mt-3 space-y-2 text-xs">
-                                <div class="bg-white p-2.5 rounded-md border border-slate-200">
+                                <div class="bg-slate-50 p-2.5 rounded-md border border-slate-200">
                                     <div class="text-[11px] font-bold text-rose-700">Kendala Umum:</div>
                                     <p class="text-slate-600 mt-0.5 leading-relaxed">{{ $sector['problem'] }}</p>
                                 </div>
-                                <div class="bg-white p-2.5 rounded-md border border-slate-200">
+                                <div class="bg-slate-50 p-2.5 rounded-md border border-slate-200">
                                     <div class="text-[11px] font-bold text-emerald-700">Penanganan Teknisi:</div>
                                     <p class="text-slate-600 mt-0.5 leading-relaxed">{{ $sector['solution'] }}</p>
                                 </div>
@@ -695,42 +593,85 @@
         </div>
     </section>
 
-    <!-- 5. SECTION KEUNGGULAN LOKAL -->
-    <section id="keunggulan-area" class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200">
+    <!-- 7. SECTION GALERI PENGERJAAN (DIPILIH DARI CMS / DB HASIL PENGERJAAN) -->
+    <section id="galeri-kecamatan" data-section="dokumentasi" class="py-14 lg:py-20 bg-white border-b border-slate-200" x-data="{ activeCategory: 'all' }">
+        <span id="dokumentasi" class="sr-only"></span>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-10">
-                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
-                    STANDAR KEUNGGULAN OPERASIONAL
-                </p>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Mengapa Memilih Teknisi Drainusantara di {{ $area->district }}?
-                </h2>
-                <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                    Kombinasi kecepatan kedatangan armada, teknologi tanpa merusak lantai, dan transparansi jaminan tanpa risiko.
-                </p>
-            </div>
-
-            <div class="flex sm:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mb-3 px-1" aria-hidden="true">
-                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                <span>Geser keunggulan</span>
-            </div>
-
-            <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 sm:gap-5 pb-3 pt-1 px-4 -mx-4 sm:mx-0 sm:px-0">
-                @foreach($advantages as $adv)
-                    <div class="w-[78vw] max-w-[280px] sm:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 p-5 space-y-2.5 shadow-2xs flex flex-col justify-between">
-                        <div class="w-9 h-9 rounded-md bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center font-bold text-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        </div>
-                        <h3 class="text-sm font-bold text-slate-900 tracking-tight">{{ $adv['title'] }}</h3>
-                        <p class="text-xs text-slate-600 leading-relaxed">{{ $adv['description'] }}</p>
+            <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-8 md:mb-12">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold uppercase tracking-wider mb-2">
+                        <span>BUKTI RIIL LAPANGAN</span>
                     </div>
-                @endforeach
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+                        Dokumentasi Pengerjaan di Lapangan
+                    </h2>
+                    <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+                        Hasil Pengerjaan Teknisi di Lapangan: Dokumentasi riil penanganan saluran pipa tersumbat pada sektor hunian residensial dan tempat usaha komersial di {{ $area->district }}, {{ $area->city }} menggunakan mesin rooter spiral elektrik serta inspeksi kamera endoskopi.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-2 self-stretch sm:self-auto justify-end">
+                    <a href="{{ url('/galeri') }}" 
+                       class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-sky-700 hover:text-sky-800 bg-white border border-slate-300 hover:bg-slate-50 px-4 py-2.5 rounded-lg transition-colors shadow-2xs btn-press">
+                        <span>Lihat Semua Dokumentasi</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
+
+            <div class="flex md:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mb-3 px-1" aria-hidden="true">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <span>Geser dokumentasi</span>
+            </div>
+
+            @if($displayGalleries->isNotEmpty())
+                <div class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-6 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
+                    @foreach($displayGalleries as $galleryItem)
+                        @php
+                            $galleryPhoto = !empty($galleryItem->image) ? asset($galleryItem->image) : asset('assets/placeholders/service.svg');
+                            $hasComparison = !empty($galleryItem->before_image) && !empty($galleryItem->after_image);
+                        @endphp
+                        <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-slate-50 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
+                            <div>
+                                <div class="relative aspect-16/10 bg-slate-900 overflow-hidden">
+                                    <img src="{{ $galleryPhoto }}" alt="{{ $galleryItem->title }}" class="w-full h-full object-cover">
+                                    @if($hasComparison)
+                                        <span class="absolute top-2 left-2 bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-2xs">
+                                            Foto Before - After
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="p-4 space-y-2">
+                                    <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider block">
+                                        {{ $galleryItem->location ?: $area->district . ', ' . $area->city }}
+                                    </span>
+                                    <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-1">
+                                        {{ $galleryItem->title }}
+                                    </h3>
+                                    <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                                        {{ $galleryItem->description ?: 'Pelancaran saluran mampet tuntas dengan metode spiral rotary mekanis.' }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-4 pt-0">
+                                <a href="{{ route('case-study.show', $galleryItem->slug) }}" class="text-xs font-semibold text-sky-700 hover:underline flex items-center gap-1">
+                                    <span>Lihat Detail Kasus</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="text-xs text-slate-500 italic py-4 text-center">Dokumentasi hasil pengerjaan lapangan segera diperbarui.</p>
+            @endif
         </div>
     </section>
 
-    <!-- 6. SECTION BANDINGKAN: TUKANG KONVENSIONAL VS DRAINUSANTARA -->
-    <section id="perbandingan-area" class="py-12 sm:py-18 bg-white border-b border-slate-200">
+    <!-- 8. SECTION KOMPARASI: TUKANG KONVENSIONAL VS DRAINUSANTARA -->
+    <section id="perbandingan-area" data-section="perbandingan-kecamatan" class="py-12 sm:py-18 bg-slate-50 border-b border-slate-200">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-10">
                 <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
@@ -770,13 +711,112 @@
                     @endforeach
                 </div>
             </div>
+
+            <!-- Trust Emblem / Jaminan Kepercayaan -->
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200 shadow-2xs">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-xs sm:text-sm font-extrabold text-slate-900">Garansi Pengerjaan Resmi 30 Hari</div>
+                        <div class="text-[11px] text-slate-600">Dilindungi nota bukti fisik. Saluran kembali mampet dalam 30 hari? Teknisi datang ulang bebas biaya.</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white text-emerald-800 border border-emerald-300 shadow-2xs">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        100% Non-Destruktif
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white text-sky-800 border border-sky-300 shadow-2xs">
+                        No Cure No Pay
+                    </span>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- 7. SECTION POSKO & POOL ARMADA WILAYAH -->
-    <section id="posko-armada" class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-xl border border-slate-200 p-6 sm:p-8 shadow-2xs">
+    <!-- 9. SECTION ARTIKEL & PANDUAN SALURAN AIR BERSIH -->
+    <section id="artikel-kecamatan" class="py-12 sm:py-16 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">EDUKASI PERPIPAAN</p>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                        Artikel &amp; Panduan Saluran Air Bersih
+                    </h2>
+                </div>
+                <a href="{{ route('articles.index') }}" class="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center gap-1">
+                    <span>Lihat Semua Blog</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+
+            <div class="flex md:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mb-3 px-1" aria-hidden="true">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <span>Geser artikel</span>
+            </div>
+
+            <div class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-5 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
+                @foreach($articles as $post)
+                    @php
+                        $coverImg = !empty($post->image) ? asset($post->image) : asset('assets/placeholders/service.svg');
+                    @endphp
+                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-slate-50 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
+                        <div>
+                            <div class="relative aspect-16/10 bg-slate-100 overflow-hidden">
+                                <img src="{{ $coverImg }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-4 space-y-2">
+                                <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
+                                    <span>{{ $post->published_at ? $post->published_at->format('d M Y') : 'Terbaru' }}</span>
+                                    <span>•</span>
+                                    <span>{{ $post->reading_time ?? 3 }} mnt baca</span>
+                                    <span>•</span>
+                                    <span>{{ $post->views ?? 0 }} views</span>
+                                </div>
+                                <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-2">
+                                    <a href="{{ route('articles.show', $post->slug) }}" class="hover:text-sky-700 transition-colors">
+                                        {{ $post->title }}
+                                    </a>
+                                </h3>
+                                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                                    {{ $post->excerpt ?: Str::limit(strip_tags($post->content), 90) }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <a href="{{ route('articles.show', $post->slug) }}" class="text-xs font-semibold text-sky-700 hover:underline flex items-center gap-1">
+                                <span>Baca Selengkapnya</span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. SECTION CAKUPAN REGIONAL DRAINUSANTARA -->
+    <x-area.regional-coverage :current-city="$area->city" />
+
+    <!-- 11. SECTION POSKO ARMADA LOKAL & AREA SEKITAR -->
+    <section id="posko-armada" class="py-12 sm:py-16 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="text-center max-w-3xl mx-auto mb-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
+                    JANGKAUAN AREA &amp; WILAYAH TERDEKAT
+                </p>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    Cakupan Area Sekitar {{ $area->district }}, {{ $area->city }}
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                    Armada kami tersebar di seluruh titik kelurahan dan jalan utama dengan radius respon cepat.
+                </p>
+            </div>
+
+            <!-- Box Posko Utama -->
+            <div class="bg-slate-50 rounded-xl border border-slate-200 p-6 sm:p-8 shadow-2xs">
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                     <div class="md:col-span-8 space-y-3">
                         <div class="flex items-center gap-2">
@@ -788,7 +828,7 @@
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             {{ $posko['address'] }}
                         </p>
-                        <div class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-md border border-slate-200">
+                        <div class="inline-flex items-center gap-2 text-xs font-semibold text-slate-700 bg-white px-3 py-1.5 rounded-md border border-slate-200">
                             <svg class="w-4 h-4 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             <span>{{ $posko['radius'] }}</span>
                         </div>
@@ -803,135 +843,107 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- 8. SECTION GALLERY & BLOG EDUKASI -->
-    <section id="studi-kasus-edukasi" class="py-12 sm:py-16 bg-white border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-            <!-- Part A: Real Case Studies (Gallery) -->
-            <div>
-                <div class="flex items-center justify-between mb-6">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-sky-800">BUKTI KERJA NYATA</p>
-                        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                            Dokumentasi Pengerjaan di Lapangan
-                        </h2>
+            @php
+                $currentDistrict = $area->district;
+                $currentCitySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($area->city);
+                $cityName = $cityData['name'] ?? $area->city;
+                
+                $neighboringDistricts = collect($cityData['districts'] ?? [])
+                    ->reject(fn($d) => strcasecmp($d, $currentDistrict) === 0);
+
+                $allProvinces = \App\Services\RegionService::all();
+                $otherCities = collect($allProvinces)
+                    ->flatMap(fn($prov) => $prov['cities'])
+                    ->reject(fn($c) => ($c['slug'] ?? '') === $currentCitySlug);
+
+                $customSupportingTags = is_array($area->supporting_tags) ? $area->supporting_tags : [];
+            @endphp
+
+            <!-- Custom Supporting Tags/Landmarks if any -->
+            @if(!empty($customSupportingTags))
+                <div class="p-5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">
+                    <span class="text-xs font-bold uppercase tracking-wider text-sky-800 block mb-3">
+                        Titik Strategis &amp; Kelurahan di {{ $area->district }}
+                    </span>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        @foreach($customSupportingTags as $customTag)
+                            <span class="px-3 py-1.5 rounded-md bg-white text-slate-700 border border-slate-200 font-medium">
+                                {{ $customTag }}
+                            </span>
+                        @endforeach
                     </div>
-                    <a href="{{ url('/galeri') }}" class="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center gap-1">
-                        <span>Lihat Semua Galeri</span>
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    </a>
                 </div>
+            @endif
 
-                <div class="flex md:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mb-3 px-1" aria-hidden="true">
-                    <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    <span>Geser dokumentasi</span>
-                </div>
-
-                <div class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-5 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
-                    @foreach($galleries as $galleryItem)
-                        @php
-                            $galleryPhoto = !empty($galleryItem->image) ? asset($galleryItem->image) : asset('assets/placeholders/service.svg');
-                            $hasComparison = !empty($galleryItem->before_image) && !empty($galleryItem->after_image);
-                        @endphp
-                        <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-white shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
-                            <div>
-                                <div class="relative aspect-16/10 bg-slate-900 overflow-hidden">
-                                    <img src="{{ $galleryPhoto }}" alt="{{ $galleryItem->title }}" class="w-full h-full object-cover">
-                                    @if($hasComparison)
-                                        <span class="absolute top-2 left-2 bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-2xs">
-                                            Foto Before - After
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="p-4 space-y-2">
-                                    <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider block">
-                                        {{ $galleryItem->location ?: $area->district }}
-                                    </span>
-                                    <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-1">
-                                        {{ $galleryItem->title }}
-                                    </h3>
-                                    <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                                        {{ $galleryItem->description ?: 'Pelancaran saluran mampet tuntas dengan metode spiral rotary mekanis.' }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="p-4 pt-0">
-                                <a href="{{ route('case-study.show', $galleryItem->slug) }}" class="text-xs font-semibold text-sky-700 hover:underline flex items-center gap-1">
-                                    <span>Lihat Detail Kasus</span>
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                </a>
-                            </div>
+            @if(!empty($area->content) || !empty($area->postal_code))
+                <div id="konten-lokal" class="p-5 sm:p-6 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">
+                    @if(!empty($area->postal_code))
+                        <div class="text-xs text-slate-500 mb-2 font-medium">Kode Pos: {{ $area->postal_code }}</div>
+                    @endif
+                    @if(!empty($area->content))
+                        <div class="text-sm text-slate-700 leading-relaxed">
+                            {{ $area->content }}
                         </div>
-                    @endforeach
+                    @endif
                 </div>
-            </div>
+            @endif
 
-            <!-- Part B: Blog & Panduan Perpipaan -->
-            <div class="pt-8 border-t border-slate-200">
-                <div class="flex items-center justify-between mb-6">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-sky-800">EDUKASI PERPIPAAN</p>
-                        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                            Artikel &amp; Panduan Saluran Air Bersih
-                        </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="p-5 sm:p-6 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-800">
+                            Area Sekitar di {{ $cityName }}
+                        </span>
                     </div>
-                    <a href="{{ route('articles.index') }}" class="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center gap-1">
-                        <span>Lihat Semua Blog</span>
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    </a>
-                </div>
-
-                <div class="flex md:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium mb-3 px-1" aria-hidden="true">
-                    <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    <span>Geser artikel</span>
-                </div>
-
-                <div class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-5 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
-                    @foreach($articles as $post)
-                        @php
-                            $coverImg = !empty($post->image) ? asset($post->image) : asset('assets/placeholders/service.svg');
-                        @endphp
-                        <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-white shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
-                            <div>
-                                <div class="relative aspect-16/10 bg-slate-100 overflow-hidden">
-                                    <img src="{{ $coverImg }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
-                                </div>
-                                <div class="p-4 space-y-2">
-                                    <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
-                                        <span>{{ $post->published_at ? $post->published_at->format('d M Y') : 'Terbaru' }}</span>
-                                        <span>•</span>
-                                        <span>{{ $post->reading_time ?? 3 }} mnt baca</span>
-                                        <span>•</span>
-                                        <span>{{ $post->views ?? 0 }} views</span>
-                                    </div>
-                                    <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-2">
-                                        <a href="{{ route('articles.show', $post->slug) }}" class="hover:text-sky-700 transition-colors">
-                                            {{ $post->title }}
-                                        </a>
-                                    </h3>
-                                    <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                                        {{ $post->excerpt ?: Str::limit(strip_tags($post->content), 90) }}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="p-4 pt-0">
-                                <a href="{{ route('articles.show', $post->slug) }}" class="text-xs font-semibold text-sky-700 hover:underline flex items-center gap-1">
-                                    <span>Baca Selengkapnya</span>
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    
+                    @if($neighboringDistricts->isNotEmpty())
+                        <div class="flex flex-wrap gap-2 text-xs">
+                            @foreach($neighboringDistricts as $neighbor)
+                                @php
+                                    $neighborSlug = \Illuminate\Support\Str::slug($neighbor);
+                                @endphp
+                                <a href="{{ route('area.detail', ['city' => $currentCitySlug, 'district' => $neighborSlug]) }}" 
+                                   class="px-3 py-2 rounded-md bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center gap-1.5">
+                                    <span>{{ $neighbor }}</span>
                                 </a>
-                            </div>
+                            @endforeach
                         </div>
-                    @endforeach
+                    @else
+                        <p class="text-xs text-slate-500">Seluruh area kelurahan dan jalan utama di {{ $cityName }} dalam radius posko kami.</p>
+                    @endif
+                </div>
+
+                <div class="p-5 sm:p-6 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-800">POSKO KOTA LAIN</span>
+                        <a href="{{ route('area.index') }}" class="text-[11px] text-sky-700 hover:underline font-semibold flex items-center gap-1">
+                            <span>Semua Area</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        @foreach($otherCities->take(10) as $otherCity)
+                            @php
+                                $firstDistrict = $otherCity['districts'][0] ?? null;
+                                $targetUrl = $firstDistrict 
+                                    ? route('area.detail', ['city' => $otherCity['slug'], 'district' => \Illuminate\Support\Str::slug($firstDistrict)])
+                                    : route('area.city', ['city' => $otherCity['slug']]);
+                            @endphp
+                            <a href="{{ $targetUrl }}" 
+                               class="px-3 py-2 rounded-md bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center">
+                                {{ $otherCity['name'] }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 9. SECTION FAQ DINAMIS -->
+    <!-- 12. SECTION FAQ DINAMIS -->
     @if(!empty($areaFaqs) && count($areaFaqs) > 0)
-    <section class="py-12 sm:py-16 bg-white border-b border-slate-200">
+    <section id="faq-kecamatan" class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-8">
                 <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
@@ -970,122 +982,8 @@
     </section>
     @endif
 
-    <!-- 10. SECTION TAG PENDUKUNG & WILAYAH SEKITAR (DITARUH DI SECTION BAWAH) -->
-    <section class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-8">
-                <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
-                    JANGKAUAN AREA &amp; WILAYAH TERDEKAT
-                </p>
-                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Cakupan Area Sekitar {{ $area->district }}, {{ $area->city }}
-                </h3>
-                <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                    Armada kami tersebar di seluruh titik kecamatan dan jalan utama dengan radius respon cepat.
-                </p>
-            </div>
-
-            @php
-                $currentDistrict = $area->district;
-                $currentCitySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($area->city);
-                $cityName = $cityData['name'] ?? $area->city;
-                
-                $neighboringDistricts = collect($cityData['districts'] ?? [])
-                    ->reject(fn($d) => strcasecmp($d, $currentDistrict) === 0);
-
-                $allProvinces = \App\Services\RegionService::all();
-                $otherCities = collect($allProvinces)
-                    ->flatMap(fn($prov) => $prov['cities'])
-                    ->reject(fn($c) => ($c['slug'] ?? '') === $currentCitySlug);
-
-                $customSupportingTags = is_array($area->supporting_tags) ? $area->supporting_tags : [];
-            @endphp
-
-            <div class="space-y-6">
-                <!-- Custom Supporting Tags/Landmarks if any -->
-                @if(!empty($customSupportingTags))
-                    <div class="p-5 rounded-lg bg-white border border-slate-200 shadow-2xs">
-                        <span class="text-xs font-bold uppercase tracking-wider text-sky-800 block mb-3">
-                            Titik Strategis &amp; Kelurahan di {{ $area->district }}
-                        </span>
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            @foreach($customSupportingTags as $customTag)
-                                <span class="px-3 py-1.5 rounded-md bg-slate-50 text-slate-700 border border-slate-200 font-medium">
-                                    {{ $customTag }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
-                @if(!empty($area->content) || !empty($area->postal_code))
-                    <div id="konten-lokal" class="p-5 sm:p-6 rounded-lg bg-white border border-slate-200 shadow-2xs mb-6">
-                        @if(!empty($area->postal_code))
-                            <div class="text-xs text-slate-500 mb-2 font-medium">Kode Pos: {{ $area->postal_code }}</div>
-                        @endif
-                        @if(!empty($area->content))
-                            <div class="text-sm text-slate-700 leading-relaxed">
-                                {{ $area->content }}
-                            </div>
-                        @endif
-                    </div>
-                @endif
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="p-5 sm:p-6 rounded-lg bg-white border border-slate-200 shadow-2xs">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-xs font-bold uppercase tracking-wider text-sky-800">
-                                Area Sekitar di {{ $cityName }}
-                            </span>
-                        </div>
-                        
-                        @if($neighboringDistricts->isNotEmpty())
-                            <div class="flex flex-wrap gap-2 text-xs">
-                                @foreach($neighboringDistricts as $neighbor)
-                                    @php
-                                        $neighborSlug = \Illuminate\Support\Str::slug($neighbor);
-                                    @endphp
-                                    <a href="{{ route('area.detail', ['city' => $currentCitySlug, 'district' => $neighborSlug]) }}" 
-                                       class="px-3 py-2 rounded-md bg-slate-50 hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center gap-1.5">
-                                        <span>{{ $neighbor }}</span>
-                                    </a>
-                                @endforeach
-                            </div>
-                        @else
-                            <p class="text-xs text-slate-500">Seluruh area kelurahan dan jalan utama di {{ $cityName }} dalam radius posko kami.</p>
-                        @endif
-                    </div>
-
-                    <div class="p-5 sm:p-6 rounded-lg bg-white border border-slate-200 shadow-2xs">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-xs font-bold uppercase tracking-wider text-sky-800">POSKO KOTA LAIN</span>
-                            <a href="{{ route('area.index') }}" class="text-[11px] text-sky-700 hover:underline font-semibold flex items-center gap-1">
-                                <span>Semua Area</span>
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                            </a>
-                        </div>
-                        <div class="flex flex-wrap gap-2 text-xs">
-                            @foreach($otherCities->take(10) as $otherCity)
-                                @php
-                                    $firstDistrict = $otherCity['districts'][0] ?? null;
-                                    $targetUrl = $firstDistrict 
-                                        ? route('area.detail', ['city' => $otherCity['slug'], 'district' => \Illuminate\Support\Str::slug($firstDistrict)])
-                                        : route('area.city', ['city' => $otherCity['slug']]);
-                                @endphp
-                                <a href="{{ $targetUrl }}" 
-                                   class="px-3 py-2 rounded-md bg-slate-50 hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center">
-                                    {{ $otherCity['name'] }}
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 11. FINAL CLOSING CTA -->
-    <section class="py-12 sm:py-16 bg-slate-900 text-white text-center relative overflow-hidden">
+    <!-- 13. FINAL CLOSING CTA -->
+    <section id="kontak-kecamatan" class="py-12 sm:py-16 bg-slate-900 text-white text-center relative overflow-hidden">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
                 RESPON CEPAT WILAYAH {{ strtoupper($area->district) }}
@@ -1104,6 +1002,14 @@
                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                     </svg>
                     <span>{{ $cta['button_text'] }}</span>
+                </a>
+
+                <a href="tel:085609009009" 
+                   class="w-full sm:w-auto min-h-12 inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-lg border border-slate-700 shadow-2xs transition-colors">
+                    <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
+                    <span>Hotline: 0856-0900-9009</span>
                 </a>
             </div>
         </div>

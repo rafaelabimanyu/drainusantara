@@ -19,10 +19,10 @@ class CoverageAreaSyncTest extends TestCase
 
         $result = CoverageArea::syncFromMaster();
 
-        $this->assertEquals(114, $result['total']);
-        $this->assertEquals(114, $result['created']);
+        $this->assertEquals(132, $result['total']);
+        $this->assertEquals(132, $result['created']);
         $this->assertEquals(0, $result['existing']);
-        $this->assertEquals(114, CoverageArea::count());
+        $this->assertEquals(132, CoverageArea::count());
 
         // Verify Ciracas in Jakarta Timur was created
         $ciracas = CoverageArea::where('city', 'Jakarta Timur')
@@ -36,8 +36,8 @@ class CoverageAreaSyncTest extends TestCase
         // Run sync again to verify idempotency
         $secondResult = CoverageArea::syncFromMaster();
         $this->assertEquals(0, $secondResult['created']);
-        $this->assertEquals(114, $secondResult['existing']);
-        $this->assertEquals(114, CoverageArea::count());
+        $this->assertEquals(132, $secondResult['existing']);
+        $this->assertEquals(132, CoverageArea::count());
     }
 
     public function test_admin_can_trigger_sync_route(): void
@@ -50,7 +50,7 @@ class CoverageAreaSyncTest extends TestCase
         $response->assertRedirect(route('admin.coverage-areas.index'));
         $response->assertSessionHas('success');
 
-        $this->assertEquals(114, CoverageArea::count());
+        $this->assertEquals(132, CoverageArea::count());
     }
 
     public function test_guest_cannot_trigger_sync_route(): void

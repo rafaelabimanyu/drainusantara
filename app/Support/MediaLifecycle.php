@@ -19,7 +19,7 @@ final class MediaLifecycle
         Service::class => ['image'], Equipment::class => ['image'], Staff::class => ['photo'],
         Portfolio::class => ['image', 'logo'], Gallery::class => ['image', 'before_image', 'after_image'],
         Article::class => ['thumbnail'], Review::class => ['avatar'],
-        CoverageArea::class => ['hero_image'],
+        CoverageArea::class => ['hero_image', 'presence_image'],
     ];
 
     private const DIRECTORIES = [

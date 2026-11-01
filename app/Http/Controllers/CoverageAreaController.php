@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\CoverageArea;
+use App\Models\Gallery;
 use App\Rules\OptimizedImage;
 use App\Support\MediaLifecycle;
 use Illuminate\Contracts\View\View;
@@ -26,8 +27,15 @@ class CoverageAreaController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('city', 'like', "%{$search}%")
                   ->orWhere('district', 'like', "%{$search}%")
+                  ->orWhere('province_name', 'like', "%{$search}%")
                   ->orWhere('slug', 'like', "%{$search}%");
             });
+        }
+
+        if ($type = $request->input('type')) {
+            if (in_array($type, ['province', 'city', 'district'], true)) {
+                $query->where('type', $type);
+            }
         }
 
         if ($city = $request->input('city')) {
@@ -35,15 +43,31 @@ class CoverageAreaController extends Controller
         }
 
         $totalCount = CoverageArea::count();
+        $provinceCount = CoverageArea::where('type', 'province')->count();
+        $cityCount = CoverageArea::where('type', 'city')->count();
+        $districtCount = CoverageArea::where('type', 'district')->count();
+
         $cities = CoverageArea::query()
+            ->where('district', '!=', '[PROVINSI]')
             ->select('city')
             ->distinct()
             ->orderBy('city')
             ->pluck('city');
 
-        $coverageAreas = $query->orderBy('city')->orderBy('district')->paginate(20)->withQueryString();
+        $coverageAreas = $query->orderByRaw("CASE type WHEN 'province' THEN 1 WHEN 'city' THEN 2 ELSE 3 END")
+            ->orderBy('city')
+            ->orderBy('district')
+            ->paginate(20)
+            ->withQueryString();
 
-        return view('admin.coverage-areas.index', compact('coverageAreas', 'cities', 'totalCount'));
+        return view('admin.coverage-areas.index', compact(
+            'coverageAreas',
+            'cities',
+            'totalCount',
+            'provinceCount',
+            'cityCount',
+            'districtCount'
+        ));
     }
 
     /**
@@ -62,7 +86,13 @@ class CoverageAreaController extends Controller
      */
     public function create(): View
     {
-        return view('admin.coverage-areas.create');
+        $availableGalleries = Gallery::where('is_active', true)
+            ->with('service')
+            ->orderBy('order')
+            ->latest()
+            ->get();
+
+        return view('admin.coverage-areas.create', compact('availableGalleries'));
     }
 
     /**
@@ -70,7 +100,25 @@ class CoverageAreaController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $type = $request->input('type', 'district');
+        if ($type === 'province') {
+            $provName = $request->input('province_name') ?: $request->input('city');
+            $request->merge([
+                'type' => 'province',
+                'province_name' => $provName,
+                'city' => $provName,
+                'district' => '[PROVINSI]',
+            ]);
+        } elseif ($type === 'city') {
+            $request->merge([
+                'type' => 'city',
+                'district' => '[KOTA]',
+            ]);
+        }
+
         $validated = $request->validate([
+            'type' => ['nullable', 'string', 'in:province,city,district'],
+            'province_name' => ['nullable', 'string', 'max:100'],
             'city' => ['required', 'string', 'max:100'],
             'district' => ['required', 'string', 'max:100', Rule::unique('coverage_areas')->where(fn ($query) => $query->where('city', $request->input('city')))],
             'postal_code' => ['nullable', 'string', 'max:10'],
@@ -83,6 +131,9 @@ class CoverageAreaController extends Controller
             'content' => ['nullable', 'string'],
             'hero_image' => $request->hasFile('hero_image') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
             'hero_image_url' => ['nullable', 'string', 'max:255'],
+            'presence_image' => $request->hasFile('presence_image') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'presence_image_url' => ['nullable', 'string', 'max:255'],
+            'presence_description' => ['nullable', 'string'],
             'posko_name' => ['nullable', 'string', 'max:255'],
             'posko_address' => ['nullable', 'string', 'max:1000'],
             'posko_coverage_radius' => ['nullable', 'string', 'max:255'],
@@ -93,13 +144,23 @@ class CoverageAreaController extends Controller
             'faqs.*.question' => ['nullable', 'string', 'max:255'],
             'faqs.*.answer' => ['nullable', 'string', 'max:2000'],
             'advantages' => ['nullable', 'array'],
+            'gallery_ids' => ['nullable', 'array'],
+            'gallery_ids.*' => ['integer', 'exists:galleries,id'],
             'service_categories' => ['nullable', 'array'],
             'comparison_data' => ['nullable', 'array'],
             'supporting_tags' => ['nullable'],
             'is_active' => ['nullable', 'boolean'],
         ]);
 
-        $slug = substr(Str::slug("{$validated['city']}-{$validated['district']}"), 0, 255);
+        if (($validated['type'] ?? 'district') === 'province') {
+            $rawSlug = Str::slug($validated['province_name'] ?? $validated['city']);
+        } elseif (($validated['type'] ?? 'district') === 'city') {
+            $rawSlug = Str::slug($validated['city']);
+        } else {
+            $rawSlug = Str::slug("{$validated['city']}-{$validated['district']}");
+        }
+
+        $slug = substr($rawSlug, 0, 255);
         $baseSlug = $slug;
         $counter = 1;
         while (CoverageArea::where('slug', $slug)->exists()) {
@@ -115,10 +176,11 @@ class CoverageAreaController extends Controller
         $serviceCategories = $this->cleanServiceCategories($validated['service_categories'] ?? []);
         $comparisonData = $this->cleanComparison($validated['comparison_data'] ?? []);
         $supportingTags = $this->cleanTags($validated['supporting_tags'] ?? null);
+        $galleryIds = $this->cleanGalleryIds($validated['gallery_ids'] ?? []);
 
         $record = new CoverageArea;
         $media = new MediaLifecycle;
-        $media->run($record, function () use ($request, $validated, $media, $record, $slug, $metaTitle, $metaDescription, $faqs, $advantages, $serviceCategories, $comparisonData, $supportingTags): void {
+        $media->run($record, function () use ($request, $validated, $media, $record, $slug, $metaTitle, $metaDescription, $faqs, $advantages, $serviceCategories, $comparisonData, $supportingTags, $galleryIds): void {
             $heroImageUrl = $validated['hero_image_url'] ?? null;
             if ($request->hasFile('hero_image')) {
                 $heroImageUrl = $media->upload($request->file('hero_image'), 'images/areas');
@@ -126,7 +188,16 @@ class CoverageAreaController extends Controller
                 $heroImageUrl = $request->input('hero_image');
             }
 
+            $presenceImageUrl = $validated['presence_image_url'] ?? null;
+            if ($request->hasFile('presence_image')) {
+                $presenceImageUrl = $media->upload($request->file('presence_image'), 'images/areas');
+            } elseif (is_string($request->input('presence_image')) && !empty($request->input('presence_image'))) {
+                $presenceImageUrl = $request->input('presence_image');
+            }
+
             $record->fill([
+                'type' => $validated['type'] ?? 'district',
+                'province_name' => $validated['province_name'] ?? null,
                 'city' => $validated['city'],
                 'district' => $validated['district'],
                 'slug' => $slug,
@@ -139,6 +210,9 @@ class CoverageAreaController extends Controller
                 'longitude' => $validated['longitude'] ?? null,
                 'content' => $validated['content'] ?? null,
                 'hero_image' => $heroImageUrl,
+                'presence_image' => $presenceImageUrl,
+                'presence_description' => $validated['presence_description'] ?? null,
+                'gallery_ids' => !empty($galleryIds) ? $galleryIds : null,
                 'posko_name' => $validated['posko_name'] ?? null,
                 'posko_address' => $validated['posko_address'] ?? null,
                 'posko_coverage_radius' => $validated['posko_coverage_radius'] ?? null,
@@ -163,7 +237,13 @@ class CoverageAreaController extends Controller
      */
     public function edit(CoverageArea $coverageArea): View
     {
-        return view('admin.coverage-areas.edit', compact('coverageArea'));
+        $availableGalleries = Gallery::where('is_active', true)
+            ->with('service')
+            ->orderBy('order')
+            ->latest()
+            ->get();
+
+        return view('admin.coverage-areas.edit', compact('coverageArea', 'availableGalleries'));
     }
 
     /**
@@ -171,7 +251,25 @@ class CoverageAreaController extends Controller
      */
     public function update(Request $request, CoverageArea $coverageArea): RedirectResponse
     {
+        $type = $request->input('type', $coverageArea->type ?: 'district');
+        if ($type === 'province') {
+            $provName = $request->input('province_name') ?: $coverageArea->province_name ?: $coverageArea->city;
+            $request->merge([
+                'type' => 'province',
+                'province_name' => $provName,
+                'city' => $provName,
+                'district' => '[PROVINSI]',
+            ]);
+        } elseif ($type === 'city') {
+            $request->merge([
+                'type' => 'city',
+                'district' => '[KOTA]',
+            ]);
+        }
+
         $validated = $request->validate([
+            'type' => ['nullable', 'string', 'in:province,city,district'],
+            'province_name' => ['nullable', 'string', 'max:100'],
             'city' => ['required', 'string', 'max:100'],
             'district' => ['required', 'string', 'max:100', Rule::unique('coverage_areas')->where(fn ($query) => $query->where('city', $request->input('city')))->ignore($coverageArea->id)],
             'postal_code' => ['nullable', 'string', 'max:10'],
@@ -184,6 +282,9 @@ class CoverageAreaController extends Controller
             'content' => ['nullable', 'string'],
             'hero_image' => $request->hasFile('hero_image') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
             'hero_image_url' => ['nullable', 'string', 'max:255'],
+            'presence_image' => $request->hasFile('presence_image') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'presence_image_url' => ['nullable', 'string', 'max:255'],
+            'presence_description' => ['nullable', 'string'],
             'posko_name' => ['nullable', 'string', 'max:255'],
             'posko_address' => ['nullable', 'string', 'max:1000'],
             'posko_coverage_radius' => ['nullable', 'string', 'max:255'],
@@ -194,6 +295,8 @@ class CoverageAreaController extends Controller
             'faqs.*.question' => ['nullable', 'string', 'max:255'],
             'faqs.*.answer' => ['nullable', 'string', 'max:2000'],
             'advantages' => ['nullable', 'array'],
+            'gallery_ids' => ['nullable', 'array'],
+            'gallery_ids.*' => ['integer', 'exists:galleries,id'],
             'service_categories' => ['nullable', 'array'],
             'comparison_data' => ['nullable', 'array'],
             'supporting_tags' => ['nullable'],
@@ -205,9 +308,10 @@ class CoverageAreaController extends Controller
         $serviceCategories = $this->cleanServiceCategories($validated['service_categories'] ?? []);
         $comparisonData = $this->cleanComparison($validated['comparison_data'] ?? []);
         $supportingTags = $this->cleanTags($validated['supporting_tags'] ?? null);
+        $galleryIds = $this->cleanGalleryIds($validated['gallery_ids'] ?? []);
 
         $media = new MediaLifecycle;
-        $media->run($coverageArea, function () use ($request, $validated, $media, $coverageArea, $faqs, $advantages, $serviceCategories, $comparisonData, $supportingTags): void {
+        $media->run($coverageArea, function () use ($request, $validated, $media, $coverageArea, $faqs, $advantages, $serviceCategories, $comparisonData, $supportingTags, $galleryIds): void {
             $heroImageUrl = $validated['hero_image_url'] ?? null;
             if ($request->hasFile('hero_image')) {
                 $heroImageUrl = $media->upload($request->file('hero_image'), 'images/areas');
@@ -219,7 +323,20 @@ class CoverageAreaController extends Controller
                 $heroImageUrl = $heroImageUrl ?: $coverageArea->hero_image;
             }
 
+            $presenceImageUrl = $validated['presence_image_url'] ?? null;
+            if ($request->hasFile('presence_image')) {
+                $presenceImageUrl = $media->upload($request->file('presence_image'), 'images/areas');
+            } elseif (is_string($request->input('presence_image')) && !empty($request->input('presence_image'))) {
+                $presenceImageUrl = $request->input('presence_image');
+            } elseif (!$presenceImageUrl && !$request->hasFile('presence_image') && $request->filled('remove_presence_image')) {
+                $presenceImageUrl = null;
+            } else {
+                $presenceImageUrl = $presenceImageUrl ?: $coverageArea->presence_image;
+            }
+
             $coverageArea->fill([
+                'type' => array_key_exists('type', $validated) ? $validated['type'] : ($coverageArea->type ?: 'district'),
+                'province_name' => array_key_exists('province_name', $validated) ? $validated['province_name'] : $coverageArea->province_name,
                 'city' => $validated['city'],
                 'district' => $validated['district'],
                 'postal_code' => array_key_exists('postal_code', $validated) ? $validated['postal_code'] : $coverageArea->postal_code,
@@ -231,6 +348,9 @@ class CoverageAreaController extends Controller
                 'longitude' => array_key_exists('longitude', $validated) ? $validated['longitude'] : $coverageArea->longitude,
                 'content' => array_key_exists('content', $validated) ? $validated['content'] : $coverageArea->content,
                 'hero_image' => $heroImageUrl,
+                'presence_image' => $presenceImageUrl,
+                'presence_description' => array_key_exists('presence_description', $validated) ? $validated['presence_description'] : $coverageArea->presence_description,
+                'gallery_ids' => !empty($galleryIds) ? $galleryIds : null,
                 'posko_name' => array_key_exists('posko_name', $validated) ? $validated['posko_name'] : $coverageArea->posko_name,
                 'posko_address' => array_key_exists('posko_address', $validated) ? $validated['posko_address'] : $coverageArea->posko_address,
                 'posko_coverage_radius' => array_key_exists('posko_coverage_radius', $validated) ? $validated['posko_coverage_radius'] : $coverageArea->posko_coverage_radius,
@@ -353,5 +473,16 @@ class CoverageAreaController extends Controller
         }
 
         return [];
+    }
+
+    /**
+     * Filter and clean gallery IDs.
+     *
+     * @param array<mixed> $ids
+     * @return array<int>
+     */
+    protected function cleanGalleryIds(array $ids): array
+    {
+        return array_values(array_unique(array_filter(array_map('intval', $ids), fn (int $id): bool => $id > 0)));
     }
 }

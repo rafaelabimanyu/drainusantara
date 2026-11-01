@@ -28,62 +28,51 @@ class AreaServiceCarouselTest extends TestCase
         }
     }
 
-    public function test_province_page_renders_single_row_mobile_and_2x2_desktop_carousel(): void
+    public function test_province_page_renders_single_row_service_and_equipment_carousel(): void
     {
         $response = $this->get('/area/provinsi/dki-jakarta');
 
         $response->assertStatus(200);
         $response->assertSee('id="layanan"', false);
-        $response->assertSee('provinceServiceCarouselMobile', false);
-        $response->assertSee('provinceServiceCarousel', false);
-        $response->assertSee('w-[82vw]', false);
-        $response->assertSee('grid-cols-2', false);
+        $response->assertSee('serviceCarousel', false);
         $response->assertSee('service-card', false);
-        $response->assertSee('Pesan Penanganan');
+        $response->assertSee('Pesan via WhatsApp');
 
-        // Dokumentasi real & wilayah-layanan mobile carousels
+        // Dokumentasi real & wilayah-layanan
         $response->assertSee('id="dokumentasi"', false);
         $response->assertSee('id="wilayah-layanan"', false);
-        $response->assertSee('w-[86vw]', false);
     }
 
-    public function test_city_page_renders_single_row_mobile_and_2x2_desktop_carousel(): void
+    public function test_city_page_renders_single_row_service_and_equipment_carousel(): void
     {
         $response = $this->get('/area/jakarta-selatan');
 
         $response->assertStatus(200);
         $response->assertSee('id="layanan-kota"', false);
-        $response->assertSee('cityServiceCarouselMobile', false);
         $response->assertSee('cityServiceCarousel', false);
-        $response->assertSee('w-[82vw]', false);
-        $response->assertSee('grid-cols-2', false);
         $response->assertSee('service-card', false);
         $response->assertSee('Pesan via WhatsApp');
 
-        // Sektor layanan & keunggulan mobile carousels
+        // Sektor layanan, keunggulan & galeri
         $response->assertSee('id="sektor-layanan-kota"', false);
         $response->assertSee('id="keunggulan-kota"', false);
-        $response->assertSee('id="gallery-blog-kota"', false);
-        $response->assertSee('w-[78vw]', false);
+        $response->assertSee('id="galeri-kota"', false);
     }
 
-    public function test_district_page_renders_single_row_mobile_and_2x2_desktop_carousel(): void
+    public function test_district_page_renders_single_row_service_and_equipment_carousel(): void
     {
         $response = $this->get('/area/jakarta-selatan/tebet');
 
         $response->assertStatus(200);
         $response->assertSee('id="layanan-area"', false);
-        $response->assertSee('serviceCarouselMobile', false);
-        $response->assertSee('serviceCarousel', false);
-        $response->assertSee('w-[82vw]', false);
-        $response->assertSee('grid-cols-2', false);
+        $response->assertSee('id="layanan-kecamatan"', false);
+        $response->assertSee('districtServiceCarousel', false);
         $response->assertSee('service-card', false);
         $response->assertSee('Pesan Teknisi');
 
-        // Sektor layanan, keunggulan, and studi-kasus-edukasi mobile carousels
+        // Sektor layanan, keunggulan, and cakupan
         $response->assertSee('id="sektor-layanan"', false);
         $response->assertSee('id="keunggulan-area"', false);
-        $response->assertSee('id="studi-kasus-edukasi"', false);
-        $response->assertSee('w-[78vw]', false);
+        $response->assertSee('id="posko-armada"', false);
     }
 }

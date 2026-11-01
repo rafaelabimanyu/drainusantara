@@ -33,9 +33,9 @@
     $itemWaUrl = "https://wa.me/{$cleanWaNumber}?text=" . urlencode($msg);
 @endphp
 
-<div class="service-card bg-white rounded-lg border border-slate-200 p-3 sm:p-4 flex flex-col justify-between shadow-2xs hover:border-sky-300 transition-all duration-200 group h-full">
+<div class="service-card bg-white rounded-xl border border-slate-200 p-3.5 sm:p-4 flex flex-col justify-between shadow-2xs hover:border-sky-400 hover:shadow-xs transition-all duration-200 group h-full">
     <div>
-        <div class="relative w-full aspect-16/10 rounded-md overflow-hidden bg-slate-100 mb-2.5 border border-slate-100">
+        <div class="relative w-full aspect-16/10 rounded-lg overflow-hidden bg-slate-100 mb-3 border border-slate-100">
             <img src="{{ $imageSrc }}" 
                  alt="{{ $title }}" 
                  width="600"

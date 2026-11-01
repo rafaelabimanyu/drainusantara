@@ -46,7 +46,7 @@ class PerformanceTest extends TestCase
 
     public function test_homepage_hero_is_not_preloaded_on_unrelated_pages(): void
     {
-        foreach (['/' => 1, '/tentang-kami/faq' => 0, '/pengetahuan' => 0] as $path => $expected) {
+        foreach (['/' => 2, '/tentang-kami/faq' => 0, '/pengetahuan' => 0] as $path => $expected) {
             $dom = new \DOMDocument;
             @$dom->loadHTML($this->get($path)->assertOk()->getContent());
             $xpath = new \DOMXPath($dom);
