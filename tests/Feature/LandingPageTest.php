@@ -43,6 +43,9 @@ class LandingPageTest extends TestCase
         $response->assertSee('Pak Budi');
         $response->assertDontSee('Ibu Ratna Dewi');
         $response->assertSee('Tanpa Bongkar Keramik');
+        $response->assertSee('Solusi Saluran Pipa untuk Beragam Kategori Bangunan');
+        $response->assertSee('Rumah Tinggal &amp; Residensial', false);
+        $response->assertSee('Restoran, Kafe &amp; F&amp;B', false);
         $response->assertSee('Inspeksi CCTV 30M');
         $response->assertSee('Garansi 30 Hari');
         $response->assertSee('Edukasi &amp; Tips Perawatan Saluran Pipa', false);

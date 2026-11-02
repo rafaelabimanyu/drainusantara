@@ -266,6 +266,23 @@
                     </a>
                 </div>
             </div>
+
+            <!-- 8. Kontak Kami -->
+            <a href="{{ route('contact') }}" 
+               @click="sidebarOpen = false"
+               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('contact') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <span class="text-sm font-semibold">Hubungi Kami (Kontak)</span>
+                </div>
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
         </div>
 
         <!-- C. Ergonomic Sticky Bottom Zone -->

@@ -8,6 +8,7 @@ use App\Models\Equipment;
 use App\Models\Gallery;
 use App\Models\Portfolio;
 use App\Services\CacheService;
+use App\Services\SearchEnginePingService;
 use Illuminate\Database\Eloquent\Model;
 
 class ContentCacheObserver
@@ -19,6 +20,9 @@ class ContentCacheObserver
     {
         CacheService::clearPublicCache();
         $this->purgeDynamicEntityCache($model);
+
+        // Notify search engines of content addition/update
+        SearchEnginePingService::pingAll();
     }
 
     /**
@@ -28,6 +32,9 @@ class ContentCacheObserver
     {
         CacheService::clearPublicCache();
         $this->purgeDynamicEntityCache($model);
+
+        // Notify search engines of content removal
+        SearchEnginePingService::pingAll();
     }
 
     /**

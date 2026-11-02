@@ -28,8 +28,11 @@
             'badge' => 'KORIDOR PRIANGAN & INDUSTRI',
             'desc' => 'Armada siaga khusus kawasan residensial dataran tinggi, ruko kuliner, dan pabrik kawasan industri Jawa Barat.',
             'cities' => [
-                ['name' => 'Bandung Raya', 'slug' => 'bandung', 'hub' => 'Posko Buahbatu, Dago & Cimahi'],
+                ['name' => 'Kota Bandung', 'slug' => 'bandung', 'hub' => 'Posko Buahbatu & Dago'],
+                ['name' => 'Kab. Bandung', 'slug' => 'kabupaten-bandung', 'hub' => 'Posko Soreang & Baleendah'],
+                ['name' => 'Kota Cimahi', 'slug' => 'kota-cimahi', 'hub' => 'Posko Cimahi Tengah'],
             ],
+            'subregions' => ['Bandung Utara', 'Bandung Barat', 'Bandung Tengah', 'Bandung Timur'],
             'responseTime' => '30 - 60 Menit',
             'color' => 'blue',
         ],
@@ -38,8 +41,11 @@
             'badge' => 'KANTOR CABANG PANTURA',
             'desc' => 'Penanganan pipa mampet residensial pesisir dan komersial dengan mesin high-torque spesialis sedimen tanah & lumpur.',
             'cities' => [
-                ['name' => 'Semarang Raya', 'slug' => 'semarang', 'hub' => 'Posko Simpang Lima & Banyumanik'],
+                ['name' => 'Kota Semarang', 'slug' => 'semarang', 'hub' => 'Posko Simpang Lima & Banyumanik'],
+                ['name' => 'Kab. Semarang', 'slug' => 'kabupaten-semarang', 'hub' => 'Posko Ungaran & Ambarawa'],
+                ['name' => 'Kab. Demak', 'slug' => 'demak', 'hub' => 'Posko Demak Kota & Mranggen'],
             ],
+            'subregions' => ['Mranggen', 'Sayung', 'Ungaran', 'Ambarawa', 'Bawen'],
             'responseTime' => '30 - 60 Menit',
             'color' => 'indigo',
         ],
@@ -48,8 +54,9 @@
             'badge' => 'HUB REGIONAL SUMATERA',
             'desc' => 'Pelayanan pelancaran pipa mampet bergaransi pertama dengan standar mesin spiral baja modern di Gerbang Sumatera.',
             'cities' => [
-                ['name' => 'Bandar Lampung', 'slug' => 'lampung', 'hub' => 'Posko Tanjung Karang & Kedaton'],
+                ['name' => 'Bandar Lampung', 'slug' => 'bandar-lampung', 'hub' => 'Posko Tanjung Karang & Kedaton'],
             ],
+            'subregions' => ['Kedaton', 'Rajabasa', 'Way Halim', 'Sukarame', 'Teluk Betung'],
             'responseTime' => '45 - 60 Menit',
             'color' => 'amber',
         ],
@@ -115,9 +122,13 @@
                     </p>
 
                     <!-- Daftar Kota dalam Wilayah -->
-                    <div class="space-y-1.5 mb-5">
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Pusat Layanan Kota:</p>
-                        <div class="flex flex-col gap-1.5">
+                    <div class="space-y-2 mb-5">
+                        <div class="flex items-center justify-between">
+                            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Pusat Layanan Kota:</p>
+                            <span class="text-[10px] text-slate-500 font-semibold">{{ count($reg['cities']) }} Kota/Kab</span>
+                        </div>
+                        
+                        <div class="{{ count($reg['cities']) > 3 ? 'grid grid-cols-2 gap-1.5' : 'flex flex-col gap-1.5' }}">
                             @foreach($reg['cities'] as $c)
                             @php
                                 $isCurrent = ($currentCity && (str_contains(strtolower($currentCity), strtolower($c['name'])) || $currentCity === $c['slug']));
@@ -135,6 +146,19 @@
                             </a>
                             @endforeach
                         </div>
+
+                        @if(!empty($reg['subregions']))
+                        <div class="pt-2 border-t border-slate-100">
+                            <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Klaster / Area Strategis:</p>
+                            <div class="flex flex-wrap gap-1">
+                                @foreach($reg['subregions'] as $sub)
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium border border-slate-200/60">
+                                    {{ $sub }}
+                                </span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
 

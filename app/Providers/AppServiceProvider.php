@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\Article;
+use App\Models\CompanyPage;
 use App\Models\CoverageArea;
 use App\Models\Equipment;
 use App\Models\Gallery;
@@ -49,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         CoverageArea::observe($cacheObserver);
         Staff::observe($cacheObserver);
         Equipment::observe($cacheObserver);
+        CompanyPage::observe($cacheObserver);
 
         // 2. Cache global layout navigation services for fast rendering
         View::composer('layouts.app', function ($view) {

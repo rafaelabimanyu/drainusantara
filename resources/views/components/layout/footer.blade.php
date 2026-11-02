@@ -232,6 +232,8 @@
         <div class="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-xs text-slate-400">
             <p>&copy; {{ date('Y') }} PT JAWA JAYA ROOTER &bull; Drainusantara. Rooter &amp; Plumbing Engineering. 100% Tanpa Bongkar Keramik &amp; Bebas Bahan Kimia Korosif.</p>
             <div class="flex items-center gap-4 text-slate-400 text-[11px]">
+                <a href="{{ route('contact') }}" class="hover:text-white transition-colors font-bold text-sky-400">Kontak Kami</a>
+                <span>&bull;</span>
                 <a href="{{ route('how-it-works') }}" class="hover:text-white transition-colors">Cara Kerja</a>
                 <span>&bull;</span>
                 <a href="{{ route('about.warranty') }}" class="hover:text-white transition-colors">Ketentuan Garansi</a>

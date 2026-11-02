@@ -247,6 +247,12 @@
                    class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isBlog ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
                     Blog
                 </a>
+
+                <!-- 7. Kontak -->
+                <a href="{{ route('contact') }}" 
+                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ request()->routeIs('contact') ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
+                    Kontak
+                </a>
             </nav>
 
             <!-- Desktop CTA: Tombol 'Cek Estimasi' & 'Hubungi Kami' -->

@@ -127,6 +127,7 @@
     <x-landing-page.services :services="$services ?? null" :problem-catalogs="$problemCatalogs" :whatsapp-number="$whatsappNumber" />
    
     <x-landing-page.advantages />
+    <x-landing-page.building-sectors :whatsapp-number="$whatsappNumber" />
     <x-landing-page.documentation :galleries="$galleries ?? null" />
     <x-landing-page.portfolio-b2b :portfolios="$portfolios ?? null" :whatsapp-number="$whatsappNumber" />
     <x-landing-page.articles :articles="$articles ?? []" />

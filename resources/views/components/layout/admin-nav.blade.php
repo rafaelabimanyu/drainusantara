@@ -105,6 +105,41 @@
                         <span>Testimoni Pelanggan</span>
                     </a>
                 </li>
+
+                <!-- 9. Halaman Tentang Kami -->
+                <li>
+                    <a href="{{ route('admin.company-pages.index') }}" 
+                       class="group flex items-center gap-x-3 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold transition-colors {{ request()->routeIs('admin.company-pages*') ? 'bg-sky-700 text-white shadow-2xs' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-4 h-4 shrink-0 {{ request()->routeIs('admin.company-pages*') ? 'text-white' : 'text-slate-400 group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        <span>Halaman Tentang Kami</span>
+                    </a>
+                </li>
+
+                <!-- 10. Pesan Masuk / Kontak -->
+                @php
+                    $unreadContactCount = 0;
+                    try {
+                        $unreadContactCount = \App\Models\ContactMessage::where('status', 'new')->count();
+                    } catch (\Throwable $e) {}
+                @endphp
+                <li>
+                    <a href="{{ route('admin.contacts.index') }}" 
+                       class="group flex items-center justify-between rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold transition-colors {{ request()->routeIs('admin.contacts*') ? 'bg-sky-700 text-white shadow-2xs' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <div class="flex items-center gap-x-3">
+                            <svg class="w-4 h-4 shrink-0 {{ request()->routeIs('admin.contacts*') ? 'text-white' : 'text-slate-400 group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Pesan Masuk</span>
+                        </div>
+                        @if($unreadContactCount > 0)
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950">
+                                {{ $unreadContactCount }}
+                            </span>
+                        @endif
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\HasPageSeo;
+use App\Models\CompanyPage;
 use App\Models\Equipment;
 use App\Models\Portfolio;
 use App\Models\Staff;
@@ -35,18 +36,20 @@ class AboutController extends Controller
      */
     public function aboutProfile(): View
     {
-        PageMetadata::title('Profil Perusahaan: Spesialis Pipa Tanpa Bongkar');
-        SEOMeta::setDescription('Profil resmi Drainusantara: spesialis pelancaran pipa mampet tanpa bongkar keramik berstandar mutu tinggi, integritas teknis, dan jaminan garansi 30 hari.');
+        $companyPage = CompanyPage::getByKey('profil');
+
+        PageMetadata::title($companyPage->meta_title ?: 'Profil Perusahaan: Spesialis Pipa Tanpa Bongkar');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Profil resmi Drainusantara: spesialis pelancaran pipa mampet tanpa bongkar keramik berstandar mutu tinggi, integritas teknis, dan jaminan garansi 30 hari.');
         SEOMeta::setCanonical(route('about.profile'));
 
-        OpenGraph::setDescription('Mengenal integritas, visi, misi, dan pilar keunggulan teknik Drainusantara dalam melayani perumahan dan komersial.');
+        OpenGraph::setDescription($companyPage->meta_description ?: 'Mengenal integritas, visi, misi, dan pilar keunggulan teknik Drainusantara dalam melayani perumahan dan komersial.');
         OpenGraph::setUrl(route('about.profile'));
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription('Spesialis pelancaran pipa mampet tanpa bongkar keramik bergaransi 30 hari.');
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setDescription($companyPage->meta_description ?: 'Spesialis pelancaran pipa mampet tanpa bongkar keramik bergaransi 30 hari.');
+        TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        JsonLdMulti::setTitle('Profil Perusahaan Drainusantara');
+        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Profil Perusahaan Drainusantara');
         JsonLdMulti::setType('AboutPage');
         $this->addAboutBreadcrumb('Profil Perusahaan', 'about.profile');
 
@@ -57,7 +60,7 @@ class AboutController extends Controller
                 ->get();
         });
 
-        return view('about.profile', compact('staffMembers'));
+        return view('about.profile', compact('staffMembers', 'companyPage'));
     }
 
     /**
@@ -65,22 +68,24 @@ class AboutController extends Controller
      */
     public function aboutHolding(): View
     {
-        PageMetadata::title('Struktur Ekosistem Holding J&J Group');
-        SEOMeta::setDescription('Drainusantara bernaung di bawah ekosistem holding J&J Group. Sinergi rantai pasok mesin mekanik impor, kendali mutu, dan standarisasi operasional terpadu.');
+        $companyPage = CompanyPage::getByKey('holding');
+
+        PageMetadata::title($companyPage->meta_title ?: 'Struktur Ekosistem Holding J&J Group');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Drainusantara bernaung di bawah ekosistem holding J&J Group. Sinergi rantai pasok mesin mekanik impor, kendali mutu, dan standarisasi operasional terpadu.');
         SEOMeta::setCanonical(route('about.holding'));
 
-        OpenGraph::setDescription('Fondasi korporasi kokoh di bawah naungan J&J Group dengan jaringan logistik armada dan pengawasan mutu sanitasi.');
+        OpenGraph::setDescription($companyPage->meta_description ?: 'Fondasi korporasi kokoh di bawah naungan J&J Group dengan jaringan logistik armada dan pengawasan mutu sanitasi.');
         OpenGraph::setUrl(route('about.holding'));
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription('Ekosistem holding sanitasi dan drainase modern di Indonesia.');
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setDescription($companyPage->meta_description ?: 'Ekosistem holding sanitasi dan drainase modern di Indonesia.');
+        TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        JsonLdMulti::setTitle('Struktur Holding J&J Group - Drainusantara');
+        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Struktur Holding J&J Group - Drainusantara');
         JsonLdMulti::setType('AboutPage');
         $this->addAboutBreadcrumb('Struktur Holding', 'about.holding');
 
-        return view('about.holding');
+        return view('about.holding', compact('companyPage'));
     }
 
     /**
@@ -88,22 +93,24 @@ class AboutController extends Controller
      */
     public function aboutK3(): View
     {
-        PageMetadata::title('Standar SOP K3 & Higienitas Teknisi');
-        SEOMeta::setDescription('Protokol K3 resmi teknisi Drainusantara: pemakaian APD steril, cover sepatu saat masuk hunian, keamanan kelistrikan GFCI, dan uji alir sanitasi.');
+        $companyPage = CompanyPage::getByKey('sop-k3');
+
+        PageMetadata::title($companyPage->meta_title ?: 'Standar SOP K3 & Higienitas Teknisi');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Protokol K3 resmi teknisi Drainusantara: pemakaian APD steril, cover sepatu saat masuk hunian, keamanan kelistrikan GFCI, dan uji alir sanitasi.');
         SEOMeta::setCanonical(route('about.k3'));
 
-        OpenGraph::setDescription('Disiplin keselamatan kerja dan perlindungan sanitasi ruangan konsumen pada setiap penanganan pipa.');
+        OpenGraph::setDescription($companyPage->meta_description ?: 'Disiplin keselamatan kerja dan perlindungan sanitasi ruangan konsumen pada setiap penanganan pipa.');
         OpenGraph::setUrl(route('about.k3'));
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription('Protokol higienis, cover sepatu, sarung tangan nitril, dan keamanan kelistrikan.');
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setDescription($companyPage->meta_description ?: 'Protokol higienis, cover sepatu, sarung tangan nitril, dan keamanan kelistrikan.');
+        TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        JsonLdMulti::setTitle('Standar SOP K3 Teknisi - Drainusantara');
+        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Standar SOP K3 Teknisi - Drainusantara');
         JsonLdMulti::setType('AboutPage');
         $this->addAboutBreadcrumb('SOP K3', 'about.k3');
 
-        return view('about.sop-k3');
+        return view('about.sop-k3', compact('companyPage'));
     }
 
     /**
@@ -111,23 +118,25 @@ class AboutController extends Controller
      */
     public function aboutEquipment(): View
     {
-        PageMetadata::title('Peralatan & Teknologi Mesin Pipa Modern');
-        SEOMeta::setDescription('Spesifikasi mesin drain rooter Ridgid spiral baja rotary, kamera inspeksi visual CCTV IP68 jangkauan 30 meter, dan water jetting pembersih grease trap.');
+        $companyPage = CompanyPage::getByKey('peralatan');
+
+        PageMetadata::title($companyPage->meta_title ?: 'Peralatan & Teknologi Mesin Pipa Modern');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Spesifikasi mesin drain rooter Ridgid spiral baja rotary, kamera inspeksi visual CCTV IP68 jangkauan 30 meter, dan water jetting pembersih grease trap.');
         SEOMeta::setCanonical(route('about.equipment'));
 
-        OpenGraph::setDescription('Teknologi mekanis spiral baja elastis dan visualisasi kondisi internal pipa dengan kamera endoskopi digital.');
+        OpenGraph::setDescription($companyPage->meta_description ?: 'Teknologi mekanis spiral baja elastis dan visualisasi kondisi internal pipa dengan kamera endoskopi digital.');
         OpenGraph::setUrl(route('about.equipment'));
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription('Mesin spiral Ridgid K-50/K-60 dan kamera pipa CCTV IP68.');
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setDescription($companyPage->meta_description ?: 'Mesin spiral Ridgid K-50/K-60 dan kamera pipa CCTV IP68.');
+        TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
         $this->addAboutBreadcrumb('Peralatan & Teknologi', 'about.equipment');
 
         $equipments = Cache::remember('equipments.all_active', 86400, function () {
             return Equipment::where('is_active', true)->orderBy('order')->get();
         });
 
-        return view('about.equipment', compact('equipments'));
+        return view('about.equipment', compact('equipments', 'companyPage'));
     }
 
     /**
@@ -205,18 +214,20 @@ class AboutController extends Controller
      */
     public function aboutPortfolio(): View
     {
-        PageMetadata::title('Klien & Portofolio Proyek B2B');
-        SEOMeta::setDescription('Daftar portofolio klien komersial B2B dan hunian residensial Drainusantara: restoran F&B, hotel bintang, food court, ruko, dan gedung perkantoran.');
+        $companyPage = CompanyPage::getByKey('kemitraan');
+
+        PageMetadata::title($companyPage->meta_title ?: 'Klien & Portofolio Proyek B2B');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Daftar portofolio klien komersial B2B dan hunian residensial Drainusantara: restoran F&B, hotel bintang, food court, ruko, dan gedung perkantoran.');
         SEOMeta::setCanonical(route('about.portfolio'));
 
-        OpenGraph::setDescription('Kepercayaan puluhan entitas komersial F&B dan perhotelan terhadap solusi drainase tanpa bongkar keramik.');
+        OpenGraph::setDescription($companyPage->meta_description ?: 'Kepercayaan puluhan entitas komersial F&B dan perhotelan terhadap solusi drainase tanpa bongkar keramik.');
         OpenGraph::setUrl(route('about.portfolio'));
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription('Portofolio pembersihan pipa dan grease trap resto, hotel, dan gedung komersial.');
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setDescription($companyPage->meta_description ?: 'Portofolio pembersihan pipa dan grease trap resto, hotel, dan gedung komersial.');
+        TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        JsonLdMulti::setTitle('Klien & Portofolio Proyek - Drainusantara');
+        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Klien & Portofolio Proyek - Drainusantara');
         JsonLdMulti::setType('AboutPage');
         $this->addAboutBreadcrumb('Klien & Portofolio', 'about.portfolio');
 
@@ -226,7 +237,7 @@ class AboutController extends Controller
                 ->get();
         });
 
-        return view('about.portfolio', compact('portfolios'));
+        return view('about.portfolio', compact('portfolios', 'companyPage'));
     }
 
     /**
@@ -234,22 +245,24 @@ class AboutController extends Controller
      */
     public function aboutWarranty(): View
     {
-        PageMetadata::title('Ketentuan Resmi Garansi 30 Hari Kalender');
-        SEOMeta::setDescription('Syarat dan ketentuan resmi jaminan garansi 30 hari kalender Drainusantara, komitmen No Cure No Pay, serta alur klaim kunjungan ulang bebas biaya.');
+        $companyPage = CompanyPage::getByKey('garansi');
+
+        PageMetadata::title($companyPage->meta_title ?: 'Ketentuan Resmi Garansi 30 Hari Kalender');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Syarat dan ketentuan resmi jaminan garansi 30 hari kalender Drainusantara, komitmen No Cure No Pay, serta alur klaim kunjungan ulang bebas biaya.');
         SEOMeta::setCanonical(route('about.warranty'));
 
-        OpenGraph::setDescription('Perlindungan purna jual nyata: nota digital resmi, komitmen No Cure No Pay, dan respon klaim prioritas.');
+        OpenGraph::setDescription($companyPage->meta_description ?: 'Perlindungan purna jual nyata: nota digital resmi, komitmen No Cure No Pay, dan respon klaim prioritas.');
         OpenGraph::setUrl(route('about.warranty'));
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription('Jaminan garansi 30 hari kalender dan komitmen No Cure No Pay.');
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setDescription($companyPage->meta_description ?: 'Jaminan garansi 30 hari kalender dan komitmen No Cure No Pay.');
+        TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        JsonLdMulti::setTitle('Ketentuan Resmi Garansi 30 Hari - Drainusantara');
+        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Ketentuan Resmi Garansi 30 Hari - Drainusantara');
         JsonLdMulti::setType('AboutPage');
         $this->addAboutBreadcrumb('Ketentuan Garansi', 'about.warranty');
 
-        return view('about.warranty');
+        return view('about.warranty', compact('companyPage'));
     }
 
     /**
@@ -317,22 +330,24 @@ class AboutController extends Controller
      */
     public function howItWorks(): View
     {
-        PageMetadata::title('Cara Kerja & Proses Pelancaran Pipa Tanpa Bongkar');
-        SEOMeta::setDescription('Pelajari 5 tahap proses kerja mekanis Drainusantara: deteksi CCTV endoskopi, penetrasi spiral baja Ridgid, pengikisan kerak pipa, uji alir debit air, dan garansi 30 hari.');
+        $companyPage = CompanyPage::getByKey('cara-kerja');
+
+        PageMetadata::title($companyPage->meta_title ?: 'Cara Kerja & Proses Pelancaran Pipa Tanpa Bongkar');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Pelajari 5 tahap proses kerja mekanis Drainusantara: deteksi CCTV endoskopi, penetrasi spiral baja Ridgid, pengikisan kerak pipa, uji alir debit air, dan garansi 30 hari.');
         SEOMeta::setCanonical(route('how-it-works'));
 
-        OpenGraph::setDescription('Standar kerja profesional 100% mekanis tanpa bongkar keramik lantai dan bebas soda api korosif.');
+        OpenGraph::setDescription($companyPage->meta_description ?: 'Standar kerja profesional 100% mekanis tanpa bongkar keramik lantai dan bebas soda api korosif.');
         OpenGraph::setUrl(route('how-it-works'));
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription('Metodologi sistematis penanganan saluran pipa mampet tanpa bongkar bergaransi 30 hari.');
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setDescription($companyPage->meta_description ?: 'Metodologi sistematis penanganan saluran pipa mampet tanpa bongkar bergaransi 30 hari.');
+        TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        JsonLdMulti::setTitle('Cara Kerja & Standar Proses Pelancaran Pipa - Drainusantara');
+        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Cara Kerja & Standar Proses Pelancaran Pipa - Drainusantara');
         JsonLdMulti::setType('HowTo');
         $this->addAboutBreadcrumb('Cara Kerja & Proses', 'how-it-works');
 
-        return view('about.how-it-works');
+        return view('about.how-it-works', compact('companyPage'));
     }
 }
 

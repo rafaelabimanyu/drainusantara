@@ -85,6 +85,8 @@ class SitemapController extends Controller
 
             // Core static pages
             $urls[] = ['loc' => url('/'), 'lastmod' => null, 'changefreq' => 'daily', 'priority' => '1.0'];
+            $urls[] = ['loc' => route('contact'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.9'];
+            $urls[] = ['loc' => route('how-it-works'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
             $urls[] = ['loc' => route('about.profile'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
             $urls[] = ['loc' => route('about.holding'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
             $urls[] = ['loc' => route('about.k3'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];

@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyPageController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CoverageAreaController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\GalleryController;
@@ -93,6 +95,11 @@ Route::get('/peralatan/{slug}', fn ($slug) => redirect()->route('equipment.show'
 Route::get('/area-layanan', fn () => redirect('/#area'))->name('areas.anchor');
 Route::get('/layanan', fn () => redirect('/#layanan', 301))->name('services.anchor');
 
+// Halaman Kontak & Form Permohonan Layanan
+Route::get('/kontak', [Pages\ContactController::class, 'index'])->name('contact');
+Route::post('/kontak', [Pages\ContactController::class, 'submit'])->middleware('throttle:10,1')->name('contact.submit');
+Route::get('/hubungi-kami', fn () => redirect()->route('contact', [], 301));
+
 // CMS Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])
@@ -104,6 +111,7 @@ Route::get('/admin/login', fn () => redirect()->route('login'));
 // Custom CMS Admin Routes (Protected by auth middleware)
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::post('system/refresh-cache', [AdminController::class, 'refreshCache'])->name('system.refresh-cache');
 
     Route::resource('services', ServiceController::class)->except('show');
     Route::post('coverage-areas/sync', [CoverageAreaController::class, 'syncFromMaster'])->name('coverage-areas.sync');
@@ -114,4 +122,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('equipments', EquipmentController::class)->except('show');
     Route::resource('articles', ArticleController::class)->except('show');
     Route::resource('reviews', ReviewController::class)->except('show');
+    Route::resource('company-pages', CompanyPageController::class)->only(['index', 'edit', 'update']);
+    Route::resource('contacts', ContactMessageController::class)->only(['index', 'show', 'update', 'destroy']);
 });
