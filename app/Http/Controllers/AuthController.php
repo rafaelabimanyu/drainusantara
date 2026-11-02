@@ -44,6 +44,18 @@ class AuthController extends Controller
         $authenticated = Auth::attempt(['name' => $login, 'password' => $password], $remember)
             || Auth::attempt(['email' => $login, 'password' => $password], $remember);
 
+        // Toleransi spasi pada password (misal: "Drainusantara 123" vs "Drainusantara123")
+        if (! $authenticated) {
+            $altPassword = str_contains($password, ' ')
+                ? str_replace(' ', '', $password)
+                : (string) preg_replace('/(\D+)(\d+)/', '$1 $2', $password);
+
+            if ($altPassword !== $password) {
+                $authenticated = Auth::attempt(['name' => $login, 'password' => $altPassword], $remember)
+                    || Auth::attempt(['email' => $login, 'password' => $altPassword], $remember);
+            }
+        }
+
         if ($authenticated) {
             $request->session()->regenerate();
 

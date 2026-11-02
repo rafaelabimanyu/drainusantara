@@ -55,6 +55,34 @@ class AdminTest extends TestCase
         $response->assertRedirect('/admin');
     }
 
+    public function test_secondary_admin_can_authenticate_with_and_without_space_password(): void
+    {
+        User::create([
+            'name' => 'Drainusantara2@admin',
+            'email' => 'Drainusantara2@admin',
+            'password' => Hash::make('Drainusantara 123'),
+        ]);
+
+        // Attempt login with exact space password
+        $response1 = $this->post('/login', [
+            'login' => 'Drainusantara2@admin',
+            'password' => 'Drainusantara 123',
+        ]);
+        $this->assertAuthenticated();
+        $response1->assertRedirect('/admin');
+
+        $this->post('/logout');
+        $this->assertGuest();
+
+        // Attempt login without space password (normalized tolerance)
+        $response2 = $this->post('/login', [
+            'login' => 'Drainusantara2@admin',
+            'password' => 'Drainusantara123',
+        ]);
+        $this->assertAuthenticated();
+        $response2->assertRedirect('/admin');
+    }
+
     public function test_admin_can_not_authenticate_with_invalid_password(): void
     {
         $response = $this->from('/login')->post('/login', [
