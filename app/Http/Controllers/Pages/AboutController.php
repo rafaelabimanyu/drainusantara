@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\HasPageSeo;
 use App\Models\CompanyPage;
 use App\Models\Equipment;
+use App\Models\Faq;
 use App\Models\Portfolio;
 use App\Models\Staff;
 use App\Support\PageMetadata;
@@ -281,48 +282,66 @@ class AboutController extends Controller
         TwitterCard::setDescription('Tanya jawab teknis seputar pelancaran pipa tanpa bongkar keramik.');
         TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
+        $rawFaqs = Faq::active()->ordered()->get();
+        if ($rawFaqs->isEmpty()) {
+            $faqs = [
+                [
+                    'id' => 1,
+                    'category' => 'teknis',
+                    'question' => 'Apakah benar proses pengerjaan 100% tanpa membongkar keramik lantai atau dinding?',
+                    'answer' => 'Benar 100%. Teknisi Drainusantara menggunakan unit mesin spiral rotary Ridgid dengan kabel baja lentur berkecepatan putar terukur serta nozel Hydro-Jetting bertekanan air. Akses pengerjaan langsung melalui lubang afur wastafel, floor drain, kloset, atau bak kontrol eksisting sehingga ubin keramik dan struktur dinding Anda tetap utuh.',
+                ],
+                [
+                    'id' => 2,
+                    'category' => 'teknis',
+                    'question' => 'Mengapa pemakaian soda api sangat dilarang keras untuk pipa pembuangan PVC?',
+                    'answer' => 'Soda api memicu reaksi eksotermik panas ekstrem hingga di atas 90°C yang melunakkan pipa PVC dan merusak sambungan lem elbow. Selain itu, residu kimianya akan mengalami saponifikasi dan mengeras menjadi kerak kapur padat seperti batu semen.',
+                ],
+                [
+                    'id' => 3,
+                    'category' => 'durasi',
+                    'question' => 'Berapa lama rata-rata durasi pengerjaan pelancaran saluran pipa?',
+                    'answer' => config('service_facts.duration_answer'),
+                ],
+                [
+                    'id' => 4,
+                    'category' => 'biaya',
+                    'question' => 'Bagaimana sistem penentuan biaya jasa dan apakah ada risiko biaya tersembunyi?',
+                    'answer' => 'Drainusantara menerapkan sistem harga transparan berdasarkan jenis titik saluran dan estimasi panjang jangkauan meteran pipa. Seluruh rincian biaya dikonfirmasi di awal dengan komitmen No Cure No Pay.',
+                ],
+                [
+                    'id' => 5,
+                    'category' => 'garansi',
+                    'question' => 'Bagaimana prosedur dan ketentuan klaim garansi 30 hari resmi?',
+                    'answer' => 'Setiap pengerjaan dilengkapi nota digital resmi berstempel. Cukup hubungi WhatsApp Customer Care jika terjadi kendala pada titik yang sama dalam 30 hari kalender untuk kunjungan ulang 100% gratis.',
+                ],
+            ];
+        } else {
+            $faqs = $rawFaqs->map(fn ($item) => [
+                'id' => $item->id,
+                'category' => $item->category,
+                'question' => $item->question,
+                'answer' => $item->answer,
+            ])->all();
+        }
+
         JsonLdMulti::setTitle('Tanya Jawab (FAQ) - Drainusantara');
         JsonLdMulti::setType('FAQPage');
         JsonLdMulti::addValues([
-            'mainEntity' => [
-                [
-                    '@type' => 'Question',
-                    'name' => 'Mengapa Drainusantara melarang keras penggunaan soda api?',
-                    'acceptedAnswer' => [
-                        '@type' => 'Answer',
-                        'text' => 'Soda api memicu reaksi eksotermik panas ekstrem hingga di atas 100°C yang melunakkan, merusak lem, dan memecahkan pipa PVC cor di dalam lantai, serta memadatkan endapan lemak menjadi sekeras semen.',
-                    ],
+            'mainEntity' => array_map(fn ($faq) => [
+                '@type' => 'Question',
+                'name' => $faq['question'],
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => $faq['answer'],
                 ],
-                [
-                    '@type' => 'Question',
-                    'name' => 'Berapa lama estimasi waktu pengerjaan pelancaran pipa?',
-                    'acceptedAnswer' => [
-                        '@type' => 'Answer',
-                        'text' => config('service_facts.duration_answer'),
-                    ],
-                ],
-                [
-                    '@type' => 'Question',
-                    'name' => 'Apakah penanganan saluran memerlukan pembongkaran lantai atau keramik?',
-                    'acceptedAnswer' => [
-                        '@type' => 'Answer',
-                        'text' => 'Tidak perlu. Metode mekanis spiral baja elastis masuk mengikuti jalur belokan pipa langsung dari lubang saringan atau leher angsa porselen tanpa membongkar keramik.',
-                    ],
-                ],
-                [
-                    '@type' => 'Question',
-                    'name' => 'Bagaimana ketentuan jaminan garansi 30 hari kalender?',
-                    'acceptedAnswer' => [
-                        '@type' => 'Answer',
-                        'text' => 'Setiap pengerjaan tuntas dilindungi nota digital garansi 30 hari. Jika saluran mampet kembali dalam masa garansi akibat residu titik yang sama, teknisi datang melancarkan ulang tanpa biaya tambahan.',
-                    ],
-                ],
-            ],
+            ], $faqs),
         ]);
 
         $this->addAboutBreadcrumb('FAQ', 'about.faq');
+        $categories = Faq::categories();
 
-        return view('about.faq');
+        return view('about.faq', compact('faqs', 'categories'));
     }
 
     /**

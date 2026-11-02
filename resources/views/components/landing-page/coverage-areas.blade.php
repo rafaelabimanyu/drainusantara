@@ -6,7 +6,7 @@
     $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6285609009009');
 @endphp
 
-<section id="area" class="bg-slate-50 border-b border-slate-200 py-16 lg:py-20" x-data="mobileCarousel(3, 4500)">
+<section id="area" class="bg-slate-50 border-b border-slate-200 py-16 lg:py-20" x-data="mobileCarousel(5, 4500)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-10 md:mb-12 reveal-soft">
@@ -19,12 +19,12 @@
                 </div>
                 <div>
                     <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">Wilayah Jangkauan Armada Drainusantara</h2>
-                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Posko teknisi siaga di seluruh Jabodetabek, Semarang, dan Lampung dengan respon WhatsApp sigap &amp; cepat.</p>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Posko teknisi siaga di seluruh Jabodetabek, Bandung Raya, Semarang Raya, Demak, dan Lampung dengan respon WhatsApp sigap &amp; cepat.</p>
                 </div>
             </div>
         </div>
 
-            <div x-ref="slider" tabindex="0" role="region" aria-label="Wilayah layanan - geser untuk melihat lainnya"
+        <div x-ref="slider" tabindex="0" role="region" aria-label="Wilayah layanan - geser untuk melihat lainnya"
              @scroll.passive="onScroll()"
              @touchstart="pause()"
              @touchend="resume()"
@@ -175,12 +175,76 @@
                 </div>
             </div>
 
-            <!-- Card 3: SEMARANG & BANDAR LAMPUNG -->
+            <!-- Card 3: BANDUNG RAYA & CIMAHI (NEW) -->
             <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-3">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-kota-bekasi-jawa-barat-drainusantara.webp') }}"
+                         alt="Wilayah Bandung Raya & Cimahi"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
+                    <div class="absolute inset-0 bg-linear-to-b from-white/55 via-white/70 to-white/55"></div>
+                </div>
+
+                <div class="relative z-10">
+                    <div class="mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-2">Bandung Raya &amp; Cimahi</h3>
+                    
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
+                        Posko armada siaga melayani Kota Bandung (30 kecamatan), Kabupaten Bandung (31 kecamatan), dan Kota Cimahi. Siap atasi wastafel, kloset, dan saluran lemak kafe.
+                    </p>
+
+                    <div class="pt-4 border-t border-slate-100">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2.5">
+                            Area Layanan Utama:
+                        </span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="{{ route('area.city', ['city' => 'bandung']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kota Bandung</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Dago, Coblong, Buahbatu, Sukajadi</div>
+                            </a>
+                            <a href="{{ route('area.city', ['city' => 'kabupaten-bandung']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kab. Bandung</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Soreang, Baleendah, Dayeuhkolot</div>
+                            </a>
+                            <a href="{{ route('area.city', ['city' => 'kota-cimahi']) }}" class="group col-span-2 p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex items-center justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kota Cimahi</div>
+                                <div class="text-[11px] text-slate-500">Cimahi Tengah, Cimahi Selatan, Cimahi Utara</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <span class="text-xs text-slate-500 font-medium">Jawa Barat</span>
+                    @php
+                        $waBdgText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area Bandung Raya / Cimahi. Mohon info teknisi terdekat.");
+                    @endphp
+                    <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $waBdgText }}" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
+                        <span>Panggil Teknisi</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 4: SEMARANG RAYA & KABUPATEN DEMAK (NEW & EXPANDED) -->
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-4">
+                <!-- Card Background Image Layer -->
+                <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                     <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-semarang-lampung-drainusantara.webp') }}"
-                         alt="Wilayah Semarang & Bandar Lampung"
+                         alt="Wilayah Semarang & Demak"
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
@@ -196,10 +260,10 @@
                         </div>
                     </div>
 
-                    <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-2">Semarang &amp; Bandar Lampung</h3>
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-2">Semarang Raya &amp; Demak</h3>
                     
                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
-                        Posko regional siaga melayani rumah tinggal, industri, instansi, restoran, dan perhotelan dengan mesin spiral mekanis bergaransi resmi 30 hari.
+                        Posko teknisi Jawa Tengah mencakup Kota Semarang, Kabupaten Semarang (Ungaran), dan Kabupaten Demak (14 kecamatan) dengan mesin spiral modern.
                     </p>
 
                     <div class="pt-4 border-t border-slate-100">
@@ -207,37 +271,95 @@
                             Area Layanan Utama:
                         </span>
                         <div class="grid grid-cols-2 gap-2">
-                            <!-- Semarang -->
-                            <a href="{{ route('area.city', ['city' => 'semarang']) }}" class="group p-3 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
-                                <div>
-                                    <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kota Semarang</div>
-                                    <span class="text-[11px] text-slate-500 font-medium inline-block mt-0.5">Jawa Tengah</span>
-                                </div>
-                                <div class="text-[11px] text-slate-500 mt-2 line-clamp-2">Candisari, Banyumanik, Simpang Lima, Tembalang, Ngaliyan</div>
+                            <a href="{{ route('area.city', ['city' => 'semarang']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kota Semarang</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Candisari, Banyumanik, Simpang Lima</div>
                             </a>
-
-                            <!-- Bandar Lampung -->
-                            <a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="group p-3 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
-                                <div>
-                                    <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Bandar Lampung</div>
-                                    <span class="text-[11px] text-slate-500 font-medium inline-block mt-0.5">Sumatera</span>
-                                </div>
-                                <div class="text-[11px] text-slate-500 mt-2 line-clamp-2">Kedaton, Tanjung Karang, Way Halim, Teluk Betung, Rajabasa</div>
+                            <a href="{{ route('area.city', ['city' => 'kabupaten-semarang']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kab. Semarang</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Ungaran Barat, Ambarawa, Bawen</div>
+                            </a>
+                            <a href="{{ route('area.city', ['city' => 'demak']) }}" class="group col-span-2 p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex items-center justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kabupaten Demak</div>
+                                <div class="text-[11px] text-slate-500">Sayung, Mranggen, Bonang, Demak Kota, Karanganyar</div>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <div class="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-2 text-xs font-bold">
-                        <a href="{{ route('area.province', ['province' => 'jawa-tengah']) }}" class="text-sky-700 hover:underline">Jateng</a>
-                        <span class="text-slate-300">&bull;</span>
-                        <a href="{{ route('area.province', ['province' => 'lampung']) }}" class="text-sky-700 hover:underline">Lampung</a>
-                    </div>
+                    <a href="{{ route('area.province', ['province' => 'jawa-tengah']) }}" class="text-xs font-bold text-sky-700 hover:text-sky-800 hover:underline">
+                        Lihat Jawa Tengah &rarr;
+                    </a>
                     @php
-                        $waRegionalText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area Semarang / Bandar Lampung. Mohon info jadwal kedatangan.");
+                        $waSmgText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area Semarang / Demak. Mohon info teknisi terdekat.");
                     @endphp
-                    <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $waRegionalText }}" target="_blank" rel="noopener noreferrer"
+                    <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $waSmgText }}" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
+                        <span>Panggil Teknisi</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 5: BANDAR LAMPUNG & SUMATERA -->
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-5">
+                <!-- Card Background Image Layer -->
+                <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-semarang-lampung-drainusantara.webp') }}"
+                         alt="Wilayah Bandar Lampung"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
+                    <div class="absolute inset-0 bg-linear-to-b from-white/55 via-white/70 to-white/55"></div>
+                </div>
+
+                <div class="relative z-10">
+                    <div class="mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-2">Bandar Lampung</h3>
+                    
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
+                        Posko regional siaga Pulau Sumatera melayani hunian perumahan, ruko, restoran, dan hotel dengan mesin rotary Ridgid dan garansi 30 hari.
+                    </p>
+
+                    <div class="pt-4 border-t border-slate-100">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2.5">
+                            Area Layanan Utama:
+                        </span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Bandar Lampung</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Kedaton, Tanjung Karang, Way Halim</div>
+                            </a>
+                            <a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Lampung Selatan</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Natar, Jati Agung, Rajabasa</div>
+                            </a>
+                            <div class="group col-span-2 p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] border border-slate-200/80 flex items-center justify-between">
+                                <div class="font-semibold text-xs text-slate-900">Teluk Betung &amp; Sukarame</div>
+                                <div class="text-[11px] text-slate-500">Dispatch via Bypass Soekarno-Hatta</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <a href="{{ route('area.province', ['province' => 'lampung']) }}" class="text-xs font-bold text-sky-700 hover:text-sky-800 hover:underline">
+                        Lihat Lampung &rarr;
+                    </a>
+                    @php
+                        $waLpgText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area Bandar Lampung. Mohon info teknisi terdekat.");
+                    @endphp
+                    <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $waLpgText }}" target="_blank" rel="noopener noreferrer"
                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
                         <span>Panggil Teknisi</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,10 +380,10 @@
                     aria-label="Wilayah sebelumnya">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <span>Wilayah <strong class="text-slate-900" x-text="active + 1">1</strong> dari 3</span>
-            <button type="button" @click="goTo(Math.min(2, active + 1))"
-                    :disabled="active === 2"
-                    :class="active === 2 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+            <span>Wilayah <strong class="text-slate-900" x-text="active + 1">1</strong> dari 5</span>
+            <button type="button" @click="goTo(Math.min(4, active + 1))"
+                    :disabled="active === 4"
+                    :class="active === 4 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
                     class="p-1.5 rounded-md border border-slate-200 transition-colors"
                     aria-label="Wilayah berikutnya">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>

@@ -25,10 +25,10 @@ return [
          */
         'webmaster_tags' => [
             'google' => env('GOOGLE_SITE_VERIFICATION') ?: 'aoHQ2ZJhlGecoaMyq4c-0pnAqdqj6AViTLZUPxDbKgw',
-            'bing' => null,
+            'bing' => env('BING_SITE_VERIFICATION') ?: 'drainusantara-bing-verification',
             'alexa' => null,
             'pinterest' => null,
-            'yandex' => null,
+            'yandex' => env('YANDEX_SITE_VERIFICATION') ?: 'drainusantara-yandex-verification',
             'norton' => null,
         ],
 

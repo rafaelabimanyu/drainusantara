@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ServiceSeeder::class,
-            ReviewSeeder::class,
             CoverageAreaSeeder::class,
+            CompanyPageSeeder::class,
             EquipmentSeeder::class,
             GallerySeeder::class,
-            ArticleSeeder::class,
+            FaqSeeder::class,
         ]);
 
         CacheService::clearPublicCache();

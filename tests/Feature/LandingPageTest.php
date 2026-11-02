@@ -50,11 +50,11 @@ class LandingPageTest extends TestCase
         $response->assertSee('Garansi 30 Hari');
         $response->assertSee('Edukasi &amp; Tips Perawatan Saluran Pipa', false);
         $response->assertSee('Mulai Rp 400.000');
-        $response->assertSee('Posko Siaga Armada &amp; Spesifikasi Tindakan Lapangan', false);
-        $response->assertSee('Jaringan Posko Siaga');
-        $response->assertSee('Kelengkapan Alat Armada');
+        $response->assertSee('Posko Siaga Armada');
+        $response->assertSee('Bandung Raya &amp; Cimahi', false);
+        $response->assertSee('Semarang Raya &amp; Demak', false);
         $response->assertSee('No Cure No Pay');
-        $response->assertSee('Peta Lokasi Workshop Pusat Drainusantara');
+        $response->assertSee('Instagram Drainusantara');
     }
 
     public function test_articles_section_has_mobile_carousel_structure(): void
@@ -154,6 +154,22 @@ class LandingPageTest extends TestCase
         $response->assertSee('id="peralatan-armada"', false);
         $response->assertSee('Geser katalog peralatan &bull; Auto-scroll aktif', false);
         $response->assertSee('aria-label="Peralatan 1"', false);
+    }
+
+    public function test_footer_office_address_is_hidden_by_default_and_renders_when_configured(): void
+    {
+        // By default, address is null/empty, so address block should not be rendered
+        config(['services.company.address' => null]);
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertDontSee('Kantor &amp; Workshop:', false);
+
+        // When address is configured, it renders cleanly in the footer
+        config(['services.company.address' => 'Jl. Pengadegan Timur Raya No. 42, Pancoran, Jakarta Selatan']);
+        $response = $this->get('/');
+        $response->assertStatus(200);
+        $response->assertSee('Kantor &amp; Workshop:', false);
+        $response->assertSee('Jl. Pengadegan Timur Raya No. 42, Pancoran, Jakarta Selatan');
     }
 }
 

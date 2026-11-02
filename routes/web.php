@@ -7,6 +7,7 @@ use App\Http\Controllers\CompanyPageController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\CoverageAreaController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pages;
@@ -123,5 +124,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('articles', ArticleController::class)->except('show');
     Route::resource('reviews', ReviewController::class)->except('show');
     Route::resource('company-pages', CompanyPageController::class)->only(['index', 'edit', 'update']);
+    Route::post('faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('faqs.toggle');
+    Route::resource('faqs', FaqController::class)->except('show');
     Route::resource('contacts', ContactMessageController::class)->only(['index', 'show', 'update', 'destroy']);
 });

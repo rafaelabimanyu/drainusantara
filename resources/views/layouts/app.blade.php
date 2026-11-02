@@ -7,6 +7,28 @@
 
     {!! SEO::generate() !!}
 
+    <!-- Search Engine Crawler Bots -->
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="yandex" content="index, follow">
+
+    <!-- Browser, Mobile OS & Progressive Display -->
+    <meta name="theme-color" content="#0369a1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Drainusantara">
+    <meta name="application-name" content="Drainusantara">
+    <meta name="msapplication-TileColor" content="#0369a1">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Geo-Location standard Indonesia -->
+    <meta name="geo.region" content="ID">
+    <meta name="geo.placename" content="Indonesia">
+    <meta name="geo.position" content="-6.2088;106.8456">
+    <meta name="ICBM" content="-6.2088, 106.8456">
+
     <!-- Favicon & Web Icon -->
     <link rel="icon" type="image/webp" href="{{ asset('images/logo/WebIcon.webp') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/logo/WebIcon.webp') }}">

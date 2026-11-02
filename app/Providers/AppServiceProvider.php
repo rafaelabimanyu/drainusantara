@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\CompanyPage;
 use App\Models\CoverageArea;
 use App\Models\Equipment;
+use App\Models\Faq;
 use App\Models\Gallery;
 use App\Models\Portfolio;
 use App\Models\Review;
@@ -51,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
         Staff::observe($cacheObserver);
         Equipment::observe($cacheObserver);
         CompanyPage::observe($cacheObserver);
+        Faq::observe($cacheObserver);
 
         // 2. Cache global layout navigation services for fast rendering
         View::composer('layouts.app', function ($view) {

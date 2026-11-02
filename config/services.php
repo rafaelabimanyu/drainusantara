@@ -33,10 +33,18 @@ return [
         'site_verification' => env('GOOGLE_SITE_VERIFICATION'),
     ],
     'gtm' => [
-        'container_id' => env('GTM_CONTAINER_ID'),
-    ],
-    'gtm' => [
         'id' => env('GTM_CONTAINER_ID'),
+    ],
+    'social' => [
+        'instagram' => env('SOCIAL_INSTAGRAM', 'https://instagram.com/drainusantara'),
+        'tiktok' => env('SOCIAL_TIKTOK', 'https://tiktok.com/@drainusantara'),
+        'youtube' => env('SOCIAL_YOUTUBE', 'https://youtube.com/@drainusantara'),
+        'facebook' => env('SOCIAL_FACEBOOK', 'https://facebook.com/drainusantara'),
+        'linkedin' => env('SOCIAL_LINKEDIN', 'https://linkedin.com/company/drainusantara'),
+        'whatsapp' => env('SOCIAL_WHATSAPP', 'https://wa.me/6285609009009'),
+    ],
+    'company' => [
+        'address' => env('COMPANY_OFFICE_ADDRESS', null),
     ],
 
 ];

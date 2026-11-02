@@ -15,7 +15,7 @@
     :bg-image="asset('assets/banner/Drainusantara-jasa-saluran-mampet-profesional-desktop.webp')"
 />
 
-<section id="faq-page" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200" x-data="{ openFaq: 1, activeCategory: 'all' }">
+<section id="faq-page" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200" x-data="{ openFaq: {{ !empty($faqs) ? ($faqs[0]['id'] ?? 1) : 1 }}, activeCategory: 'all' }">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-2xl mx-auto mb-12 reveal-soft">
@@ -31,114 +31,63 @@
         </div>
 
         @php
-            $faqs = [
-                [
-                    'id' => 1,
-                    'category' => 'teknis',
-                    'q' => 'Apakah benar proses pengerjaan 100% tanpa membongkar keramik lantai atau dinding?',
-                    'a' => 'Benar 100%. Teknisi Drainusantara menggunakan unit mesin spiral rotary Ridgid Amerika dengan kabel baja lentur berkecepatan putar terukur serta nozel Hydro-Jetting bertekanan air. Akses pengerjaan langsung melalui lubang afur wastafel, floor drain, kloset, atau bak kontrol eksisting sehingga ubin keramik, marmer, dan struktur dinding Anda tetap utuh tanpa risiko retak atau pembongkaran.'
-                ],
-                [
-                    'id' => 2,
-                    'category' => 'teknis',
-                    'q' => 'Mengapa pemakaian soda api sangat dilarang keras untuk pipa pembuangan PVC?',
-                    'a' => 'Soda api (Natrium Hidroksida / NaOH) memicu reaksi eksotermik panas ekstrem hingga di atas 90°C saat bereaksi dengan air. Suhu ini langsung melunakkan pipa PVC dan merusak sambungan lem elbow. Selain itu, bila soda api gagal melarutkan gumpalan lemak beku, residu kimianya akan mengalami saponifikasi dan mengeras menjadi kerak kapur padat seperti batu semen di dasar saluran yang jauh lebih sulit ditembus.'
-                ],
-                [
-                    'id' => 3,
-                    'category' => 'teknis',
-                    'q' => 'Berapa lama rata-rata durasi pengerjaan pelancaran saluran pipa?',
-                    'a' => config('service_facts.duration_answer')
-                ],
-                [
-                    'id' => 4,
-                    'category' => 'biaya',
-                    'q' => 'Bagaimana sistem penentuan biaya jasa dan apakah ada risiko biaya tersembunyi?',
-                    'a' => 'Drainusantara menerapkan sistem harga transparan. Estimasi biaya jasa dihitung berdasarkan jenis titik saluran (wastafel, kamar mandi, talang, pipa utama) dan estimasi panjang jangkauan meteran pipa. Seluruh rincian biaya dikonfirmasi di awal sebelum teknisi mulai melakukan tindakan mekanis. Kami memegang teguh komitmen No Result No Pay: jika saluran tidak berhasil lancar sempurna, Anda tidak dikenakan biaya jasa pelancaran.'
-                ],
-                [
-                    'id' => 5,
-                    'category' => 'garansi',
-                    'q' => 'Bagaimana prosedur dan ketentuan klaim garansi 30 hari resmi?',
-                    'a' => 'Setiap pengerjaan dilengkapi digital invoice resmi berstempel. Klaim garansi sangat mudah: cukup hubungi WhatsApp Customer Service dengan menyebutkan nomor kontak saat pemesanan awal. Jika titik pipa yang sama mengalami sumbatan berulang dalam 30 hari kalender, tim teknisi segera dijadwalkan ulang untuk kunjungan revisi 100% gratis tanpa biaya jasa maupun transportasi.'
-                ],
-                [
-                    'id' => 6,
-                    'category' => 'layanan',
-                    'q' => 'Apakah Drainusantara melayani pengerjaan malam hari (after-hours) untuk restoran, kafe, atau hotel?',
-                    'a' => 'Ya, kami menyediakan layanan khusus shift malam (after-hours service) bagi mitra bisnis seperti restoran mall, food court, kafe, dan perhotelan. Pengerjaan pelancaran pipa lemak dapur (kitchen sink) dan grease trap dapat dijadwalkan setelah jam operasional tutup agar operasional bisnis dan kenyamanan pengunjung tidak terganggu.'
-                ],
-                [
-                    'id' => 7,
-                    'category' => 'administrasi',
-                    'q' => 'Apakah Drainusantara dapat menerbitkan Faktur Pajak PPN 11% dan Surat Perintah Kerja (SPK)?',
-                    'a' => 'Tentu. Sebagai unit usaha di bawah naungan PT Jayadi Mitra Group dengan legalitas NIB dan SPPKP lengkap, kami siap menerbitkan Surat Penawaran Resmi, SPK, Berita Acara Penyelesaian Pekerjaan (BAPP), serta e-Faktur Pajak PPN 11% untuk kebutuhan audit pengadaan properti korporat, pengelola gedung, maupun jaringan F&B komersial.'
-                ],
-                [
-                    'id' => 8,
-                    'category' => 'layanan',
-                    'q' => 'Wilayah operasional mana saja yang dijangkau oleh armada siaga teknisi?',
-                    'a' => 'Armada teknisi siaga Drainusantara melayani seluruh wilayah Jabodetabek (DKI Jakarta Pusat, Selatan, Barat, Timur, Utara, serta Bogor, Depok, Tangerang, Tangerang Selatan, dan Bekasi), serta posko operasional di Kota Semarang dan Bandar Lampung dengan radius dispatch cepat ke lokasi properti Anda.'
-                ],
-            ];
+            $activeCategories = array_unique(array_column($faqs, 'category'));
         @endphp
 
+        <!-- Category Pills Filter -->
         <div class="flex items-center justify-center gap-2 flex-wrap mb-8 reveal-soft delay-100">
             <button type="button" 
                     @click="activeCategory = 'all'"
-                    :class="activeCategory === 'all' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'"
+                    :class="activeCategory === 'all' ? 'bg-slate-900 text-white border-slate-900 shadow-xs' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'"
                     class="px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer">
-                Semua Tanya Jawab
+                Semua Tanya Jawab ({{ count($faqs) }})
             </button>
-            <button type="button" 
-                    @click="activeCategory = 'teknis'"
-                    :class="activeCategory === 'teknis' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'"
-                    class="px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer">
-                Metode &amp; Teknis Pipa
-            </button>
-            <button type="button" 
-                    @click="activeCategory = 'biaya'"
-                    :class="activeCategory === 'biaya' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'"
-                    class="px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer">
-                Biaya &amp; Pembayaran
-            </button>
-            <button type="button" 
-                    @click="activeCategory = 'garansi'"
-                    :class="activeCategory === 'garansi' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'"
-                    class="px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer">
-                Garansi 30 Hari
-            </button>
-            <button type="button" 
-                    @click="activeCategory = 'administrasi'"
-                    :class="activeCategory === 'administrasi' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'"
-                    class="px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer">
-                Legalitas &amp; Faktur PPN
-            </button>
+            @foreach($categories as $catKey => $catLabel)
+                @if(in_array($catKey, $activeCategories))
+                    <button type="button" 
+                            @click="activeCategory = '{{ $catKey }}'"
+                            :class="activeCategory === '{{ $catKey }}' ? 'bg-slate-900 text-white border-slate-900 shadow-xs' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'"
+                            class="px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer">
+                        {{ $catLabel }}
+                    </button>
+                @endif
+            @endforeach
         </div>
 
+        <!-- FAQ Items Accordion -->
         <div class="space-y-3.5 mb-12">
-            @foreach($faqs as $item)
-                <div x-show="activeCategory === 'all' || activeCategory === '{{ $item['category'] }}'"
+            @forelse($faqs as $item)
+                @php
+                    $q = $item['question'] ?? ($item['q'] ?? '');
+                    $a = $item['answer'] ?? ($item['a'] ?? '');
+                    $itemId = $item['id'] ?? $loop->iteration;
+                    $cat = $item['category'] ?? 'umum';
+                @endphp
+                <div x-show="activeCategory === 'all' || activeCategory === '{{ $cat }}'"
                      class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs transition-all card-lift reveal-soft stagger-{{ ($loop->iteration % 4) + 1 }}">
                     <button type="button" 
-                            @click="openFaq = (openFaq === {{ $item['id'] }} ? null : {{ $item['id'] }})"
-                            aria-expanded="{{ $item['id'] === 1 ? 'true' : 'false' }}"
-                            :aria-expanded="openFaq === {{ $item['id'] }}" aria-controls="faq-answer-{{ $item['id'] }}"
+                            @click="openFaq = (openFaq === {{ $itemId }} ? null : {{ $itemId }})"
+                            aria-expanded="{{ $loop->first ? 'true' : 'false' }}"
+                            :aria-expanded="openFaq === {{ $itemId }}" aria-controls="faq-answer-{{ $itemId }}"
                             class="w-full flex items-center justify-between p-4 sm:p-5 text-left text-xs sm:text-sm font-bold text-slate-900 hover:text-sky-700 transition-colors cursor-pointer min-h-[48px]">
-                        <span class="pr-4 leading-snug">{{ $item['q'] }}</span>
+                        <span class="pr-4 leading-snug">{{ $q }}</span>
                         <svg class="w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0" 
-                             :class="{ 'rotate-180 text-sky-700': openFaq === {{ $item['id'] }} }" 
+                             :class="{ 'rotate-180 text-sky-700': openFaq === {{ $itemId }} }" 
                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
-                    <div id="faq-answer-{{ $item['id'] }}" x-show="openFaq === {{ $item['id'] }}">
+                    <div id="faq-answer-{{ $itemId }}" x-show="openFaq === {{ $itemId }}" x-cloak>
                         <div class="px-4 sm:px-5 pb-5 pt-1 border-t border-slate-100 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                            {{ $item['a'] }}
+                            {{ $a }}
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="p-8 text-center bg-white rounded-xl border border-slate-200 text-slate-500">
+                    Belum ada pertanyaan FAQ yang dipublikasikan.
+                </div>
+            @endforelse
         </div>
 
         <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6 reveal-soft">
