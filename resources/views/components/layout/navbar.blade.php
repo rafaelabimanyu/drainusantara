@@ -168,7 +168,7 @@
                          x-transition:leave="transition ease-in duration-100"
                          x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                          x-transition:leave-end="opacity-0 translate-y-1 scale-98"
-                         class="absolute top-full right-0 mt-2 w-120 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-3 z-50 text-slate-100">
+                         class="absolute top-full right-0 mt-2 w-160 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-3 z-50 text-slate-100">
                         
                         <!-- Popover Header -->
                         <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-800">
@@ -177,8 +177,8 @@
                             </span>
                         </div>
 
-                        <!-- 3 Clean Columns -->
-                        <div class="grid grid-cols-3 gap-2.5 text-xs">
+                        <!-- 4 Clean Columns -->
+                        <div class="grid grid-cols-4 gap-2.5 text-xs">
                             <!-- Col 1: DKI Jakarta -->
                             <div>
                                 <div class="text-[10px] font-bold uppercase tracking-wider text-sky-400 mb-1 px-2">
@@ -214,7 +214,32 @@
                                 </div>
                             </div>
 
-                            <!-- Col 3: Hub Regional & Posko -->
+                            <!-- Col 3: Bali -->
+                            <div>
+                                <div class="text-[10px] font-bold uppercase tracking-wider text-sky-400 mb-1 px-2">
+                                    BALI
+                                </div>
+                                <div class="space-y-0.5">
+                                    @if(isset($navRegions['bali']['cities']))
+                                        @foreach (['kota-denpasar', 'kabupaten-badung', 'kabupaten-gianyar', 'kabupaten-tabanan'] as $bCitySlug)
+                                            @if(isset($navRegions['bali']['cities'][$bCitySlug]))
+                                                @php
+                                                    $bCity = $navRegions['bali']['cities'][$bCitySlug];
+                                                    $isCityActive = request()->is('area/' . $bCity['slug'] . '*');
+                                                @endphp
+                                                <a href="{{ route('area.city', ['city' => $bCity['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md transition-colors font-medium {{ $isCityActive ? 'bg-slate-800 text-sky-400 font-bold border border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
+                                                    {{ $bCity['name'] }}
+                                                </a>
+                                            @endif
+                                        @endforeach
+                                        <a href="{{ route('area.province', ['province' => 'bali']) }}" @click="activeMenu = null" class="block px-2 py-1 rounded-md text-[11px] text-sky-400 hover:text-sky-300 font-semibold">
+                                            + Seluruh Bali &rarr;
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- Col 4: Hub Lainnya -->
                             <div>
                                 <div class="text-[10px] font-bold uppercase tracking-wider text-sky-400 mb-1 px-2">
                                     Hub Lainnya
@@ -235,6 +260,9 @@
 
                         <!-- Footer Bar -->
                         <div class="pt-2 mt-2.5 border-t border-slate-800 flex items-center justify-between text-xs">
+                            <a href="{{ route('area.index') }}" @click="activeMenu = null" class="text-slate-400 hover:text-white px-2 py-1 rounded-md hover:bg-slate-800/60 transition-colors">
+                                Semua Wilayah Layanan
+                            </a>
                             <a href="{{ url('/#area') }}" @click="activeSection = 'area'; activeMenu = null" class="text-sky-400 hover:text-sky-300 font-bold px-2 py-1 rounded-md hover:bg-slate-800/60 transition-colors">
                                 Lihat Posko &amp; Peta Armada
                             </a>

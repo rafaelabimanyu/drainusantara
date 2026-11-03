@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             EquipmentSeeder::class,
             GallerySeeder::class,
             FaqSeeder::class,
+            BaliAreaSeeder::class,
         ]);
 
         CacheService::clearPublicCache();
