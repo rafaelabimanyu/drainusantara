@@ -29,8 +29,16 @@ final class ImageOptimizer
      */
     public static function rejectionReason(UploadedFile $file): ?string
     {
-        if (! $file->isValid() || $file->getSize() > self::MAX_BYTES) {
-            return 'Gambar tidak valid atau melebihi 20 MB.';
+        if (! $file->isValid()) {
+            if ($file->getError() === UPLOAD_ERR_INI_SIZE || $file->getError() === UPLOAD_ERR_FORM_SIZE) {
+                return 'Ukuran gambar melebihi batas unggah server (maksimal 20 MB).';
+            }
+
+            return 'Gambar tidak valid atau gagal diunggah ke server.';
+        }
+
+        if ($file->getSize() > self::MAX_BYTES) {
+            return 'Ukuran gambar melebihi batas maksimal 20 MB.';
         }
         $info = @getimagesize($file->getPathname());
         // ponytail: GD cannot preserve animation; accept only static JPEG, PNG and WebP.

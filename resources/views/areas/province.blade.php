@@ -160,7 +160,7 @@
 </style>
 @endpush
 
-<div class="area-directory-page pb-24 md:pb-0">
+<div class="area-directory-page">
     <!-- 1. HERO SECTION PROVINSI -->
     <section class="relative area-hero bg-slate-50 border-b border-slate-200 pt-6 pb-12 sm:pt-10 sm:pb-16 lg:pt-14 lg:pb-20 overflow-hidden">
         @if(!empty($heroBgImage))
@@ -789,14 +789,23 @@
             </div>
 
             <div class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-5 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
-                @foreach($articlesList as $post)
+                @forelse($articlesList as $post)
                     @php
-                        $coverImg = !empty($post->image) ? asset($post->image) : asset('assets/placeholders/service.svg');
+                        $rawThumb = $post->thumbnail;
+                        $coverImg = !empty($rawThumb) 
+                            ? (filter_var($rawThumb, FILTER_VALIDATE_URL) ? $rawThumb : asset(ltrim($rawThumb, '/'))) 
+                            : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
+                        $catBadge = $post->category_label ?? $post->category ?? 'Edukasi';
                     @endphp
-                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-white shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
+                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-white shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
                         <div>
                             <div class="relative aspect-16/10 bg-slate-100 overflow-hidden">
-                                <img src="{{ $coverImg }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+                                <img src="{{ $coverImg }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <div class="absolute top-2.5 left-2.5">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-900/80 text-white backdrop-blur-xs border border-white/20">
+                                        {{ $catBadge }}
+                                    </span>
+                                </div>
                             </div>
                             <div class="p-4 space-y-2">
                                 <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
@@ -804,7 +813,7 @@
                                     <span>•</span>
                                     <span>{{ $post->reading_time ?? 3 }} mnt baca</span>
                                     <span>•</span>
-                                    <span>{{ $post->views ?? 0 }} views</span>
+                                    <span>{{ number_format($post->views_count ?? 0, 0, ',', '.') }} views</span>
                                 </div>
                                 <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-2">
                                     <a href="{{ route('articles.show', $post->slug) }}" class="hover:text-sky-700 transition-colors">
@@ -823,7 +832,11 @@
                             </a>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-span-3 text-center py-8 px-4 bg-slate-50 rounded-lg border border-slate-200 w-full">
+                        <p class="text-xs text-slate-500">Artikel edukasi dan panduan saluran pipa akan segera diperbarui.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -954,7 +967,7 @@
     @endif
 
     <!-- 13. FINAL CLOSING CTA -->
-    <section id="kontak-provinsi" class="py-14 lg:py-20 bg-slate-900 text-white relative overflow-hidden">
+    <section id="kontak-provinsi" class="pt-12 pb-10 sm:pt-16 sm:pb-14 bg-slate-900 text-white relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
                 RESPON CEPAT PROVINSI {{ strtoupper($provinceData['name']) }}
@@ -965,35 +978,35 @@
             <p class="text-slate-300 text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
                 Tim teknisi kami siap merespon konsultasi dan menjadwalkan kedatangan armada ke seluruh penjuru {{ $provinceData['name'] }}. Pengerjaan mekanis tanpa membongkar lantai keramik dan dilindungi garansi tertulis 30 hari kalender.
             </p>
-            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto">
                 <a href="{{ $waUrl }}" target="_blank" rel="noopener noreferrer" 
-                   class="min-h-11 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm px-6 py-3.5 rounded-lg shadow-sm transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
+                   class="w-full sm:w-auto min-h-12 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm sm:text-base px-7 py-3.5 rounded-lg shadow-sm transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
                     <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                     </svg>
                     <span>Panggil Teknisi via WhatsApp</span>
                 </a>
                 <a href="#wilayah-layanan" 
-                   class="min-h-11 inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-sm px-6 py-3.5 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
+                   class="w-full sm:w-auto min-h-12 inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-sm px-6 py-3.5 rounded-lg transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
                     <span>Lihat Daftar Kota &amp; Area</span>
                 </a>
             </div>
             
-            <div class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-400">
-                <span class="inline-flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs text-slate-400">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/60 text-[11px] sm:text-xs">
+                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                     Respon Cepat Armada
                 </span>
-                <span class="inline-flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/60 text-[11px] sm:text-xs">
+                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                     Metode Tanpa Bongkar Keramik
                 </span>
-                <span class="inline-flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/60 text-[11px] sm:text-xs">
+                    <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                     Garansi Tertulis 30 Hari

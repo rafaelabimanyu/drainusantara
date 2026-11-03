@@ -187,8 +187,9 @@ class AreaController extends Controller
             });
         }
 
-        $articles = Article::where('is_published', true)
-            ->latest('published_at')
+        $articles = Article::published()
+            ->orderByRaw('COALESCE(published_at, created_at) DESC')
+            ->latest('id')
             ->take(3)
             ->get();
 
@@ -394,8 +395,9 @@ class AreaController extends Controller
             }
         }
 
-        $articles = Article::where('is_published', true)
-            ->latest('published_at')
+        $articles = Article::published()
+            ->orderByRaw('COALESCE(published_at, created_at) DESC')
+            ->latest('id')
             ->take(3)
             ->get();
 
@@ -643,8 +645,9 @@ class AreaController extends Controller
             }
         }
 
-        $articles = Article::where('is_published', true)
-            ->latest('published_at')
+        $articles = Article::published()
+            ->orderByRaw('COALESCE(published_at, created_at) DESC')
+            ->latest('id')
             ->take(3)
             ->get();
 

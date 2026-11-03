@@ -15,23 +15,21 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'Drainusantara@admin'],
-            [
-                'name' => 'Drainusantara@admin',
-                'password' => Hash::make('Drainusantara123'),
-                'email_verified_at' => now(),
-            ]
-        );
+        $admin1 = User::firstOrNew(['email' => 'Drainusantara@admin']);
+        if (! $admin1->exists) {
+            $admin1->name = 'Drainusantara@admin';
+            $admin1->password = Hash::make('Drainusantara123');
+            $admin1->email_verified_at = now();
+            $admin1->save();
+        }
 
-        User::updateOrCreate(
-            ['email' => 'Drainusantara2@admin'],
-            [
-                'name' => 'Drainusantara2@admin',
-                'password' => Hash::make('Drainusantara 123'),
-                'email_verified_at' => now(),
-            ]
-        );
+        $admin2 = User::firstOrNew(['email' => 'Drainusantara2@admin']);
+        if (! $admin2->exists) {
+            $admin2->name = 'Drainusantara2@admin';
+            $admin2->password = Hash::make('Drainusantara 123');
+            $admin2->email_verified_at = now();
+            $admin2->save();
+        }
     }
 }
 

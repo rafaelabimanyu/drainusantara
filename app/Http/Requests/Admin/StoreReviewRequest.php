@@ -23,7 +23,7 @@ class StoreReviewRequest extends FormRequest
             'comment' => ['required', 'string', 'max:1000'],
             'service_id' => ['nullable', 'exists:services,id'],
             'is_active' => ['nullable', 'boolean'],
-            'avatar' => $this->hasFile('avatar')
+            'avatar' => ($this->hasFile('avatar') || $this->file('avatar') !== null)
                 ? [new OptimizedImage]
                 : ['nullable'],
             'avatar_url' => ['nullable', 'string', 'max:255'],

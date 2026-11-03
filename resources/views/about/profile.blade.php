@@ -303,7 +303,7 @@
         
         <div class="max-w-3xl mb-8 reveal-soft">
             <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-2">
-                TIM &amp; TEKNISI PT JAWA JAYA ROOTER
+                STAFF &amp; TEKNISI DRAINUSANTARA PT JAWA JAYA ROOTER
             </p>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Staff &amp; Teknisi Lapangan Siaga
@@ -314,66 +314,7 @@
         </div>
 
         @php
-            if (!isset($staffMembers) || (is_countable($staffMembers) && count($staffMembers) === 0)) {
-                $staffMembers = [
-                    (object)[
-                        'name' => 'Agus Santoso',
-                        'role' => 'Koordinator Lapangan & Lead Plumbing Senior',
-                        'initials' => 'AS',
-                        'photo' => null,
-                        'category' => 'leader',
-                    ],
-                    (object)[
-                        'name' => 'Bambang Wijaya',
-                        'role' => 'Supervisor Mutu & Spesialis Inspeksi CCTV',
-                        'initials' => 'BW',
-                        'photo' => null,
-                        'category' => 'leader',
-                    ],
-                    (object)[
-                        'name' => 'Ghaitsaa Kahla',
-                        'role' => 'Customer Care & Dispatch Operasional',
-                        'initials' => 'GK',
-                        'photo' => null,
-                        'category' => 'staff',
-                    ],
-                    (object)[
-                        'name' => 'Yero Virdhan',
-                        'role' => 'IT & Sistem Administrasi Operasional',
-                        'initials' => 'YV',
-                        'photo' => null,
-                        'category' => 'staff',
-                    ],
-                    (object)[
-                        'name' => 'Rian Pratama',
-                        'role' => 'Teknisi Pelancar Kloset & Floor Drain',
-                        'initials' => 'RP',
-                        'photo' => null,
-                        'category' => 'teknisi',
-                    ],
-                    (object)[
-                        'name' => 'Hendra Kusuma',
-                        'role' => 'Teknisi Grease Trap & Restoran',
-                        'initials' => 'HK',
-                        'photo' => null,
-                        'category' => 'teknisi',
-                    ],
-                    (object)[
-                        'name' => 'Dedi Kurniawan',
-                        'role' => 'Teknisi Saluran Talang & Pipa Atap',
-                        'initials' => 'DK',
-                        'photo' => null,
-                        'category' => 'teknisi',
-                    ],
-                    (object)[
-                        'name' => 'Fajar Nugraha',
-                        'role' => 'Teknisi Hydro Jetting & Spiral Rotary',
-                        'initials' => 'FN',
-                        'photo' => null,
-                        'category' => 'teknisi',
-                    ],
-                ];
-            }
+            $staffList = $staffMembers ?? collect();
 
             $categorizedStaff = [
                 'leader' => [],
@@ -381,7 +322,7 @@
                 'teknisi' => [],
             ];
 
-            foreach ($staffMembers as $member) {
+            foreach ($staffList as $member) {
                 $mRole = is_object($member) ? ($member->role ?? '') : ($member['role'] ?? '');
                 $mName = is_object($member) ? ($member->name ?? '') : ($member['name'] ?? '');
                 $mCat = is_object($member) ? ($member->category ?? null) : ($member['category'] ?? null);
@@ -401,13 +342,26 @@
             }
         @endphp
 
+        @if(count($staffList) === 0)
+            <div class="p-8 sm:p-12 text-center bg-white rounded-xl border border-dashed border-slate-300">
+                <div class="w-12 h-12 mx-auto rounded-full bg-sky-50 text-sky-700 flex items-center justify-center mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900">Daftar Staff &amp; Teknisi Lapangan Sedang Diperbarui</h3>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto">
+                    Seluruh teknisi Drainusantara bersertifikasi K3, berseragam rapi, dan siaga 24 jam melayani penanganan saluran pipa mampet di seluruh posko operasional.
+                </p>
+            </div>
+        @else
         <!-- Simple Clean Tabs (No AI Slop Dots or Badges) -->
         <div class="flex flex-wrap items-center gap-2 mb-8 border-b border-slate-200">
             <button type="button" 
                     @click="activeTab = 'all'"
                     :class="activeTab === 'all' ? 'border-b-2 border-slate-900 text-slate-900 font-bold pb-3 px-3' : 'text-slate-600 hover:text-slate-900 pb-3 px-3'"
                     class="text-xs transition-colors cursor-pointer">
-                Semua Bagian ({{ count($staffMembers) }})
+                Semua Bagian ({{ count($staffList) }})
             </button>
             <button type="button" 
                     @click="activeTab = 'leader'"
@@ -530,6 +484,7 @@
                 @endforeach
             </div>
         </div>
+        @endif
 
     </div>
 </section>

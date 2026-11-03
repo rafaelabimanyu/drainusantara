@@ -78,38 +78,15 @@
             </div>
 
             <!-- 3. Upload File Gambar Peralatan -->
-            <div class="p-4 rounded-lg bg-slate-50/75 border border-slate-200 space-y-3">
-                <div class="flex items-center gap-3 pb-3 border-b border-slate-200">
-                    <div class="w-20 h-14 rounded-md overflow-hidden bg-slate-900 border border-slate-200 shrink-0">
-                        <img src="{{ $equipment->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
-                             alt="{{ $equipment->name }}" 
-                             class="w-full h-full object-cover"
-                             onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
-                    </div>
-                    <div>
-                        <div class="text-xs font-bold text-slate-800">Foto Saat Ini:</div>
-                        <div class="text-xs text-slate-500 font-mono mt-0.5 break-all">{{ $equipment->image ?? 'Default SVG' }}</div>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-                        Ganti Foto Peralatan
-                    </label>
-                    <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/webp"
-                           class="block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition cursor-pointer">
-                    @error('image')
-                        <p class="text-xs text-rose-600 mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="pt-2 border-t border-slate-200">
-                    <label for="image_url" class="block text-xs font-bold text-slate-600 mb-1">Atau Ubah Path / URL Gambar Manual</label>
-                    <input type="text" name="image_url" id="image_url" value="{{ old('image_url', $equipment->image) }}" 
-                           placeholder="/assets/TOOLKIT/mesin-spiral-rotary.webp"
-                           class="w-full px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-xs outline-hidden focus:border-sky-700">
-                </div>
-            </div>
+            <x-form.image-upload 
+                name="image" 
+                label="Foto Peralatan" 
+                :current="$equipment->image"
+                allowUrl="true" 
+                urlName="image_url" 
+                :urlValue="old('image_url', $equipment->image)"
+                help="Tarik atau unggah berkas baru untuk mengganti foto. Format JPG, PNG, atau WEBP. Gambar otomatis dikompresi & dikonversi ke WebP." 
+            />
 
             <!-- 4. Deskripsi Singkat & Deskripsi Lengkap Halaman Detail -->
             <div>

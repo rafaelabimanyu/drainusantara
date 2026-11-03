@@ -31,6 +31,6 @@ class NavigationRegressionTest extends TestCase
         $this->assertMatchesRegularExpression('/<nav class="[^"]*lg:hidden[^"]*"[^>]*aria-label="Navigasi Mobile Floating Dock"/', $html);
         $this->assertMatchesRegularExpression('/class="fixed inset-0 z-60 lg:hidden"/', $html);
         $this->assertMatchesRegularExpression('/class="fixed inset-0 z-\[60\] lg:hidden"/', $html);
-        $this->assertMatchesRegularExpression('/<main[^>]*class="[^"]*pb-24 lg:pb-0/', $html);
+        $this->assertMatchesRegularExpression('/<footer[^>]*class="[^"]*pb-24 md:pb-12/', $html);
     }
 }

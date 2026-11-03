@@ -28,6 +28,18 @@ final class OptimizedImage implements ValidationRule
 
             return;
         }
+
+        if (! $value->isValid()) {
+            if ($value->getError() === UPLOAD_ERR_INI_SIZE || $value->getError() === UPLOAD_ERR_FORM_SIZE) {
+                $fail('Ukuran gambar melebihi batas unggah server (maksimal 20 MB).');
+
+                return;
+            }
+
+            $fail('Berkas gambar gagal diunggah atau rusak.');
+
+            return;
+        }
         $reason = ImageOptimizer::rejectionReason($value);
         if ($reason !== null) {
             $fail($reason);

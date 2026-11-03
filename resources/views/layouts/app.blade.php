@@ -129,8 +129,8 @@
     <x-conversion.quick-quote-modal />
     <x-layout.mobile-drawer />
 
-    {{-- Bottom padding on mobile prevents fixed nav dock from covering content --}}
-    <main id="main-content" tabindex="-1" class="flex-1 pb-24 lg:pb-0 focus:outline-hidden">
+    {{-- Main content area (cleared from mobile dock gap; dock clearance handled by footer) --}}
+    <main id="main-content" tabindex="-1" class="flex-1 focus:outline-hidden">
         {{ $slot ?? '' }}
         @yield('content')
     </main>

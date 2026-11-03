@@ -60,85 +60,34 @@
         </div>
 
         <!-- Upload Foto Sebelum & Sesudah (Before & After) -->
-        <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3">
-            <div class="flex items-center justify-between">
+        <div class="space-y-4">
+            <div class="border-b border-slate-200 pb-2">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Komparasi: Sebelum &amp; Sesudah</span>
-                <span class="text-xs text-slate-500 font-medium">JPG, PNG, WEBP (Opsional jika hanya ada 1 foto)</span>
+                <p class="text-[11px] text-slate-500 mt-0.5">Unggah foto kondisi mampet dan setelah dilancarkan (otomatis terkonversi ke WebP).</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Upload Sebelum (Before) -->
-                <div x-data="{ preview: null }">
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-rose-500 inline-block"></span>
-                        Foto Sebelum (Before)
-                    </label>
-                    <div class="w-full h-32 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden mb-2 relative shadow-2xs">
-                        <template x-if="preview">
-                            <img :src="preview" class="w-full h-full object-cover">
-                        </template>
-                        <template x-if="!preview">
-                            <div class="text-center p-2 text-slate-400">
-                                <svg class="w-6 h-6 mx-auto mb-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                <span class="text-[11px] font-medium">Kondisi Mampet</span>
-                            </div>
-                        </template>
-                    </div>
-                    <input type="file" name="before_image" id="before_image" accept="image/jpeg,image/png,image/webp"
-                           @change="const f = $event.target.files[0]; if (f) { preview = URL.createObjectURL(f); }"
-                           class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100 cursor-pointer">
-                    @error('before_image') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+                <x-form.image-upload 
+                    name="before_image" 
+                    label="Foto Sebelum (Before / Kondisi Mampet)" 
+                    aspect="video"
+                    help="Foto saat saluran tersumbat / kotor." />
 
-                <!-- Upload Sesudah (After) -->
-                <div x-data="{ preview: null }">
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
-                        Foto Sesudah (After)
-                    </label>
-                    <div class="w-full h-32 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden mb-2 relative shadow-2xs">
-                        <template x-if="preview">
-                            <img :src="preview" class="w-full h-full object-cover">
-                        </template>
-                        <template x-if="!preview">
-                            <div class="text-center p-2 text-slate-400">
-                                <svg class="w-6 h-6 mx-auto mb-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                <span class="text-[11px] font-medium">Kondisi Lancar</span>
-                            </div>
-                        </template>
-                    </div>
-                    <input type="file" name="after_image" id="after_image" accept="image/jpeg,image/png,image/webp"
-                           @change="const f = $event.target.files[0]; if (f) { preview = URL.createObjectURL(f); }"
-                           class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
-                    @error('after_image') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+                <x-form.image-upload 
+                    name="after_image" 
+                    label="Foto Sesudah (After / Kondisi Lancar)" 
+                    aspect="video"
+                    help="Foto saat saluran bersih & lancar kembali." />
             </div>
         </div>
 
         <!-- 1 Foto Utama Alternatif -->
-        <div x-data="{ preview: null }">
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Atau Upload 1 Foto Utama Dokumentasi</label>
-            <div class="flex items-center gap-3 p-3.5 bg-slate-50/75 rounded-lg border border-slate-200">
-                <div class="w-16 h-14 rounded-md border border-slate-300 bg-white flex items-center justify-center overflow-hidden shrink-0">
-                    <template x-if="preview">
-                        <img :src="preview" class="w-full h-full object-cover">
-                    </template>
-                    <template x-if="!preview">
-                        <span class="text-[10px] text-slate-400">1 Foto</span>
-                    </template>
-                </div>
-                <div class="flex-1">
-                    <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/webp"
-                           @change="const f = $event.target.files[0]; if (f) { preview = URL.createObjectURL(f); }"
-                           class="block w-full text-xs text-slate-600 file:mr-2.5 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-800 hover:file:bg-slate-300 cursor-pointer">
-                    <p class="text-[11px] text-slate-500 mt-0.5">Digunakan jika memiliki 1 foto ringkas pengerjaan teknisi (atau jika tidak memiliki foto before-after).</p>
-                </div>
-            </div>
-            @error('image') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+        <div class="space-y-2">
+            <x-form.image-upload 
+                name="image" 
+                label="Atau Upload 1 Foto Utama Dokumentasi" 
+                aspect="video"
+                help="Gunakan jika hanya ada 1 foto dokumentasi pengerjaan teknisi (tanpa before-after)." />
         </div>
 
         <div>

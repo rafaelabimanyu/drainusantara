@@ -57,87 +57,26 @@
         </div>
 
         <!-- Upload Foto Lokasi / Perusahaan -->
-        <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ preview: null }">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Restoran / Tempat Usaha</span>
-                <span class="text-xs text-slate-500 font-medium">JPG, PNG, WEBP</span>
-            </div>
+        <!-- Upload Foto Lokasi / Perusahaan -->
+        <div class="space-y-5">
+            <x-form.image-upload 
+                name="image" 
+                label="Foto Restoran / Tempat Usaha" 
+                :allowUrl="true"
+                urlName="image_url"
+                :urlValue="old('image_url')"
+                aspect="video"
+                help="Format JPG, PNG, WEBP (Maks. 20MB). Otomatis dikompresi &amp; dikonversi ke WebP teroptimasi." />
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-                <div class="w-full h-32 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden relative shadow-2xs">
-                    <template x-if="preview">
-                        <img :src="preview" class="w-full h-full object-cover">
-                    </template>
-                    <template x-if="!preview">
-                        <div class="text-center p-2 text-slate-400">
-                            <svg class="w-6 h-6 mx-auto mb-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <span class="text-[11px] font-medium">Pratinjau Foto</span>
-                        </div>
-                    </template>
-                </div>
-
-                <div class="sm:col-span-2 space-y-2">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Berkas Gambar</label>
-                        <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/webp"
-                               @change="const f = $event.target.files[0]; if (f) { preview = URL.createObjectURL(f); }"
-                               class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
-                        @error('image') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label for="image_url" class="block text-xs font-bold text-slate-700 mb-1">Atau Gunakan Link URL Foto Luar</label>
-                        <input type="url" name="image_url" id="image_url" value="{{ old('image_url') }}"
-                               placeholder="https://domain.com/foto-restoran.webp atau URL gambar"
-                               @input="if ($event.target.value) { preview = $event.target.value; }"
-                               class="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:border-sky-700 focus:ring-1 focus:ring-sky-700 outline-hidden">
-                        @error('image_url') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-                </div>
-            </div>
+            <x-form.image-upload 
+                name="logo" 
+                label="Logo Perusahaan / Mitra" 
+                :allowUrl="true"
+                urlName="logo_url"
+                :urlValue="old('logo_url')"
+                aspect="square"
+                help="Format JPG, PNG, WEBP. Disarankan logo dengan background transparan." />
         </div>
-
-        {{-- 14. Upload Logo --}}
-        <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ logoPreview: null }">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Logo Perusahaan / Mitra</span>
-                <span class="text-xs text-slate-500 font-medium">JPG, PNG, WEBP</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-                <div class="w-full h-28 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden relative shadow-2xs">
-                    <template x-if="logoPreview">
-                        <img :src="logoPreview" class="max-h-24 max-w-full object-contain p-2">
-                    </template>
-                    <template x-if="!logoPreview">
-                        <div class="text-center p-2 text-slate-400">
-                            <svg class="w-6 h-6 mx-auto mb-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <span class="text-[11px] font-medium">Pratinjau Logo</span>
-                        </div>
-                    </template>
-                </div>
-
-                <div class="sm:col-span-2 space-y-2">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Berkas Logo</label>
-                        <input type="file" name="logo" id="logo" accept="image/jpeg,image/png,image/webp"
-                               @change="const f = $event.target.files[0]; if (f) { logoPreview = URL.createObjectURL(f); }"
-                               class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
-                        @error('logo') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label for="logo_url" class="block text-xs font-bold text-slate-700 mb-1">Atau Link URL Logo Luar</label>
-                        <input type="url" name="logo_url" id="logo_url" value="{{ old('logo_url') }}"
-                               placeholder="https://domain.com/logo.webp atau URL gambar"
-                               @input="if ($event.target.value) { logoPreview = $event.target.value; }"
-                               class="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:border-sky-700 focus:ring-1 focus:ring-sky-700 outline-hidden">
-                        @error('logo_url') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
                 </div>
             </div>
         </div>

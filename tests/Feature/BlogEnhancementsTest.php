@@ -161,4 +161,34 @@ class BlogEnhancementsTest extends TestCase
         $this->assertSame('Restoran, Grease Trap', $created->tags);
         $this->assertSame('2026-10-15 14:30', $created->published_at->format('Y-m-d H:i'));
     }
+
+    public function test_article_detail_page_renders_image_zoom_lightbox_viewer(): void
+    {
+        $article = Article::create([
+            'title' => 'Teknik Menggunakan Mesin Rooter Spiral Baja',
+            'slug' => 'teknik-menggunakan-mesin-rooter-spiral-baja',
+            'category' => 'Edukasi',
+            'thumbnail' => 'images/dokumentasi-rooter-teknisi.webp',
+            'image_placement' => 'content',
+            'content' => 'Mesin rooter membersihkan kerak lemak tanpa merusak pipa.',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        $response = $this->get(route('articles.show', $article->slug));
+        $response->assertOk();
+
+        // Lightbox trigger & interactive elements
+        $response->assertSee('x-data="blogImageViewer()"', false);
+        $response->assertSee('Lihat Gambar Penuh');
+        $response->assertSee('cursor-zoom-in', false);
+
+        // Modal Lightbox & Accessible Controls
+        $response->assertSee('role="dialog"', false);
+        $response->assertSee('aria-label="Penampil Gambar Penuh"', false);
+        $response->assertSee('aria-label="Perbesar Gambar"', false);
+        $response->assertSee('aria-label="Perkecil Gambar"', false);
+        $response->assertSee('aria-label="Tutup Penampil Gambar"', false);
+        $response->assertSee('window.blogImageViewer = function()', false);
+    }
 }

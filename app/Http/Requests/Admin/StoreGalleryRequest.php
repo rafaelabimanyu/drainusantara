@@ -20,15 +20,15 @@ class StoreGalleryRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'in:rumahan,fnb,gedung,perkantoran,pabrik,ruko,b2b'],
             'service_id' => ['nullable', 'exists:services,id'],
-            'before_image' => $this->hasFile('before_image')
+            'before_image' => ($this->hasFile('before_image') || $this->file('before_image') !== null)
                 ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'before_image_url' => ['nullable', 'string', 'max:255'],
-            'after_image' => $this->hasFile('after_image')
+            'after_image' => ($this->hasFile('after_image') || $this->file('after_image') !== null)
                 ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'after_image_url' => ['nullable', 'string', 'max:255'],
-            'image' => $this->hasFile('image')
+            'image' => ($this->hasFile('image') || $this->file('image') !== null)
                 ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'image_url' => ['nullable', 'string', 'max:255'],

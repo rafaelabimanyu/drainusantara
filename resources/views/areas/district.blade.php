@@ -73,7 +73,7 @@
 </style>
 @endpush
 
-<div class="area-detail-page pb-24 md:pb-0">
+<div class="area-detail-page">
     <!-- 1. HERO SECTION KECAMATAN -->
     <section class="relative area-hero bg-slate-50 border-b border-slate-200 pt-5 pb-10 sm:pt-8 sm:pb-14 lg:pt-12 lg:pb-18 overflow-hidden">
         @if(!empty($heroBgImage))
@@ -758,14 +758,23 @@
             </div>
 
             <div class="flex md:grid md:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-5 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
-                @foreach($articles as $post)
+                @forelse($articles as $post)
                     @php
-                        $coverImg = !empty($post->image) ? asset($post->image) : asset('assets/placeholders/service.svg');
+                        $rawThumb = $post->thumbnail;
+                        $coverImg = !empty($rawThumb) 
+                            ? (filter_var($rawThumb, FILTER_VALIDATE_URL) ? $rawThumb : asset(ltrim($rawThumb, '/'))) 
+                            : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
+                        $catBadge = $post->category_label ?? $post->category ?? 'Edukasi';
                     @endphp
-                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-slate-50 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
+                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-white shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
                         <div>
                             <div class="relative aspect-16/10 bg-slate-100 overflow-hidden">
-                                <img src="{{ $coverImg }}" alt="{{ $post->title }}" class="w-full h-full object-cover">
+                                <img src="{{ $coverImg }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <div class="absolute top-2.5 left-2.5">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-900/80 text-white backdrop-blur-xs border border-white/20">
+                                        {{ $catBadge }}
+                                    </span>
+                                </div>
                             </div>
                             <div class="p-4 space-y-2">
                                 <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium">
@@ -773,7 +782,7 @@
                                     <span>•</span>
                                     <span>{{ $post->reading_time ?? 3 }} mnt baca</span>
                                     <span>•</span>
-                                    <span>{{ $post->views ?? 0 }} views</span>
+                                    <span>{{ number_format($post->views_count ?? 0, 0, ',', '.') }} views</span>
                                 </div>
                                 <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-2">
                                     <a href="{{ route('articles.show', $post->slug) }}" class="hover:text-sky-700 transition-colors">
@@ -792,7 +801,11 @@
                             </a>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-span-3 text-center py-8 px-4 bg-slate-50 rounded-lg border border-slate-200 w-full">
+                        <p class="text-xs text-slate-500">Artikel edukasi dan panduan saluran pipa akan segera diperbarui.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -983,7 +996,7 @@
     @endif
 
     <!-- 13. FINAL CLOSING CTA -->
-    <section id="kontak-kecamatan" class="py-12 sm:py-16 bg-slate-900 text-white text-center relative overflow-hidden">
+    <section id="kontak-kecamatan" class="pt-12 pb-10 sm:pt-16 sm:pb-14 bg-slate-900 text-white text-center relative overflow-hidden">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <p class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-2">
                 RESPON CEPAT WILAYAH {{ strtoupper($area->district) }}
@@ -995,7 +1008,7 @@
                 Teknisi siaga kami siap menuju titik lokasi Anda di {{ $area->district }}, {{ $area->city }}. Penanganan mekanis tanpa bongkar keramik, biaya mulai {{ $startingPriceFormatted }}, dan dilindungi garansi 30 hari.
             </p>
 
-            <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto">
                 <a href="{{ $emergencyWaUrl }}" target="_blank" rel="noopener noreferrer" 
                    class="w-full sm:w-auto min-h-12 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm sm:text-base px-8 py-3.5 rounded-lg shadow-sm transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">
                     <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">

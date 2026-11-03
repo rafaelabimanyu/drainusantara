@@ -16,10 +16,12 @@ class StoreArticleRequest extends FormRequest
 
     public function rules(): array
     {
+        $hasUpload = $this->hasFile('thumbnail') || $this->file('thumbnail') !== null;
+
         return [
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:100'],
-            'thumbnail' => $this->hasFile('thumbnail')
+            'thumbnail' => $hasUpload
                 ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'thumbnail_url' => ['nullable', 'string', 'max:255'],
@@ -31,6 +33,13 @@ class StoreArticleRequest extends FormRequest
             'meta_description' => ['nullable', 'string', 'max:500'],
             'is_published' => ['nullable', 'boolean'],
             'published_at' => ['nullable', 'date'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'thumbnail.uploaded' => 'Berkas gambar thumbnail gagal diunggah atau melebihi batas ukuran server (maksimal 20 MB).',
         ];
     }
 }

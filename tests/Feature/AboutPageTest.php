@@ -18,12 +18,9 @@ class AboutPageTest extends TestCase
         $resProfile->assertSee('PT JAWA JAYA ROOTER');
         $resProfile->assertSee('100% Non-Destruktif');
         $resProfile->assertSee('Bebas Bahan Kimia');
+        $resProfile->assertSee('STAFF &amp; TEKNISI DRAINUSANTARA PT JAWA JAYA ROOTER', false);
         $resProfile->assertSee('Staff &amp; Teknisi Lapangan Siaga', false);
-        $resProfile->assertSee('Agus Santoso');
-        $resProfile->assertSee('Bambang Wijaya');
-        $resProfile->assertSee('1. Leader');
-        $resProfile->assertSee('2. Staff');
-        $resProfile->assertSee('3. Teknisi');
+        $resProfile->assertSee('Daftar Staff &amp; Teknisi Lapangan Sedang Diperbarui', false);
 
         // Main alias /tentang-kami
         $resMain = $this->get('/tentang-kami');

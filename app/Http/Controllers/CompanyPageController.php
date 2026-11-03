@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\CompanyPage;
+use App\Rules\OptimizedImage;
 use App\Services\CacheService;
 use App\Services\SearchEnginePingService;
+use App\Support\MediaLifecycle;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -56,7 +58,8 @@ class CompanyPageController extends Controller
             'subtitle' => ['nullable', 'string', 'max:500'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
-            'hero_image' => ['nullable', 'string', 'max:255'],
+            'hero_image' => $request->hasFile('hero_image') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'hero_image_url' => ['nullable', 'string', 'max:255'],
             'content' => ['nullable', 'string'],
             'sections_data_raw' => ['nullable', 'string'],
             'is_active' => ['nullable', 'boolean'],
@@ -70,16 +73,26 @@ class CompanyPageController extends Controller
             }
         }
 
-        $companyPage->update([
-            'title' => $validated['title'],
-            'subtitle' => $validated['subtitle'] ?? null,
-            'meta_title' => $validated['meta_title'] ?? null,
-            'meta_description' => $validated['meta_description'] ?? null,
-            'hero_image' => $validated['hero_image'] ?? null,
-            'content' => $validated['content'] ?? null,
-            'sections_data' => $sectionsData,
-            'is_active' => $request->has('is_active') ? (bool) $request->input('is_active') : true,
-        ]);
+        $media = new MediaLifecycle;
+        $media->run($companyPage, function () use ($request, $validated, $media, $companyPage, $sectionsData): void {
+            $heroImageUrl = $validated['hero_image_url'] ?? ($companyPage->hero_image);
+            if ($request->hasFile('hero_image')) {
+                $heroImageUrl = $media->upload($request->file('hero_image'), 'images/company-pages');
+            } elseif (is_string($request->input('hero_image')) && !empty($request->input('hero_image'))) {
+                $heroImageUrl = $request->input('hero_image');
+            }
+
+            $media->save($companyPage, [
+                'title' => $validated['title'],
+                'subtitle' => $validated['subtitle'] ?? null,
+                'meta_title' => $validated['meta_title'] ?? null,
+                'meta_description' => $validated['meta_description'] ?? null,
+                'hero_image' => $heroImageUrl,
+                'content' => $validated['content'] ?? null,
+                'sections_data' => $sectionsData,
+                'is_active' => $request->has('is_active') ? (bool) $request->input('is_active') : true,
+            ]);
+        });
 
         CacheService::clearPublicCache();
         SearchEnginePingService::pingAll(route(match ($companyPage->page_key) {

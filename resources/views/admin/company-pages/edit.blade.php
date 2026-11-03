@@ -22,7 +22,7 @@
     </div>
 
     <!-- Edit Form -->
-    <form method="POST" action="{{ route('admin.company-pages.update', $companyPage) }}" class="space-y-6">
+    <form method="POST" action="{{ route('admin.company-pages.update', $companyPage) }}" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')
 
@@ -49,16 +49,19 @@
                               class="w-full text-sm rounded-lg border border-slate-300 px-3.5 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent">{{ old('subtitle', $companyPage->subtitle) }}</textarea>
                 </div>
 
-                <div>
-                    <label for="hero_image" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                        Path Gambar Hero / Banner
-                    </label>
-                    <input type="text" name="hero_image" id="hero_image" value="{{ old('hero_image', $companyPage->hero_image) }}"
-                           placeholder="images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp"
-                           class="w-full text-sm rounded-lg border border-slate-300 px-3.5 py-2 text-slate-900 font-mono focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent">
+                <div class="md:col-span-2">
+                    <x-form.image-upload 
+                        name="hero_image" 
+                        label="Foto Banner / Hero Halaman" 
+                        :current="$companyPage->hero_image"
+                        :allowUrl="true"
+                        urlName="hero_image_url"
+                        :urlValue="old('hero_image_url', $companyPage->hero_image)"
+                        aspect="video"
+                        help="Format JPG, PNG, WEBP (Maks. 20MB). Otomatis dikompresi &amp; dikonversi ke WebP teroptimasi." />
                 </div>
 
-                <div class="flex items-center pt-6">
+                <div class="flex items-center pt-2 md:col-span-2">
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="hidden" name="is_active" value="0">
                         <input type="checkbox" name="is_active" value="1" class="sr-only peer" {{ old('is_active', $companyPage->is_active) ? 'checked' : '' }}>

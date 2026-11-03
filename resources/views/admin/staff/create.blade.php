@@ -57,49 +57,15 @@
         </div>
 
         <!-- Upload Foto Profil Staf -->
-        <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ preview: null }">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-700">Foto Profil Staff (Opsional)</span>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Jika tidak diunggah, kartu akan otomatis menampilkan inisial nama.</p>
-                </div>
-                <span class="text-xs text-slate-500 font-medium">JPG, PNG, WEBP</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-                <div class="w-full h-32 rounded-xl border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden relative shadow-2xs">
-                    <template x-if="preview">
-                        <img :src="preview" class="w-full h-full object-cover">
-                    </template>
-                    <template x-if="!preview">
-                        <div class="text-center p-2 text-slate-400">
-                            <svg class="w-8 h-8 mx-auto mb-1 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                            <span class="text-[11px] font-medium">Avatar Default</span>
-                        </div>
-                    </template>
-                </div>
-
-                <div class="sm:col-span-2 space-y-2">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Berkas Foto</label>
-                        <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/webp"
-                               @change="const f = $event.target.files[0]; if (f) { preview = URL.createObjectURL(f); }"
-                               class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
-                        @error('photo') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label for="photo_url" class="block text-xs font-bold text-slate-700 mb-1">Atau Gunakan Link URL Foto</label>
-                        <input type="url" name="photo_url" id="photo_url" value="{{ old('photo_url') }}"
-                               placeholder="https://domain.com/foto-staff.webp atau URL gambar"
-                               @input="if ($event.target.value) { preview = $event.target.value; }"
-                               class="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:border-sky-700 focus:ring-1 focus:ring-sky-700 outline-hidden">
-                        @error('photo_url') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-                </div>
-            </div>
+        <div class="space-y-2">
+            <x-form.image-upload 
+                name="photo" 
+                label="Foto Profil Staff / Teknisi (Opsional)" 
+                :allowUrl="true"
+                urlName="photo_url"
+                :urlValue="old('photo_url')"
+                aspect="square"
+                help="Format JPG, PNG, WEBP. Jika tidak diunggah, profil otomatis menampilkan avatar inisial nama." />
         </div>
 
         <!-- Pengaturan Urutan & Status -->

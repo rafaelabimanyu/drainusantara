@@ -95,7 +95,7 @@ class ImageUploadRulesTest extends TestCase
             'image' => UploadedFile::fake()->createWithContent('besar.jpg', $payload),
         ]);
 
-        $response->assertSessionHasErrors(['image' => 'Gambar tidak valid atau melebihi 20 MB.']);
+        $response->assertSessionHasErrors(['image' => 'Ukuran gambar melebihi batas maksimal 20 MB.']);
         $this->assertSame(0, Service::count());
     }
 

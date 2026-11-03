@@ -70,6 +70,18 @@
                 @error('comment') <p class="text-xs text-rose-600 mt-1">{{ $message }}</p> @enderror
             </div>
 
+            <!-- Foto Avatar Pelanggan (Opsional) -->
+            <div class="sm:col-span-2">
+                <x-form.image-upload 
+                    name="avatar" 
+                    label="Foto / Avatar Pelanggan (Opsional)" 
+                    :allowUrl="true"
+                    urlName="avatar_url"
+                    :urlValue="old('avatar_url')"
+                    aspect="square"
+                    help="Format JPG, PNG, WEBP. Kosongkan jika ingin memakai inisial nama pelanggan secara otomatis." />
+            </div>
+
             <!-- Status Aktif Switch -->
             <div class="sm:col-span-2 pt-1">
                 <label class="flex items-center gap-2.5 cursor-pointer">

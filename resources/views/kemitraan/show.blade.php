@@ -75,7 +75,7 @@
 @endpush
 
 @section('content')
-<article class="bg-white text-slate-800 pb-20 lg:pb-0">
+<article class="bg-white text-slate-800">
     
     <!-- 1. HERO SECTION -->
     <header class="relative bg-slate-950 border-b border-slate-800 pt-10 pb-12 sm:pt-14 sm:pb-16 text-center overflow-hidden text-white">

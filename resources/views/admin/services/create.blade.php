@@ -28,30 +28,15 @@
             </div>
 
             <!-- Upload Gambar Layanan -->
-            <div class="sm:col-span-2" x-data="{ previewUrl: null }">
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Foto / Gambar Layanan</label>
-                <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center p-4 bg-slate-50/75 rounded-lg border border-slate-200">
-                    <div class="w-24 h-20 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-2xs">
-                        <template x-if="previewUrl">
-                            <img :src="previewUrl" class="w-full h-full object-cover">
-                        </template>
-                        <template x-if="!previewUrl">
-                            <div class="text-center p-2 text-slate-400">
-                                <svg class="w-5 h-5 mx-auto mb-1 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span class="text-[10px]">Pratinjau</span>
-                            </div>
-                        </template>
-                    </div>
-                    <div class="flex-1 w-full space-y-1">
-                        <input type="file" name="image" id="image" accept="image/jpeg,image/png,image/webp"
-                               @change="const file = $event.target.files[0]; if (file) { previewUrl = URL.createObjectURL(file); }"
-                               class="block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
-                        <p class="text-[11px] text-slate-500">Format: JPG, PNG, WEBP, atau SVG (Maks. 5MB). Dikosongkan akan memakai ilustrasi default.</p>
-                        @error('image') <p class="text-xs text-rose-600">{{ $message }}</p> @enderror
-                    </div>
-                </div>
+            <div class="sm:col-span-2">
+                <x-form.image-upload 
+                    name="image" 
+                    label="Foto / Gambar Layanan" 
+                    allowUrl="true" 
+                    urlName="image_url" 
+                    :urlValue="old('image_url')"
+                    help="Format JPG, PNG, atau WEBP. Gambar otomatis dikompresi & dikonversi ke WebP. Dikosongkan akan memakai ilustrasi default." 
+                />
             </div>
 
             <!-- Harga Mulai Dari -->

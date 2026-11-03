@@ -130,50 +130,17 @@
                 <p class="text-xs text-slate-500">Foto latar belakang khusus hero section wilayah ini. Mewarisi hierarki kota/provinsi jika dikosongkan.</p>
             </div>
 
-            <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-3" x-data="{ heroPreview: {{ Illuminate\Support\Js::from($coverageArea->hero_image) }} }">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-                    <div class="w-full h-32 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden relative shadow-2xs">
-                        <template x-if="heroPreview">
-                            <img :src="heroPreview" class="w-full h-full object-cover">
-                        </template>
-                        <template x-if="!heroPreview">
-                            <div class="text-center p-2 text-slate-400">
-                                <svg class="w-6 h-6 mx-auto mb-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
-                                <span class="text-[11px] font-medium">Foto Standar Wilayah</span>
-                            </div>
-                        </template>
-                    </div>
-
-                    <div class="sm:col-span-2 space-y-2">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Berkas Gambar Baru</label>
-                            <input type="file" name="hero_image" id="hero_image" accept="image/jpeg,image/png,image/webp"
-                                   @change="const f = $event.target.files[0]; if (f) { heroPreview = URL.createObjectURL(f); }"
-                                   class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
-                            @error('hero_image') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label for="hero_image_url" class="block text-xs font-bold text-slate-700 mb-1">Atau Link URL Gambar Eksternal</label>
-                            <input type="url" name="hero_image_url" id="hero_image_url" value="{{ old('hero_image_url') }}"
-                                   placeholder="https://.../foto-wilayah.webp"
-                                   @input="if ($event.target.value) { heroPreview = $event.target.value; }"
-                                   class="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 focus:border-sky-700 focus:ring-1 focus:ring-sky-700 outline-hidden">
-                        </div>
-
-                        @if($coverageArea->hero_image)
-                            <div class="pt-1">
-                                <label class="inline-flex items-center gap-1.5 text-xs text-rose-700 font-medium cursor-pointer">
-                                    <input type="checkbox" name="remove_hero_image" value="1" @change="if($event.target.checked) heroPreview = null" class="w-3.5 h-3.5 rounded text-rose-600 border-slate-300 focus:ring-rose-500">
-                                    <span>Hapus foto kustom (kembali ke foto bawaan hierarki)</span>
-                                </label>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
+            <x-form.image-upload 
+                name="hero_image" 
+                label="Unggah Foto Hero Wilayah" 
+                :current="$coverageArea->hero_image"
+                :allowUrl="true" 
+                urlName="hero_image_url" 
+                :urlValue="old('hero_image_url')"
+                removeName="remove_hero_image"
+                removeLabel="Hapus foto kustom (kembali ke foto bawaan hierarki)"
+                aspect="video"
+                help="Format WebP, JPG, PNG (Maks. 20MB). Otomatis dikompresi &amp; dikonversi ke WebP teroptimasi." />
         </div>
 
         <!-- SECTION 2.5: KEHADIRAN LOKAL (DRAINTUSANTARA HADIR DI WILAYAH/KOTA) -->
@@ -186,47 +153,20 @@
                 <p class="text-xs text-slate-500">Foto dokumentasi posko/armada kota dan narasi kehadiran teknisi yang tampil pada landing page kota (/area/{kota}).</p>
             </div>
 
-            <div class="p-4 bg-slate-50/75 rounded-lg border border-slate-200 space-y-4" x-data="{ presencePreview: {{ Illuminate\Support\Js::from($coverageArea->presence_image ? asset($coverageArea->presence_image) : null) }} }">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
-                    <div class="w-full aspect-4/3 rounded-lg border-2 border-dashed border-slate-300 bg-white flex items-center justify-center overflow-hidden relative shadow-2xs">
-                        <template x-if="presencePreview">
-                            <img :src="presencePreview" class="w-full h-full object-cover">
-                        </template>
-                        <template x-if="!presencePreview">
-                            <div class="text-center p-2 text-slate-400">
-                                <svg class="w-7 h-7 mx-auto mb-1 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                </svg>
-                                <span class="text-[11px] font-medium">Foto Armada Posko Kota</span>
-                            </div>
-                        </template>
-                    </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <x-form.image-upload 
+                    name="presence_image" 
+                    label="Unggah Foto Kehadiran / Posko Armada Kota" 
+                    :current="$coverageArea->presence_image"
+                    removeName="remove_presence_image"
+                    removeLabel="Hapus foto kehadiran kustom"
+                    aspect="video"
+                    help="Format WebP, JPG, PNG (Maks. 20MB). Dikonversi otomatis menjadi WebP teroptimasi." />
 
-                    <div class="sm:col-span-2 space-y-3">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Foto Kehadiran / Posko Kota</label>
-                            <input type="file" name="presence_image" id="presence_image" accept="image/jpeg,image/png,image/webp"
-                                   @change="const f = $event.target.files[0]; if (f) { presencePreview = URL.createObjectURL(f); }"
-                                   class="block w-full text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 cursor-pointer">
-                            <p class="text-[11px] text-slate-500 mt-1">Format WebP, JPG, atau PNG (maks 5MB). Dikonversi otomatis menjadi WebP teroptimasi.</p>
-                            @error('presence_image') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        @if($coverageArea->presence_image)
-                            <div class="pt-1">
-                                <label class="inline-flex items-center gap-1.5 text-xs text-rose-700 font-medium cursor-pointer">
-                                    <input type="checkbox" name="remove_presence_image" value="1" @change="if($event.target.checked) presencePreview = null" class="w-3.5 h-3.5 rounded text-rose-600 border-slate-300 focus:ring-rose-500">
-                                    <span>Hapus foto kehadiran kustom</span>
-                                </label>
-                            </div>
-                        @endif
-
-                        <div>
-                            <label for="presence_description" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Deskripsi Kehadiran Drainusantara di Wilayah Ini</label>
-                            <textarea name="presence_description" id="presence_description" rows="3" placeholder="Jaringan armada siaga Drainusantara hadir melayani seluruh penjuru wilayah..." class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('presence_description', $coverageArea->presence_description) }}</textarea>
-                            <p class="text-[11px] text-slate-500 mt-1">Ditampilkan pada section 'Drainusantara Hadir di [Kota]' di landing page kota.</p>
-                        </div>
-                    </div>
+                <div>
+                    <label for="presence_description" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Deskripsi Kehadiran Drainusantara di Wilayah Ini</label>
+                    <textarea name="presence_description" id="presence_description" rows="4" placeholder="Jaringan armada siaga Drainusantara hadir melayani seluruh penjuru wilayah..." class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('presence_description', $coverageArea->presence_description) }}</textarea>
+                    <p class="text-[11px] text-slate-500 mt-1">Ditampilkan pada section 'Drainusantara Hadir di [Kota]' di landing page kota.</p>
                 </div>
             </div>
         </div>
