@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-slate-50 min-h-screen py-6 sm:py-10 lg:py-12 border-b border-slate-200" x-data="blogImageViewer()">
+<div class="bg-slate-50 min-h-screen py-6 sm:py-10 lg:py-12 border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Breadcrumbs Navigation -->
-        <nav class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-6 overflow-x-auto no-scrollbar reveal-fade" aria-label="Breadcrumb">
+        <nav class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-6 overflow-x-auto no-scrollbar" aria-label="Breadcrumb">
             <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5 shrink-0">
                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -19,7 +19,7 @@
         </nav>
 
         <!-- Article Editorial Header Card -->
-        <header class="bg-white rounded-xl border border-slate-200 p-6 sm:p-10 mb-8 shadow-xs reveal-soft">
+        <header class="bg-white rounded-xl border border-slate-200 p-6 sm:p-10 mb-8 shadow-xs">
             <div class="max-w-4xl mx-auto">
                 <div class="flex flex-wrap items-center gap-2 mb-4 text-xs">
                     <span class="font-bold text-sky-800 tracking-wider uppercase">
@@ -56,8 +56,8 @@
                         $heroResolved = filter_var($article->thumbnail, FILTER_VALIDATE_URL) ? $article->thumbnail : asset(ltrim($article->thumbnail, '/'));
                     @endphp
                     <figure class="mt-6 rounded-xl overflow-hidden border border-slate-200 bg-white shadow-2xs max-w-3xl mx-auto group">
-                        <div class="relative cursor-zoom-in overflow-hidden group/img"
-                             @click="open('{{ $heroResolved }}', '{{ addslashes($article->title) }}')"
+                        <div class="relative cursor-zoom-in overflow-hidden group/img article-zoomable"
+                             @click="window.__openLightbox('{{ $heroResolved }}', '{{ addslashes($article->title) }}')"
                              title="Klik untuk melihat foto lebih besar">
                             <img src="{{ $heroResolved }}" 
                                  alt="{{ $article->title }}" 
@@ -119,7 +119,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
             <!-- Main Content Column -->
-            <main class="lg:col-span-8 bg-white rounded-xl border border-slate-200 p-6 sm:p-10 shadow-xs reveal-soft">
+            <main class="lg:col-span-8 bg-white rounded-xl border border-slate-200 p-6 sm:p-10 shadow-xs">
                 
                 <!-- Placement: Image di Konten (Tengah, Ukuran Kompak & Proporsional) -->
                 @if($article->thumbnail && $article->image_placement !== 'hero')
@@ -127,8 +127,8 @@
                         $contentResolved = filter_var($article->thumbnail, FILTER_VALIDATE_URL) ? $article->thumbnail : asset(ltrim($article->thumbnail, '/'));
                     @endphp
                     <figure class="mb-8 rounded-xl overflow-hidden border border-slate-200 bg-white shadow-2xs max-w-2xl mx-auto group">
-                        <div class="relative cursor-zoom-in overflow-hidden group/img"
-                             @click="open('{{ $contentResolved }}', '{{ addslashes($article->title) }}')"
+                        <div class="relative cursor-zoom-in overflow-hidden group/img article-zoomable"
+                             @click="window.__openLightbox('{{ $contentResolved }}', '{{ addslashes($article->title) }}')"
                              title="Klik untuk melihat foto lebih besar">
                             <img src="{{ $contentResolved }}" 
                                  alt="{{ $article->title }}" 
@@ -298,7 +298,7 @@
 
         <!-- Bottom Related Articles Section (Full Grid) -->
         @if(isset($relatedArticles) && $relatedArticles->isNotEmpty())
-            <section class="mt-16 sm:mt-20 reveal-soft">
+            <section class="mt-16 sm:mt-20">
                 <div class="flex items-center justify-between mb-8">
                     <div>
                         <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-1">
@@ -371,158 +371,7 @@
 
     </div>
 
-    <!-- Modal Lightbox / Image Zoom Viewer -->
-    <div x-show="isOpen" 
-         x-cloak 
-         @keydown.escape.window="close()" 
-         class="fixed inset-0 z-[100] flex flex-col bg-slate-950/95 backdrop-blur-md"
-         role="dialog" 
-         aria-modal="true" 
-         aria-label="Penampil Gambar Penuh">
-        
-        <!-- Top Navigation Bar / Controls -->
-        <div class="flex items-center justify-between px-4 sm:px-6 py-3 bg-slate-900/90 border-b border-slate-800 text-white shrink-0">
-            <div class="flex items-center gap-2 max-w-[50%] sm:max-w-md truncate">
-                <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-                <span class="text-xs sm:text-sm font-semibold truncate" x-text="activeAlt"></span>
-            </div>
-
-            <!-- Toolbar Controls -->
-            <div class="flex items-center gap-1.5 sm:gap-2">
-                <!-- Zoom Out -->
-                <button type="button" 
-                        @click="zoomOut()" 
-                        :disabled="zoomLevel <= 1"
-                        :class="zoomLevel <= 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-800 active:scale-95'"
-                        class="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-slate-800/80 text-white transition-all border border-slate-700/60"
-                        title="Perkecil (-)" aria-label="Perkecil Gambar">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
-                    </svg>
-                </button>
-
-                <!-- Zoom Level Display -->
-                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-sky-300 min-w-[56px] text-center select-none"
-                      x-text="Math.round(zoomLevel * 100) + '%'">
-                </span>
-
-                <!-- Zoom In -->
-                <button type="button" 
-                        @click="zoomIn()" 
-                        :disabled="zoomLevel >= 3"
-                        :class="zoomLevel >= 3 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-800 active:scale-95'"
-                        class="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-slate-800/80 text-white transition-all border border-slate-700/60"
-                        title="Perbesar (+)" aria-label="Perbesar Gambar">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                </button>
-
-                <!-- Reset Zoom -->
-                <button type="button" 
-                        @click="resetZoom()" 
-                        class="hidden sm:inline-flex min-h-[44px] items-center justify-center px-3 rounded-lg bg-slate-800/80 hover:bg-slate-800 active:scale-95 text-white text-xs font-semibold transition-all border border-slate-700/60"
-                        title="Kembalikan ke Ukuran Semula" aria-label="Reset Ukuran">
-                    Reset
-                </button>
-
-                <!-- Open original in new tab -->
-                <a :href="activeSrc" 
-                   target="_blank" 
-                   rel="noopener noreferrer"
-                   class="hidden sm:inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg bg-slate-800/80 hover:bg-slate-800 active:scale-95 text-slate-300 hover:text-white transition-all border border-slate-700/60"
-                   title="Buka Gambar Asli di Tab Baru" aria-label="Buka di Tab Baru">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                    </svg>
-                </a>
-
-                <!-- Close Button -->
-                <button type="button" 
-                        @click="close()" 
-                        class="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg bg-rose-600/90 hover:bg-rose-600 active:scale-95 text-white transition-all border border-rose-500/60 ml-1"
-                        title="Tutup (ESC)" aria-label="Tutup Penampil Gambar">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Image Main Stage -->
-        <div class="flex-1 overflow-auto p-4 sm:p-8 flex items-center justify-center cursor-zoom-out" 
-             @click.self="close()">
-            <div class="relative transition-transform duration-200 ease-out" 
-                 :style="'transform: scale(' + zoomLevel + '); transform-origin: center center;'">
-                <img :src="activeSrc" 
-                     :alt="activeAlt" 
-                     class="max-h-[80vh] max-w-[92vw] sm:max-w-[85vw] object-contain rounded-lg shadow-2xl border border-slate-700/40 select-none cursor-default"
-                     @click.stop>
-            </div>
-        </div>
-
-        <!-- Footer Hint -->
-        <div class="py-2.5 px-4 bg-slate-900/80 text-center text-[11px] text-slate-400 border-t border-slate-800/80 shrink-0">
-            <span>Gunakan tombol perbesar atau tekan <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-mono text-[10px]">ESC</kbd> untuk menutup</span>
-        </div>
-    </div>
+    <!-- Modal Lightbox / Image Zoom Viewer Component -->
+    <x-media.lightbox-viewer target-selector=".article-content img, .article-zoomable" />
 </div>
-
-@push('scripts')
-<script>
-    window.blogImageViewer = function() {
-        return {
-            isOpen: false,
-            activeSrc: '',
-            activeAlt: '',
-            zoomLevel: 1,
-
-            init() {
-                this.$nextTick(() => {
-                    const contentImgs = document.querySelectorAll('.article-content img');
-                    contentImgs.forEach(img => {
-                        img.classList.add('cursor-zoom-in', 'hover:opacity-95', 'transition-opacity');
-                        img.setAttribute('title', 'Klik untuk melihat foto lebih besar');
-                        img.addEventListener('click', () => {
-                            this.open(img.src, img.alt || 'Dokumentasi Artikel');
-                        });
-                    });
-                });
-            },
-
-            open(src, alt) {
-                this.activeSrc = src;
-                this.activeAlt = alt || 'Dokumentasi Sanitasi & Pemipaan Drainusantara';
-                this.zoomLevel = 1;
-                this.isOpen = true;
-                document.body.style.overflow = 'hidden';
-            },
-
-            close() {
-                this.isOpen = false;
-                document.body.style.overflow = '';
-                this.zoomLevel = 1;
-            },
-
-            zoomIn() {
-                if (this.zoomLevel < 3) {
-                    this.zoomLevel = Math.round((this.zoomLevel + 0.5) * 10) / 10;
-                }
-            },
-
-            zoomOut() {
-                if (this.zoomLevel > 1) {
-                    this.zoomLevel = Math.round((this.zoomLevel - 0.5) * 10) / 10;
-                }
-            },
-
-            resetZoom() {
-                this.zoomLevel = 1;
-            }
-        };
-    };
-</script>
-@endpush
 @endsection

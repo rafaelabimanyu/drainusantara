@@ -29,10 +29,9 @@ class AboutPageTest extends TestCase
         $resMain->assertSee('STANDAR PERALATAN TEKNISI');
         $resMain->assertSee('Peralatan Mekanis &amp; Diagnosis Visual Armada', false);
 
-        // 2. Struktur Holding J&J Group
+        // 2. Struktur Induk PT Jawa Jaya Rooter
         $resHolding = $this->get('/tentang-kami/holding');
         $resHolding->assertStatus(200);
-        $resHolding->assertSee('Sinergi Ekosistem J&amp;J Group', false);
         $resHolding->assertSee('PT JAWA JAYA ROOTER');
         $resHolding->assertSee('Transparansi Harga Total');
         $resHolding->assertSee('Formalitas Kelengkapan Administrasi &amp; Kemitraan Korporat', false);
@@ -104,7 +103,7 @@ class AboutPageTest extends TestCase
 
         // Desktop popover dropdown and triggers
         $response->assertSee('activeMenu === \'tentang\'', false);
-        $response->assertSee('Struktur Holding J&amp;J Group', false);
+        $response->assertSee('Induk PT Jawa Jaya Rooter');
         $response->assertSee('SOP K3');
         $response->assertSee('Profil Perusahaan');
         $response->assertSee('Peralatan &amp; Teknologi', false);

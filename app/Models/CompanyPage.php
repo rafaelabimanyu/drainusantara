@@ -89,14 +89,14 @@ class CompanyPage extends Model
             ],
             'holding' => [
                 'page_key' => 'holding',
-                'title' => 'Struktur Ekosistem Holding J&J Group',
-                'subtitle' => 'Drainusantara beroperasi dengan dukungan penuh holding J&J Group, menghadirkan kekuatan rantai pasok mesin mekanik dan standarisasi layanan di seluruh Nusantara.',
-                'meta_title' => 'Struktur Ekosistem Holding J&J Group',
-                'meta_description' => 'Drainusantara bernaung di bawah ekosistem holding J&J Group. Sinergi rantai pasok mesin mekanik impor, kendali mutu, dan standarisasi operasional terpadu.',
+                'title' => 'Struktur Entitas Induk PT Jawa Jaya Rooter',
+                'subtitle' => 'Drainusantara beroperasi dengan dukungan penuh entitas induk PT Jawa Jaya Rooter, menghadirkan kekuatan rantai pasok mesin mekanik dan standarisasi layanan di seluruh Nusantara.',
+                'meta_title' => 'Struktur Entitas Induk PT Jawa Jaya Rooter',
+                'meta_description' => 'Drainusantara bernaung di bawah entitas induk PT Jawa Jaya Rooter. Sinergi rantai pasok mesin mekanik, kendali mutu, dan standarisasi operasional terpadu.',
                 'hero_image' => 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp',
-                'content' => 'Sebagai bagian dari grup holding terintegrasi, Drainusantara memiliki akses langsung ke inovasi teknologi sanitasi modern, ketersediaan suku cadang mesin impor, serta pelatihan sertifikasi teknisi berkelanjutan.',
+                'content' => 'Sebagai bagian dari entitas bisnis terintegrasi PT Jawa Jaya Rooter, Drainusantara memiliki akses langsung ke inovasi teknologi sanitasi modern, ketersediaan suku cadang mesin, serta pelatihan sertifikasi teknisi berkelanjutan.',
                 'sections_data' => [
-                    'holding_name' => 'J&J Group Holding Corporation',
+                    'holding_name' => 'PT Jawa Jaya Rooter',
                     'synergies' => [
                         ['title' => 'Rantai Pasok Teknologi', 'desc' => 'Pengadaan langsung unit mesin drain cleaner Ridgid dan modul spiral baja high-torque original.'],
                         ['title' => 'Pusat Diklat Teknisi', 'desc' => 'Pelatihan berkala bagi seluruh teknisi mengenai keselamatan K3, plumbing code, dan etika pelayanan hunian.'],

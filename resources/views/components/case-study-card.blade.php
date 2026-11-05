@@ -25,10 +25,10 @@
 @endphp
 
 <a href="{{ route('case-study.show', $slug) }}" 
-   class="block bg-white rounded-lg border border-slate-200 overflow-hidden hover:border-sky-300 transition-colors group shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+   class="h-full flex flex-col justify-between bg-white rounded-lg border border-slate-200 overflow-hidden hover:border-sky-300 transition-colors group shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
     
     <!-- Bagian Atas: Gambar Thumbnail -->
-    <div class="w-full aspect-[16/10] bg-slate-900 overflow-hidden relative">
+    <div class="w-full aspect-[16/10] bg-slate-900 overflow-hidden relative shrink-0">
         @if($imageUrl)
             <img src="{{ $imageUrl }}" 
                  alt="Studi kasus: {{ $title }}" 
@@ -54,7 +54,7 @@
     </div>
 
     <!-- Bagian Bawah: Konten & Detail -->
-    <div class="p-4 flex flex-col justify-between">
+    <div class="p-4 flex-1 flex flex-col justify-between">
         <div>
             <!-- Judul Studi Kasus -->
             <h3 class="text-sm font-bold text-slate-900 group-hover:text-sky-700 transition-colors mb-2 line-clamp-2 leading-snug">

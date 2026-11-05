@@ -267,6 +267,61 @@
                     @endif
                 </div>
 
+                <!-- DOKUMENTASI PENGERJAAN REAL DI LAPANGAN (CMS DYNAMIC) -->
+                @php
+                    $docPhotos = is_array($partnership->documentation_images) ? array_filter($partnership->documentation_images) : [];
+                @endphp
+                @if(!empty($docPhotos))
+                    <section aria-label="Dokumentasi Pengerjaan Real" class="space-y-4">
+                        <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-sky-800 block mb-1">
+                                    BUKTI LAPANGAN
+                                </span>
+                                <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+                                    Dokumentasi Pengerjaan Real di Lokasi Mitra
+                                </h2>
+                            </div>
+                            <span class="text-xs font-mono text-slate-500 hidden sm:inline-block">
+                                {{ count($docPhotos) }} Foto Terverifikasi
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            @foreach($docPhotos as $idx => $doc)
+                                @php
+                                    $docPath = is_array($doc) ? ($doc['path'] ?? '') : (string) $doc;
+                                    $docCaption = is_array($doc) ? ($doc['caption'] ?? '') : '';
+                                    $docUrl = (filter_var($docPath, FILTER_VALIDATE_URL) || str_starts_with($docPath, '/')) ? $docPath : asset(ltrim($docPath, '/'));
+                                    $safeCaption = !empty($docCaption) ? $docCaption : "Pengerjaan sanitasi dan saluran di {$partnership->client_name} (Foto " . ($idx + 1) . ")";
+                                @endphp
+                                @if(!empty($docPath))
+                                <div class="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-2xs group flex flex-col justify-between">
+                                    <div class="relative aspect-16/10 bg-slate-900 overflow-hidden cursor-zoom-in"
+                                         onclick="if(window.__openLightbox){window.__openLightbox('{{ addslashes($docUrl) }}', '{{ addslashes($safeCaption) }}');}"
+                                         title="Klik untuk memperbesar foto dokumentasi">
+                                        <img src="{{ $docUrl }}" 
+                                             alt="{{ $safeCaption }}" 
+                                             loading="lazy" 
+                                             decoding="async" 
+                                             width="640" 
+                                             height="400" 
+                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <div class="absolute bottom-2.5 right-2.5 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-1 rounded-md border border-white/20 flex items-center gap-1 shadow-xs pointer-events-none">
+                                            <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                                            <span>Perbesar</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-slate-50 border-t border-slate-100 text-xs text-slate-700">
+                                        <p class="font-medium text-slate-800 leading-snug">{{ $safeCaption }}</p>
+                                    </div>
+                                </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+
                 <!-- 4. TESTIMONI -->
                 @if(!empty($partnership->testimoni_quote))
                     <section class="pt-2" aria-label="Testimoni Klien">
@@ -377,6 +432,7 @@
     </section>
     @endif
 
+    <x-media.lightbox-viewer />
 </article>
 @endsection
 

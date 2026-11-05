@@ -48,7 +48,7 @@ class ServiceFactsMetadataTest extends TestCase
     {
         return [
             ['/', 'Jasa Saluran Pipa Mampet Tanpa Bongkar'],
-            ['/tentang-kami/holding', 'Struktur Ekosistem Holding J&J Group'],
+            ['/tentang-kami/holding', 'Struktur Entitas Induk PT Jawa Jaya Rooter'],
             ['/tentang-kami/profil', 'Profil Perusahaan: Spesialis Pipa Tanpa Bongkar'],
             ['/tentang-kami/sop-k3', 'Standar SOP K3 & Higienitas Teknisi'],
             ['/tentang-kami/peralatan', 'Peralatan & Teknologi Mesin Pipa Modern'],

@@ -21,6 +21,7 @@ class Portfolio extends Model
         'partnership_type',
         'logo',
         'image',
+        'documentation_images',
         'project_title',
         'description',
         'location',
@@ -38,6 +39,7 @@ class Portfolio extends Model
     protected function casts(): array
     {
         return [
+            'documentation_images' => 'array',
             'order' => 'integer',
             'is_active' => 'boolean',
         ];

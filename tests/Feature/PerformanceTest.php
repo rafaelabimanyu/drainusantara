@@ -31,7 +31,7 @@ class PerformanceTest extends TestCase
         $logos = $xpath->query('//header//img | //*[@id="mobile-drawer-title"]//img');
         $this->assertSame(2, $logos->length);
         foreach ($logos as $image) {
-            $this->assertSame('224px', $image->getAttribute('sizes'));
+            $this->assertTrue(in_array($image->getAttribute('sizes'), ['224px', '(max-width: 640px) 140px, (max-width: 1280px) 170px, 192px'], true));
             foreach ([224, 448] as $width) {
                 $name = "images/logo/TEKSBRAND-TAGLINE-{$width}.webp";
                 $this->assertStringContainsString(asset($name)." {$width}w", $image->getAttribute('srcset'));

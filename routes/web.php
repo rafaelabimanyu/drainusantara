@@ -68,11 +68,32 @@ Route::get('/artikel/{slug}', [Pages\ArticleController::class, 'articleDetail'])
 // Human HTML Sitemap & Dynamic XML Sitemap
 Route::get('/sitemap', [Pages\SitemapController::class, 'htmlSitemap'])->name('sitemap.html');
 Route::get('/peta-situs', fn () => redirect()->route('sitemap.html', [], 301));
-Route::get('/sitemap.xml', [Pages\SitemapController::class, 'sitemap'])->name('sitemap');
-Route::get('/robots.txt', [Pages\SitemapController::class, 'robots'])->name('robots');
+Route::get('/sitemap.xml', [Pages\SitemapController::class, 'sitemap'])
+    ->withoutMiddleware([
+        \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\CompressResponse::class,
+    ])
+    ->name('sitemap');
+Route::get('/robots.txt', [Pages\SitemapController::class, 'robots'])
+    ->withoutMiddleware([
+        \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\CompressResponse::class,
+    ])
+    ->name('robots');
 
 // llms.txt for AI crawlers (llmstxt.org)
-Route::get('/llms.txt', [Pages\SitemapController::class, 'llms'])->name('llms');
+Route::get('/llms.txt', [Pages\SitemapController::class, 'llms'])
+    ->withoutMiddleware([
+        \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\CompressResponse::class,
+    ])
+    ->name('llms');
 
 // Agentic Resource Discovery (ARD v1.0) AI Catalog
 Route::get('/.well-known/ai-catalog.json', [Pages\AiCatalogController::class, 'catalog'])->name('ai-catalog.well-known');
@@ -100,6 +121,12 @@ Route::get('/layanan', fn () => redirect('/#layanan', 301))->name('services.anch
 Route::get('/kontak', [Pages\ContactController::class, 'index'])->name('contact');
 Route::post('/kontak', [Pages\ContactController::class, 'submit'])->middleware('throttle:10,1')->name('contact.submit');
 Route::get('/hubungi-kami', fn () => redirect()->route('contact', [], 301));
+
+// Halaman Legalitas & Kebijakan
+Route::get('/kebijakan-privasi', [Pages\LegalController::class, 'privacy'])->name('legal.privacy');
+Route::get('/privacy-policy', fn () => redirect()->route('legal.privacy', [], 301));
+Route::get('/syarat-dan-ketentuan', [Pages\LegalController::class, 'terms'])->name('legal.terms');
+Route::get('/terms-of-service', fn () => redirect()->route('legal.terms', [], 301));
 
 // CMS Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

@@ -31,42 +31,21 @@
             </p>
         </div>
 
-        <!-- 5 Steps List (Mobile Horizontal Carousel / Desktop Vertical Stack) -->
-        <div x-data="{
-                 activeStep: 0,
-                 totalSteps: 5,
-                 onScroll() {
-                     const el = this.$refs.stepsSlider;
-                     if (!el) return;
-                     const scrollLeft = el.scrollLeft;
-                     const itemWidth = el.firstElementChild ? el.firstElementChild.offsetWidth : 1;
-                     this.activeStep = Math.min(this.totalSteps - 1, Math.max(0, Math.round(scrollLeft / itemWidth)));
-                 },
-                 scrollToStep(index) {
-                     const el = this.$refs.stepsSlider;
-                     if (!el || !el.children[index]) return;
-                     el.children[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-                 }
-             }"
-             class="relative">
-            
-            <div x-ref="stepsSlider"
-                 @scroll.passive="onScroll()"
-                 tabindex="0"
-                 role="region"
-                 aria-label="5 Tahapan Pelancaran Saluran Pipa Mekanis, geser horizontal untuk melihat tiap tahap"
-                 class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-4 pt-1 px-4 -mx-4 md:mx-0 md:px-0 md:space-y-6 md:flex-col md:overflow-visible md:pb-0">
+        <!-- 5 Steps List (Fully Responsive Vertical Stack & Step Flow) -->
+        <div class="relative max-w-4xl mx-auto">
+            <div class="space-y-4 sm:space-y-6">
                 
                 <!-- Step 1 -->
-                <div id="langkah-1" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-lg border border-slate-200 shadow-xs flex flex-col md:flex-row gap-4 sm:gap-6 items-start w-[85vw] max-w-[340px] shrink-0 snap-center md:w-auto reveal-soft">
-                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0">
+                <div id="langkah-1" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row gap-4 sm:gap-6 items-start hover:border-sky-300 transition-colors">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0 shadow-2xs">
                         01
                     </div>
-                    <div class="flex-1">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                            <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                    <div class="flex-1 space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                                 Diagnosa &amp; Inspeksi Visual Endoskopi CCTV
                             </h3>
+                            <span class="text-[11px] font-bold text-sky-800 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-md">Tahap Awal</span>
                         </div>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             Teknisi memasukkan kabel probe kamera endoskopi waterproof IP68 ke dalam lubang pipa pembuangan. Layar monitor resolusi tinggi akan memetakan posisi sumbatan, jarak meteran dari lubang masuk, mendeteksi jenis penghambat (lemak beku, kain/tisu, pasir sisa bangunan, atau akar pohon), serta memverifikasi ada tidaknya pipa pecah atau kemiringan pipa yang tidak tepat.
@@ -75,15 +54,16 @@
                 </div>
 
                 <!-- Step 2 -->
-                <div id="langkah-2" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-lg border border-slate-200 shadow-xs flex flex-col md:flex-row gap-4 sm:gap-6 items-start w-[85vw] max-w-[340px] shrink-0 snap-center md:w-auto reveal-soft">
-                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0">
+                <div id="langkah-2" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row gap-4 sm:gap-6 items-start hover:border-sky-300 transition-colors">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0 shadow-2xs">
                         02
                     </div>
-                    <div class="flex-1">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                            <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                    <div class="flex-1 space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                                 Penetrasi Spiral Baja Lentur (Ridgid Rotary Rooter)
                             </h3>
+                            <span class="text-[11px] font-bold text-sky-800 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-md">Metode Mekanis</span>
                         </div>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             Kabel spiral baja fleksibel (high-tensile spring steel) diputar oleh mesin elektrik dengan torsi terukur. Kabel ini meliuk secara fleksibel mengikuti lekukan leher angsa (P-trap) dan sambungan knee pipa 90 derajat tanpa menyebabkan gesekan berlebih yang dapat meretakkan sambungan fitting pipa PVC.
@@ -92,15 +72,16 @@
                 </div>
 
                 <!-- Step 3 -->
-                <div id="langkah-3" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-lg border border-slate-200 shadow-xs flex flex-col md:flex-row gap-4 sm:gap-6 items-start w-[85vw] max-w-[340px] shrink-0 snap-center md:w-auto reveal-soft">
-                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0">
+                <div id="langkah-3" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row gap-4 sm:gap-6 items-start hover:border-sky-300 transition-colors">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0 shadow-2xs">
                         03
                     </div>
-                    <div class="flex-1">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                            <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                    <div class="flex-1 space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                                 Pengikisan Kerak Lemak &amp; Ekstraksi Sumbatan
                             </h3>
+                            <span class="text-[11px] font-bold text-sky-800 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-md">Pembersihan Total</span>
                         </div>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             Ujung spiral dipasangi mata pisau pemotong khusus yang disesuaikan dengan sumber masalah: Grease Cutter untuk menghancurkan lemak beku yang melapisi dinding pipa, Root Saw untuk memotong serat akar pohon yang merangsek masuk sambungan, atau Retrieving Auger untuk menarik gumpalan rambut, kain, dan pembalut keluar dari jalur pipa.
@@ -109,15 +90,16 @@
                 </div>
 
                 <!-- Step 4 -->
-                <div id="langkah-4" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-lg border border-slate-200 shadow-xs flex flex-col md:flex-row gap-4 sm:gap-6 items-start w-[85vw] max-w-[340px] shrink-0 snap-center md:w-auto reveal-soft">
-                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0">
+                <div id="langkah-4" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row gap-4 sm:gap-6 items-start hover:border-sky-300 transition-colors">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0 shadow-2xs">
                         04
                     </div>
-                    <div class="flex-1">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                            <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                    <div class="flex-1 space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                                 Pembilasan Debit Air Deras (Flushing) &amp; Uji Alir Bersama
                             </h3>
+                            <span class="text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-md">Verifikasi Aliran</span>
                         </div>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             Setelah material sumbatan terdorong hancur dan ditarik keluar, teknisi mengalirkan debit air deras secara bersamaan dengan pemilik rumah atau perwakilan gedung. Pemeriksaan dilakukan langsung di bak kontrol pembuangan akhir untuk memastikan laju aliran air lancar sempurna dan tidak ada pusaran balik.
@@ -126,36 +108,22 @@
                 </div>
 
                 <!-- Step 5 -->
-                <div id="langkah-5" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-lg border border-slate-200 shadow-xs flex flex-col md:flex-row gap-4 sm:gap-6 items-start w-[85vw] max-w-[340px] shrink-0 snap-center md:w-auto reveal-soft">
-                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-md bg-slate-900 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0">
+                <div id="langkah-5" class="scroll-mt-24 bg-white p-5 sm:p-7 rounded-xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row gap-4 sm:gap-6 items-start hover:border-emerald-300 transition-colors">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-emerald-700 text-white font-extrabold text-base sm:text-lg flex items-center justify-center shrink-0 shadow-2xs">
                         05
                     </div>
-                    <div class="flex-1">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
-                            <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                    <div class="flex-1 space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                                 Sanitasi Area Kerja &amp; Penerbitan Surat Garansi 30 Hari
                             </h3>
+                            <span class="text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-md">Garansi Resmi</span>
                         </div>
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             Teknisi membersihkan dan mendisinfeksi area kerja pasca operasional sehingga ruangan kembali higienis dan rapi. Selanjutnya, tim menerbitkan dokumen Berita Acara Serah Terima (BAST) pekerjaan serta Surat Garansi Tertulis 30 Hari Kalender resmi dari PT JAWA JAYA ROOTER yang terdata di sistem pusat.
                         </p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Mobile Carousel Swipe Indicators -->
-            <div class="flex md:hidden items-center justify-center gap-2 mt-4 text-xs font-medium text-slate-500" aria-label="Indikator tahapan">
-                <template x-for="i in totalSteps" :key="i">
-                    <button type="button"
-                            @click="scrollToStep(i - 1)"
-                            :class="activeStep === (i - 1) ? 'w-6 bg-sky-700' : 'w-2 bg-slate-300'"
-                            class="h-1.5 rounded-full transition-all cursor-pointer focus:outline-hidden"
-                            :aria-label="'Buka langkah ' + i">
-                    </button>
-                </template>
-                <span class="ml-2 font-mono text-[11px] text-slate-600">
-                    <span x-text="activeStep + 1">1</span>/5
-                </span>
             </div>
         </div>
 

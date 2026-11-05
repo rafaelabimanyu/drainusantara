@@ -116,7 +116,7 @@
                             <span class="text-slate-400 group-hover:text-sky-700">&rarr;</span>
                         </a>
                         <a href="{{ route('about.holding') }}" class="p-2.5 rounded-lg border border-slate-100 hover:border-sky-300 hover:bg-sky-50/40 text-slate-700 hover:text-sky-800 transition-all font-medium flex items-center justify-between group">
-                            <span>Struktur Holding J&amp;J Group</span>
+                            <span>Induk PT Jawa Jaya Rooter</span>
                             <span class="text-slate-400 group-hover:text-sky-700">&rarr;</span>
                         </a>
                         <a href="{{ route('about.k3') }}" class="p-2.5 rounded-lg border border-slate-100 hover:border-sky-300 hover:bg-sky-50/40 text-slate-700 hover:text-sky-800 transition-all font-medium flex items-center justify-between group">

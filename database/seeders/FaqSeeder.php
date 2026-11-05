@@ -275,7 +275,7 @@ class FaqSeeder extends Seeder
             [
                 'category' => 'administrasi',
                 'question' => 'Apakah Drainusantara dapat menerbitkan e-Faktur Pajak PPN 11% dan invoice resmi?',
-                'answer' => 'Tentu. Sebagai unit usaha resmi berbadan hukum di bawah naungan PT Jayadi Mitra Group / PT Jawa Jaya Rooter dengan NIB dan status Pengusaha Kena Pajak (PKP), kami siap menerbitkan invoice penagihan resmi, e-Faktur PPN 11%, dan Berita Acara Penyelesaian Pekerjaan (BAPP).',
+                'answer' => 'Tentu. Sebagai unit usaha resmi berbadan hukum di bawah naungan PT Jawa Jaya Rooter dengan NIB dan status Pengusaha Kena Pajak (PKP), kami siap menerbitkan invoice penagihan resmi, e-Faktur PPN 11%, dan Berita Acara Penyelesaian Pekerjaan (BAPP).',
                 'order' => 31,
                 'is_active' => true,
                 'is_featured' => false,

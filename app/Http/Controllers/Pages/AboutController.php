@@ -65,26 +65,26 @@ class AboutController extends Controller
     }
 
     /**
-     * Sub-Page 2: Struktur Holding J&J Group
+     * Sub-Page 2: Struktur Entitas Induk PT Jawa Jaya Rooter
      */
     public function aboutHolding(): View
     {
         $companyPage = CompanyPage::getByKey('holding');
 
-        PageMetadata::title($companyPage->meta_title ?: 'Struktur Ekosistem Holding J&J Group');
-        SEOMeta::setDescription($companyPage->meta_description ?: 'Drainusantara bernaung di bawah ekosistem holding J&J Group. Sinergi rantai pasok mesin mekanik impor, kendali mutu, dan standarisasi operasional terpadu.');
+        PageMetadata::title($companyPage->meta_title ?: 'Struktur Entitas Induk PT Jawa Jaya Rooter');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Drainusantara bernaung di bawah entitas induk PT Jawa Jaya Rooter. Sinergi rantai pasok mesin mekanik, kendali mutu, dan standarisasi operasional terpadu.');
         SEOMeta::setCanonical(route('about.holding'));
 
-        OpenGraph::setDescription($companyPage->meta_description ?: 'Fondasi korporasi kokoh di bawah naungan J&J Group dengan jaringan logistik armada dan pengawasan mutu sanitasi.');
+        OpenGraph::setDescription($companyPage->meta_description ?: 'Fondasi korporasi kokoh di bawah naungan PT Jawa Jaya Rooter dengan jaringan logistik armada dan pengawasan mutu sanitasi.');
         OpenGraph::setUrl(route('about.holding'));
         OpenGraph::addImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription($companyPage->meta_description ?: 'Ekosistem holding sanitasi dan drainase modern di Indonesia.');
+        TwitterCard::setDescription($companyPage->meta_description ?: 'Ekosistem perseroan induk sanitasi dan drainase modern di Indonesia.');
         TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Struktur Holding J&J Group - Drainusantara');
+        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Struktur Induk PT Jawa Jaya Rooter - Drainusantara');
         JsonLdMulti::setType('AboutPage');
-        $this->addAboutBreadcrumb('Struktur Holding', 'about.holding');
+        $this->addAboutBreadcrumb('Struktur Induk Perusahaan', 'about.holding');
 
         return view('about.holding', compact('companyPage'));
     }

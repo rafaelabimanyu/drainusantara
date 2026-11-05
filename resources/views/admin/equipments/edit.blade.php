@@ -5,12 +5,12 @@
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Edit Peralatan: {{ $equipment->name }}</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Perbarui spesifikasi mesin, foto peralatan, atau nomor prioritas urutan.</p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">
             @if($equipment->slug)
             <a href="{{ route('equipment.show', $equipment->slug) }}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-sky-700 hover:text-sky-800 px-3 py-1.5 rounded-lg border border-sky-300 bg-sky-50 hover:bg-sky-100 transition-colors">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-7 shadow-2xs">
+    <div class="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 lg:p-7 shadow-2xs">
         <form action="{{ route('admin.equipments.update', $equipment) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
             @method('PUT')
@@ -102,23 +102,19 @@
                           class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">{{ old('description', $equipment->description) }}</textarea>
             </div>
 
-            <!-- 5. Spesifikasi Teknis, Fitur Utama & Skenario Aplikasi -->
+            <!-- 5. Spesifikasi Teknis & Fitur Utama -->
             @php
                 $specsText = is_array($equipment->specs) ? implode("\n", $equipment->specs) : (string) $equipment->specs;
                 $featuresText = is_array($equipment->features) ? implode("\n", $equipment->features) : (string) $equipment->features;
                 $applicationsText = is_array($equipment->applications) ? implode("\n", $equipment->applications) : (string) $equipment->applications;
             @endphp
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-
-                <div>
-                    <label for="features" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                        Fitur &amp; Keunggulan Utama (1 baris per poin)
-                    </label>
-                    <textarea name="features" id="features" rows="4" 
-                              class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-xs font-mono outline-hidden transition shadow-2xs">{{ old('features', $featuresText) }}</textarea>
-                    <p class="text-[11px] text-slate-500 mt-1">Ditampilkan pada grid fitur halaman detail.</p>
-                </div>
+            <div>
+                <label for="features" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Fitur &amp; Keunggulan Utama (1 baris per poin)
+                </label>
+                <textarea name="features" id="features" rows="4" 
+                          class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-xs font-mono outline-hidden transition shadow-2xs">{{ old('features', $featuresText) }}</textarea>
+                <p class="text-[11px] text-slate-500 mt-1">Ditampilkan pada grid fitur halaman detail.</p>
             </div>
 
             <!-- 6. Aplikasi Titik Saluran & Standar SOP K3 -->
@@ -158,22 +154,22 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="pt-5 border-t border-slate-200 flex items-center justify-between">
+            <div class="pt-5 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
                     <button type="button" 
                             onclick="if(confirm('Hapus peralatan ini?')) { document.getElementById('delete-form-{{ $equipment->id }}').submit(); }"
-                            class="px-3.5 py-2 rounded-lg text-rose-700 hover:bg-rose-50 border border-rose-200 text-xs font-semibold transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-3.5 py-2.5 sm:py-2 rounded-lg text-rose-700 hover:bg-rose-50 border border-rose-200 text-xs font-semibold transition-colors cursor-pointer text-center">
                         Hapus Peralatan
                     </button>
                 </div>
 
-                <div class="flex items-center gap-2.5">
+                <div class="flex flex-col-reverse sm:flex-row sm:items-center gap-2.5">
                     <a href="{{ route('admin.equipments.index') }}" 
-                       class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-colors">
+                       class="w-full sm:w-auto text-center px-4 py-2.5 sm:py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-colors">
                         Batal
                     </a>
                     <button type="submit" 
-                            class="px-5 py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm shadow-2xs transition-colors cursor-pointer">
+                            class="w-full sm:w-auto text-center px-5 py-2.5 sm:py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm shadow-2xs transition-colors cursor-pointer">
                         Perbarui Peralatan
                     </button>
                 </div>

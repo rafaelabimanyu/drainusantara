@@ -70,12 +70,32 @@ class ArticleController extends Controller
                 $thumbnailUrl = 'https://placehold.co/800x500/0284c7/ffffff?text=' . urlencode(mb_strcut($validated['title'], 0, 69, 'UTF-8'));
             }
 
+            $contentImages = [];
+            for ($i = 1; $i <= 3; $i++) {
+                $imgFile = $request->file("content_image_{$i}");
+                $caption = $request->input("content_caption_{$i}");
+                $path = null;
+                if ($imgFile) {
+                    $path = $media->upload($imgFile, 'articles', true);
+                } elseif ($request->filled("content_image_{$i}") && is_string($request->input("content_image_{$i}"))) {
+                    $path = $request->input("content_image_{$i}");
+                }
+                if ($path) {
+                    $contentImages[] = [
+                        'path' => $path,
+                        'caption' => $caption ?: '',
+                    ];
+                }
+            }
+
             $media->save($record, [
                 'title' => $validated['title'],
                 'slug' => $slug,
                 'thumbnail' => $thumbnailUrl,
                 'image_placement' => $validated['image_placement'] ?? 'content',
+                'content_images' => !empty($contentImages) ? $contentImages : null,
                 'category' => $validated['category'] ?? 'Tips & Edukasi',
+                'sub_category' => $validated['sub_category'] ?? null,
                 'tags' => $validated['tags'] ?? null,
                 'excerpt' => $validated['excerpt'] ?? Str::limit(strip_tags($validated['content']), 120),
                 'content' => $validated['content'],
@@ -118,17 +138,50 @@ class ArticleController extends Controller
             }
 
             $thumbnailUrl = $article->thumbnail;
-            if ($request->hasFile('thumbnail')) {
+            if ($request->boolean('remove_thumbnail')) {
+                $thumbnailUrl = null;
+            } elseif ($request->hasFile('thumbnail')) {
                 $thumbnailUrl = $media->upload($request->file('thumbnail'), 'articles', true);
             } elseif (!empty($validated['thumbnail_url'])) {
                 $thumbnailUrl = $validated['thumbnail_url'];
             }
 
+            $existingImages = is_array($article->content_images) ? array_values($article->content_images) : [];
+            $contentImages = [];
+            for ($i = 1; $i <= 3; $i++) {
+                $existingItem = $existingImages[$i - 1] ?? null;
+                $remove = $request->boolean("remove_content_image_{$i}");
+                $imgFile = $request->file("content_image_{$i}");
+                $caption = $request->input("content_caption_{$i}");
+
+                if ($remove) {
+                    continue;
+                }
+
+                $path = null;
+                if ($imgFile) {
+                    $path = $media->upload($imgFile, 'articles', true);
+                } elseif ($request->filled("content_image_{$i}") && is_string($request->input("content_image_{$i}"))) {
+                    $path = $request->input("content_image_{$i}");
+                } elseif (!empty($existingItem['path'])) {
+                    $path = $existingItem['path'];
+                }
+
+                if ($path) {
+                    $contentImages[] = [
+                        'path' => $path,
+                        'caption' => !is_null($caption) ? (string) $caption : ($existingItem['caption'] ?? ''),
+                    ];
+                }
+            }
+
             $media->save($article, [
                 'title' => $validated['title'],
                 'category' => array_key_exists('category', $validated) ? $validated['category'] : $article->category,
+                'sub_category' => array_key_exists('sub_category', $validated) ? $validated['sub_category'] : $article->sub_category,
                 'thumbnail' => $thumbnailUrl,
                 'image_placement' => $validated['image_placement'] ?? ($article->image_placement ?? 'content'),
+                'content_images' => !empty($contentImages) ? $contentImages : null,
                 'tags' => array_key_exists('tags', $validated) ? $validated['tags'] : $article->tags,
                 'excerpt' => array_key_exists('excerpt', $validated) ? $validated['excerpt'] : $article->excerpt,
                 'content' => $validated['content'],

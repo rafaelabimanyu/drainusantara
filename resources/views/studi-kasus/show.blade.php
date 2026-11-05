@@ -155,7 +155,9 @@
             <!-- JIKA ADA FOTO BEFORE & AFTER: TAMPILKAN KOMPARASI 2 KOLOM -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Kiri: Foto Sebelum -->
-                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs">
+                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs group cursor-zoom-in"
+                     onclick="if(window.__openLightbox){window.__openLightbox('{{ $caseStudy->before_image }}', 'Kondisi Awal (Tersumbat) - {{ addslashes($caseStudy->title) }}');}"
+                     title="Klik untuk memperbesar foto kondisi awal">
                     <span class="absolute top-3 left-3 z-10 text-[11px] font-bold uppercase tracking-wider bg-rose-900/90 text-white px-2.5 py-1 rounded-sm shadow-xs">
                         Kondisi Awal (Tersumbat)
                     </span>
@@ -165,7 +167,11 @@
                          height="600" 
                          loading="eager" 
                          decoding="async" 
-                         class="object-cover w-full aspect-[4/3]">
+                         class="object-cover w-full aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-300">
+                    <div class="absolute bottom-12 right-3 z-10 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2.5 py-1 rounded-md border border-white/20 flex items-center gap-1 shadow-xs pointer-events-none">
+                        <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                        <span>Perbesar</span>
+                    </div>
                     <div class="bg-white px-3.5 py-2.5 border-t border-slate-200 text-xs text-slate-700 flex items-center justify-between">
                         <span class="font-medium text-slate-800">Titik Masalah: {{ $caseStudy->drain_type ?: (!empty($problemTypes) ? implode(', ', $problemTypes) : 'Saluran Pipa') }}</span>
                         <span class="text-rose-700 font-bold">Mampet Total</span>
@@ -173,7 +179,9 @@
                 </div>
 
                 <!-- Kanan: Foto Sesudah -->
-                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs">
+                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs group cursor-zoom-in"
+                     onclick="if(window.__openLightbox){window.__openLightbox('{{ $caseStudy->after_image }}', 'Hasil Akhir (Lancar) - {{ addslashes($caseStudy->title) }}');}"
+                     title="Klik untuk memperbesar foto hasil akhir">
                     <span class="absolute top-3 left-3 z-10 text-[11px] font-bold uppercase tracking-wider bg-emerald-900/90 text-white px-2.5 py-1 rounded-sm shadow-xs">
                         Hasil Akhir (Lancar)
                     </span>
@@ -183,7 +191,11 @@
                          height="600" 
                          loading="lazy" 
                          decoding="async" 
-                         class="object-cover w-full aspect-[4/3]">
+                         class="object-cover w-full aspect-[4/3] group-hover:scale-[1.02] transition-transform duration-300">
+                    <div class="absolute bottom-12 right-3 z-10 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2.5 py-1 rounded-md border border-white/20 flex items-center gap-1 shadow-xs pointer-events-none">
+                        <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                        <span>Perbesar</span>
+                    </div>
                     <div class="bg-white px-3.5 py-2.5 border-t border-slate-200 text-xs text-slate-700 flex items-center justify-between">
                         <span class="font-medium text-slate-800">Metode: {{ $caseStudy->method ?: 'Spiral Rotary Ridgid' }}</span>
                         <span class="text-emerald-700 font-bold">Aliran Air Lancar 100%</span>
@@ -193,14 +205,20 @@
         @elseif($caseStudy->main_image)
             <!-- JIKA TIDAK ADA BEFORE-AFTER: TAMPILKAN 1 FOTO UTAMA CMS SECARA TERPUSAT -->
             <div class="max-w-4xl mx-auto">
-                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs">
+                <div class="relative rounded-lg border border-slate-200 overflow-hidden bg-slate-900 shadow-2xs group cursor-zoom-in"
+                     onclick="if(window.__openLightbox){window.__openLightbox('{{ $caseStudy->main_image }}', 'Dokumentasi: {{ addslashes($caseStudy->title) }}');}"
+                     title="Klik untuk memperbesar foto dokumentasi">
                     <img src="{{ $caseStudy->main_image }}" 
                          alt="Foto dokumentasi: {{ $caseStudy->title }} di {{ $caseStudy->location ?: 'lokasi kerja' }}"
                          width="1200" 
                          height="700" 
                          loading="eager" 
                          decoding="async" 
-                         class="object-cover w-full max-h-[500px]">
+                         class="object-cover w-full max-h-[500px] group-hover:scale-[1.01] transition-transform duration-300">
+                    <div class="absolute bottom-12 right-3 z-10 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2.5 py-1 rounded-md border border-white/20 flex items-center gap-1 shadow-xs pointer-events-none">
+                        <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                        <span>Perbesar</span>
+                    </div>
                     <div class="bg-white px-4 py-2.5 border-t border-slate-200 text-xs text-slate-700 flex flex-wrap items-center justify-between gap-2">
                         <span class="font-medium text-slate-800 flex items-center gap-1.5">
                             <svg class="w-4 h-4 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,7 +227,6 @@
                             </svg>
                             <span>Foto Dokumentasi Pelaksanaan Teknis di Lapangan</span>
                         </span>
-                        
                     </div>
                 </div>
             </div>
@@ -457,7 +474,7 @@
                     @php
                         $thumb = $item->image ?: ($item->after_image ?: $item->before_image);
                     @endphp
-                    <div class="w-[82vw] max-w-[340px] shrink-0 snap-center sm:w-auto">
+                    <div class="w-[82vw] max-w-[340px] shrink-0 snap-center sm:w-auto h-full flex flex-col">
                         <x-case-study-card 
                             :slug="$item->slug" 
                             :title="$item->title" 
@@ -475,5 +492,7 @@
         </div>
     </section>
     @endif
+
+    <x-media.lightbox-viewer />
 </article>
 @endsection

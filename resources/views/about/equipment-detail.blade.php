@@ -65,7 +65,9 @@
                 
                 <!-- High-Res Equipment Image Container -->
                 <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
-                    <div class="relative aspect-16/10 bg-slate-900 overflow-hidden group">
+                    <div class="relative aspect-16/10 bg-slate-900 overflow-hidden group cursor-zoom-in"
+                         onclick="if(window.__openLightbox){window.__openLightbox('{{ $equipment->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}', '{{ addslashes($equipment->name) }}');}"
+                         title="Klik untuk memperbesar foto peralatan">
                         <img 
                             src="{{ $equipment->image ?: asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}" 
                             alt="{{ $equipment->name }}" 
@@ -73,6 +75,10 @@
                             height="750" 
                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
                             onerror="this.onerror=null; this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
+                        <div class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-xs text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg border border-white/20 flex items-center gap-1.5 shadow-md pointer-events-none">
+                            <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                            <span>Perbesar Gambar</span>
+                        </div>
                     </div>
                 </div>
 
@@ -322,5 +328,7 @@
         </div>
     </div>
 </main>
+
+<x-media.lightbox-viewer />
 @endsection
 

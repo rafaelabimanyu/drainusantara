@@ -5,12 +5,12 @@
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Edit Portofolio: {{ $portfolio->client_name }}</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Perbarui foto, nama tempat usaha/restoran, dan lokasi untuk kartu portofolio.</p>
         </div>
-        <a href="{{ route('admin.portfolios.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
+        <a href="{{ route('admin.portfolios.index') }}" class="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -18,7 +18,7 @@
         </a>
     </div>
 
-    <form action="{{ route('admin.portfolios.update', $portfolio) }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl border border-slate-200 p-5 sm:p-7 space-y-5 shadow-2xs">
+    <form action="{{ route('admin.portfolios.update', $portfolio) }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 lg:p-7 space-y-5 shadow-2xs">
         @csrf
         @method('PUT')
 
@@ -78,6 +78,44 @@
                 :urlValue="old('logo_url')"
                 aspect="square"
                 help="Format JPG, PNG, WEBP. Disarankan logo dengan background transparan." />
+
+            @php
+                $existingDoc = is_array($portfolio->documentation_images) ? array_values($portfolio->documentation_images) : [];
+            @endphp
+            <!-- Dokumentasi Pengerjaan Real di Lapangan (Maks. 4 Foto Opsional) -->
+            <div class="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900">Dokumentasi Pengerjaan Real di Lapangan (Opsional)</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Unggah hingga 4 foto pengerjaan aktual di lokasi mitra (misal pembersihan pipa grease trap, penetrasi rooter, atau pengecekan CCTV).</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @for($i = 1; $i <= 4; $i++)
+                    @php
+                        $item = $existingDoc[$i - 1] ?? null;
+                    @endphp
+                    <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-3">
+                        <x-form.image-upload 
+                            name="doc_image_{{ $i }}" 
+                            label="Foto Dokumentasi #{{ $i }}" 
+                            :current="$item['path'] ?? null"
+                            removeName="remove_doc_image_{{ $i }}"
+                            aspect="video"
+                            help="Otomatis dikonversi ke WebP." />
+
+                        <div>
+                            <label for="doc_caption_{{ $i }}" class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Keterangan Foto #{{ $i }}
+                            </label>
+                            <input type="text" name="doc_caption_{{ $i }}" id="doc_caption_{{ $i }}"
+                                   value="{{ old('doc_caption_' . $i, $item['caption'] ?? '') }}"
+                                   placeholder="Contoh: Pembersihan pipa grease trap dapur utama"
+                                   class="w-full px-3 py-1.5 text-xs rounded-md border border-slate-300 focus:border-sky-700 focus:ring-1 focus:ring-sky-700/20 text-slate-900">
+                        </div>
+                    </div>
+                    @endfor
+                </div>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -259,13 +297,13 @@
             </div>
         </div>
 
-        <div class="pt-5 border-t border-slate-200 flex items-center justify-end gap-2.5">
+        <div class="pt-5 border-t border-slate-200 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5">
             <a href="{{ route('admin.portfolios.index') }}" 
-               class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-colors">
+               class="w-full sm:w-auto text-center px-4 py-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 font-semibold text-xs sm:text-sm text-slate-700 transition-colors">
                 Batal
             </a>
             <button type="submit" 
-                    class="px-5 py-2 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-2xs transition-colors cursor-pointer">
+                    class="w-full sm:w-auto text-center px-5 py-2.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-2xs transition-colors cursor-pointer btn-press">
                 Perbarui Portofolio
             </button>
         </div>

@@ -11,7 +11,7 @@
     active-title="Profil Perusahaan"
     eyebrow="Profil Entitas Legal"
     heading="Profil Resmi Drainusantara"
-    subheading="Drainusantara merupakan entitas bisnis spesialis pelancaran dan pemeliharaan saluran pipa pembuangan modern yang beroperasi secara sah di bawah naungan PT JAWA JAYA ROOTER (dikenal secara luas sebagai J&J Group). Didukung legalitas perseroan resmi, NIB OSS, dan tertib administrasi e-Faktur PPN, kami menghadirkan standar penanganan mekanis berstandar industri tanpa bongkar keramik lantai dan bebas zat kimia berbahaya, siap melayani sektor properti residensial maupun fasilitas komersial B2B dengan jaminan garansi tertulis 30 hari kalender."
+    subheading="Drainusantara merupakan entitas bisnis spesialis pelancaran dan pemeliharaan saluran pipa pembuangan modern yang beroperasi secara sah di bawah naungan PT JAWA JAYA ROOTER. Didukung legalitas perseroan resmi, NIB OSS, dan tertib administrasi e-Faktur PPN, kami menghadirkan standar penanganan mekanis berstandar industri tanpa bongkar keramik lantai dan bebas zat kimia berbahaya, siap melayani sektor properti residensial maupun fasilitas komersial B2B dengan jaminan garansi tertulis 30 hari kalender."
     :bg-image="asset('assets/banner/hero-profil-perusahaan-drainusantara.webp')"
 />
 
@@ -31,7 +31,7 @@
                 
                 <div class="space-y-4 text-sm sm:text-base text-slate-600 leading-relaxed">
                     <p>
-                        Sejak awal beroperasi, Drainusantara menerapkan metode perbaikan pipa mekanis tanpa pembongkaran struktur di bawah badan hukum resmi <strong>PT JAWA JAYA ROOTER</strong>. Nama <strong>J&amp;J Group</strong> merupakan singkatan dan identitas holding ekosistem sanitasi yang menaungi divisi teknologi perpipaan, rantai pasok mesin rotary berstandar internasional, serta armada penanganan cepat. Seluruh operasional kami didukung legalitas usaha yang sah, siap melayani pengadaan B2B, penerbitan SPK, BAST, serta Faktur PPN resmi untuk kualifikasi SLA gedung dan fasilitas industri.
+                        Sejak awal beroperasi, Drainusantara menerapkan metode perbaikan pipa mekanis tanpa pembongkaran struktur di bawah badan hukum resmi <strong>PT JAWA JAYA ROOTER</strong>. Sebagai entitas induk perseroan, <strong>PT JAWA JAYA ROOTER</strong> menaungi divisi teknologi perpipaan, rantai pasok mesin rotary berstandar internasional, serta armada penanganan cepat. Seluruh operasional kami didukung legalitas usaha yang sah, siap melayani pengadaan B2B, penerbitan SPK, BAST, serta Faktur PPN resmi untuk kualifikasi SLA gedung dan fasilitas industri.
                     </p>
                     <p>
                         Sebagai pilar operasional dari <strong>PT JAWA JAYA ROOTER</strong>, kami hadir menyelesaikan keresahan pemilik properti terhadap metode konvensional yang merusak instalasi, mulai dari pembongkaran keramik lantai berbiaya tinggi hingga bahaya penggunaan soda api yang merusak pipa PVC akibat reaksi eksotermik. Mengandalkan unit mesin spiral rotary berstandar industri dan kamera endoskopi pipa CCTV IP68 jangkauan 30 meter, setiap penanganan diselesaikan secara presisi, higienis, dan terukur.
@@ -119,8 +119,8 @@
                         <span class="font-bold text-sky-800">PT JAWA JAYA ROOTER</span>
                     </div>
                     <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
-                        <span class="text-slate-500 font-medium">Induk Holding</span>
-                        <span class="font-bold text-slate-800">J&amp;J Group</span>
+                        <span class="text-slate-500 font-medium">Induk Perusahaan</span>
+                        <span class="font-bold text-slate-800">PT JAWA JAYA ROOTER</span>
                     </div>
                     <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
                         <span class="text-slate-500 font-medium">Legalitas &amp; Pajak</span>
@@ -507,7 +507,7 @@
                     Solusi Sanitasi Pipa Bergaransi &amp; Kemitraan Korporat B2B
                 </h2>
                 <p class="text-slate-300 text-xs sm:text-sm mt-2 leading-relaxed">
-                    Dikelola secara profesional oleh <strong>PT JAWA JAYA ROOTER</strong> (holding J&amp;J Group). Kami melayani proyek tender, SPK berkala pengelola gedung perkantoran, hotel, restoran, hingga panggilan darurat saluran perumahan dengan standar mekanis tanpa bongkar.
+                    Dikelola secara profesional oleh <strong>PT JAWA JAYA ROOTER</strong>. Kami melayani proyek tender, SPK berkala pengelola gedung perkantoran, hotel, restoran, hingga panggilan darurat saluran perumahan dengan standar mekanis tanpa bongkar.
                 </p>
             </div>
             

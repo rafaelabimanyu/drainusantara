@@ -160,24 +160,33 @@ class ArticleController extends Controller
             ->orderBy('published_at')
             ->first();
 
-        $relatedArticles = Article::where('is_published', true)
+        // 1. Sidebar: Panduan Lainnya (Artikel terbaru kecuali artikel aktif)
+        $recentArticles = Article::where('is_published', true)
             ->where('id', '!=', $article->id)
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        // 2. Bottom Section: Rekomendasi Terkait (Kategori sama, wajib berbeda dari sidebar & artikel aktif)
+        $excludedIds = $recentArticles->pluck('id')->push($article->id)->all();
+
+        $relatedArticles = Article::where('is_published', true)
+            ->whereNotIn('id', $excludedIds)
             ->when($article->category, fn ($q) => $q->where('category', $article->category))
             ->latest('published_at')
             ->take(3)
             ->get();
 
         if ($relatedArticles->count() < 3) {
+            $needed = 3 - $relatedArticles->count();
+            $combinedExcluded = array_merge($excludedIds, $relatedArticles->pluck('id')->all());
             $fallback = Article::where('is_published', true)
-                ->where('id', '!=', $article->id)
-                ->whereNotIn('id', $relatedArticles->pluck('id'))
+                ->whereNotIn('id', $combinedExcluded)
                 ->latest('published_at')
-                ->take(3 - $relatedArticles->count())
+                ->take($needed)
                 ->get();
             $relatedArticles = $relatedArticles->concat($fallback);
         }
-
-        $recentArticles = $relatedArticles;
 
         return view('articles.show', compact('article', 'recentArticles', 'relatedArticles', 'prevArticle', 'nextArticle'));
     }

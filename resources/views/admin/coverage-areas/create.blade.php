@@ -5,18 +5,18 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Tambah Area Jangkauan Baru</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftarkan area &amp; kota untuk halaman pendaratan SEO lokal.</p>
         </div>
-        <a href="{{ route('admin.coverage-areas.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
+        <a href="{{ route('admin.coverage-areas.index') }}" class="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             <span>Kembali</span>
         </a>
     </div>
 
-    <form action="{{ route('admin.coverage-areas.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl border border-slate-200 p-5 sm:p-7 space-y-8 shadow-2xs">
+    <form action="{{ route('admin.coverage-areas.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 lg:p-7 space-y-8 shadow-2xs">
         @csrf
 
         <!-- SECTION 1: INFORMASI WILAYAH & HARGA -->
@@ -31,7 +31,7 @@
             <!-- Area Type Selector -->
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Tingkat / Level Area *</label>
-                <div class="grid grid-cols-3 gap-3 max-w-lg">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 max-w-lg">
                     <label class="flex items-center gap-2.5 p-3 rounded-lg border cursor-pointer transition-all"
                            :class="areaType === 'province' ? 'bg-indigo-50 border-indigo-500 text-indigo-900 font-bold shadow-2xs' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'">
                         <input type="radio" name="type" value="province" x-model="areaType" class="text-indigo-600 focus:ring-indigo-500">
@@ -445,11 +445,11 @@
                 <label for="is_active" class="text-xs sm:text-sm font-semibold text-slate-800 cursor-pointer">Publikasikan halaman landing page area ini</label>
             </div>
 
-            <div class="flex items-center gap-2.5">
-                <a href="{{ route('admin.coverage-areas.index') }}" class="px-4 py-2 rounded-lg border border-slate-300 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+            <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
+                <a href="{{ route('admin.coverage-areas.index') }}" class="w-full sm:w-auto text-center px-4 py-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 transition-colors">
                     Batal
                 </a>
-                <button type="submit" class="px-6 py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white text-xs sm:text-sm font-semibold shadow-2xs transition-colors cursor-pointer">
+                <button type="submit" class="w-full sm:w-auto text-center px-6 py-2.5 rounded-lg bg-sky-700 hover:bg-sky-800 text-white text-xs sm:text-sm font-semibold shadow-2xs transition-colors cursor-pointer btn-press">
                     Simpan Area Baru
                 </button>
             </div>

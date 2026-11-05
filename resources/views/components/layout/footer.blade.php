@@ -176,7 +176,7 @@
                     <li>
                         <a href="{{ route('about.holding') }}" class="hover:text-white transition-colors flex items-center gap-1.5">
                             <span class="text-sky-400 font-bold">&rsaquo;</span>
-                            <span>Struktur Ekosistem Holding J&amp;J</span>
+                            <span>Induk PT Jawa Jaya Rooter</span>
                         </a>
                     </li>
                     <li>
@@ -268,6 +268,10 @@
                 <a href="{{ route('about.k3') }}" class="hover:text-white transition-colors">Standar K3</a>
                 <span>&bull;</span>
                 <a href="{{ route('about.faq') }}" class="hover:text-white transition-colors">FAQ</a>
+                <span>&bull;</span>
+                <a href="{{ route('legal.privacy') }}" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+                <span>&bull;</span>
+                <a href="{{ route('legal.terms') }}" class="hover:text-white transition-colors">Syarat &amp; Ketentuan</a>
                 <span>&bull;</span>
                 <a href="{{ route('sitemap.html') }}" class="hover:text-white transition-colors">Peta Situs</a>
             </div>

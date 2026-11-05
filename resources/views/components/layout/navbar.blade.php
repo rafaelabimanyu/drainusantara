@@ -12,17 +12,17 @@
         @click.outside="activeMenu = null">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 sm:h-20">
-            <a href="{{ url('/') }}" class="flex min-h-11 shrink-0 items-center px-2.5 py-1.5 rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
-                <img src="{{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }}" srcset="{{ asset('images/logo/TEKSBRAND-TAGLINE-224.webp') }} 224w, {{ asset('images/logo/TEKSBRAND-TAGLINE-448.webp') }} 448w, {{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }} 1198w" sizes="224px" alt="Drainusantara: Jasa Saluran Tanpa Bongkar" class="block h-auto w-40 sm:w-48 max-w-full object-contain" width="1198" height="208">
+            <a href="{{ url('/') }}" class="flex min-h-11 shrink-0 items-center px-1 sm:px-2.5 py-1.5 rounded-md focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500">
+                <img src="{{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }}" srcset="{{ asset('images/logo/TEKSBRAND-TAGLINE-224.webp') }} 224w, {{ asset('images/logo/TEKSBRAND-TAGLINE-448.webp') }} 448w, {{ asset('images/logo/TEKSBRAND-TAGLINE.webp') }} 1198w" sizes="(max-width: 640px) 140px, (max-width: 1280px) 170px, 192px" alt="Drainusantara: Jasa Saluran Tanpa Bongkar" class="block h-auto w-36 sm:w-44 xl:w-48 max-w-full object-contain" width="1198" height="208">
             </a>
             
 
             <!-- Desktop Navigation Items -->
-            <nav class="hidden lg:flex items-center space-x-1 lg:space-x-1.5 text-sm font-semibold text-slate-300" aria-label="Navigasi Utama">
+            <nav class="hidden lg:flex items-center space-x-0.5 xl:space-x-1.5 text-xs xl:text-sm font-semibold text-slate-300" aria-label="Navigasi Utama">
                 <!-- 1. Beranda -->
                 <a href="{{ route('home') }}" 
                    @click="activeSection = 'home'"
-                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isHome ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
+                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isHome ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
                    @if($isHome)
                    :class="{
                        'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeSection === 'home',
@@ -36,7 +36,7 @@
                 <div class="relative" @click.outside="activeMenu = (activeMenu === 'tentang' ? null : activeMenu)">
                     <button @click="activeMenu = (activeMenu === 'tentang' ? null : 'tentang')"
                             type="button" 
-                            class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer {{ $isAbout ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
+                            class="inline-flex items-center gap-1 xl:gap-1.5 px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer {{ $isAbout ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
                             :class="{
                                 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeMenu === 'tentang' || {{ $isAbout ? 'true' : 'false' }},
                                 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent': activeMenu !== 'tentang' && !{{ $isAbout ? 'true' : 'false' }}
@@ -45,7 +45,7 @@
                             :aria-expanded="activeMenu === 'tentang' ? 'true' : 'false'"
                             aria-haspopup="true">
                         <span>Tentang kami</span>
-                        <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180 text-sky-400': activeMenu === 'tentang', 'text-sky-400': {{ $isAbout ? 'true' : 'false' }}, 'text-slate-400': activeMenu !== 'tentang' && !{{ $isAbout ? 'true' : 'false' }} }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-3.5 h-3.5 xl:w-4 xl:h-4 transition-transform duration-200" :class="{ 'rotate-180 text-sky-400': activeMenu === 'tentang', 'text-sky-400': {{ $isAbout ? 'true' : 'false' }}, 'text-slate-400': activeMenu !== 'tentang' && !{{ $isAbout ? 'true' : 'false' }} }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
@@ -90,8 +90,8 @@
                             </a>
                             
                             <a href="{{ route('about.holding') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isHolding ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
-                                <div class="text-xs font-bold {{ $isHolding ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Struktur Holding J&amp;J Group</div>
-                                <p class="text-[11px] {{ $isHolding ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Induk perusahaan &amp; jaringan ekosistem sanitasi.</p>
+                                <div class="text-xs font-bold {{ $isHolding ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Induk PT Jawa Jaya Rooter</div>
+                                <p class="text-[11px] {{ $isHolding ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Induk perusahaan &amp; jaringan operasional sanitasi.</p>
                             </a>
 
                             <a href="{{ route('about.k3') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isK3 ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
@@ -125,7 +125,7 @@
                 <!-- 3. Layanan (Hybrid Compact Popover) -->
                 <a href="{{ url('/#layanan') }}" 
                    @click="activeSection = 'layanan'"
-                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent"
+                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent"
                    @if($isHome)
                    :class="{
                        'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeSection === 'layanan',
@@ -136,7 +136,7 @@
                 </a>
                 <!-- 4. Hasil Kerja -->
                 <a href="{{ route('gallery') }}" 
-                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isGallery ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
+                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isGallery ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
                     Hasil Kerja
                 </a>
 
@@ -144,7 +144,7 @@
                 <div class="relative" @click.outside="activeMenu = (activeMenu === 'wilayah' ? null : activeMenu)">
                     <button @click="activeMenu = (activeMenu === 'wilayah' ? null : 'wilayah')"
                             type="button" 
-                            class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer {{ $isArea ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
+                            class="inline-flex items-center gap-1 xl:gap-1.5 px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer {{ $isArea ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
                             :class="{
                                 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeMenu === 'wilayah' || {{ $isArea ? 'true' : 'false' }} || ({{ $isHome ? 'true' : 'false' }} && activeSection === 'area'),
                                 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent': activeMenu !== 'wilayah' && !{{ $isArea ? 'true' : 'false' }} && (!{{ $isHome ? 'true' : 'false' }} || activeSection !== 'area')
@@ -153,7 +153,7 @@
                             :aria-expanded="activeMenu === 'wilayah' ? 'true' : 'false'"
                             aria-haspopup="true">
                         <span>Area Jangkauan</span>
-                        <svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180 text-sky-400': activeMenu === 'wilayah', 'text-sky-400': {{ $isArea ? 'true' : 'false' }}, 'text-slate-400': activeMenu !== 'wilayah' && !{{ $isArea ? 'true' : 'false' }} }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-3.5 h-3.5 xl:w-4 xl:h-4 transition-transform duration-200" :class="{ 'rotate-180 text-sky-400': activeMenu === 'wilayah', 'text-sky-400': {{ $isArea ? 'true' : 'false' }}, 'text-slate-400': activeMenu !== 'wilayah' && !{{ $isArea ? 'true' : 'false' }} }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
@@ -272,40 +272,59 @@
 
                 <!-- 6. Blog -->
                 <a href="{{ route('articles.index') }}" 
-                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isBlog ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
+                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isBlog ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
                     Blog
                 </a>
 
                 <!-- 7. Kontak -->
                 <a href="{{ route('contact') }}" 
-                   class="px-3 py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ request()->routeIs('contact') ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
+                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ request()->routeIs('contact') ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
                     Kontak
                 </a>
             </nav>
 
-            <!-- Desktop CTA: Tombol 'Cek Estimasi' & 'Hubungi Kami' -->
-            <div class="hidden lg:flex items-center gap-2.5">
-                <button @click="$dispatch('open-quick-quote')"
-                        type="button"
-                        class="px-3.5 py-2 rounded-xl text-xs font-bold text-sky-300 hover:text-white bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 transition-all cursor-pointer btn-press active:scale-98 inline-flex items-center gap-1.5"
-                        data-track-location="navbar_quick_quote">
-                    <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                    </svg>
-                    <span>Cek Estimasi</span>
-                </button>
-
+            <!-- Desktop CTA: Tunggal (CTA WhatsApp Hijau, 'Cek Estimasi' dihilangkan agar navbar lega & fokus) -->
+            <div class="hidden lg:flex items-center">
                 <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
                    :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
                    target="_blank" 
                    rel="noopener noreferrer" 
                    data-track-location="navbar"
-                   class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl px-4 py-2 shadow-sm hover:shadow transition-all inline-flex items-center gap-2 active:scale-98 text-sm">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                   class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg xl:rounded-xl px-3.5 xl:px-4 py-2 shadow-sm hover:shadow transition-all inline-flex items-center gap-1.5 xl:gap-2 active:scale-98 text-xs xl:text-sm shrink-0">
+                    <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
                     </svg>
                     <span>Hubungi Kami</span>
                 </a>
+            </div>
+
+            <!-- Mobile & Tablet Actions (Header Responsif untuk Layar < lg) -->
+            <div class="flex items-center gap-2 lg:hidden">
+                <!-- 1. Tombol WhatsApp Compact Mobile -->
+                <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+                   :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   data-track-location="navbar_mobile"
+                   class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg px-2.5 sm:px-3 py-1.5 shadow-xs transition-all inline-flex items-center gap-1.5 active:scale-95 text-xs">
+                    <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                    </svg>
+                    <span class="hidden sm:inline">Hubungi Kami</span>
+                    <span class="sm:hidden font-medium">WhatsApp</span>
+                </a>
+
+                <!-- 2. Tombol Hamburger Menu (Buka Drawer Navigasi) -->
+                <button @click="sidebarOpen = true" 
+                        type="button" 
+                        class="w-9 h-9 flex items-center justify-center rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer active:scale-95 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500"
+                        aria-label="Buka Menu Navigasi"
+                        aria-controls="mobile-drawer"
+                        :aria-expanded="sidebarOpen ? 'true' : 'false'">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
             </div>
         </div>
     </div>

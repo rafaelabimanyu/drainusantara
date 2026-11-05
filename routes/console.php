@@ -14,6 +14,18 @@ Artisan::command('deploy:check', function () {
     return 0;
 })->purpose('Periksa konfigurasi sebelum deploy');
 
+Artisan::command('sitemap:generate', function (\App\Http\Controllers\Pages\SitemapController $controller) {
+    $this->info('Mengompilasi dan mengoptimasi sitemap.xml...');
+    $start = microtime(true);
+    $xml = $controller->generateSitemapXml();
+    $path = public_path('sitemap.xml');
+    file_put_contents($path, $xml);
+    \Illuminate\Support\Facades\Cache::put('sitemap.xml', $xml, 86400);
+    $time = round(microtime(true) - $start, 3);
+    $this->info("sitemap.xml berhasil di-generate dalam {$time}s pada {$path} (" . strlen($xml) . " bytes)");
+    return 0;
+})->purpose('Pre-generate public sitemap.xml file and warm the cache');
+
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');

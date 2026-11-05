@@ -6,7 +6,7 @@
 @section('content')
 <div class="max-w-5xl mx-auto space-y-6">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
             <div class="inline-flex items-center gap-1.5 text-xs text-sky-700 font-bold uppercase tracking-wider mb-1">
                 <span>Manajemen Halaman</span>
@@ -15,7 +15,7 @@
             </div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Edit Konten & SEO Halaman</h1>
         </div>
-        <a href="{{ route('admin.company-pages.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 px-3 py-2 rounded-lg border border-slate-300 transition-colors shadow-2xs">
+        <a href="{{ route('admin.company-pages.index') }}" class="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 px-3 py-2 rounded-lg border border-slate-300 transition-colors shadow-2xs">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             <span>Kembali ke Daftar</span>
         </a>
@@ -27,7 +27,7 @@
         @method('PUT')
 
         <!-- Card 1: Informasi Konten Utama -->
-        <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-2xs space-y-5">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 lg:p-7 shadow-2xs space-y-5">
             <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900 pb-3 border-b border-slate-100">
                 1. Konten Utama & Hero Header
             </h2>
@@ -81,7 +81,7 @@
         </div>
 
         <!-- Card 2: Metadata SEO & Social Graph -->
-        <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-2xs space-y-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 lg:p-7 shadow-2xs space-y-4">
             <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900 pb-3 border-b border-slate-100">
                 2. Metadata SEO (Google, OpenGraph, JSON-LD)
             </h2>
@@ -104,7 +104,7 @@
         </div>
 
         <!-- Card 3: Konfigurasi Sub-Section Data (JSON) -->
-        <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-2xs space-y-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 lg:p-7 shadow-2xs space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                 <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">
                     3. Konfigurasi Item Khusus & Sub-Section (JSON Struktur)
@@ -123,13 +123,13 @@
         </div>
 
         <!-- Submit Bar -->
-        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-            <a href="{{ route('admin.company-pages.index') }}" class="text-xs font-semibold text-slate-600 hover:text-slate-900 px-4 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors">
+        <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 pt-4 border-t border-slate-200">
+            <a href="{{ route('admin.company-pages.index') }}" class="w-full sm:w-auto text-center text-xs font-semibold text-slate-600 hover:text-slate-900 px-4 py-2.5 rounded-lg border border-slate-300 hover:bg-slate-50 transition-colors">
                 Batal
             </a>
-            <button type="submit" class="inline-flex items-center gap-2 bg-sky-700 hover:bg-sky-800 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-2xs transition-colors cursor-pointer btn-press">
+            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-sky-700 hover:bg-sky-800 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-2xs transition-colors cursor-pointer btn-press">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                <span>Simpan Perubahan & Segarkan Cache</span>
+                <span>Simpan Perubahan &amp; Segarkan Cache</span>
             </button>
         </div>
     </form>

@@ -5,12 +5,12 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Edit Artikel</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Perbarui judul, ringkasan, atau isi konten artikel edukasi.</p>
         </div>
-        <a href="{{ route('admin.articles.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
+        <a href="{{ route('admin.articles.index') }}" class="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -18,30 +18,56 @@
         </a>
     </div>
 
-    <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-7 shadow-2xs">
+    <div class="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 lg:p-7 shadow-2xs">
         <form action="{{ route('admin.articles.update', $article) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
             @method('PUT')
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div class="md:col-span-2">
-                    <label for="title" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Judul Artikel *</label>
-                    <input type="text" name="title" id="title" value="{{ old('title', $article->title) }}" required
-                           class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
-                    @error('title') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+            @php
+                $subCategoriesMap = \App\Models\Article::SUB_CATEGORIES;
+                $currentSub = old('sub_category', $article->sub_category);
+                $existingContentImages = is_array($article->content_images) ? array_values($article->content_images) : [];
+            @endphp
+            <div x-data="{
+                category: '{{ old('category', $article->category_label) }}',
+                subCategory: '{{ $currentSub ?? '' }}',
+                subMap: {{ json_encode($subCategoriesMap) }},
+                get availableSub() {
+                    return this.subMap[this.category] || [];
+                }
+            }" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="md:col-span-1">
+                        <label for="title" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Judul Artikel *</label>
+                        <input type="text" name="title" id="title" value="{{ old('title', $article->title) }}" required
+                               class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">
+                        @error('title') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
 
-                <div>
-                    <label for="category" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Kategori *</label>
-                    <select name="category" id="category" required
-                            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs bg-white">
-                        @foreach(\App\Models\Article::CATEGORIES as $catOption)
-                            <option value="{{ $catOption }}" {{ old('category', $article->category_label) === $catOption ? 'selected' : '' }}>
-                                {{ $catOption }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('category') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+                    <div>
+                        <label for="category" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Kategori Utama *</label>
+                        <select name="category" id="category" x-model="category" required
+                                class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs bg-white">
+                            @foreach(\App\Models\Article::CATEGORIES as $catOption)
+                                <option value="{{ $catOption }}" {{ old('category', $article->category_label) === $catOption ? 'selected' : '' }}>
+                                    {{ $catOption }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <label for="sub_category" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Sub Kategori</label>
+                        <select name="sub_category" id="sub_category" x-model="subCategory"
+                                class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs bg-white">
+                            <option value="">-- Pilih Sub Kategori (Opsional) --</option>
+                            <template x-for="sub in availableSub" :key="sub">
+                                <option :value="sub" x-text="sub" :selected="sub === subCategory"></option>
+                            </template>
+                        </select>
+                        @error('sub_category') <p class="text-rose-600 text-xs mt-1">{{ $message }}</p> @enderror
+                    </div>
                 </div>
             </div>
 
@@ -73,6 +99,44 @@
                 :current="$article->thumbnail"
                 help="Pilih file baru jika ingin mengganti gambar thumbnail artikel saat ini."
             />
+
+            <!-- Foto Tambahan di Tengah Berita (Maksimal 3 Foto, Opsional) -->
+            <div class="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900">Foto Konten Tambahan (Maksimal 3 Foto, Opsional)</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Dapat disematkan otomatis di sela paragraf atau gunakan penanda manual: <code class="px-1.5 py-0.5 bg-slate-200 text-slate-800 rounded font-mono text-[11px]">[foto-1]</code>, <code class="px-1.5 py-0.5 bg-slate-200 text-slate-800 rounded font-mono text-[11px]">[foto-2]</code>, <code class="px-1.5 py-0.5 bg-slate-200 text-slate-800 rounded font-mono text-[11px]">[foto-3]</code> di dalam teks.</p>
+                    </div>
+                    <span class="text-[11px] font-bold text-sky-800 bg-sky-50 border border-sky-200 px-2.5 py-1 rounded-md shrink-0">Auto-WebP</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    @for($i = 1; $i <= 3; $i++)
+                    @php
+                        $item = $existingContentImages[$i - 1] ?? null;
+                    @endphp
+                    <div class="p-3 bg-white rounded-lg border border-slate-200 space-y-3">
+                        <x-form.image-upload 
+                            name="content_image_{{ $i }}" 
+                            label="Foto Tengah #{{ $i }}" 
+                            aspect="video"
+                            :current="$item['path'] ?? null"
+                            removeName="remove_content_image_{{ $i }}"
+                            help="Maks. 20MB. Otomatis dikonversi ke WebP." />
+
+                        <div>
+                            <label for="content_caption_{{ $i }}" class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
+                                Keterangan Foto #{{ $i }}
+                            </label>
+                            <input type="text" name="content_caption_{{ $i }}" id="content_caption_{{ $i }}"
+                                   value="{{ old('content_caption_' . $i, $item['caption'] ?? '') }}"
+                                   placeholder="Contoh: Proses pengikisan kerak pipa"
+                                   class="w-full px-3 py-1.5 text-xs rounded-md border border-slate-300 focus:border-sky-700 focus:ring-1 focus:ring-sky-700/20 text-slate-900">
+                        </div>
+                    </div>
+                    @endfor
+                </div>
+            </div>
 
             <div>
                 <label for="tags" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Tag Pendukung</label>
@@ -122,13 +186,13 @@
                 <label for="is_published" class="text-xs sm:text-sm font-medium text-slate-700 cursor-pointer">Publikasikan Langsung ke Website</label>
             </div>
 
-            <div class="pt-5 border-t border-slate-200 flex items-center justify-end gap-2.5">
+            <div class="pt-5 border-t border-slate-200 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5">
                 <a href="{{ route('admin.articles.index') }}" 
-                   class="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-xs sm:text-sm rounded-lg transition-colors">
+                   class="w-full sm:w-auto text-center px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-xs sm:text-sm rounded-lg transition-colors">
                     Batal
                 </a>
                 <button type="submit" 
-                        class="px-5 py-2 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-2xs transition-colors cursor-pointer">
+                        class="w-full sm:w-auto text-center px-5 py-2.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-2xs transition-colors cursor-pointer btn-press">
                     Perbarui Artikel
                 </button>
             </div>

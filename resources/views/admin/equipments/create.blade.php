@@ -5,12 +5,12 @@
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
             <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Tambah Peralatan / Mesin</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftarkan unit mesin dan peralatan kerja armada teknisi lapangan.</p>
         </div>
-        <a href="{{ route('admin.equipments.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
+        <a href="{{ route('admin.equipments.index') }}" class="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
@@ -18,7 +18,7 @@
         </a>
     </div>
 
-    <form action="{{ route('admin.equipments.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl border border-slate-200 p-5 sm:p-7 space-y-5 shadow-2xs">
+    <form action="{{ route('admin.equipments.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 lg:p-7 space-y-5 shadow-2xs">
         @csrf
 
         <!-- 1. Nama Peralatan & Slug URL -->
@@ -91,19 +91,15 @@
                       class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-slate-900 text-sm outline-hidden transition shadow-2xs">{{ old('description') }}</textarea>
         </div>
 
-        <!-- 5. Spesifikasi Teknis, Fitur Utama & Skenario Aplikasi -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-
-            <div>
-                <label for="features" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Fitur &amp; Keunggulan Utama (1 baris per poin)
-                </label>
-                <textarea name="features" id="features" rows="4" 
-                          placeholder="Kabel spiral baja karbon tempa anti-kinking&#10;Kopling aksi instan begitu tuas dilepas&#10;Aman melewati lekukan sifon leher angsa"
-                          class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-xs font-mono outline-hidden transition shadow-2xs">{{ old('features') }}</textarea>
-                <p class="text-[11px] text-slate-500 mt-1">Ditampilkan pada grid fitur halaman detail.</p>
-            </div>
+        <!-- 5. Spesifikasi Teknis & Fitur Utama -->
+        <div>
+            <label for="features" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                Fitur &amp; Keunggulan Utama (1 baris per poin)
+            </label>
+            <textarea name="features" id="features" rows="4" 
+                      placeholder="Kabel spiral baja karbon tempa anti-kinking&#10;Kopling aksi instan begitu tuas dilepas&#10;Aman melewati lekukan sifon leher angsa"
+                      class="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 text-xs font-mono outline-hidden transition shadow-2xs">{{ old('features') }}</textarea>
+            <p class="text-[11px] text-slate-500 mt-1">Ditampilkan pada grid fitur halaman detail.</p>
         </div>
 
         <!-- 6. Aplikasi Titik Saluran & Standar SOP K3 -->
@@ -147,13 +143,13 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="pt-5 border-t border-slate-200 flex items-center justify-end gap-2.5">
+        <div class="pt-5 border-t border-slate-200 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5">
             <a href="{{ route('admin.equipments.index') }}" 
-               class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-colors">
+               class="w-full sm:w-auto text-center px-4 py-2.5 sm:py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs sm:text-sm transition-colors">
                 Batal
             </a>
             <button type="submit" 
-                    class="px-5 py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm shadow-2xs transition-colors cursor-pointer">
+                    class="w-full sm:w-auto text-center px-5 py-2.5 sm:py-2 rounded-lg bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm shadow-2xs transition-colors cursor-pointer">
                 Simpan Peralatan
             </button>
         </div>

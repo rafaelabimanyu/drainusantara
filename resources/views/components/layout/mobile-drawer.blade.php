@@ -244,7 +244,7 @@
                     <a href="{{ route('about.holding') }}" 
                        @click="sidebarOpen = false" 
                        class="flex items-center px-3 py-2 rounded-md text-xs font-semibold transition-colors min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('about.holding') ? 'bg-sky-50 text-sky-700 font-bold border border-sky-200/60' : 'text-slate-700 hover:text-sky-700 hover:bg-white' }}">
-                        <span>Struktur Holding J&amp;J Group</span>
+                        <span>Induk PT Jawa Jaya Rooter</span>
                     </a>
 
                     <a href="{{ route('about.k3') }}" 

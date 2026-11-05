@@ -21,10 +21,17 @@ class StoreArticleRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:100'],
+            'sub_category' => ['nullable', 'string', 'max:100'],
             'thumbnail' => $hasUpload
                 ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],
             'thumbnail_url' => ['nullable', 'string', 'max:255'],
+            'content_image_1' => ($this->hasFile('content_image_1') || $this->file('content_image_1') !== null) ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'content_image_2' => ($this->hasFile('content_image_2') || $this->file('content_image_2') !== null) ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'content_image_3' => ($this->hasFile('content_image_3') || $this->file('content_image_3') !== null) ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'content_caption_1' => ['nullable', 'string', 'max:255'],
+            'content_caption_2' => ['nullable', 'string', 'max:255'],
+            'content_caption_3' => ['nullable', 'string', 'max:255'],
             'excerpt' => ['nullable', 'string', 'max:500'],
             'content' => ['required', 'string'],
             'image_placement' => ['nullable', 'string', 'in:hero,content'],

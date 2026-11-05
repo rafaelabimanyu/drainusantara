@@ -3,16 +3,16 @@
 @section('content')
 @php
     $whatsappNumber = config('app.whatsapp_number') ?: '6285609009009';
-    $b2bWaText = urlencode("Halo Tim Administrasi Drainusantara (J&J Group), kami ingin berkonsultasi mengenai pengadaan jasa sanitasi pipa komersial dan kelengkapan administrasi faktur pajak / SPK.");
+    $b2bWaText = urlencode("Halo Tim Administrasi Drainusantara (PT Jawa Jaya Rooter), kami ingin berkonsultasi mengenai pengadaan jasa sanitasi pipa komersial dan kelengkapan administrasi faktur pajak / SPK.");
     $b2bWaUrl = "https://wa.me/{$whatsappNumber}?text={$b2bWaText}";
 @endphp
 
 <x-about.subnav 
     active-title="Struktur Holding"
     eyebrow="Tata Kelola & Ekosistem Korporat"
-    heading="Sinergi Ekosistem J&J Group"
-    subheading="Drainusantara beroperasi sebagai unit spesialis pelancaran pipa mekanis terpadu di bawah naungan PT JAWA JAYA ROOTER (dikenal secara luas melalui holding J&J Group), memadukan keandalan teknis armada lapangan dengan tata kelola administrasi perseroan yang transparan dan akuntabel."
-    :bg-image="asset('assets/banner/hero-JnJ-drainusantara.webp')"
+    heading="Sinergi Ekosistem PT Jawa Jaya Rooter"
+    subheading="Drainusantara beroperasi sebagai unit spesialis pelancaran pipa mekanis terpadu di bawah naungan PT JAWA JAYA ROOTER, memadukan keandalan teknis armada lapangan dengan tata kelola administrasi perseroan yang transparan dan akuntabel."
+    :bg-image="asset('assets/banner/hero-profil-perusahaan-drainusantara.webp')"
 />
 
 <section id="holding" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200">
@@ -26,7 +26,7 @@
                 Sinergi Infrastruktur Industri &amp; Layanan Presisi Tanpa Bongkar
             </h2>
             <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
-                Sebagai bagian terintegrasi dari <strong>PT JAWA JAYA ROOTER</strong> (J&amp;J Group), Drainusantara memadukan disiplin manajemen korporat yang akuntabel dengan keahlian rekayasa sanitasi pipa modern. Nama <strong>J&amp;J Group</strong> merupakan singkatan dari entitas induk perseroan kami, <strong>PT JAWA JAYA ROOTER</strong>, yang memayungi operasional perpipaan mekanis, rantai pasok mesin rotary Ridgid, serta pengembangan teknologi inspeksi visual drainase di Indonesia.
+                Sebagai bagian terintegrasi dari <strong>PT JAWA JAYA ROOTER</strong>, Drainusantara memadukan disiplin manajemen korporat yang akuntabel dengan keahlian rekayasa sanitasi pipa modern. Sebagai entitas induk perseroan, <strong>PT JAWA JAYA ROOTER</strong> memayungi operasional perpipaan mekanis, rantai pasok mesin rotary Ridgid, serta pengembangan teknologi inspeksi visual drainase di Indonesia.
             </p>
             <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
                 Dukungan legalitas perseroan resmi dan manajemen pusat dari <strong>PT JAWA JAYA ROOTER</strong> memungkinkan Drainusantara menyediakan armada teknisi siaga yang terstandarisasi APD K3 lengkap, legalitas administrasi e-Faktur PPN resmi, penerbitan BAST/SPK untuk B2B, serta perlindungan garansi pengerjaan 30 hari kalender.

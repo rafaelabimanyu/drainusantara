@@ -59,6 +59,14 @@ class PortfolioController extends Controller
             'image_url' => ['nullable', 'string', 'max:255'],
             'logo' => $request->hasFile('logo') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
             'logo_url' => ['nullable', 'string', 'max:255'],
+            'doc_image_1' => $request->hasFile('doc_image_1') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'doc_image_2' => $request->hasFile('doc_image_2') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'doc_image_3' => $request->hasFile('doc_image_3') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'doc_image_4' => $request->hasFile('doc_image_4') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'doc_caption_1' => ['nullable', 'string', 'max:255'],
+            'doc_caption_2' => ['nullable', 'string', 'max:255'],
+            'doc_caption_3' => ['nullable', 'string', 'max:255'],
+            'doc_caption_4' => ['nullable', 'string', 'max:255'],
             'service_ids' => ['nullable', 'array'],
             'service_ids.*' => ['exists:services,id'],
             'order' => ['nullable', 'integer', 'min:1'],
@@ -84,6 +92,24 @@ class PortfolioController extends Controller
                 $logoUrl = $request->input('logo');
             }
 
+            $docImages = [];
+            for ($i = 1; $i <= 4; $i++) {
+                $docFile = $request->file("doc_image_{$i}");
+                $caption = $request->input("doc_caption_{$i}");
+                $path = null;
+                if ($docFile) {
+                    $path = $media->upload($docFile, 'images/portfolio');
+                } elseif ($request->filled("doc_image_{$i}") && is_string($request->input("doc_image_{$i}"))) {
+                    $path = $request->input("doc_image_{$i}");
+                }
+                if ($path) {
+                    $docImages[] = [
+                        'path' => $path,
+                        'caption' => $caption ?: '',
+                    ];
+                }
+            }
+
             $media->save($record, [
                 'client_name' => $validated['client_name'],
                 'client_type' => $validated['client_type'] ?? 'Restoran & F&B',
@@ -91,6 +117,7 @@ class PortfolioController extends Controller
                 'location' => $validated['location'] ?? 'Jabodetabek',
                 'duration' => $validated['duration'] ?? null,
                 'image' => $imageUrl,
+                'documentation_images' => !empty($docImages) ? $docImages : null,
                 'logo' => $logoUrl,
                 'project_title' => $validated['project_title'] ?? null,
                 'description' => $validated['description'] ?? null,
@@ -144,6 +171,14 @@ class PortfolioController extends Controller
             'image_url' => ['nullable', 'string', 'max:255'],
             'logo' => $request->hasFile('logo') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
             'logo_url' => ['nullable', 'string', 'max:255'],
+            'doc_image_1' => $request->hasFile('doc_image_1') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'doc_image_2' => $request->hasFile('doc_image_2') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'doc_image_3' => $request->hasFile('doc_image_3') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'doc_image_4' => $request->hasFile('doc_image_4') ? [new OptimizedImage] : ['nullable', 'string', 'max:255'],
+            'doc_caption_1' => ['nullable', 'string', 'max:255'],
+            'doc_caption_2' => ['nullable', 'string', 'max:255'],
+            'doc_caption_3' => ['nullable', 'string', 'max:255'],
+            'doc_caption_4' => ['nullable', 'string', 'max:255'],
             'service_ids' => ['nullable', 'array'],
             'service_ids.*' => ['exists:services,id'],
             'order' => ['nullable', 'integer', 'min:0'],
@@ -168,6 +203,35 @@ class PortfolioController extends Controller
                 $logoUrl = $validated['logo_url'];
             }
 
+            $existingDoc = is_array($portfolio->documentation_images) ? array_values($portfolio->documentation_images) : [];
+            $docImages = [];
+            for ($i = 1; $i <= 4; $i++) {
+                $existingItem = $existingDoc[$i - 1] ?? null;
+                $remove = $request->boolean("remove_doc_image_{$i}");
+                $docFile = $request->file("doc_image_{$i}");
+                $caption = $request->input("doc_caption_{$i}");
+
+                if ($remove) {
+                    continue;
+                }
+
+                $path = null;
+                if ($docFile) {
+                    $path = $media->upload($docFile, 'images/portfolio');
+                } elseif ($request->filled("doc_image_{$i}") && is_string($request->input("doc_image_{$i}"))) {
+                    $path = $request->input("doc_image_{$i}");
+                } elseif (!empty($existingItem['path'])) {
+                    $path = $existingItem['path'];
+                }
+
+                if ($path) {
+                    $docImages[] = [
+                        'path' => $path,
+                        'caption' => !is_null($caption) ? (string) $caption : ($existingItem['caption'] ?? ''),
+                    ];
+                }
+            }
+
             $media->save($portfolio, [
                 'client_name' => $validated['client_name'],
                 'client_type' => array_key_exists('client_type', $validated) ? $validated['client_type'] : $portfolio->client_type,
@@ -175,6 +239,7 @@ class PortfolioController extends Controller
                 'location' => array_key_exists('location', $validated) ? $validated['location'] : $portfolio->location,
                 'duration' => array_key_exists('duration', $validated) ? $validated['duration'] : $portfolio->duration,
                 'image' => $imageUrl,
+                'documentation_images' => !empty($docImages) ? $docImages : null,
                 'logo' => $logoUrl,
                 'project_title' => array_key_exists('project_title', $validated) ? $validated['project_title'] : $portfolio->project_title,
                 'description' => array_key_exists('description', $validated) ? $validated['description'] : $portfolio->description,

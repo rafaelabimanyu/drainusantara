@@ -1,7 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-slate-50 min-h-screen" x-data="{ activeCategory: 'all', searchQuery: '' }">
+<div class="bg-slate-50 min-h-screen" x-data="{ 
+    activeCategory: 'all', 
+    activeSubCategory: 'all',
+    searchQuery: '',
+    subCategories: {{ json_encode([
+        'edukasi' => \App\Models\Article::SUB_CATEGORIES['Edukasi'],
+        'penguatan-brand' => \App\Models\Article::SUB_CATEGORIES['Penguatan Brand'],
+        'promo-penawaran' => \App\Models\Article::SUB_CATEGORIES['Promo Penawaran'],
+    ]) }},
+    setCategory(cat) {
+        this.activeCategory = cat;
+        this.activeSubCategory = 'all';
+    },
+    getCurrentSubs() {
+        return this.subCategories[this.activeCategory] || [];
+    }
+}">
     <!-- Hero Section Blog & Edukasi (Informatif & Anti-Slop) -->
     <section class="relative bg-white border-b border-slate-200 pt-8 pb-10 sm:pt-12 sm:pb-16 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -92,31 +108,52 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Category Filter Tabs -->
-            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar sm:flex-wrap sm:justify-center mb-8 sm:mb-12 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 reveal-soft">
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar sm:flex-wrap sm:justify-center mb-4 sm:mb-6 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 reveal-soft">
                 <button type="button"
-                        @click="activeCategory = 'all'"
+                        @click="activeCategory = 'all'; activeSubCategory = 'all'"
                         :class="activeCategory === 'all' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
                         class="px-3.5 sm:px-5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
                     Semua Artikel ({{ $articles->total() }})
                 </button>
                 <button type="button"
-                        @click="activeCategory = 'edukasi'"
+                        @click="activeCategory = 'edukasi'; activeSubCategory = 'all'"
                         :class="activeCategory === 'edukasi' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
                         class="px-3.5 sm:px-5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
                     Edukasi
                 </button>
                 <button type="button"
-                        @click="activeCategory = 'penguatan-brand'"
+                        @click="activeCategory = 'penguatan-brand'; activeSubCategory = 'all'"
                         :class="activeCategory === 'penguatan-brand' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
                         class="px-3.5 sm:px-5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
                     Penguatan Brand
                 </button>
                 <button type="button"
-                        @click="activeCategory = 'promo-penawaran'"
+                        @click="activeCategory = 'promo-penawaran'; activeSubCategory = 'all'"
                         :class="activeCategory === 'promo-penawaran' ? 'bg-sky-700 text-white font-bold shadow-xs' : 'bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200'"
                         class="px-3.5 sm:px-5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 min-h-[38px]">
                     Promo Penawaran
                 </button>
+            </div>
+
+            <!-- Sub-Category Filter Pills (Muncul dinamis saat kategori spesifik dipilih) -->
+            <div x-show="activeCategory !== 'all' && getCurrentSubs().length > 0" 
+                 x-cloak 
+                 class="flex items-center gap-1.5 overflow-x-auto no-scrollbar sm:flex-wrap sm:justify-center mb-8 sm:mb-12 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mr-1 shrink-0">Sub Topik:</span>
+                <button type="button"
+                        @click="activeSubCategory = 'all'"
+                        :class="activeSubCategory === 'all' ? 'bg-sky-100 text-sky-900 border-sky-300 font-bold' : 'bg-white hover:bg-slate-50 text-slate-600 border-slate-200'"
+                        class="px-3 py-1 rounded-full text-xs whitespace-nowrap shrink-0 border transition-all cursor-pointer">
+                    Semua Sub Topik
+                </button>
+                <template x-for="sub in getCurrentSubs()" :key="sub">
+                    <button type="button"
+                            @click="activeSubCategory = sub"
+                            :class="activeSubCategory === sub ? 'bg-sky-700 text-white border-sky-700 font-bold shadow-2xs' : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200'"
+                            class="px-3 py-1 rounded-full text-xs whitespace-nowrap shrink-0 border transition-all cursor-pointer"
+                            x-text="sub">
+                    </button>
+                </template>
             </div>
 
             <!-- Featured Article Showcase (Shown on 'all' view when not searching) -->
@@ -218,12 +255,16 @@
                                  matchesCategory() {
                                      return activeCategory === 'all' || activeCategory === '{{ $catSlug }}';
                                  },
+                                 matchesSubCategory() {
+                                     if (activeCategory === 'all' || activeSubCategory === 'all') return true;
+                                     return {{ json_encode($article->sub_category) }} === activeSubCategory;
+                                 },
                                  matchesSearch() {
                                      if (!searchQuery || searchQuery.trim() === '') return true;
                                      return {{ json_encode($searchHaystack) }}.indexOf(searchQuery.trim().toLowerCase()) !== -1;
                                  }
                              }"
-                             x-show="matchesCategory() && matchesSearch()"
+                             x-show="matchesCategory() && matchesSubCategory() && matchesSearch()"
                              x-transition:enter="transition ease-out duration-200"
                              x-transition:enter-start="opacity-0 scale-98"
                              x-transition:enter-end="opacity-100 scale-100"
@@ -248,9 +289,16 @@
                                 </div>
                             @endif
 
-                            <span class="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 bg-slate-900/85 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md border border-white/20 shadow-xs">
-                                {{ $article->category_label }}
-                            </span>
+                            <div class="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 flex flex-col items-start gap-1">
+                                <span class="bg-slate-900/85 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md border border-white/20 shadow-xs">
+                                    {{ $article->category_label }}
+                                </span>
+                                @if($article->sub_category)
+                                    <span class="bg-sky-800/90 backdrop-blur-xs text-white text-[9px] sm:text-[10px] font-semibold px-1.5 py-0.5 rounded-sm border border-sky-400/30">
+                                        {{ $article->sub_category }}
+                                    </span>
+                                @endif
+                            </div>
                         </a>
 
                         <!-- Card Body (Ergonomis untuk 2 Kolom Mobile) -->

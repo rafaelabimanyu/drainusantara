@@ -101,7 +101,7 @@ class ConversionAndTrackingTest extends TestCase
         $response->assertOk();
 
         $response->assertSee('data-track-location="navbar"', false);
-        $response->assertSee('data-track-location="navbar_quick_quote"', false);
+        $response->assertSee('data-track-location="navbar_mobile"', false);
         $response->assertSee('data-track-location="mobile_dock"', false);
         $response->assertSee('data-track-location="mobile_drawer"', false);
         $response->assertSee('data-track-location="footer"', false);
