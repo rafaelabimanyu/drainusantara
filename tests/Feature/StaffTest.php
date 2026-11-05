@@ -20,7 +20,7 @@ class StaffTest extends TestCase
 
         $this->admin = User::create([
             'name' => 'Admin Drainusantara',
-            'email' => 'admin@drainusantara.com',
+            'email' => 'admin@drainusantara.id',
             'password' => bcrypt('password123'),
         ]);
     }

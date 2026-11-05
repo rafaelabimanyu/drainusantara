@@ -39,6 +39,12 @@
 
     <link rel="preload" as="font" href="{{ asset('fonts/plus-jakarta-sans-latin.woff2') }}" type="font/woff2" crossorigin>
 
+    <!-- Preconnect & DNS-Prefetch for Third-Party Analytics and WhatsApp Dispatch -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://wa.me" crossorigin>
+    <link rel="dns-prefetch" href="https://wa.me">
+
     <!-- Preload Critical LCP Hero Image (WebP) -->
     @if(request()->routeIs('home'))
     <link rel="preload" as="image" href="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional-mobile.webp') }}" type="image/webp" media="(max-width: 640px)" fetchpriority="high">

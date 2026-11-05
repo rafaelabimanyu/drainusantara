@@ -126,12 +126,12 @@ class AiCatalogController extends Controller
                 'specVersion' => '1.0',
                 'host' => [
                     'displayName' => 'Drainusantara',
-                    'identifier' => 'did:web:drainusantara.com',
+                    'identifier' => 'did:web:drainusantara.id',
                     'documentationUrl' => route('llms'),
                 ],
                 'entries' => [
                     [
-                        'identifier' => 'urn:air:drainusantara.com:action:emergency-dispatch',
+                        'identifier' => 'urn:air:drainusantara.id:action:emergency-dispatch',
                         'displayName' => 'Emergency WhatsApp Dispatcher',
                         'type' => 'application/json',
                         'description' => 'Menghubungkan pelanggan atau agen AI ke operator teknisi siaga 24 jam Drainusantara untuk pelancaran pipa mampet darurat tanpa bongkar.',
@@ -153,7 +153,7 @@ class AiCatalogController extends Controller
                         'tags' => ['emergency', 'whatsapp', 'booking', 'plumbing', 'drainage'],
                     ],
                     [
-                        'identifier' => 'urn:air:drainusantara.com:tool:quick-quote',
+                        'identifier' => 'urn:air:drainusantara.id:tool:quick-quote',
                         'displayName' => 'Drainage Cost & Quick Quote Estimator',
                         'type' => 'application/json',
                         'description' => 'Estimasi biaya penanganan saluran mampet berdasarkan jenis properti, tingkat keparahan, dan garansi tertulis 30 hari.',
@@ -176,7 +176,7 @@ class AiCatalogController extends Controller
                         'tags' => ['pricing', 'cost-calculator', 'quote', 'estimation'],
                     ],
                     [
-                        'identifier' => 'urn:air:drainusantara.com:catalog:services',
+                        'identifier' => 'urn:air:drainusantara.id:catalog:services',
                         'displayName' => 'Katalog Layanan Pelancaran Pipa Tanpa Bongkar',
                         'type' => 'application/json',
                         'description' => 'Daftar lengkap layanan spesialis pelancaran pipa air kotor, talang, kloset, dan bak kontrol tanpa pembongkaran ubin keramik.',
@@ -191,7 +191,7 @@ class AiCatalogController extends Controller
                         'tags' => ['services', 'rooter', 'spiral-baja', 'cctv-pipa', 'grease-trap'],
                     ],
                     [
-                        'identifier' => 'urn:air:drainusantara.com:geo:coverage-areas',
+                        'identifier' => 'urn:air:drainusantara.id:geo:coverage-areas',
                         'displayName' => 'Cakupan Wilayah Operasional & SLA Teknisi',
                         'type' => 'application/json',
                         'description' => 'Area jangkauan mobilisasi teknisi siaga di seluruh Jabodetabek, Semarang, dan Bandar Lampung.',
@@ -210,7 +210,7 @@ class AiCatalogController extends Controller
                         'tags' => ['coverage-area', 'geolocation', 'jabodetabek', 'semarang', 'lampung'],
                     ],
                     [
-                        'identifier' => 'urn:air:drainusantara.com:fleet:equipment',
+                        'identifier' => 'urn:air:drainusantara.id:fleet:equipment',
                         'displayName' => 'Armada Mesin Mekanis & Toolkit Drainase',
                         'type' => 'application/json',
                         'description' => 'Daftar spesifikasi peralatan mekanis drainase berstandar industri tanpa penggunaan bahan kimia korosif.',
@@ -225,8 +225,8 @@ class AiCatalogController extends Controller
                         'tags' => ['equipment', 'ridgid-k50', 'hydro-jetting', 'cctv-pipe-inspection'],
                     ],
                     [
-                        'identifier' => 'urn:air:drainusantara.com:content:case-studies',
-                        'displayName' => 'Studi Kasus Before-After & Portofolio B2B',
+                        'identifier' => 'urn:air:drainusantara.id:content:case-studies',
+                        'displayName' => 'Studi Kasus Before-After & Kemitraan',
                         'type' => 'application/json',
                         'url' => route('gallery'),
                         'description' => 'Bukti pengerjaan dokumentasi pipa sebelum dan sesudah pelancaran serta kerja sama pemeliharaan rutin ruko, restoran, dan gedung.',
@@ -237,7 +237,7 @@ class AiCatalogController extends Controller
                         'tags' => ['case-studies', 'before-after', 'b2b-portfolio'],
                     ],
                     [
-                        'identifier' => 'urn:air:drainusantara.com:content:knowledge-base',
+                        'identifier' => 'urn:air:drainusantara.id:content:knowledge-base',
                         'displayName' => 'Basis Pengetahuan Edukasi Drainase & Sanitasi',
                         'type' => 'application/json',
                         'url' => route('articles.index'),
@@ -249,7 +249,7 @@ class AiCatalogController extends Controller
                         'tags' => ['articles', 'diy-safety', 'drainage-tips', 'soda-api-danger'],
                     ],
                     [
-                        'identifier' => 'urn:air:drainusantara.com:feed:llms-txt',
+                        'identifier' => 'urn:air:drainusantara.id:feed:llms-txt',
                         'displayName' => 'Drainusantara LLMs.txt Context Manifest',
                         'type' => 'text/plain',
                         'url' => route('llms'),

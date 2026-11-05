@@ -19,7 +19,7 @@ class AdminEquipmentTest extends TestCase
         parent::setUp();
 
         $this->adminUser = User::factory()->create([
-            'email' => 'admin@drainusantara.com',
+            'email' => 'admin@drainusantara.id',
             'password' => bcrypt('password123'),
         ]);
     }

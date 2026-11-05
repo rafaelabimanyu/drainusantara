@@ -19,7 +19,7 @@
                 Ringkasan Layanan &amp; Jangkauan
             </h1>
             <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
-                Pantau katalog jasa pelancaran pipa, landing page SEO area, portofolio klien B2B, dan ulasan pelanggan.
+                Pantau katalog jasa pelancaran pipa, landing page SEO area, jaringan kemitraan, dan ulasan pelanggan.
             </p>
         </div>
         <div class="flex items-center gap-2.5 shrink-0">
@@ -191,7 +191,7 @@
             </a>
             <a href="{{ route('admin.portfolios.create') }}" class="inline-flex items-center gap-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 transition-colors">
                 <svg class="w-3.5 h-3.5 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                <span>Portofolio B2B</span>
+                <span>Kemitraan</span>
             </a>
             <a href="{{ route('admin.equipments.create') }}" class="inline-flex items-center gap-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-2 rounded-lg border border-slate-200 transition-colors">
                 <svg class="w-3.5 h-3.5 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>

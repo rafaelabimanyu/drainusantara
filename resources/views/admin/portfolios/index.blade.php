@@ -1,21 +1,21 @@
 @extends('layouts.admin')
 
-@section('title', 'Kelola Portofolio')
-@section('page-title', 'Portofolio Restoran & Klien')
+@section('title', 'Kelola Kemitraan')
+@section('page-title', 'Kemitraan Restoran & Klien')
 
 @section('content')
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Portofolio Restoran &amp; Klien</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftar portofolio restoran, tempat usaha, dan klien komersial yang telah ditangani.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Kemitraan Restoran &amp; Klien</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftar kemitraan restoran, tempat usaha, dan klien komersial yang telah ditangani.</p>
         </div>
         <a href="{{ route('admin.portfolios.create') }}" 
            class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm rounded-lg transition-colors shadow-2xs">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-            <span>Tambah Portofolio</span>
+            <span>Tambah Kemitraan</span>
         </a>
     </div>
 
@@ -103,7 +103,7 @@
                     @empty
                     <tr>
                         <td colspan="5" class="px-6 py-12 text-center text-slate-500 text-xs">
-                            Belum ada portofolio tersimpan.
+                            Belum ada kemitraan tersimpan.
                         </td>
                     </tr>
                     @endforelse

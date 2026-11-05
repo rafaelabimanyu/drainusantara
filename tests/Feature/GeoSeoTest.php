@@ -145,7 +145,7 @@ class GeoSeoTest extends TestCase
         $data = $response->json();
         $this->assertNotEmpty($data['entries']);
 
-        $geoEntry = collect($data['entries'])->firstWhere('identifier', 'urn:air:drainusantara.com:geo:coverage-areas');
+        $geoEntry = collect($data['entries'])->firstWhere('identifier', 'urn:air:drainusantara.id:geo:coverage-areas');
         $this->assertNotNull($geoEntry);
         $this->assertArrayHasKey('cities', $geoEntry['data']);
         $this->assertNotEmpty($geoEntry['data']['cities']);

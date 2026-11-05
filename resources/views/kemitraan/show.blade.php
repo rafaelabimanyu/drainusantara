@@ -130,7 +130,7 @@
 
             <!-- Context Eyebrow -->
             <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-sky-950/80 border border-sky-500/30 text-sky-300 text-xs font-semibold mb-2">
-                <span>Portofolio Kemitraan &amp; B2B</span>
+                <span>Kemitraan</span>
             </div>
 
             <!-- Nama Bisnis H1 -->

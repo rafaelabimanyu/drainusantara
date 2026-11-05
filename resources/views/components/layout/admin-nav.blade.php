@@ -50,14 +50,14 @@
                     </a>
                 </li>
 
-                <!-- 5. Portofolio Klien B2B -->
+                <!-- 5. Kemitraan -->
                 <li>
                     <a href="{{ route('admin.portfolios.index') }}" 
                        class="group flex items-center gap-x-3 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold transition-colors {{ request()->routeIs('admin.portfolios*') ? 'bg-sky-700 text-white shadow-2xs' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
                         <svg class="w-4 h-4 shrink-0 {{ request()->routeIs('admin.portfolios*') ? 'text-white' : 'text-slate-400 group-hover:text-white' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                         </svg>
-                        <span>Portofolio Klien B2B</span>
+                        <span>Kemitraan</span>
                     </a>
                 </li>
 

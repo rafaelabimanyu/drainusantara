@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Portofolio - ' . $portfolio->client_name)
-@section('page-title', 'Edit Portofolio Restoran & Klien')
+@section('title', 'Edit Kemitraan - ' . $portfolio->client_name)
+@section('page-title', 'Edit Kemitraan Restoran & Klien')
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Edit Portofolio: {{ $portfolio->client_name }}</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Perbarui foto, nama tempat usaha/restoran, dan lokasi untuk kartu portofolio.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Edit Kemitraan: {{ $portfolio->client_name }}</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Perbarui profil, nama tempat usaha/restoran, dan lokasi untuk kartu kemitraan.</p>
         </div>
         <a href="{{ route('admin.portfolios.index') }}" class="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -292,7 +292,7 @@
                 <label class="flex items-center gap-2.5 cursor-pointer">
                     <input type="checkbox" name="is_active" value="1" {{ old('is_active', $portfolio->is_active) ? 'checked' : '' }}
                            class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
-                    <span class="text-xs sm:text-sm font-medium text-slate-700">Tampilkan di Portofolio</span>
+                    <span class="text-xs sm:text-sm font-medium text-slate-700">Tampilkan di Halaman Kemitraan</span>
                 </label>
             </div>
         </div>
@@ -304,7 +304,7 @@
             </a>
             <button type="submit" 
                     class="w-full sm:w-auto text-center px-5 py-2.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-2xs transition-colors cursor-pointer btn-press">
-                Perbarui Portofolio
+                Perbarui Kemitraan
             </button>
         </div>
     </form>

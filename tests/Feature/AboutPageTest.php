@@ -107,7 +107,7 @@ class AboutPageTest extends TestCase
         $response->assertSee('SOP K3');
         $response->assertSee('Profil Perusahaan');
         $response->assertSee('Peralatan &amp; Teknologi', false);
-        $response->assertSee('Perusahaan &amp; Portofolio Klien', false);
+        $response->assertSee('Kemitraan');
         $response->assertSee('Ketentuan Garansi 30 Hari');
         $response->assertSee('FAQ');
 

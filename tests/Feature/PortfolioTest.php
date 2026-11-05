@@ -20,7 +20,7 @@ class PortfolioTest extends TestCase
 
         $this->admin = User::create([
             'name' => 'Admin Drainusantara',
-            'email' => 'admin@drainusantara.com',
+            'email' => 'admin@drainusantara.id',
             'password' => bcrypt('password123'),
         ]);
     }
@@ -68,9 +68,9 @@ class PortfolioTest extends TestCase
         $response = $this->actingAs($this->admin)->get('/admin/portfolios');
 
         $response->assertStatus(200);
-        $response->assertSee('Portofolio Restoran &amp; Klien', false);
+        $response->assertSee('Kemitraan Restoran &amp; Klien', false);
         $response->assertSee('The Alana Hotel');
-        $response->assertSee('Tambah Portofolio');
+        $response->assertSee('Tambah Kemitraan');
     }
 
     public function test_admin_can_view_create_form(): void
@@ -78,7 +78,7 @@ class PortfolioTest extends TestCase
         $response = $this->actingAs($this->admin)->get('/admin/portfolios/create');
 
         $response->assertStatus(200);
-        $response->assertSee('Tambah Portofolio Restoran &amp; Klien', false);
+        $response->assertSee('Tambah Kemitraan Restoran &amp; Klien', false);
         $response->assertSee('client_name');
     }
 
@@ -118,7 +118,7 @@ class PortfolioTest extends TestCase
         $response = $this->actingAs($this->admin)->get("/admin/portfolios/{$portfolio->id}/edit");
 
         $response->assertStatus(200);
-        $response->assertSee('Edit Portofolio Restoran &amp; Klien', false);
+        $response->assertSee('Edit Kemitraan: Living World Mall');
         $response->assertSee('Living World Mall');
     }
 

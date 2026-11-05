@@ -100,7 +100,7 @@
 
             </div>
 
-            <!-- Kolom 2: Profil, Portofolio & Pengetahuan -->
+            <!-- Kolom 2: Profil, Kemitraan & Pengetahuan -->
             <div class="space-y-8">
                 
                 <!-- 3. Profil Perusahaan & Legalitas -->
@@ -128,7 +128,7 @@
                             <span class="text-slate-400 group-hover:text-sky-700">&rarr;</span>
                         </a>
                         <a href="{{ route('about.portfolio') }}" class="p-2.5 rounded-lg border border-slate-100 hover:border-sky-300 hover:bg-sky-50/40 text-slate-700 hover:text-sky-800 transition-all font-medium flex items-center justify-between group">
-                            <span>Portofolio Mitra B2B</span>
+                            <span>Kemitraan</span>
                             <span class="text-slate-400 group-hover:text-sky-700">&rarr;</span>
                         </a>
                         <a href="{{ route('about.warranty') }}" class="p-2.5 rounded-lg border border-slate-100 hover:border-sky-300 hover:bg-sky-50/40 text-slate-700 hover:text-sky-800 transition-all font-medium flex items-center justify-between group">

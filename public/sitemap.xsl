@@ -824,7 +824,7 @@
                 Drainusantara XML Sitemap Engine &#8226; Terindeks sesuai standar protokol <a href="https://www.sitemaps.org" target="_blank" rel="noopener noreferrer">sitemaps.org</a>
             </div>
             <div>
-                <a href="/">Kembali ke drainusantara.com</a>
+                <a href="/">Kembali ke drainusantara.id</a>
             </div>
         </footer>
     </div>

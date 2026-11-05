@@ -4,6 +4,19 @@
     @php
         $resolvedCoords = $area->resolved_coordinates;
         $isoRegion = \App\Services\RegionService::isoRegion($cityData['province_slug'] ?? null);
+        $customHeroBg = !empty($area->hero_image) ? asset($area->hero_image) : null;
+        $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($cityData['name']);
+        $provinceSlug = $cityData['province_slug'] ?? null;
+        $heroBgImage = $customHeroBg 
+            ?: (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
+                ? asset("images/areas/cities/{$citySlug}.webp")
+                : (file_exists(public_path("images/areas/cities/{$citySlug}.jpg"))
+                    ? asset("images/areas/cities/{$citySlug}.jpg")
+                    : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
+                        ? asset("images/areas/provinces/{$provinceSlug}.webp")
+                        : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
+                            ? asset("images/areas/provinces/{$provinceSlug}.jpg")
+                            : null))));
     @endphp
     <meta name="geo.region" content="{{ $isoRegion }}">
     <meta name="geo.placename" content="{{ $cityData['name'] }}, {{ $cityData['province_name'] }}">
@@ -16,6 +29,10 @@
     <meta property="og:locality" content="{{ $cityData['name'] }}">
     <meta property="og:region" content="{{ $cityData['province_name'] }}">
     <meta property="og:country-name" content="Indonesia">
+
+    @if(!empty($heroBgImage))
+    <link rel="preload" as="image" href="{{ $heroBgImage }}" fetchpriority="high">
+    @endif
 @endpush
 
 @section('content')
@@ -30,19 +47,21 @@
     $startingPriceFormatted = 'Rp ' . number_format($area->resolved_price, 0, ',', '.');
     
     // Fallback latar belakang banner kota bila tidak ada kustom dari CMS
-    $customHeroBg = !empty($area->hero_image) ? asset($area->hero_image) : null;
-    $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($cityData['name']);
-    $provinceSlug = $cityData['province_slug'] ?? null;
-    $heroBgImage = $customHeroBg 
-        ?: (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
-            ? asset("images/areas/cities/{$citySlug}.webp")
-            : (file_exists(public_path("images/areas/cities/{$citySlug}.jpg"))
-                ? asset("images/areas/cities/{$citySlug}.jpg")
-                : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
-                    ? asset("images/areas/provinces/{$provinceSlug}.webp")
-                    : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
-                        ? asset("images/areas/provinces/{$provinceSlug}.jpg")
-                        : null))));
+    if (!isset($heroBgImage)) {
+        $customHeroBg = !empty($area->hero_image) ? asset($area->hero_image) : null;
+        $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($cityData['name']);
+        $provinceSlug = $cityData['province_slug'] ?? null;
+        $heroBgImage = $customHeroBg 
+            ?: (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
+                ? asset("images/areas/cities/{$citySlug}.webp")
+                : (file_exists(public_path("images/areas/cities/{$citySlug}.jpg"))
+                    ? asset("images/areas/cities/{$citySlug}.jpg")
+                    : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
+                        ? asset("images/areas/provinces/{$provinceSlug}.webp")
+                        : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
+                            ? asset("images/areas/provinces/{$provinceSlug}.jpg")
+                            : null))));
+    }
 
     $posko = $area->resolved_posko;
     $advantages = $area->resolved_advantages;
@@ -1012,6 +1031,9 @@
                     <div class="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-2xs hover:border-sky-300 transition-colors">
                         <button type="button" 
                                 @click="active = (active === {{ $idx }} ? null : {{ $idx }})"
+                                aria-expanded="false"
+                                :aria-expanded="active === {{ $idx }} ? 'true' : 'false'"
+                                aria-controls="city-faq-ans-{{ $idx }}"
                                 class="w-full py-4 px-4 sm:px-5 text-left font-semibold text-slate-900 flex items-center justify-between gap-3 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 cursor-pointer">
                             <div class="flex items-center gap-3">
                                 <span class="w-6 h-6 rounded-md bg-slate-100 text-slate-600 border border-slate-200 text-xs font-bold flex items-center justify-center shrink-0">
@@ -1025,7 +1047,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
                         </button>
-                        <div x-show="active === {{ $idx }}" x-cloak class="px-4 pb-4 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3 pl-12 sm:pl-13">
+                        <div id="city-faq-ans-{{ $idx }}" x-show="active === {{ $idx }}" x-cloak class="px-4 pb-4 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3 pl-12 sm:pl-13">
                             <p>{{ $faq['answer'] }}</p>
                         </div>
                     </div>

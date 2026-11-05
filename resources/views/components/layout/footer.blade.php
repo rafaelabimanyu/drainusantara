@@ -194,7 +194,7 @@
                     <li>
                         <a href="{{ route('about.portfolio') }}" class="hover:text-white transition-colors flex items-center gap-1.5">
                             <span class="text-sky-400 font-bold">&rsaquo;</span>
-                            <span>Kemitraan &amp; Portofolio B2B</span>
+                            <span>Kemitraan</span>
                         </a>
                     </li>
                     <li>

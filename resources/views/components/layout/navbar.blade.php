@@ -105,8 +105,8 @@
                             </a>
 
                             <a href="{{ route('about.portfolio') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isPortfolio ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">
-                                <div class="text-xs font-bold {{ $isPortfolio ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Perusahaan &amp; Portofolio Klien</div>
-                                <p class="text-[11px] {{ $isPortfolio ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Daftar perusahaan &amp; mitra B2B yang menggunakan jasa Drainusantara.</p>
+                                <div class="text-xs font-bold {{ $isPortfolio ? 'text-sky-400' : 'text-slate-100 group-hover:text-sky-400' }} mb-0.5">Kemitraan</div>
+                                <p class="text-[11px] {{ $isPortfolio ? 'text-slate-300' : 'text-slate-400' }} leading-snug">Jaringan kemitraan, instansi, &amp; klien komersial Drainusantara.</p>
                             </a>
 
                             <a href="{{ route('about.warranty') }}" @click="activeMenu = null" class="block p-2 rounded-lg transition-colors group {{ $isWarranty ? 'bg-slate-800 text-sky-400 border border-slate-700/80' : 'hover:bg-slate-800/80 text-slate-100 border border-transparent' }}">

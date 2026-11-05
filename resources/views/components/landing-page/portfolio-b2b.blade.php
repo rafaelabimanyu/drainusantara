@@ -17,7 +17,7 @@
         <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-10 md:mb-12">
             <div class="reveal-soft">
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-700 block mb-2">
-                    Perusahaan Yang Menggunakan Jasa Kami &bull; Layanan Komersial &amp; Gedung
+                    Jaringan Kemitraan &bull; Layanan Komersial &amp; Gedung
                 </span>
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Dipercaya Perusahaan F&amp;B, Perhotelan &amp; Gedung Bertingkat

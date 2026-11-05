@@ -8,7 +8,7 @@
 @endphp
 
 <x-about.subnav 
-    active-title="Struktur Holding"
+    active-title="Induk PT Jawa Jaya Rooter"
     eyebrow="Tata Kelola & Ekosistem Korporat"
     heading="Sinergi Ekosistem PT Jawa Jaya Rooter"
     subheading="Drainusantara beroperasi sebagai unit spesialis pelancaran pipa mekanis terpadu di bawah naungan PT JAWA JAYA ROOTER, memadukan keandalan teknis armada lapangan dengan tata kelola administrasi perseroan yang transparan dan akuntabel."

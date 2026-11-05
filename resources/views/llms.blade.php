@@ -30,6 +30,6 @@ Workshop pusat: Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440.
 - [Profil]({{ route('about.profile') }})
 - [Ketentuan Garansi]({{ route('about.warranty') }})
 - [Peralatan]({{ route('about.equipment') }})
-- [Portofolio Mitra B2B]({{ route('about.portfolio') }})
+- [Kemitraan]({{ route('about.portfolio') }})
 - [SOP K3]({{ route('about.k3') }})
 - [FAQ]({{ route('about.faq') }})

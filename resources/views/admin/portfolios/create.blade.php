@@ -1,14 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Tambah Portofolio')
-@section('page-title', 'Tambah Portofolio Restoran & Klien')
+@section('title', 'Tambah Kemitraan')
+@section('page-title', 'Tambah Kemitraan Restoran & Klien')
 
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Tambah Portofolio Restoran &amp; Klien</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">Tambahkan foto dan nama tempat usaha/restoran untuk ditampilkan pada kartu portofolio.</p>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">Tambah Kemitraan Restoran &amp; Klien</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Tambahkan foto dan nama tempat usaha/restoran untuk ditampilkan pada kartu kemitraan.</p>
         </div>
         <a href="{{ route('admin.portfolios.index') }}" class="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 transition-colors">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -279,7 +279,7 @@
                 <label class="flex items-center gap-2.5 cursor-pointer">
                     <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}
                            class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
-                    <span class="text-xs sm:text-sm font-medium text-slate-700">Tampilkan di Portofolio</span>
+                    <span class="text-xs sm:text-sm font-medium text-slate-700">Tampilkan di Halaman Kemitraan</span>
                 </label>
             </div>
         </div>
@@ -291,7 +291,7 @@
             </a>
             <button type="submit" 
                     class="w-full sm:w-auto text-center px-5 py-2.5 bg-sky-700 hover:bg-sky-800 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-2xs transition-colors cursor-pointer btn-press">
-                Simpan Portofolio
+                Simpan Kemitraan
             </button>
         </div>
     </form>

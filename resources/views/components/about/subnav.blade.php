@@ -19,7 +19,7 @@
             'active' => request()->routeIs('how-it-works') || request()->is('cara-kerja*') || request()->is('proses-kerja*'),
         ],
         [
-            'title' => 'Struktur Holding',
+            'title' => 'Induk PT Jawa Jaya Rooter',
             'url' => route('about.holding'),
             'active' => request()->routeIs('about.holding'),
         ],

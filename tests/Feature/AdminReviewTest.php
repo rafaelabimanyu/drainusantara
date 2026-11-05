@@ -19,7 +19,7 @@ class AdminReviewTest extends TestCase
         parent::setUp();
 
         $this->admin = User::factory()->create([
-            'email' => 'admin@drainusantara.com',
+            'email' => 'admin@drainusantara.id',
         ]);
     }
 

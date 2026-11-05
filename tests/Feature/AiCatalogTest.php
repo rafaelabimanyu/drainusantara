@@ -51,7 +51,7 @@ class AiCatalogTest extends TestCase
         // Host block validation
         $this->assertIsArray($data['host'] ?? null);
         $this->assertSame('Drainusantara', $data['host']['displayName'] ?? null);
-        $this->assertSame('did:web:drainusantara.com', $data['host']['identifier'] ?? null);
+        $this->assertSame('did:web:drainusantara.id', $data['host']['identifier'] ?? null);
         $this->assertNotEmpty($data['host']['documentationUrl'] ?? null);
 
         // Entries block validation
@@ -61,7 +61,7 @@ class AiCatalogTest extends TestCase
         foreach ($data['entries'] as $entry) {
             $this->assertIsArray($entry);
             $this->assertArrayHasKey('identifier', $entry);
-            $this->assertStringStartsWith('urn:air:drainusantara.com:', $entry['identifier']);
+            $this->assertStringStartsWith('urn:air:drainusantara.id:', $entry['identifier']);
 
             $this->assertArrayHasKey('displayName', $entry);
             $this->assertNotEmpty($entry['displayName']);
@@ -93,14 +93,14 @@ class AiCatalogTest extends TestCase
 
         $identifiers = $entries->pluck('identifier')->all();
 
-        $this->assertContains('urn:air:drainusantara.com:action:emergency-dispatch', $identifiers);
-        $this->assertContains('urn:air:drainusantara.com:tool:quick-quote', $identifiers);
-        $this->assertContains('urn:air:drainusantara.com:catalog:services', $identifiers);
-        $this->assertContains('urn:air:drainusantara.com:geo:coverage-areas', $identifiers);
-        $this->assertContains('urn:air:drainusantara.com:fleet:equipment', $identifiers);
-        $this->assertContains('urn:air:drainusantara.com:content:case-studies', $identifiers);
-        $this->assertContains('urn:air:drainusantara.com:content:knowledge-base', $identifiers);
-        $this->assertContains('urn:air:drainusantara.com:feed:llms-txt', $identifiers);
+        $this->assertContains('urn:air:drainusantara.id:action:emergency-dispatch', $identifiers);
+        $this->assertContains('urn:air:drainusantara.id:tool:quick-quote', $identifiers);
+        $this->assertContains('urn:air:drainusantara.id:catalog:services', $identifiers);
+        $this->assertContains('urn:air:drainusantara.id:geo:coverage-areas', $identifiers);
+        $this->assertContains('urn:air:drainusantara.id:fleet:equipment', $identifiers);
+        $this->assertContains('urn:air:drainusantara.id:content:case-studies', $identifiers);
+        $this->assertContains('urn:air:drainusantara.id:content:knowledge-base', $identifiers);
+        $this->assertContains('urn:air:drainusantara.id:feed:llms-txt', $identifiers);
     }
 
     public function test_robots_txt_is_valid_and_has_no_unknown_directives(): void

@@ -74,9 +74,23 @@ class SitemapController extends Controller
             URL::forceRootUrl($baseUrl);
         }
 
-        $xml = Cache::remember('sitemap.xml', 86400, function () {
-            return $this->generateSitemapXml();
-        });
+        $xml = null;
+
+        try {
+            $xml = Cache::remember('sitemap.xml', 86400, function () {
+                return $this->generateSitemapXml();
+            });
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Sitemap cache retrieval error: ' . $e->getMessage());
+        }
+
+        if (empty($xml) && file_exists(public_path('sitemap.xml'))) {
+            $xml = @file_get_contents(public_path('sitemap.xml'));
+        }
+
+        if (empty($xml)) {
+            $xml = $this->generateFallbackSitemapXml();
+        }
 
         if (ob_get_level() > 0) {
             ob_clean();
@@ -84,6 +98,7 @@ class SitemapController extends Controller
 
         return response($xml, 200)
             ->header('Content-Type', 'text/xml; charset=UTF-8')
+            ->header('X-Content-Type-Options', 'nosniff')
             ->header('Cache-Control', 'public, max-age=86400');
     }
 
@@ -122,11 +137,15 @@ class SitemapController extends Controller
 
         // Regional landing routes - indexed O(1) hash map lookup
         $provinces = RegionService::all();
-        $coverageAreas = CoverageArea::orderBy('id')->get();
         $areaLookup = [];
-        foreach ($coverageAreas as $ca) {
-            $key = Str::lower($ca->city) . '|' . Str::lower($ca->district);
-            $areaLookup[$key] = $ca;
+        try {
+            $coverageAreas = CoverageArea::orderBy('id')->get();
+            foreach ($coverageAreas as $ca) {
+                $key = Str::lower($ca->city) . '|' . Str::lower($ca->district);
+                $areaLookup[$key] = $ca;
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Sitemap coverage areas query error: ' . $e->getMessage());
         }
 
         foreach ($provinces as $provSlug => $prov) {
@@ -166,49 +185,138 @@ class SitemapController extends Controller
         }
 
         // Published knowledge articles
-        $articles = Article::where('is_published', true)->get(['slug', 'updated_at', 'created_at']);
-        foreach ($articles as $article) {
-            $urls[] = [
-                'loc' => route('articles.show', ['slug' => $article->slug]),
-                'lastmod' => ($article->updated_at ?? $article->created_at)?->toAtomString(),
-                'changefreq' => 'monthly',
-                'priority' => '0.7',
-            ];
+        try {
+            $articles = Article::where('is_published', true)->get(['slug', 'updated_at', 'created_at']);
+            foreach ($articles as $article) {
+                $urls[] = [
+                    'loc' => route('articles.show', ['slug' => $article->slug]),
+                    'lastmod' => ($article->updated_at ?? $article->created_at)?->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => '0.7',
+                ];
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Sitemap articles query error: ' . $e->getMessage());
         }
 
         // Case Studies (Studi Kasus)
-        $caseStudies = Gallery::where('is_active', true)->whereNotNull('slug')->get(['slug', 'updated_at', 'created_at']);
-        foreach ($caseStudies as $study) {
-            $urls[] = [
-                'loc' => route('case-study.show', ['slug' => $study->slug]),
-                'lastmod' => ($study->updated_at ?? $study->created_at)?->toAtomString(),
-                'changefreq' => 'monthly',
-                'priority' => '0.7',
-            ];
+        try {
+            $caseStudies = Gallery::where('is_active', true)->whereNotNull('slug')->get(['slug', 'updated_at', 'created_at']);
+            foreach ($caseStudies as $study) {
+                $urls[] = [
+                    'loc' => route('case-study.show', ['slug' => $study->slug]),
+                    'lastmod' => ($study->updated_at ?? $study->created_at)?->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => '0.7',
+                ];
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Sitemap case studies query error: ' . $e->getMessage());
         }
 
         // Partnerships (Kemitraan)
-        $partnerships = Portfolio::where('is_active', true)->whereNotNull('slug')->get(['slug', 'updated_at', 'created_at']);
-        foreach ($partnerships as $partner) {
-            $urls[] = [
-                'loc' => route('partnership.show', ['slug' => $partner->slug]),
-                'lastmod' => ($partner->updated_at ?? $partner->created_at)?->toAtomString(),
-                'changefreq' => 'monthly',
-                'priority' => '0.7',
-            ];
+        try {
+            $partnerships = Portfolio::where('is_active', true)->whereNotNull('slug')->get(['slug', 'updated_at', 'created_at']);
+            foreach ($partnerships as $partner) {
+                $urls[] = [
+                    'loc' => route('partnership.show', ['slug' => $partner->slug]),
+                    'lastmod' => ($partner->updated_at ?? $partner->created_at)?->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => '0.7',
+                ];
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Sitemap partnerships query error: ' . $e->getMessage());
         }
 
         // Equipment Units (Peralatan)
-        $equipments = Equipment::where('is_active', true)->whereNotNull('slug')->get(['slug', 'updated_at', 'created_at']);
-        foreach ($equipments as $equip) {
-            $urls[] = [
-                'loc' => route('equipment.show', ['slug' => $equip->slug]),
-                'lastmod' => ($equip->updated_at ?? $equip->created_at)?->toAtomString(),
-                'changefreq' => 'monthly',
-                'priority' => '0.7',
-            ];
+        try {
+            $equipments = Equipment::where('is_active', true)->whereNotNull('slug')->get(['slug', 'updated_at', 'created_at']);
+            foreach ($equipments as $equip) {
+                $urls[] = [
+                    'loc' => route('equipment.show', ['slug' => $equip->slug]),
+                    'lastmod' => ($equip->updated_at ?? $equip->created_at)?->toAtomString(),
+                    'changefreq' => 'monthly',
+                    'priority' => '0.7',
+                ];
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Sitemap equipments query error: ' . $e->getMessage());
         }
 
+        return $this->formatSitemapXml($urls);
+    }
+
+    /**
+     * Fallback zero-DB sitemap generation ensuring 200 OK under all circumstances.
+     */
+    public function generateFallbackSitemapXml(): string
+    {
+        $baseUrl = rtrim((string) config('app.url'), '/');
+        $isSecure = str_starts_with($baseUrl, 'https://') || (app()->bound('request') && request()?->isSecure());
+        if ($isSecure) {
+            URL::forceScheme('https');
+        }
+        if (! empty($baseUrl)) {
+            URL::forceRootUrl($baseUrl);
+        }
+
+        $urls = [];
+
+        // Core static pages
+        $urls[] = ['loc' => url('/'), 'lastmod' => null, 'changefreq' => 'daily', 'priority' => '1.0'];
+        $urls[] = ['loc' => route('contact'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.9'];
+        $urls[] = ['loc' => route('how-it-works'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.profile'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.holding'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.k3'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.equipment'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.warranty'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.faq'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => null, 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => route('legal.terms'), 'lastmod' => null, 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => url('/area'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.9'];
+        $urls[] = ['loc' => url('/galeri'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => null, 'changefreq' => 'daily', 'priority' => '0.8'];
+
+        $provinces = RegionService::all();
+        foreach ($provinces as $provSlug => $prov) {
+            $urls[] = [
+                'loc' => route('area.province', ['province' => $provSlug]),
+                'lastmod' => null,
+                'changefreq' => 'weekly',
+                'priority' => '0.8',
+            ];
+
+            foreach ($prov['cities'] as $citySlug => $city) {
+                $urls[] = [
+                    'loc' => route('area.city', ['city' => $citySlug]),
+                    'lastmod' => null,
+                    'changefreq' => 'weekly',
+                    'priority' => '0.8',
+                ];
+
+                foreach ($city['districts'] as $district) {
+                    $districtSlug = Str::slug($district);
+                    $urls[] = [
+                        'loc' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
+                        'lastmod' => null,
+                        'changefreq' => 'weekly',
+                        'priority' => '0.8',
+                    ];
+                }
+            }
+        }
+
+        return $this->formatSitemapXml($urls);
+    }
+
+    /**
+     * Format URL array to valid XML sitemap string.
+     */
+    private function formatSitemapXml(array $urls): string
+    {
         $xmlString = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
         $xmlString .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
         foreach ($urls as $u) {

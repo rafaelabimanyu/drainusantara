@@ -25,7 +25,7 @@ class SearchEnginePingService
     {
         $sitemapUrl = url('/sitemap.xml');
         $urlToPing = $targetUrl ?: $sitemapUrl;
-        $host = parse_url((string) config('app.url'), PHP_URL_HOST) ?: 'drainusantara.com';
+        $host = parse_url((string) config('app.url'), PHP_URL_HOST) ?: 'drainusantara.id';
 
         $results = [
             'google' => true,
