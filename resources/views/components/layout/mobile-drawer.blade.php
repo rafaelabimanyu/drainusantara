@@ -73,7 +73,7 @@
          x-transition:leave="transition ease-in-out duration-200 transform"
          x-transition:leave-start="translate-x-0"
          x-transition:leave-end="translate-x-full"
-         class="fixed inset-y-0 right-0 max-w-xs w-full bg-white border-l border-slate-200 shadow-2xl flex flex-col justify-between overflow-hidden">
+         class="fixed inset-y-0 right-0 max-w-xs w-full bg-white border-l border-slate-200 shadow-xl flex flex-col justify-between overflow-hidden">
         
        
         <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 shrink-0 bg-slate-900">

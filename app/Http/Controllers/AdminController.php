@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\ContactMessage;
 use App\Models\CoverageArea;
 use App\Models\Equipment;
 use App\Models\Gallery;
@@ -33,12 +34,15 @@ class AdminController extends Controller
             'total_gallery_portfolio' => Gallery::count() + Portfolio::count(),
             'total_articles' => Article::count(),
             'total_reviews' => Review::count(),
+            'total_contacts' => ContactMessage::count(),
+            'new_contacts' => ContactMessage::where('status', 'new')->count(),
         ];
 
         $recentServices = Service::orderBy('order')->take(5)->get();
         $recentAreas = CoverageArea::latest()->take(6)->get();
+        $recentContacts = ContactMessage::latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentServices', 'recentAreas'));
+        return view('admin.dashboard', compact('stats', 'recentServices', 'recentAreas', 'recentContacts'));
     }
 
     /**

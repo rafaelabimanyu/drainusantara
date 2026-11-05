@@ -35,8 +35,37 @@
     </div>
 
     <!-- Metric Summary Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        <!-- Card 1: Total Layanan -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Card 1: Permohonan Masuk (Leads) -->
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex flex-col justify-between {{ ($stats['new_contacts'] ?? 0) > 0 ? 'ring-2 ring-amber-400/50' : '' }}">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Pesan Masuk</span>
+                <div class="w-8 h-8 rounded-lg {{ ($stats['new_contacts'] ?? 0) > 0 ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-sky-50 text-sky-700 border border-sky-100' }} flex items-center justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="text-2xl font-extrabold text-slate-900">{{ $stats['total_contacts'] ?? 0 }}</div>
+                @if(($stats['new_contacts'] ?? 0) > 0)
+                    <div class="text-[11px] text-amber-700 font-bold mt-0.5 inline-flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                        <span>{{ $stats['new_contacts'] }} Permohonan Baru</span>
+                    </div>
+                @else
+                    <div class="text-[11px] text-emerald-700 font-medium mt-0.5">Semua Terproses</div>
+                @endif
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-slate-100">
+                <a href="{{ route('admin.contacts.index') }}" class="text-[11px] font-semibold text-sky-700 hover:text-sky-800 flex items-center justify-between">
+                    <span>Lihat Permohonan</span>
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Card 2: Total Layanan -->
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Total Layanan</span>
@@ -58,7 +87,7 @@
             </div>
         </div>
 
-        <!-- Card 2: Area Jangkauan -->
+        <!-- Card 3: Area Jangkauan -->
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Area Jangkauan (SEO)</span>
@@ -81,7 +110,7 @@
             </div>
         </div>
 
-        <!-- Card 3: Galeri Proyek -->
+        <!-- Card 4: Galeri Proyek -->
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Galeri Foto</span>
@@ -103,11 +132,33 @@
             </div>
         </div>
 
-        <!-- Card 4: Peralatan & Armada -->
+        <!-- Card 5: Kemitraan (B2B) -->
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
-                <span class="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Peralatan</span>
-                <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center border border-slate-200">
+                <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Kemitraan</span>
+                <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center border border-sky-100">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="text-2xl font-extrabold text-slate-900">{{ $stats['total_portfolios'] ?? 0 }}</div>
+                <div class="text-[11px] text-slate-500 font-medium mt-0.5">Mitra Resto &amp; Gedung</div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-slate-100">
+                <a href="{{ route('admin.portfolios.index') }}" class="text-[11px] font-semibold text-sky-700 hover:text-sky-800 flex items-center justify-between">
+                    <span>Kelola</span>
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Card 6: Peralatan & Armada -->
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Peralatan</span>
+                <div class="w-8 h-8 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center border border-sky-100">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -119,14 +170,14 @@
                 <div class="text-[11px] text-slate-500 font-medium mt-0.5">Unit Spiral &amp; Mesin</div>
             </div>
             <div class="mt-3 pt-2.5 border-t border-slate-100">
-                <a href="{{ route('admin.equipments.index') }}" class="text-[11px] font-semibold text-slate-700 hover:text-slate-900 flex items-center justify-between">
+                <a href="{{ route('admin.equipments.index') }}" class="text-[11px] font-semibold text-sky-700 hover:text-sky-800 flex items-center justify-between">
                     <span>Kelola</span>
                     <span aria-hidden="true">&rarr;</span>
                 </a>
             </div>
         </div>
 
-        <!-- Card 5: Artikel Edukasi -->
+        <!-- Card 7: Artikel Edukasi -->
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Artikel</span>
@@ -148,7 +199,7 @@
             </div>
         </div>
 
-        <!-- Card 6: Ulasan & Testimoni -->
+        <!-- Card 8: Ulasan & Testimoni -->
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex flex-col justify-between">
             <div class="flex items-center justify-between">
                 <span class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Ulasan</span>
@@ -207,6 +258,84 @@
             </a>
         </div>
     </div>
+
+    <!-- Permohonan Layanan Terbaru (Recent Leads) -->
+    @if(isset($recentContacts) && $recentContacts->isNotEmpty())
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+        <div class="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/50">
+            <div class="flex items-center gap-2.5">
+                <div class="w-2.5 h-2.5 rounded-full {{ ($stats['new_contacts'] ?? 0) > 0 ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500' }}"></div>
+                <div>
+                    <h2 class="font-bold text-slate-900 text-sm sm:text-base">Permohonan Kunjungan Teknisi Terbaru</h2>
+                    <p class="text-xs text-slate-500">Pesan dan order darurat dari form kontak pelanggan</p>
+                </div>
+            </div>
+            <a href="{{ route('admin.contacts.index') }}" class="text-xs font-semibold text-sky-700 hover:text-sky-800">Lihat Semua Permohonan &rarr;</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-700">
+                <thead class="bg-slate-50 text-[11px] uppercase font-bold text-slate-500 border-b border-slate-200">
+                    <tr>
+                        <th class="px-4 py-2.5">Tanggal</th>
+                        <th class="px-4 py-2.5">Pemohon</th>
+                        <th class="px-4 py-2.5">WhatsApp / Telp</th>
+                        <th class="px-4 py-2.5">Wilayah</th>
+                        <th class="px-4 py-2.5">Keluhan Saluran</th>
+                        <th class="px-4 py-2.5">Status</th>
+                        <th class="px-4 py-2.5 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach($recentContacts as $contact)
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-4 py-2.5 whitespace-nowrap text-slate-500 text-[11px]">
+                            {{ $contact->created_at->format('d/m/Y H:i') }}
+                        </td>
+                        <td class="px-4 py-2.5 whitespace-nowrap font-bold text-slate-900">
+                            {{ $contact->name }}
+                        </td>
+                        <td class="px-4 py-2.5 whitespace-nowrap font-mono">
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $contact->phone) }}" target="_blank" rel="noopener noreferrer" class="text-emerald-700 hover:underline font-semibold">
+                                {{ $contact->phone }} ↗
+                            </a>
+                        </td>
+                        <td class="px-4 py-2.5 whitespace-nowrap text-slate-600">
+                            {{ $contact->city }}{{ $contact->district ? ', ' . $contact->district : '' }}
+                        </td>
+                        <td class="px-4 py-2.5 max-w-xs truncate text-slate-600">
+                            {{ $contact->service_type ?: $contact->message }}
+                        </td>
+                        <td class="px-4 py-2.5 whitespace-nowrap">
+                            @if($contact->status === 'new')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                                    Baru
+                                </span>
+                            @elseif($contact->status === 'in_progress')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-sky-100 text-sky-800">
+                                    Diproses
+                                </span>
+                            @elseif($contact->status === 'completed')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-800">
+                                    Selesai
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600">
+                                    {{ ucfirst($contact->status) }}
+                                </span>
+                            @endif
+                        </td>
+                        <td class="px-4 py-2.5 text-right whitespace-nowrap">
+                            <a href="{{ route('admin.contacts.show', $contact) }}" class="text-xs font-semibold text-sky-700 hover:text-sky-800 px-2 py-1 rounded bg-sky-50 hover:bg-sky-100 transition-colors">
+                                Rincian
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endif
 
     <!-- 2 Column Overview Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

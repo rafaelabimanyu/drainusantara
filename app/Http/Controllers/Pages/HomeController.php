@@ -74,6 +74,18 @@ class HomeController extends Controller
             ],
         ]);
 
+        $webSiteJsonLd = JsonLdMulti::newJsonLd();
+        $webSiteJsonLd->setType('WebSite');
+        $webSiteJsonLd->addValues([
+            'name' => 'Drainusantara',
+            'url' => url('/'),
+            'potentialAction' => [
+                '@type' => 'SearchAction',
+                'target' => url('/pengetahuan?q={search_term_string}'),
+                'query-input' => 'required name=search_term_string',
+            ],
+        ]);
+
         $services = Cache::remember('landing.services', 86400, function () {
             return Service::where('is_active', true)
                 ->orderBy('order')

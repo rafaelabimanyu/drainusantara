@@ -155,7 +155,7 @@ class AiCatalogController extends Controller
                     [
                         'identifier' => 'urn:air:drainusantara.id:tool:quick-quote',
                         'displayName' => 'Drainage Cost & Quick Quote Estimator',
-                        'type' => 'application/json',
+                        'type' => 'application/mcp-server-card+json',
                         'description' => 'Estimasi biaya penanganan saluran mampet berdasarkan jenis properti, tingkat keparahan, dan garansi tertulis 30 hari.',
                         'data' => [
                             'currency' => 'IDR',
@@ -251,7 +251,7 @@ class AiCatalogController extends Controller
                     [
                         'identifier' => 'urn:air:drainusantara.id:feed:llms-txt',
                         'displayName' => 'Drainusantara LLMs.txt Context Manifest',
-                        'type' => 'text/plain',
+                        'type' => 'text/markdown; profile="urn:air:agent-skills"',
                         'url' => route('llms'),
                         'description' => 'Rangkuman lengkap profil bisnis, spesifikasi teknis, harga dasar, dan kontak darurat dalam format Markdown untuk injeksi context window LLM.',
                         'representativeQueries' => [

@@ -16,7 +16,7 @@ class BreadcrumbSchemaTest extends TestCase
             'gallery' => [['Beranda', url('/')], ['Galeri', route('gallery')]],
             'articles.index' => [['Beranda', url('/')], ['Blog', route('articles.index')]],
             'about.profile' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Profil Perusahaan', route('about.profile')]],
-            'about.holding' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Struktur Induk Perusahaan', route('about.holding')]],
+            'about.holding' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Induk PT Jawa Jaya Rooter', route('about.holding')]],
             'about.k3' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['SOP K3', route('about.k3')]],
             'about.equipment' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Peralatan & Teknologi', route('about.equipment')]],
             'about.portfolio' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Klien & Portofolio', route('about.portfolio')]],

@@ -22,7 +22,7 @@
          x-transition:leave="transition ease-in duration-200 transform"
          x-transition:leave-start="translate-y-0"
          x-transition:leave-end="translate-y-full"
-         class="fixed inset-x-0 bottom-0 max-h-[85vh] bg-white rounded-t-2xl border-t border-slate-200 p-5 shadow-2xl flex flex-col overflow-hidden pb-4">
+         class="fixed inset-x-0 bottom-0 max-h-[85vh] bg-white rounded-t-2xl border-t border-slate-200 p-5 shadow-xl flex flex-col overflow-hidden pb-4">
             <div class="flex flex-col flex-1 overflow-hidden">
                 <!-- Sheet Grab Bar Handle -->
                 <div class="w-12 h-1.5 bg-slate-300 rounded-full mx-auto mb-3 shrink-0"></div>

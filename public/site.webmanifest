@@ -1,0 +1,22 @@
+{
+  "name": "Drainusantara - Jasa Saluran Pipa Mampet",
+  "short_name": "Drainusantara",
+  "description": "Layanan pelancaran saluran pipa mampet tanpa bongkar keramik di Jabodetabek, Semarang, dan Bandar Lampung. Siaga 24 jam dengan mesin spiral rotary dan inspeksi kamera CCTV pipa bergaransi 30 hari.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#0369a1",
+  "lang": "id",
+  "categories": ["utilities", "business", "lifestyle"],
+  "icons": [
+    {
+      "src": "/images/logo/WebIcon.webp",
+      "sizes": "192x192 512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

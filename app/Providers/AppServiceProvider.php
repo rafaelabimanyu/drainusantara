@@ -78,5 +78,15 @@ class AppServiceProvider extends ServiceProvider
                 'whatsappNumber' => $number,
             ]);
         });
+
+        // 4. Share unread contact messages count with CMS admin layout & navigation
+        View::composer(['layouts.admin', 'components.layout.admin-nav'], function ($view) {
+            try {
+                $unreadContactCount = \App\Models\ContactMessage::where('status', 'new')->count();
+            } catch (\Throwable $e) {
+                $unreadContactCount = 0;
+            }
+            $view->with('unreadContactCount', $unreadContactCount);
+        });
     }
 }

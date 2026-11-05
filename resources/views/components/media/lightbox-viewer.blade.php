@@ -97,7 +97,7 @@
                  :style="'transform: scale(' + zoomLevel + '); transform-origin: center center;'">
                 <img :src="activeSrc" 
                      :alt="activeAlt" 
-                     class="max-h-[78vh] sm:max-h-[82vh] max-w-[95vw] sm:max-w-[85vw] object-contain rounded-lg shadow-2xl border border-slate-700/40 select-none cursor-pointer"
+                     class="max-h-[78vh] sm:max-h-[82vh] max-w-[95vw] sm:max-w-[85vw] object-contain rounded-lg shadow-xl border border-slate-700/60 select-none cursor-pointer"
                      @click.stop="toggleZoom()"
                      title="Klik untuk zoom 1.75x / kembali">
             </div>

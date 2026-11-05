@@ -4,7 +4,7 @@
 <div class="bg-slate-50 min-h-screen" x-data="{ 
     activeCategory: 'all', 
     activeSubCategory: 'all',
-    searchQuery: '',
+    searchQuery: (new URLSearchParams(window.location.search).get('q') || new URLSearchParams(window.location.search).get('search') || ''),
     subCategories: {{ json_encode([
         'edukasi' => \App\Models\Article::SUB_CATEGORIES['Edukasi'],
         'penguatan-brand' => \App\Models\Article::SUB_CATEGORIES['Penguatan Brand'],

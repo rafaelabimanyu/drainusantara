@@ -41,23 +41,19 @@ class SitemapController extends Controller
 
         $this->addBreadcrumb(['Peta Situs', url('/sitemap')]);
 
-        $services = Service::where('is_active', true)->orderBy('order')->get();
-        $provinces = RegionService::all();
-        $coverageAreas = CoverageArea::where('is_active', true)->orderBy('district')->get();
-        $articles = Article::where('is_published', true)->latest('published_at')->limit(12)->get();
-        $caseStudies = Gallery::where('is_active', true)->whereNotNull('slug')->latest()->limit(8)->get();
-        $partnerships = Portfolio::where('is_active', true)->whereNotNull('slug')->latest()->limit(8)->get();
-        $equipments = Equipment::where('is_active', true)->whereNotNull('slug')->orderBy('order')->get();
+        $data = Cache::remember('sitemap.html_data', 86400, function () {
+            return [
+                'services' => Service::where('is_active', true)->orderBy('order')->get(),
+                'provinces' => RegionService::all(),
+                'coverageAreas' => CoverageArea::where('is_active', true)->orderBy('district')->get(),
+                'articles' => Article::where('is_published', true)->latest('published_at')->limit(12)->get(),
+                'caseStudies' => Gallery::where('is_active', true)->whereNotNull('slug')->latest()->limit(8)->get(),
+                'partnerships' => Portfolio::where('is_active', true)->whereNotNull('slug')->latest()->limit(8)->get(),
+                'equipments' => Equipment::where('is_active', true)->whereNotNull('slug')->orderBy('order')->get(),
+            ];
+        });
 
-        return view('sitemap', compact(
-            'services',
-            'provinces',
-            'coverageAreas',
-            'articles',
-            'caseStudies',
-            'partnerships',
-            'equipments'
-        ));
+        return view('sitemap', $data);
     }
 
     /**
@@ -365,7 +361,7 @@ class SitemapController extends Controller
             $baseUrl = request()->getSchemeAndHttpHost();
         }
         $sitemapUrl = "{$baseUrl}/sitemap.xml";
-        $content = "User-agent: *\nDisallow: /admin/\nDisallow: /login\n\nSitemap: {$sitemapUrl}\n";
+        $content = "User-agent: *\nDisallow: /admin/\nDisallow: /login\nDisallow: /preview-*\n\nSitemap: {$sitemapUrl}\n# LLM Discovery\nAllow: /llms.txt\n";
 
         return response($content, 200)
             ->header('Content-Type', 'text/plain; charset=utf-8')

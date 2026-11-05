@@ -68,6 +68,7 @@ class ShowcaseController extends Controller
         $relatedCaseStudies = Gallery::where('is_active', true)
             ->where('id', '!=', $caseStudy->id)
             ->where('category', $caseStudy->category)
+            ->with(['service', 'equipment'])
             ->limit(3)
             ->get();
 
@@ -75,6 +76,7 @@ class ShowcaseController extends Controller
             $extra = Gallery::where('is_active', true)
                 ->where('id', '!=', $caseStudy->id)
                 ->whereNotIn('id', $relatedCaseStudies->pluck('id'))
+                ->with(['service', 'equipment'])
                 ->limit(3 - $relatedCaseStudies->count())
                 ->get();
             $relatedCaseStudies = $relatedCaseStudies->concat($extra);
@@ -117,6 +119,7 @@ class ShowcaseController extends Controller
         $relatedPartnerships = Portfolio::where('is_active', true)
             ->where('id', '!=', $partnership->id)
             ->where('client_type', $partnership->client_type)
+            ->with('services')
             ->limit(3)
             ->get();
 
@@ -124,6 +127,7 @@ class ShowcaseController extends Controller
             $extra = Portfolio::where('is_active', true)
                 ->where('id', '!=', $partnership->id)
                 ->whereNotIn('id', $relatedPartnerships->pluck('id'))
+                ->with('services')
                 ->limit(3 - $relatedPartnerships->count())
                 ->get();
             $relatedPartnerships = $relatedPartnerships->concat($extra);

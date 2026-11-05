@@ -26,6 +26,7 @@ class CacheService
         'staff.all_active',
         'equipments.all_active',
         'sitemap.xml',
+        'sitemap.html_data',
         'llms.txt',
         'ai-catalog.json',
     ];

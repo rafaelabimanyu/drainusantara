@@ -13,6 +13,7 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -22,11 +23,25 @@ class ArticleController extends Controller
     /**
      * Display the Blog & Education listing page.
      */
-    public function articles(): View
+    public function articles(Request $request): View
     {
         $page = \Illuminate\Pagination\Paginator::resolveCurrentPage();
-        $canonical = route('articles.index', $page > 1 ? ['page' => $page] : []);
-        PageMetadata::title('Panduan & Edukasi Perawatan Saluran Pipa');
+        $searchTerm = trim((string) ($request->input('q') ?: $request->input('search')));
+
+        $canonicalParams = [];
+        if ($page > 1) {
+            $canonicalParams['page'] = $page;
+        }
+        if ($searchTerm !== '') {
+            $canonicalParams['q'] = $searchTerm;
+        }
+        $canonical = route('articles.index', $canonicalParams);
+
+        $pageTitle = $searchTerm !== ''
+            ? "Pencarian '{$searchTerm}' - Panduan Perawatan Pipa"
+            : 'Panduan & Edukasi Perawatan Saluran Pipa';
+
+        PageMetadata::title($pageTitle);
         SEOMeta::setDescription('Blog resmi Drainusantara: panduan teknis pelancaran wastafel, bahaya soda api pada pipa PVC, teknologi mesin spiral rotary, kamera CCTV drainase, dan tips sanitasi.');
         SEOMeta::setCanonical($canonical);
 
@@ -38,9 +53,18 @@ class ArticleController extends Controller
         TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
         $this->addBreadcrumb(['Blog', route('articles.index')]);
 
-        $articles = Article::where('is_published', true)
-            ->latest('published_at')
-            ->paginate(12);
+        $query = Article::where('is_published', true);
+        if ($searchTerm !== '') {
+            $like = '%' . $searchTerm . '%';
+            $query->where(function ($q) use ($like) {
+                $q->where('title', 'like', $like)
+                    ->orWhere('excerpt', 'like', $like)
+                    ->orWhere('content', 'like', $like)
+                    ->orWhere('tags', 'like', $like);
+            });
+        }
+
+        $articles = $query->latest('published_at')->paginate(12)->withQueryString();
 
         $featuredArticle = Article::where('is_published', true)
             ->latest('published_at')

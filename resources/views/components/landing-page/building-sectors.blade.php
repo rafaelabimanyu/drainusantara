@@ -119,7 +119,7 @@
 
                     <!-- Masalah Tipikal -->
                     <div class="mb-3.5">
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Masalah Umum:</p>
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">Masalah Umum:</p>
                         <p class="text-xs text-slate-600 leading-relaxed">
                             {{ $sec['typical_issues'] }}
                         </p>

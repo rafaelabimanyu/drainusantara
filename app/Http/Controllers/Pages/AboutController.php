@@ -84,7 +84,7 @@ class AboutController extends Controller
 
         JsonLdMulti::setTitle($companyPage->meta_title ?: 'Struktur Induk PT Jawa Jaya Rooter - Drainusantara');
         JsonLdMulti::setType('AboutPage');
-        $this->addAboutBreadcrumb('Struktur Induk Perusahaan', 'about.holding');
+        $this->addAboutBreadcrumb('Induk PT Jawa Jaya Rooter', 'about.holding');
 
         return view('about.holding', compact('companyPage'));
     }

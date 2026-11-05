@@ -129,12 +129,6 @@
                 </li>
 
                 <!-- 11. Pesan Masuk / Kontak -->
-                @php
-                    $unreadContactCount = 0;
-                    try {
-                        $unreadContactCount = \App\Models\ContactMessage::where('status', 'new')->count();
-                    } catch (\Throwable $e) {}
-                @endphp
                 <li>
                     <a href="{{ route('admin.contacts.index') }}" 
                        class="group flex items-center justify-between rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold transition-colors {{ request()->routeIs('admin.contacts*') ? 'bg-sky-700 text-white shadow-2xs' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
@@ -144,7 +138,7 @@
                             </svg>
                             <span>Pesan Masuk</span>
                         </div>
-                        @if($unreadContactCount > 0)
+                        @if(($unreadContactCount ?? 0) > 0)
                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-slate-950">
                                 {{ $unreadContactCount }}
                             </span>

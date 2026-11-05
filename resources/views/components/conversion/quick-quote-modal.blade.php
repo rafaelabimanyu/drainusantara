@@ -55,7 +55,7 @@
          x-transition:leave="transition ease-in duration-150 transform"
          x-transition:leave-start="opacity-100 scale-100"
          x-transition:leave-end="opacity-0 scale-95"
-         class="relative z-10 w-full max-w-xl mx-4 my-6 bg-white rounded-xl shadow-2xl border border-slate-200 max-h-[90vh] flex flex-col overflow-hidden">
+         class="relative z-10 w-full max-w-xl mx-4 my-6 bg-white rounded-xl shadow-xl border border-slate-200 max-h-[90vh] flex flex-col overflow-hidden">
         
         <!-- Header with Close Button -->
         <div class="flex items-center justify-between px-5 py-3 border-b border-slate-200 bg-slate-900 text-white shrink-0">

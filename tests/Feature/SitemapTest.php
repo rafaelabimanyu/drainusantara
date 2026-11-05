@@ -78,6 +78,8 @@ class SitemapTest extends TestCase
         $response->assertHeader('Content-Type', 'text/plain; charset=utf-8');
         $this->assertStringContainsString('User-agent: *', $response->getContent());
         $this->assertStringContainsString('Disallow: /admin/', $response->getContent());
+        $this->assertStringContainsString('Disallow: /preview-*', $response->getContent());
+        $this->assertStringContainsString('Allow: /llms.txt', $response->getContent());
         $this->assertStringContainsString('Sitemap: '.url('/sitemap.xml'), $response->getContent());
     }
 
@@ -99,6 +101,8 @@ class SitemapTest extends TestCase
 
     public function test_html_sitemap_renders_successfully_for_human_visitors(): void
     {
+        Cache::forget('sitemap.html_data');
+
         $response = $this->get('/sitemap');
 
         $response->assertStatus(200);
@@ -107,6 +111,8 @@ class SitemapTest extends TestCase
         $response->assertSee('Wilayah Layanan Siaga 24 Jam');
         $response->assertSee('Profil Perusahaan &amp; Tata Kelola', false);
         $response->assertSee('/sitemap.xml');
+
+        $this->assertTrue(Cache::has('sitemap.html_data'));
     }
 
     public function test_peta_situs_alias_redirects_301_to_sitemap(): void

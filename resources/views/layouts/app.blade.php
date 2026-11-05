@@ -32,6 +32,7 @@
     <!-- Favicon & Web Icon -->
     <link rel="icon" type="image/webp" href="{{ asset('images/logo/WebIcon.webp') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/logo/WebIcon.webp') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
 
     <!-- Machine-Readable AI Agent Discovery (ARD v1.0) -->
     <link rel="ai-catalog" type="application/json" href="{{ url('/.well-known/ai-catalog.json') }}" title="Drainusantara AI Agent Resource Catalog">

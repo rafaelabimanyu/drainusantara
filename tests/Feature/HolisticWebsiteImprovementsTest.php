@@ -128,4 +128,144 @@ class HolisticWebsiteImprovementsTest extends TestCase
         $response->assertSee('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', false);
         $response->assertSee('</urlset>', false);
     }
+
+    /**
+     * Test admin dashboard shows contact leads metric card.
+     */
+    public function test_admin_dashboard_displays_contact_leads_card(): void
+    {
+        $admin = User::factory()->create();
+        \App\Models\ContactMessage::create([
+            'name' => 'Budi Santoso',
+            'phone' => '081234567890',
+            'city' => 'Jakarta Timur',
+            'district' => 'Duren Sawit',
+            'service_type' => 'Wastafel Mampet',
+            'message' => 'Wastafel dapur meluap.',
+            'status' => 'new',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('admin.dashboard'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Pesan Masuk');
+        $response->assertSee('Permohonan Baru');
+        $response->assertSee('Budi Santoso');
+    }
+
+    /**
+     * Test partnership show page loads related partnerships with services.
+     */
+    public function test_partnership_show_eager_loads_related_services(): void
+    {
+        $service = \App\Models\Service::create([
+            'name' => 'Pelancaran Grease Trap Restoran',
+            'slug' => 'pelancaran-grease-trap-restoran',
+            'price_starting_from' => 450000,
+            'is_active' => true,
+        ]);
+
+        $p1 = \App\Models\Portfolio::create([
+            'client_name' => 'Restoran Padang Sederhana',
+            'slug' => 'restoran-padang-sederhana',
+            'client_type' => 'Restoran F&B',
+            'is_active' => true,
+        ]);
+        $p1->services()->attach($service->id);
+
+        $p2 = \App\Models\Portfolio::create([
+            'client_name' => 'Kafe Kopi Kenangan',
+            'slug' => 'kafe-kopi-kenangan',
+            'client_type' => 'Restoran F&B',
+            'is_active' => true,
+        ]);
+        $p2->services()->attach($service->id);
+
+        $response = $this->get(route('partnership.show', $p1->slug));
+
+        $response->assertStatus(200);
+        $response->assertSee('Restoran Padang Sederhana');
+        $response->assertSee('Kafe Kopi Kenangan');
+    }
+
+    /**
+     * Test custom 403 Forbidden view renders cleanly with emergency hotline.
+     */
+    public function test_403_forbidden_page_renders_with_security_shield_and_hotline(): void
+    {
+        $view = $this->view('errors.403');
+
+        $view->assertSee('403');
+        $view->assertSee('Akses Halaman Dibatasi oleh Sistem');
+        $view->assertSee('Kembali ke Beranda');
+        $view->assertSee('PT JAWA JAYA ROOTER');
+        $view->assertSee('0856-0900-9009');
+    }
+
+    /**
+     * Test site.webmanifest is valid JSON and referenced in layout.
+     */
+    public function test_site_webmanifest_exists_and_referenced(): void
+    {
+        $manifestPath = public_path('site.webmanifest');
+        $this->assertFileExists($manifestPath);
+
+        $json = json_decode((string) file_get_contents($manifestPath), true);
+        $this->assertIsArray($json);
+        $this->assertEquals('Drainusantara - Jasa Saluran Pipa Mampet', $json['name']);
+        $this->assertEquals('standalone', $json['display']);
+
+        $response = $this->get('/');
+        $response->assertSee('rel="manifest"', false);
+    }
+
+    /**
+     * Test homepage has WebSite SearchAction schema in JSON-LD.
+     */
+    public function test_homepage_has_website_searchaction_json_ld(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertStatus(200);
+        $response->assertSee('SearchAction', false);
+        $response->assertSee('query-input', false);
+        $response->assertSee('pengetahuan?q={search_term_string}', false);
+    }
+
+    /**
+     * Test article search query filters results server-side.
+     */
+    public function test_article_search_filters_results_by_keyword(): void
+    {
+        \App\Models\Article::create([
+            'title' => 'Bahaya Soda Api pada Pipa Sifon PVC',
+            'slug' => 'bahaya-soda-api-pada-pipa-sifon-pvc',
+            'content' => 'Reaksi termal soda api dapat melelehkan sambungan pipa PVC leher angsa.',
+            'is_published' => true,
+        ]);
+
+        \App\Models\Article::create([
+            'title' => 'Cara Membersihkan Talang Atap dari Lumut',
+            'slug' => 'cara-membersihkan-talang-atap-dari-lumut',
+            'content' => 'Endapan lumut pada pipa vertikal dibersihkan dengan kabel spiral panjang.',
+            'is_published' => true,
+        ]);
+
+        $response = $this->get('/pengetahuan?q=Soda+Api');
+
+        $response->assertStatus(200);
+        $response->assertSee('Bahaya Soda Api pada Pipa Sifon PVC');
+        $response->assertDontSee('Cara Membersihkan Talang Atap dari Lumut');
+    }
+
+    /**
+     * Test holding page breadcrumb JSON-LD explicitly uses Induk PT Jawa Jaya Rooter.
+     */
+    public function test_holding_page_breadcrumb_uses_induk_pt_jawa_jaya_rooter(): void
+    {
+        $response = $this->get(route('about.holding'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Induk PT Jawa Jaya Rooter');
+    }
 }
