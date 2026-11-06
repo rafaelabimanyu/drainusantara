@@ -132,13 +132,20 @@ window.blogImageViewer = function() {
             @if($targetSelector)
             this.$nextTick(() => {
                 const elements = document.querySelectorAll('{{ $targetSelector }}');
-                elements.forEach(img => {
-                    img.classList.add('cursor-zoom-in', 'hover:opacity-95', 'transition-opacity');
-                    if (!img.getAttribute('title')) {
-                        img.setAttribute('title', 'Klik untuk melihat foto lebih besar');
+                elements.forEach(el => {
+                    const img = el.tagName === 'IMG' ? el : el.querySelector('img');
+                    const targetEl = img || el;
+                    targetEl.classList.add('cursor-zoom-in', 'hover:opacity-95', 'transition-opacity');
+                    if (!targetEl.getAttribute('title')) {
+                        targetEl.setAttribute('title', 'Klik untuk melihat foto lebih besar');
                     }
-                    img.addEventListener('click', () => {
-                        this.open(img.src, img.alt || img.getAttribute('title') || 'Gambar Dokumentasi');
+                    targetEl.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const src = img ? (img.currentSrc || img.src) : (el.dataset.src || el.getAttribute('src'));
+                        const alt = (img ? img.alt : null) || el.getAttribute('title') || 'Gambar Dokumentasi';
+                        if (src) {
+                            this.open(src, alt);
+                        }
                     });
                 });
             });

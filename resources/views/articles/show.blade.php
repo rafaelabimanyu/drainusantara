@@ -372,6 +372,6 @@
     </div>
 
     <!-- Modal Lightbox / Image Zoom Viewer Component -->
-    <x-media.lightbox-viewer target-selector=".article-content img, .article-zoomable" />
+    <x-media.lightbox-viewer target-selector=".article-content img" />
 </div>
 @endsection
