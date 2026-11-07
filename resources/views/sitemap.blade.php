@@ -78,19 +78,41 @@
                         </a>
                     </div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-5">
                         @foreach($provinces as $provSlug => $prov)
-                            <div class="border-t border-slate-100 pt-3 first:border-t-0 first:pt-0">
-                                <a href="{{ route('area.province', ['province' => $provSlug]) }}" 
-                                   class="font-bold text-xs sm:text-sm text-slate-900 hover:text-sky-700 transition-colors inline-block mb-1.5">
-                                    {{ $prov['name'] }}
-                                </a>
-                                <div class="flex flex-wrap gap-1.5 text-xs text-slate-600">
+                            <div class="border-t border-slate-100 pt-4 first:border-t-0 first:pt-0">
+                                <div class="flex items-center justify-between mb-2.5">
+                                    <a href="{{ route('area.province', ['province' => $provSlug]) }}" 
+                                       class="font-bold text-xs sm:text-sm text-slate-900 hover:text-sky-800 transition-colors inline-flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-sky-700"></span>
+                                        <span>{{ $prov['name'] }}</span>
+                                    </a>
+                                    <span class="text-[11px] text-slate-400 font-medium">{{ count($prov['cities']) }} Kota / Wilayah</span>
+                                </div>
+                                <div class="space-y-3">
                                     @foreach($prov['cities'] as $citySlug => $city)
-                                        <a href="{{ route('area.city', ['city' => $citySlug]) }}" 
-                                           class="px-2.5 py-1 rounded-md bg-slate-50 hover:bg-sky-50 text-slate-700 hover:text-sky-800 border border-slate-200/80 transition-colors">
-                                            {{ $city['name'] }}
-                                        </a>
+                                        <div class="bg-slate-50/80 rounded-lg p-3 border border-slate-200/70">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <a href="{{ route('area.city', ['city' => $citySlug]) }}" 
+                                                   class="font-bold text-xs text-sky-900 hover:text-sky-700 hover:underline inline-flex items-center gap-1">
+                                                    <span>{{ $city['name'] }}</span>
+                                                    <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                                    </svg>
+                                                </a>
+                                                <span class="text-[10px] text-slate-500 font-medium">{{ count($city['districts'] ?? []) }} Kecamatan</span>
+                                            </div>
+                                            @if(!empty($city['districts']))
+                                                <div class="flex flex-wrap gap-1 text-[11px]">
+                                                    @foreach($city['districts'] as $dist)
+                                                        <a href="{{ route('area.detail', ['city' => $citySlug, 'district' => \Illuminate\Support\Str::slug($dist)]) }}" 
+                                                           class="px-2 py-0.5 rounded bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-800 border border-slate-200 hover:border-sky-300 transition-colors">
+                                                            {{ $dist }}
+                                                        </a>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>

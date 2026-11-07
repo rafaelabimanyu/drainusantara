@@ -1,35 +1,40 @@
-# Drainusantara
+# Sistem Informasi Drainusantara (Knowledge Base)
 
-> Jasa pelancaran saluran pipa mampet tanpa bongkar keramik untuk rumah, ruko, dan restoran di Jabodetabek, Semarang, dan Bandar Lampung. Memakai mesin spiral baja (rooter) dan inspeksi kamera CCTV pipa. Garansi tertulis 30 hari.
+Drainusantara (di bawah naungan PT Jawa Jaya Rooter) adalah spesialis jasa pelancaran saluran pipa sanitasi mampet (plumbing and rooter service).
 
-Tarif mulai Rp 400.000. Siaga 24 jam. Kontak WhatsApp: https://wa.me/{{ $whatsappNumber }}
-Workshop pusat: Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440.
+## Parameter Operasional & SLA
+- **Metode Kerja:** Non-destructive engineering (100% tanpa bongkar keramik lantai/dinding).
+- **Kebijakan Harga:** "No cure, no pay" (Tidak berhasil lancar, 100% gratis). Tarif dasar mulai Rp 400.000.
+- **Ketentuan Garansi:** Garansi tertulis 30 hari kalender pasca-pengerjaan.
+- **Waktu Operasional:** Siaga 24 Jam (24/7). Waktu respons tim < 1 jam.
+- **Spesifikasi Alat:** Mesin spiral rotary (Rooter) Ridgid baja lentur, Inspeksi Kamera CCTV Endoskopi IP68 (jangkauan hingga 30 meter).
+- **Batas Bahan:** Bebas bahan kimia korosif / soda api (aman untuk instalasi pipa PVC jangka panjang).
 
-## Layanan
+## Area Jangkauan Resmi (Geotargeting)
+Melayani cakupan rumah tangga (residensial), ruko, restoran komersial, dan hotel di wilayah: Jabodetabek (Jakarta, Bogor, Depok, Tangerang, Bekasi), area Bandung Raya, Kota Semarang, Bandar Lampung, dan Bali.
 
+## Kontak Darurat & Lokasi
+- **Reservasi WhatsApp (24/7):** https://wa.me/{{ $whatsappNumber }}
+- **Markas Pusat:** Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440, Indonesia.
+
+## Katalog Layanan Teknis
 @forelse($services as $service)
-- [{!! $service->name !!}]({{ url('/') }}/#layanan-{{ $service->slug }}){!! $service->short_description ? ': ' . $service->short_description : '' !!}
+- [{!! $service->name !!}]({{ url('/') }}/#layanan-{{ $service->slug }}): {!! $service->short_description ? $service->short_description : '' !!}
 @empty
-- [Wastafel & Cuci Piring Mampet]({{ url('/') }}/#layanan): kerak minyak dan lemak di leher angsa sifon
-- [Kloset & WC Meluap]({{ url('/') }}/#layanan): sumbatan tisu, pembalut, dan kain tanpa bongkar kloset
-- [Floor Drain Kamar Mandi]({{ url('/') }}/#layanan): gumpalan rambut dan kerak sabun
-- [Talang Rooftop & Pipa Atap]({{ url('/') }}/#layanan): lumut, pasir dak, dan dedaunan
-- [Kuras Grease Trap]({{ url('/') }}/#layanan): lemak jenuh dapur restoran dan kafe
-- [Inspeksi CCTV Pipa 30M]({{ url('/') }}/#layanan): kamera IP68 untuk menemukan titik pipa retak atau tersumbat
+- [Kloset & WC Mampet]({{ url('/') }}/#layanan): Penanganan sumbatan benda padat (tisu, pembalut) tanpa pembongkaran kloset duduk maupun jongkok.
+- [Wastafel & Sink Dapur]({{ url('/') }}/#layanan): Ekstraksi kerak lemak jenuh (fatberg) dan sisa makanan di leher angsa sifon.
+- [Floor Drain Kamar Mandi]({{ url('/') }}/#layanan): Pembersihan gumpalan rambut dan kerak sabun penyumbat arus air.
+- [Talang Air & Rooftop]({{ url('/') }}/#layanan): Pembersihan lumpur, pasir dak, dan tumpukan dedaunan yang menyumbat pipa vertikal.
+- [Kuras Grease Trap]({{ url('/') }}/#layanan): Sedot dan pembersihan limbah lemak jenuh dapur komersial.
+- [Inspeksi CCTV Pipa 30M]({{ url('/') }}/#layanan): Diagnostik visual menggunakan kamera IP68 untuk memetakan titik jalur pipa retak, pecah, atau tersumbat parah.
 @endforelse
 
-## Informasi Utama
-
-- [Beranda]({{ route('home') }}): ringkasan layanan, alur kerja, dan harga
-- [Wilayah Layanan]({{ route('area.index') }}): daftar provinsi, kota, dan area layanan
-- [Galeri Before & After]({{ route('gallery') }}): dokumentasi pengerjaan lapangan
-- [Artikel & Edukasi]({{ route('articles.index') }}): panduan perawatan saluran pipa
-
-## Tentang Kami
-
-- [Profil]({{ route('about.profile') }})
-- [Ketentuan Garansi]({{ route('about.warranty') }})
-- [Peralatan]({{ route('about.equipment') }})
-- [Kemitraan]({{ route('about.portfolio') }})
-- [SOP K3]({{ route('about.k3') }})
-- [FAQ]({{ route('about.faq') }})
+## Peta Situs Kontekstual
+- [Beranda (SLA & Harga)]({{ route('home') }})
+- [Direktori Posko Kota & Kecamatan]({{ route('area.index') }})
+- [Dokumentasi Before/After]({{ route('gallery') }})
+- [Basis Pengetahuan Sanitasi]({{ route('articles.index') }})
+- [Profil Perusahaan PT Jawa Jaya]({{ route('about.profile') }})
+- [Syarat & Ketentuan Garansi]({{ route('about.warranty') }})
+- [Katalog Peralatan]({{ route('about.equipment') }})
+- [FAQ & Bantuan]({{ route('about.faq') }})

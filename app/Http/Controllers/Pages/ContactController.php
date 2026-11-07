@@ -27,7 +27,7 @@ class ContactController extends Controller
     public function index(): View
     {
         $pageTitle = 'Hubungi Posko Teknisi & Layanan Pelanggan 24 Jam';
-        $metaDesc = 'Hubungi pusat layanan Drainusantara: hotline darurat 0856-0900-9009, form permohonan kunjungan teknisi pipa mampet, dan posko siaga Jabodetabek, Bandung, Semarang, hingga Lampung.';
+        $metaDesc = 'Hubungi pusat layanan Drainusantara: hotline darurat 0856-0900-9009, form permohonan kunjungan teknisi pipa mampet, dan posko siaga Jabodetabek, Bandung, Semarang, Demak, Lampung, hingga Bali.';
 
         PageMetadata::title($pageTitle);
         SEOMeta::setDescription($metaDesc);
@@ -55,7 +55,7 @@ class ContactController extends Controller
                     'telephone' => '+6285609009009',
                     'contactType' => 'customer service',
                     'availableLanguage' => ['Indonesian', 'English'],
-                    'areaServed' => ['Jabodetabek', 'Bandung', 'Semarang', 'Lampung'],
+                    'areaServed' => ['Jabodetabek', 'Bandung', 'Semarang', 'Demak', 'Lampung', 'Bali'],
                 ],
             ],
         ]);

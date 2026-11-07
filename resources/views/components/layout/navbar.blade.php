@@ -168,17 +168,20 @@
                          x-transition:leave="transition ease-in duration-100"
                          x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                          x-transition:leave-end="opacity-0 translate-y-1 scale-98"
-                         class="absolute top-full right-0 mt-2 w-160 bg-slate-900 border border-slate-800 rounded-xl shadow-xl p-3 z-50 text-slate-100">
+                         class="absolute top-full right-0 mt-2 w-195 max-w-[95vw] bg-slate-900 border border-slate-800 rounded-xl shadow-xl p-3 z-50 text-slate-100">
                         
                         <!-- Popover Header -->
                         <div class="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-800">
                             <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">
                                 Wilayah Jangkauan Armada
                             </span>
+                            <a href="{{ route('area.index') }}" @click="activeMenu = null" class="text-[11px] text-sky-400 hover:text-sky-300 font-semibold transition-colors">
+                                Lihat Semua Area &rarr;
+                            </a>
                         </div>
 
-                        <!-- 4 Clean Columns -->
-                        <div class="grid grid-cols-4 gap-2.5 text-xs">
+                        <!-- 5 Clean Columns -->
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 text-xs">
                             <!-- Col 1: DKI Jakarta -->
                             <div>
                                 <div class="text-[10px] font-bold uppercase tracking-wider text-sky-400 mb-1 px-2">
@@ -214,7 +217,47 @@
                                 </div>
                             </div>
 
-                            <!-- Col 3: Bali -->
+                            <!-- Col 3: Bandung Raya -->
+                            <div>
+                                <div class="text-[10px] font-bold uppercase tracking-wider text-sky-400 mb-1 px-2">
+                                    Bandung Raya
+                                </div>
+                                <div class="space-y-0.5">
+                                    @foreach (['bandung', 'kabupaten-bandung', 'kota-cimahi'] as $slug)
+                                        @if(isset($navRegions['jawa-barat']['cities'][$slug]))
+                                            @php
+                                                $city = $navRegions['jawa-barat']['cities'][$slug];
+                                                $isCityActive = request()->is('area/' . $city['slug'] . '*');
+                                            @endphp
+                                            <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md transition-colors font-medium {{ $isCityActive ? 'bg-slate-800 text-sky-400 font-bold border border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
+                                                {{ $city['name'] }}
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <!-- Col 4: Semarang & Lampung -->
+                            <div>
+                                <div class="text-[10px] font-bold uppercase tracking-wider text-sky-400 mb-1 px-2">
+                                    Jateng &amp; Lampung
+                                </div>
+                                <div class="space-y-0.5 mb-2">
+                                    @foreach (['semarang' => 'jawa-tengah', 'kabupaten-demak' => 'jawa-tengah', 'bandar-lampung' => 'lampung'] as $slug => $province)
+                                        @if(isset($navRegions[$province]['cities'][$slug]))
+                                            @php
+                                                $city = $navRegions[$province]['cities'][$slug];
+                                                $isCityActive = request()->is('area/' . $city['slug'] . '*');
+                                            @endphp
+                                            <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md transition-colors font-medium {{ $isCityActive ? 'bg-slate-800 text-sky-400 font-bold border border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
+                                                {{ $city['name'] }}
+                                            </a>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <!-- Col 5: Bali -->
                             <div>
                                 <div class="text-[10px] font-bold uppercase tracking-wider text-sky-400 mb-1 px-2">
                                     BALI
@@ -236,24 +279,6 @@
                                             + Seluruh Bali &rarr;
                                         </a>
                                     @endif
-                                </div>
-                            </div>
-
-                            <!-- Col 4: Hub Lainnya -->
-                            <div>
-                                <div class="text-[10px] font-bold uppercase tracking-wider text-sky-400 mb-1 px-2">
-                                    Hub Lainnya
-                                </div>
-                                <div class="space-y-0.5 mb-2">
-                                    @foreach (['semarang' => 'jawa-tengah', 'bandar-lampung' => 'lampung'] as $slug => $province)
-                                        @php
-                                            $city = $navRegions[$province]['cities'][$slug];
-                                            $isCityActive = request()->is('area/' . $city['slug'] . '*');
-                                        @endphp
-                                        <a href="{{ route('area.city', ['city' => $city['slug']]) }}" @click="activeMenu = null" class="block px-2 py-1.5 rounded-md transition-colors font-medium {{ $isCityActive ? 'bg-slate-800 text-sky-400 font-bold border border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/80' }}">
-                                            {{ $city['name'] }}
-                                        </a>
-                                    @endforeach
                                 </div>
                             </div>
                         </div>

@@ -68,7 +68,7 @@ Route::get('/artikel/{slug}', [Pages\ArticleController::class, 'articleDetail'])
 // Human HTML Sitemap & Dynamic XML Sitemap
 Route::get('/sitemap', [Pages\SitemapController::class, 'htmlSitemap'])->name('sitemap.html');
 Route::get('/peta-situs', fn () => redirect()->route('sitemap.html', [], 301));
-Route::get('/sitemap.xml', [Pages\SitemapController::class, 'sitemap'])
+Route::get('/sitemap.xml', [Pages\SitemapController::class, 'xml'])
     ->withoutMiddleware([
         \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
         \Illuminate\Session\Middleware\StartSession::class,

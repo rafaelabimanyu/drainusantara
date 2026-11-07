@@ -14,7 +14,7 @@ return [
             // PageMetadata supplies unbranded page titles; SEOTools owns the suffix.
             'title' => 'Drainusantara',
             'titleBefore' => false, // Put defaults.title before page title, like 'It's Over 9000! - Dashboard'
-            'description' => 'Jasa pelancaran saluran pipa mampet wastafel & kloset tanpa bongkar keramik di Jabodetabek, Semarang & Lampung. Mesin spiral baja, garansi 30 hari.',
+            'description' => 'Jasa pelancaran saluran pipa mampet wastafel & kloset tanpa bongkar keramik di Jabodetabek, Bandung, Semarang, Demak, Lampung & Bali. Mesin spiral baja, garansi 30 hari.',
             'separator' => ' | ',
             'keywords' => ['jasa saluran mampet', 'drain cleaner rooter', 'wc mampet', 'wastafel mampet', 'cctv pipa', 'tanpa bongkar'],
             'canonical' => 'current', // Set to null or 'full' to use Url::full(), set to 'current' to use Url::current(), set false to total remove

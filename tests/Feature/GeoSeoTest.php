@@ -6,7 +6,9 @@ namespace Tests\Feature;
 
 use App\Models\CoverageArea;
 use App\Models\Service;
+use App\Services\RegionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Blade;
 use Tests\TestCase;
 
 class GeoSeoTest extends TestCase
@@ -135,6 +137,35 @@ class GeoSeoTest extends TestCase
         $lampung = $this->get(route('area.province', ['province' => 'lampung']));
         $lampung->assertOk();
         $lampung->assertSee('<meta name="geo.region" content="ID-LA">', false);
+
+        $bali = $this->get(route('area.province', ['province' => 'bali']));
+        $bali->assertOk();
+        $bali->assertSee('<meta name="geo.region" content="ID-BA">', false);
+    }
+
+    public function test_bali_page_renders_accurate_bali_centroid_coordinates(): void
+    {
+        $response = $this->get('/area/kota-denpasar/sanur');
+        $response->assertOk();
+
+        $response->assertSee('<meta name="geo.region" content="ID-BA">', false);
+        $response->assertSee('<meta name="geo.placename" content="Sanur, Kota Denpasar">', false);
+        $response->assertSee('<meta name="geo.position" content="-8.6882;115.2625">', false);
+        $response->assertSee('<meta name="ICBM" content="-8.6882, 115.2625">', false);
+        $response->assertSee('"@type":"AggregateRating"', false);
+        $response->assertSee('"ratingValue":"4.9"', false);
+    }
+
+    public function test_layout_avoids_duplicate_conflicting_geo_tags_on_area_pages(): void
+    {
+        $response = $this->get('/area/jakarta-selatan');
+        $response->assertOk();
+
+        $content = $response->getContent();
+        $this->assertSame(1, substr_count($content, 'name="geo.region"'));
+        $this->assertSame(1, substr_count($content, 'name="geo.position"'));
+        $this->assertStringContainsString('hreflang="id"', $content);
+        $this->assertStringContainsString('hreflang="x-default"', $content);
     }
 
     public function test_ai_catalog_contains_enriched_city_fleet_data(): void
@@ -155,5 +186,34 @@ class GeoSeoTest extends TestCase
         $this->assertContains('Bogor', $cityNames);
         $this->assertContains('Kota Semarang', $cityNames);
         $this->assertContains('Bandar Lampung', $cityNames);
+    }
+
+    public function test_schema_plumber_component_renders_complete_local_business_data(): void
+    {
+        $rendered = Blade::render('<x-schema.plumber city-slug="bandung" district="dago" />');
+
+        $this->assertStringContainsString('<script type="application/ld+json">', $rendered);
+        $this->assertStringContainsString('PT JAWA JAYA ROOTER', $rendered);
+        $this->assertStringContainsString('+6285609009009', $rendered);
+        $this->assertStringContainsString('Mo-Su 00:00-24:00', $rendered);
+        $this->assertStringContainsString('"ratingValue": "4.9"', $rendered);
+        $this->assertStringContainsString('"@type": "OfferCatalog"', $rendered);
+        $this->assertStringContainsString('"@type": "GeoCoordinates"', $rendered);
+
+        $centroid = RegionService::centroid('bandung', 'dago');
+        $this->assertStringContainsString('"latitude": ' . $centroid['lat'], $rendered);
+        $this->assertStringContainsString('"longitude": ' . $centroid['lng'], $rendered);
+
+        preg_match('/<script type="application\/ld\+json">(.*?)<\/script>/s', $rendered, $matches);
+        $this->assertNotEmpty($matches[1]);
+        $json = json_decode(trim($matches[1]), true);
+        $this->assertIsArray($json);
+        $this->assertSame('Plumber', $json['@type']);
+        $this->assertSame('PT JAWA JAYA ROOTER', $json['name']);
+        $this->assertSame('+6285609009009', $json['telephone']);
+        $this->assertSame('4.9', $json['aggregateRating']['ratingValue']);
+        $this->assertSame($centroid['lat'], $json['geo']['latitude']);
+        $this->assertSame($centroid['lng'], $json['geo']['longitude']);
+        $this->assertSame('Layanan Pelancaran Pipa Mampet', $json['hasOfferCatalog']['name']);
     }
 }

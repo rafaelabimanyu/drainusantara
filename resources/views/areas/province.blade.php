@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@push('head')
+@section('custom_geo')
     @php
         $firstCityKey = array_key_first($provinceData['cities'] ?? []);
         $provCentroid = \App\Services\RegionService::centroid($firstCityKey ?? 'jakarta-timur');
@@ -16,7 +16,7 @@
     <meta property="og:longitude" content="{{ $provCentroid['lng'] }}">
     <meta property="og:locality" content="{{ $provinceData['name'] }}">
     <meta property="og:country-name" content="Indonesia">
-@endpush
+@endsection
 
 @section('content')
 @php

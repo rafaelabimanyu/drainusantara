@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@push('head')
+@section('custom_geo')
     @php
         $coords = $area->resolved_coordinates;
         $isoRegion = $area->iso_region;
@@ -17,7 +17,7 @@
     <meta property="og:locality" content="{{ $area->district }}">
     <meta property="og:region" content="{{ $area->city }}">
     <meta property="og:country-name" content="Indonesia">
-@endpush
+@endsection
 
 @section('content')
 @php

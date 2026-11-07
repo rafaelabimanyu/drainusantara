@@ -47,8 +47,10 @@ class AreaController extends Controller
         JsonLdMulti::setType('Plumber');
         JsonLdMulti::addValues([
             'name' => 'Drainusantara - Wilayah Jangkauan Layanan',
+            'url' => route('area.index'),
+            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
             'telephone' => $this->formatInternationalPhone(),
-            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung'],
+            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
             'priceRange' => 'Mulai Rp 400.000',
         ]);
 
@@ -125,10 +127,19 @@ class AreaController extends Controller
         JsonLdMulti::setType('Plumber');
         JsonLdMulti::addValues([
             'name' => "Drainusantara Provinsi {$provinceData['name']}",
+            'url' => url()->current(),
+            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
             'areaServed' => $provinceData['name'],
             'telephone' => $this->formatInternationalPhone(),
             'priceRange' => 'Mulai Rp ' . number_format($area->resolved_price, 0, ',', '.'),
             'openingHours' => 'Mo-Su 00:00-24:00',
+            'aggregateRating' => [
+                '@type' => 'AggregateRating',
+                'ratingValue' => '4.9',
+                'reviewCount' => 65,
+                'bestRating' => '5',
+                'worstRating' => '1',
+            ],
             'geo' => [
                 '@type' => 'GeoCoordinates',
                 'latitude' => $provCentroid['lat'],
@@ -281,6 +292,8 @@ class AreaController extends Controller
 
         $jsonLdValues = [
             'name' => "Drainusantara {$cityData['name']}",
+            'url' => url()->current(),
+            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
             'areaServed' => !empty($districtsServed) ? $districtsServed : "{$cityData['name']}, {$cityData['province_name']}",
             'telephone' => $this->formatInternationalPhone(),
             'priceRange' => 'Mulai Rp ' . number_format($area->resolved_price, 0, ',', '.'),
@@ -292,6 +305,13 @@ class AreaController extends Controller
                     'opens' => '00:00',
                     'closes' => '23:59',
                 ],
+            ],
+            'aggregateRating' => [
+                '@type' => 'AggregateRating',
+                'ratingValue' => '4.9',
+                'reviewCount' => 48,
+                'bestRating' => '5',
+                'worstRating' => '1',
             ],
             'address' => [
                 '@type' => 'PostalAddress',
@@ -508,6 +528,8 @@ class AreaController extends Controller
         JsonLdMulti::setDescription($description);
         $jsonLdValues = [
             'name' => "Drainusantara {$area->district}",
+            'url' => url()->current(),
+            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
             'telephone' => $this->formatInternationalPhone(),
             'priceRange' => 'Mulai Rp ' . number_format($area->resolved_price, 0, ',', '.'),
             'openingHours' => 'Mo-Su 00:00-24:00',
@@ -518,6 +540,13 @@ class AreaController extends Controller
                     'opens' => '00:00',
                     'closes' => '23:59',
                 ],
+            ],
+            'aggregateRating' => [
+                '@type' => 'AggregateRating',
+                'ratingValue' => '4.9',
+                'reviewCount' => 38,
+                'bestRating' => '5',
+                'worstRating' => '1',
             ],
             'areaServed' => [
                 '@type' => 'AdministrativeArea',

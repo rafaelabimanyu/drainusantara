@@ -1,9 +1,25 @@
 @extends('layouts.app')
 
-@push('head')
+@section('custom_geo')
     @php
         $resolvedCoords = $area->resolved_coordinates;
         $isoRegion = \App\Services\RegionService::isoRegion($cityData['province_slug'] ?? null);
+    @endphp
+    <meta name="geo.region" content="{{ $isoRegion }}">
+    <meta name="geo.placename" content="{{ $cityData['name'] }}, {{ $cityData['province_name'] }}">
+    <meta name="geo.position" content="{{ $resolvedCoords['lat'] }};{{ $resolvedCoords['lng'] }}">
+    <meta name="ICBM" content="{{ $resolvedCoords['lat'] }}, {{ $resolvedCoords['lng'] }}">
+
+    <!-- OpenGraph Location Tags -->
+    <meta property="og:latitude" content="{{ $resolvedCoords['lat'] }}">
+    <meta property="og:longitude" content="{{ $resolvedCoords['lng'] }}">
+    <meta property="og:locality" content="{{ $cityData['name'] }}">
+    <meta property="og:region" content="{{ $cityData['province_name'] }}">
+    <meta property="og:country-name" content="Indonesia">
+@endsection
+
+@push('head')
+    @php
         $customHeroBg = !empty($area->hero_image) ? asset($area->hero_image) : null;
         $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($cityData['name']);
         $provinceSlug = $cityData['province_slug'] ?? null;
@@ -18,18 +34,6 @@
                             ? asset("images/areas/provinces/{$provinceSlug}.jpg")
                             : null))));
     @endphp
-    <meta name="geo.region" content="{{ $isoRegion }}">
-    <meta name="geo.placename" content="{{ $cityData['name'] }}, {{ $cityData['province_name'] }}">
-    <meta name="geo.position" content="{{ $resolvedCoords['lat'] }};{{ $resolvedCoords['lng'] }}">
-    <meta name="ICBM" content="{{ $resolvedCoords['lat'] }}, {{ $resolvedCoords['lng'] }}">
-
-    <!-- OpenGraph Location Tags -->
-    <meta property="og:latitude" content="{{ $resolvedCoords['lat'] }}">
-    <meta property="og:longitude" content="{{ $resolvedCoords['lng'] }}">
-    <meta property="og:locality" content="{{ $cityData['name'] }}">
-    <meta property="og:region" content="{{ $cityData['province_name'] }}">
-    <meta property="og:country-name" content="Indonesia">
-
     @if(!empty($heroBgImage))
     <link rel="preload" as="image" href="{{ $heroBgImage }}" fetchpriority="high">
     @endif
@@ -1002,6 +1006,36 @@
                                 <span class="inline-block bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-md border border-slate-200">
                                     {{ $tag }}
                                 </span>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                @php
+                    $allProvincesData = \App\Services\RegionService::all();
+                    $currentProvData = $allProvincesData[$cityData['province_slug']] ?? null;
+                    $siblingCities = collect($currentProvData['cities'] ?? [])
+                        ->reject(fn($c) => ($c['slug'] ?? '') === $cityData['slug']);
+                @endphp
+
+                @if($siblingCities->isNotEmpty())
+                    <div class="mt-8 pt-6 border-t border-slate-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-sky-800">
+                                Posko Kota Terkait di {{ $cityData['province_name'] }}
+                            </span>
+                            @if(!empty($cityData['province_slug']))
+                                <a href="{{ route('area.province', ['province' => $cityData['province_slug']]) }}" class="text-xs font-semibold text-sky-700 hover:underline">
+                                    Semua {{ $cityData['province_name'] }} &rarr;
+                                </a>
+                            @endif
+                        </div>
+                        <div class="flex flex-wrap gap-2 text-xs">
+                            @foreach($siblingCities as $sibling)
+                                <a href="{{ route('area.city', ['city' => $sibling['slug']]) }}" 
+                                   class="px-3 py-1.5 rounded-md bg-slate-50 hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all">
+                                    {{ $sibling['name'] }}
+                                </a>
                             @endforeach
                         </div>
                     </div>

@@ -23,11 +23,19 @@
     <meta name="msapplication-TileColor" content="#0369a1">
     <meta name="format-detection" content="telephone=no">
 
-    <!-- Geo-Location standard Indonesia -->
-    <meta name="geo.region" content="ID">
-    <meta name="geo.placename" content="Indonesia">
-    <meta name="geo.position" content="-6.2088;106.8456">
-    <meta name="ICBM" content="-6.2088, 106.8456">
+    <!-- Language & Regional Alternates -->
+    <link rel="alternate" hreflang="id" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
+
+    <!-- Geo-Location standard Indonesia & Regional Targeting -->
+    @hasSection('custom_geo')
+        @yield('custom_geo')
+    @else
+        <meta name="geo.region" content="ID">
+        <meta name="geo.placename" content="Indonesia">
+        <meta name="geo.position" content="-6.2088;106.8456">
+        <meta name="ICBM" content="-6.2088, 106.8456">
+    @endif
 
     <!-- Favicon & Web Icon -->
     <link rel="icon" type="image/webp" href="{{ asset('images/logo/WebIcon.webp') }}">

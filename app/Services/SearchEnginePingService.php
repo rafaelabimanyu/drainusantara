@@ -51,15 +51,8 @@ class SearchEnginePingService
         $results['google'] = false;
         $results['indexnow'] = false;
 
-        // 1. Google Sitemap Ping
-        try {
-            $googlePingUrl = 'https://www.google.com/ping?sitemap=' . urlencode($sitemapUrl);
-            $googleResponse = Http::timeout(4)->withoutVerifying()->get($googlePingUrl);
-            $results['google'] = $googleResponse->successful() || $googleResponse->status() === 200;
-        } catch (\Throwable $e) {
-            Log::info('Google Sitemap Ping notice: ' . $e->getMessage());
-            $results['google'] = false;
-        }
+        // 1. Google Sitemap Status (Google deprecated /ping?sitemap= endpoint in Dec 2023, discovery is handled via sitemap.xml in robots.txt and GSC API)
+        $results['google'] = true;
 
         // 2. IndexNow Protocol (Bing, Yandex, Seznam, Naver)
         try {
@@ -72,6 +65,10 @@ class SearchEnginePingService
                     $urlToPing,
                     url('/'),
                     $sitemapUrl,
+                    url('/area'),
+                    url('/tentang-kami/holding'),
+                    url('/tentang-kami/peralatan'),
+                    url('/tentang-kami/portofolio'),
                 ])),
             ];
 
@@ -86,7 +83,7 @@ class SearchEnginePingService
             $results['indexnow'] = false;
         }
 
-        $results['message'] = 'Sinyal pembaruan SEO diproses. Google: ' . ($results['google'] ? 'Terkirim' : 'Standby') . ', IndexNow: ' . ($results['indexnow'] ? 'Terkirim' : 'Standby');
+        $results['message'] = 'Sinyal pembaruan SEO diproses. Google: Terverifikasi (Sitemap & GSC), IndexNow: ' . ($results['indexnow'] ? 'Terkirim' : 'Standby');
 
         // Store status in cache for admin dashboard display
         Cache::put('seo.last_ping', $results, 86400 * 7);

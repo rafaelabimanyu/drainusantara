@@ -76,11 +76,20 @@ class SitemapTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'text/plain; charset=utf-8');
-        $this->assertStringContainsString('User-agent: *', $response->getContent());
-        $this->assertStringContainsString('Disallow: /admin/', $response->getContent());
-        $this->assertStringContainsString('Disallow: /preview-*', $response->getContent());
-        $this->assertStringContainsString('Allow: /llms.txt', $response->getContent());
-        $this->assertStringContainsString('Sitemap: '.url('/sitemap.xml'), $response->getContent());
+        $content = $response->getContent();
+
+        $this->assertStringContainsString('User-agent: *', $content);
+        $this->assertStringContainsString('Disallow: /admin/', $content);
+        $this->assertStringContainsString('Disallow: /api/', $content);
+        $this->assertStringContainsString('Disallow: /preview-*', $content);
+        $this->assertStringContainsString('Allow: /llms.txt', $content);
+        $this->assertStringContainsString('User-agent: Google-Extended', $content);
+        $this->assertStringContainsString('User-agent: GPTBot', $content);
+        $this->assertStringContainsString('User-agent: ChatGPT-User', $content);
+        $this->assertStringContainsString('User-agent: Claude-Bot', $content);
+        $this->assertStringContainsString('User-agent: PerplexityBot', $content);
+        $this->assertStringContainsString('Sitemap: '.url('/sitemap.xml'), $content);
+        $this->assertStringContainsString(url('/.well-known/ai-catalog.json'), $content);
     }
 
     public function test_legacy_artikel_url_redirects_301_to_pengetahuan(): void
@@ -94,9 +103,11 @@ class SitemapTest extends TestCase
     public function test_sitemap_is_cached(): void
     {
         Cache::forget('sitemap.xml');
+        Cache::forget('sitemap_xml');
         $this->get('/sitemap.xml');
 
         $this->assertTrue(Cache::has('sitemap.xml'));
+        $this->assertTrue(Cache::has('sitemap_xml'));
     }
 
     public function test_html_sitemap_renders_successfully_for_human_visitors(): void
@@ -111,8 +122,40 @@ class SitemapTest extends TestCase
         $response->assertSee('Wilayah Layanan Siaga 24 Jam');
         $response->assertSee('Profil Perusahaan &amp; Tata Kelola', false);
         $response->assertSee('/sitemap.xml');
+        $response->assertSee(route('area.detail', ['city' => 'bandung', 'district' => 'dago']));
+        $response->assertSee(route('area.detail', ['city' => 'bandar-lampung', 'district' => 'sukarame']));
 
         $this->assertTrue(Cache::has('sitemap.html_data'));
+    }
+
+    public function test_sitemap_xml_contains_lastmod_and_priority_tags(): void
+    {
+        Article::create([
+            'title' => 'Panduan Deteksi Pipa Mampet',
+            'slug' => 'panduan-deteksi-pipa-mampet',
+            'content' => 'Panduan lengkap deteksi pipa.',
+            'is_published' => true,
+        ]);
+
+        Cache::forget('sitemap.xml');
+        $response = $this->get('/sitemap.xml');
+        $response->assertStatus(200);
+        $content = $response->getContent();
+
+        $this->assertStringContainsString('<lastmod>', $content);
+        $this->assertStringContainsString('<priority>1.0</priority>', $content);
+        $this->assertStringContainsString('<priority>0.9</priority>', $content);
+        $this->assertStringContainsString('<priority>0.8</priority>', $content);
+        $this->assertStringContainsString('<priority>0.5</priority>', $content);
+        $this->assertStringContainsString(url('/area/bandung/dago'), $content);
+        $this->assertStringContainsString(url('/tentang-kami/holding'), $content);
+    }
+
+    public function test_indexnow_verification_key_file_exists(): void
+    {
+        $keyPath = public_path('drainusantara-indexnow-key.txt');
+        $this->assertFileExists($keyPath);
+        $this->assertSame('drainusantara-indexnow-key', trim(file_get_contents($keyPath)));
     }
 
     public function test_peta_situs_alias_redirects_301_to_sitemap(): void

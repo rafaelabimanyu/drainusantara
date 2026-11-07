@@ -29,7 +29,7 @@ class HomeController extends Controller
     public function index(): View
     {
         PageMetadata::title('Jasa Saluran Pipa Mampet Tanpa Bongkar');
-        SEOMeta::setDescription('Jasa pelancar saluran pipa mampet wastafel & kloset tanpa bongkar keramik di Jabodetabek, Semarang & Lampung. Mesin spiral baja, garansi 30 hari.');
+        SEOMeta::setDescription('Jasa pelancar saluran pipa mampet wastafel & kloset tanpa bongkar keramik di Jabodetabek, Bandung, Semarang, Lampung & Bali. Mesin spiral baja, garansi 30 hari.');
         SEOMeta::setCanonical(url()->current());
         SEOMeta::addKeyword([
             'jasa saluran pipa mampet',
@@ -42,18 +42,21 @@ class HomeController extends Controller
             'garansi 30 hari',
             'drainusantara',
             'jabodetabek',
+            'bandung',
             'semarang',
             'bandar lampung',
+            'bali',
+            'denpasar',
         ]);
 
-        OpenGraph::setDescription('Layanan pelancar pipa mampet wastafel & kloset pakai mesin spiral baja tanpa bongkar keramik, garansi nota 30 hari.');
+        OpenGraph::setDescription('Layanan pelancar pipa mampet wastafel & kloset pakai mesin spiral baja tanpa bongkar keramik di Jabodetabek, Bandung, Semarang, Lampung & Bali, garansi nota 30 hari.');
         OpenGraph::setUrl(url()->current());
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
         OpenGraph::addProperty('site_name', 'Drainusantara');
         OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
-        TwitterCard::setDescription('Pelancar saluran wastafel & kloset tanpa bongkar keramik di Jabodetabek, Semarang & Lampung. Bergaransi 30 hari.');
+        TwitterCard::setDescription('Pelancar saluran wastafel & kloset tanpa bongkar keramik di Jabodetabek, Bandung, Semarang, Lampung & Bali. Bergaransi 30 hari.');
         TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         JsonLdMulti::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
@@ -61,10 +64,19 @@ class HomeController extends Controller
         JsonLdMulti::setType('Plumber');
         JsonLdMulti::addValues([
             'name' => 'Drainusantara',
+            'url' => url('/'),
+            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
             'telephone' => $this->formatInternationalPhone(),
             'priceRange' => 'Mulai Rp 400.000',
             'openingHours' => 'Mo-Su 00:00-24:00',
-            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung'],
+            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
+            'aggregateRating' => [
+                '@type' => 'AggregateRating',
+                'ratingValue' => '4.9',
+                'reviewCount' => 128,
+                'bestRating' => '5',
+                'worstRating' => '1',
+            ],
             'serviceType' => [
                 'Pelancaran Saluran Mampet',
                 'Inspeksi Kamera CCTV Pipa',

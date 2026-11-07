@@ -194,7 +194,7 @@
                     <li>
                         <a href="{{ route('about.portfolio') }}" class="hover:text-white transition-colors flex items-center gap-1.5">
                             <span class="text-sky-400 font-bold">&rsaquo;</span>
-                            <span>Kemitraan</span>
+                            <span>Kemitraan &amp; Portofolio Proyek</span>
                         </a>
                     </li>
                     <li>
@@ -226,19 +226,51 @@
                 </p>
                 <div class="space-y-2 text-xs">
                     <div class="p-2.5 rounded-lg bg-slate-800/80 border border-slate-700/80">
-                        <div class="font-bold text-white text-[11px]">Posko Jabodetabek:</div>
-                        <div class="text-slate-400 text-[11px]">Jakarta, Bogor, Depok, Tangerang, Bekasi, Sentul &amp; Cikarang</div>
+                        <div class="font-bold text-white text-[11px] mb-1">Posko Jabodetabek:</div>
+                        <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-slate-300 text-[11px]">
+                            <a href="{{ route('area.city', ['city' => 'jakarta-pusat']) }}" class="hover:text-sky-400 transition-colors">Jakarta</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'bogor']) }}" class="hover:text-sky-400 transition-colors">Bogor</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'depok-cinere']) }}" class="hover:text-sky-400 transition-colors">Depok</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'tangerang-kota']) }}" class="hover:text-sky-400 transition-colors">Tangerang</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'tangerang-selatan']) }}" class="hover:text-sky-400 transition-colors">Tangsel</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'bekasi-cikarang']) }}" class="hover:text-sky-400 transition-colors">Bekasi &amp; Cikarang</a>
+                        </div>
                     </div>
                     <div class="p-2.5 rounded-lg bg-slate-800/80 border border-slate-700/80">
-                        <div class="font-bold text-white text-[11px]">Posko Bandung Raya:</div>
-                        <div class="text-slate-400 text-[11px]">Kota Bandung, Kab. Bandung, Kota Cimahi (Utara, Barat, Tengah, Timur)</div>
+                        <div class="font-bold text-white text-[11px] mb-1">Posko Bandung Raya:</div>
+                        <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-slate-300 text-[11px]">
+                            <a href="{{ route('area.city', ['city' => 'bandung']) }}" class="hover:text-sky-400 transition-colors">Kota Bandung</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'kabupaten-bandung']) }}" class="hover:text-sky-400 transition-colors">Kab. Bandung</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'kota-cimahi']) }}" class="hover:text-sky-400 transition-colors">Kota Cimahi</a>
+                        </div>
                     </div>
                     <div class="p-2.5 rounded-lg bg-slate-800/80 border border-slate-700/80">
-                        <div class="font-bold text-white text-[11px]">Posko Semarang Raya &amp; Demak:</div>
-                        <div class="text-slate-400 text-[11px]">Kota Semarang, Kab. Semarang, Kab. Demak, &amp; Bandar Lampung</div>
+                        <div class="font-bold text-white text-[11px] mb-1">Posko Semarang, Lampung &amp; Bali:</div>
+                        <div class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-slate-300 text-[11px]">
+                            <a href="{{ route('area.city', ['city' => 'semarang']) }}" class="hover:text-sky-400 transition-colors">Semarang</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'kabupaten-semarang']) }}" class="hover:text-sky-400 transition-colors">Kab. Semarang</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'demak']) }}" class="hover:text-sky-400 transition-colors">Demak</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'bandar-lampung']) }}" class="hover:text-sky-400 transition-colors">Lampung</a>
+                            <span class="text-slate-600">&bull;</span>
+                            <a href="{{ route('area.city', ['city' => 'kota-denpasar']) }}" class="hover:text-sky-400 transition-colors">Bali</a>
+                        </div>
                     </div>
                 </div>
-                <div class="pt-1">
+                <div class="pt-1 flex flex-col gap-2">
+                    <a href="{{ route('area.index') }}" class="text-[11px] font-semibold text-sky-400 hover:text-sky-300 flex items-center justify-between group">
+                        <span>Lihat Semua 114+ Wilayah &amp; Posko Layanan</span>
+                        <span class="transition-transform group-hover:translate-x-0.5">&rarr;</span>
+                    </a>
                     <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat ke alamat saya.') }}"
                        :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat ke alamat saya.')"
                        target="_blank" 
