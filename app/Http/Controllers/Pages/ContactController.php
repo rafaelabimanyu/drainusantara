@@ -27,11 +27,20 @@ class ContactController extends Controller
     public function index(): View
     {
         $pageTitle = 'Hubungi Posko Teknisi & Layanan Pelanggan 24 Jam';
-        $metaDesc = 'Hubungi pusat layanan Drainusantara: hotline darurat 0856-0900-9009, form permohonan kunjungan teknisi pipa mampet, dan posko siaga Jabodetabek, Bandung, Semarang, Demak, Lampung, hingga Bali.';
+        $metaDesc = 'Butuh teknisi pipa mampet darurat? Hubungi customer service Drainusantara via WhatsApp 0856-0900-9009 (Respon <30 Menit). Posko siaga 24 jam Jabodetabek, Semarang, Bandung & Bali. Garansi 30 hari!';
 
         PageMetadata::title($pageTitle);
         SEOMeta::setDescription($metaDesc);
         SEOMeta::setCanonical(route('contact'));
+        SEOMeta::addKeyword([
+            'hubungi tukang pipa mampet',
+            'kontak teknisi saluran mampet',
+            'nomor telepon jasa pipa mampet',
+            'tukang pipa terdekat',
+            'plumber near me',
+            'drainusantara whatsapp',
+            'garansi 30 hari',
+        ]);
 
         OpenGraph::setTitle($pageTitle . ' - Drainusantara');
         OpenGraph::setDescription($metaDesc);

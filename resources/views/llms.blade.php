@@ -6,9 +6,18 @@ Drainusantara (di bawah naungan PT Jawa Jaya Rooter) adalah spesialis jasa pelan
 - **Metode Kerja:** Non-destructive engineering (100% tanpa bongkar keramik lantai/dinding).
 - **Kebijakan Harga:** "No cure, no pay" (Tidak berhasil lancar, 100% gratis). Tarif dasar mulai Rp 400.000.
 - **Ketentuan Garansi:** Garansi tertulis 30 hari kalender pasca-pengerjaan.
-- **Waktu Operasional:** Siaga 24 Jam (24/7). Waktu respons tim < 1 jam.
-- **Spesifikasi Alat:** Mesin spiral rotary (Rooter) Ridgid baja lentur, Inspeksi Kamera CCTV Endoskopi IP68 (jangkauan hingga 30 meter).
-- **Batas Bahan:** Bebas bahan kimia korosif / soda api (aman untuk instalasi pipa PVC jangka panjang).
+- **Waktu Operasional:** Siaga 24 Jam (24/7). Waktu respons tim < 1 jam (prioritas tanggap darurat 15-30 menit).
+- **Spesifikasi Alat:** Mesin spiral rotary (Rooter) Ridgid baja karbon lentur, Inspeksi Kamera CCTV Endoskopi IP68 (jangkauan hingga 30 meter).
+- **Batas Bahan:** 100% bebas bahan kimia korosif / soda api (aman untuk instalasi pipa PVC jangka panjang).
+
+## Matriks Perbandingan Metode Pembersihan Pipa
+| Parameter | Mesin Spiral Ridgid Drainusantara | Soda Api (Kimia Korosif) | Pembongkaran Keramik Konvensional |
+| :--- | :--- | :--- | :--- |
+| **Kerusakan Fisik** | 0% (Tanpa bongkar tegel/lantai) | Deformasi panas melelehkan PVC | Kerusakan keramik & semen 100% |
+| **Dampak Kerak Lemak** | Terkikis & terangkat tuntas | Lemak membatu (reaksi safonifikasi) | Jalur diganti baru, biaya mahal |
+| **Keamanan Penghuni** | Aman tanpa uap/gas beracun | Risiko luka bakar kimia & gas H2S | Bising, berdebu, butuh renovasi hari |
+| **Garansi Kerja** | Garansi resmi tertulis 30 hari | Tidak ada jaminan | Tergantung tukang bangunan |
+| **Durasi Kerja** | 30 - 90 menit selesai | Sering gagal & mengendap | 2 - 5 hari kerja renovasi |
 
 ## Area Jangkauan Resmi (Geotargeting)
 Melayani cakupan rumah tangga (residensial), ruko, restoran komersial, dan hotel di wilayah: Jabodetabek (Jakarta, Bogor, Depok, Tangerang, Bekasi), area Bandung Raya, Kota Semarang, Bandar Lampung, dan Bali.

@@ -98,8 +98,17 @@ class AreaController extends Controller
     public function areasIndex(): View
     {
         PageMetadata::title('Wilayah Jangkauan Teknisi Pipa Mampet');
-        SEOMeta::setDescription('Daftar jangkauan posko siaga teknisi pipa mampet Drainusantara di Jabodetabek, Semarang, & Lampung. Siaga 24 jam respon cepat & garansi 30 hari.');
+        SEOMeta::setDescription('Cari jasa saluran pipa mampet terdekat? Posko siaga teknisi Drainusantara di 50+ kota: Jabodetabek, Semarang, Bandung, Lampung & Bali. Siaga 24 jam & garansi 30 hari.');
         SEOMeta::setCanonical(url()->current());
+        SEOMeta::addKeyword([
+            'jasa saluran mampet terdekat',
+            'jasa pipa mampet terdekat',
+            'tukang pipa mampet terdekat',
+            'posko teknisi pipa mampet',
+            'plumber near me',
+            'tanpa bongkar keramik',
+            'garansi 30 hari',
+        ]);
 
         OpenGraph::setDescription('Armada siaga teknisi pelancar saluran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.');
         OpenGraph::setUrl(url()->current());
@@ -303,6 +312,11 @@ class AreaController extends Controller
     public function city(string $city): View|RedirectResponse
     {
         $normalizedCity = Str::slug($city);
+
+        if (in_array($normalizedCity, ['jakarta', 'dki-jakarta', 'dki'], true)) {
+            return redirect()->route('area.province', ['province' => 'dki-jakarta'], 301);
+        }
+
         $cityAliases = self::getCityAliases();
 
         if (isset($cityAliases[$normalizedCity]) && $cityAliases[$normalizedCity] !== $city) {
@@ -345,31 +359,23 @@ class AreaController extends Controller
             ]);
         }
 
-        if ($area->meta_title) {
-            $cleanTitle = PageMetadata::cleanTitle($area->meta_title);
-            if (preg_match('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', $cleanTitle)) {
-                $locationPart = preg_replace('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', '', $cleanTitle);
-                $cleanTitle = "Jasa Saluran Pipa Mampet {$locationPart}";
-                if (! str_contains(strtolower($cleanTitle), 'garansi')) {
-                    $cleanTitle .= ' - Tanpa Bongkar & Garansi 30 Hari';
-                }
-            }
-        } else {
-            $cleanTitle = "Jasa Saluran Pipa Mampet {$searchCityName} - Tanpa Bongkar & Garansi 30 Hari";
-        }
-
-        $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$cityData['name']}. Pelancaran wastafel, kloset toilet & floor drain tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!";
+        $rawTitle = $area->meta_title ?: "Jasa Pipa Mampet {$cityData['name']}";
+        $cleanTitle = PageMetadata::cleanTitle($rawTitle);
+        $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$cityData['name']} tanpa bongkar keramik. Atasi wastafel, kloset toilet, & floor drain bergaransi 30 hari. Siaga 24 jam!";
 
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
         SEOMeta::setCanonical(url()->current());
         SEOMeta::addKeyword([
-            "jasa saluran pipa mampet {$searchCityName}",
-            "jasa saluran mampet {$searchCityName}",
-            "pipa mampet {$searchCityName}",
-            "wastafel mampet {$searchCityName}",
-            "toilet mampet {$searchCityName}",
-            "sedot lemak {$searchCityName}",
+            "jasa saluran pipa mampet {$cityData['name']}",
+            "jasa saluran mampet {$cityData['name']}",
+            "jasa pipa mampet {$cityData['name']}",
+            "saluran mampet {$cityData['name']}",
+            "tukang ledeng {$cityData['name']}",
+            "tukang pipa {$cityData['name']}",
+            "wastafel mampet {$cityData['name']}",
+            "toilet mampet {$cityData['name']}",
+            "sedot lemak {$cityData['name']}",
             'tanpa bongkar keramik',
             'garansi 30 hari',
             'drainusantara',
@@ -419,10 +425,59 @@ class AreaController extends Controller
                 'latitude' => $resolvedCoords['lat'],
                 'longitude' => $resolvedCoords['lng'],
             ],
-            'sameAs' => $this->getSameAsUrls(),
-            'hasMap' => config('services.company.google_maps_url') ?: null,
-            'parentOrganization' => $this->getParentOrganizationSchema(),
+            'alternateName' => 'Drainusantara',
+            'brand' => [
+                '@type' => 'Brand',
+                'name' => 'Drainusantara',
+            ],
+            'serviceType' => [
+                'Jasa Saluran Mampet',
+                'Jasa Pipa Mampet',
+                'Pelancaran Pipa Tanpa Bongkar',
+                'Plumber',
+                'Drain Cleaning Service',
+                'Rooter Service',
+            ],
+            'sameAs' => array_values(array_unique(array_filter([
+                config('services.company.maps_url'),
+                config('services.company.google_maps_url'),
+                config('services.social.instagram'),
+                config('services.social.tiktok'),
+                config('services.social.youtube'),
+                config('services.social.facebook'),
+                config('services.social.linkedin'),
+                'https://www.wikidata.org/wiki/Q193633',
+                'https://www.wikidata.org/wiki/Q258385',
+            ]))),
+            'parentOrganization' => [
+                '@type' => 'Organization',
+                'name' => 'PT JAWA JAYA ROOTER',
+                'url' => url('/'),
+            ],
+            'hasOfferCatalog' => [
+                '@type' => 'OfferCatalog',
+                'name' => 'Layanan Pelancaran Pipa Mampet',
+                'itemListElement' => [
+                    [
+                        '@type' => 'Offer',
+                        'itemOffered' => [
+                            '@type' => 'Service',
+                            'name' => 'Pelancaran Saluran Pipa Tanpa Bongkar',
+                            'description' => "Penanganan wastafel, kloset, dan floor drain di seluruh wilayah {$cityData['name']}.",
+                        ],
+                        'priceSpecification' => [
+                            '@type' => 'PriceSpecification',
+                            'price' => $area->resolved_price,
+                            'priceCurrency' => 'IDR',
+                        ],
+                    ],
+                ],
+            ],
         ];
+
+        if ($mapsUrl = config('services.company.maps_url')) {
+            $jsonLdValues['hasMap'] = $mapsUrl;
+        }
 
         JsonLdMulti::setTitle("Drainusantara {$cityData['name']}");
         JsonLdMulti::setDescription($description);
@@ -504,6 +559,19 @@ class AreaController extends Controller
     public function area(string $city, string $district): View|RedirectResponse
     {
         $lowerCity = Str::slug($city);
+
+        if (in_array($lowerCity, ['jakarta', 'dki-jakarta', 'dki'], true)) {
+            $jakartaCities = ['jakarta-selatan', 'jakarta-timur', 'jakarta-barat', 'jakarta-utara', 'jakarta-pusat'];
+            foreach ($jakartaCities as $jCity) {
+                $cData = RegionService::findCity($jCity);
+                if ($cData && collect($cData['districts'])->contains(fn ($d) => Str::slug($d) === $district)) {
+                    return redirect()->route('area.detail', ['city' => $jCity, 'district' => $district], 301);
+                }
+            }
+
+            return redirect()->route('area.province', ['province' => 'dki-jakarta'], 301);
+        }
+
         $cityAliases = self::getCityAliases();
 
         if (isset($cityAliases[$lowerCity]) && $cityAliases[$lowerCity] !== $city) {
@@ -541,20 +609,10 @@ class AreaController extends Controller
             ]);
         }
 
-        if ($area->meta_title) {
-            $cleanTitle = PageMetadata::cleanTitle($area->meta_title);
-            if (preg_match('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', $cleanTitle)) {
-                $locationPart = preg_replace('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', '', $cleanTitle);
-                $cleanTitle = "Jasa Saluran Pipa Mampet {$locationPart}";
-                if (! str_contains(strtolower($cleanTitle), 'garansi')) {
-                    $cleanTitle .= ' - Tanpa Bongkar & Garansi 30 Hari';
-                }
-            }
-        } else {
-            $cleanTitle = "Jasa Saluran Pipa Mampet {$area->district}, {$area->city} - Tanpa Bongkar & Garansi 30 Hari";
-        }
-
-        $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$area->district}, {$area->city}. Pelancaran wastafel, kloset toilet & floor drain 100% tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!";
+        $rawTitle = $area->meta_title ?: "Jasa Saluran Mampet {$area->district}, {$area->city}";
+        $cleanTitle = PageMetadata::cleanTitle($rawTitle);
+        $cleanTitle = preg_replace('/^Jasa Saluran Mampet di /i', 'Jasa Saluran Mampet ', $cleanTitle);
+        $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$area->district}, {$area->city} tanpa bongkar keramik. Atasi wastafel, kloset toilet, & talang air pakai spiral baja bergaransi 30 hari. Siaga 24 jam!";
 
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
@@ -562,6 +620,9 @@ class AreaController extends Controller
         $keywords = [
             "jasa saluran pipa mampet {$area->district}",
             "jasa saluran mampet {$area->district}",
+            "jasa pipa mampet {$area->district}",
+            "tukang pipa {$area->district}",
+            "tukang ledeng {$area->district}",
             "pipa mampet {$area->district}",
             "wastafel mampet {$area->district}",
             "toilet wc mampet {$area->district}",
@@ -634,9 +695,54 @@ class AreaController extends Controller
                 'latitude' => $resolvedCoords['lat'],
                 'longitude' => $resolvedCoords['lng'],
             ],
-            'sameAs' => $this->getSameAsUrls(),
-            'hasMap' => config('services.company.google_maps_url') ?: null,
-            'parentOrganization' => $this->getParentOrganizationSchema(),
+            'alternateName' => 'Drainusantara',
+            'brand' => [
+                '@type' => 'Brand',
+                'name' => 'Drainusantara',
+            ],
+            'serviceType' => [
+                'Jasa Saluran Mampet',
+                'Jasa Pipa Mampet',
+                'Pelancaran Pipa Tanpa Bongkar',
+                'Plumber',
+                'Drain Cleaning Service',
+                'Rooter Service',
+            ],
+            'sameAs' => array_values(array_unique(array_filter([
+                config('services.company.maps_url'),
+                config('services.company.google_maps_url'),
+                config('services.social.instagram'),
+                config('services.social.tiktok'),
+                config('services.social.youtube'),
+                config('services.social.facebook'),
+                config('services.social.linkedin'),
+                'https://www.wikidata.org/wiki/Q193633',
+                'https://www.wikidata.org/wiki/Q258385',
+            ]))),
+            'parentOrganization' => [
+                '@type' => 'Organization',
+                'name' => 'PT JAWA JAYA ROOTER',
+                'url' => url('/'),
+            ],
+            'hasOfferCatalog' => [
+                '@type' => 'OfferCatalog',
+                'name' => 'Layanan Pelancaran Pipa Mampet',
+                'itemListElement' => [
+                    [
+                        '@type' => 'Offer',
+                        'itemOffered' => [
+                            '@type' => 'Service',
+                            'name' => 'Pelancaran Saluran Pipa Tanpa Bongkar',
+                            'description' => "Penanganan wastafel, kloset, dan floor drain di {$area->district} dengan mesin spiral rotary.",
+                        ],
+                        'priceSpecification' => [
+                            '@type' => 'PriceSpecification',
+                            'price' => $area->resolved_price,
+                            'priceCurrency' => 'IDR',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         if (! empty($area->posko_name)) {
@@ -649,6 +755,10 @@ class AreaController extends Controller
                 ],
                 'geoRadius' => 15000,
             ];
+        }
+
+        if ($mapsUrl = config('services.company.maps_url')) {
+            $jsonLdValues['hasMap'] = $mapsUrl;
         }
 
         JsonLdMulti::setType('Plumber');

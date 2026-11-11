@@ -47,12 +47,15 @@ return [
         'legal_name' => 'PT Jawa Jaya Rooter',
         'trade_name' => 'Drainusantara',
         'full_name' => 'Drainusantara - Jasa Saluran Pipa Mampet',
+        'parent_name' => env('COMPANY_PARENT_NAME', 'PT JAWA JAYA ROOTER'),
         'phone' => env('COMPANY_PHONE', '+6285609009009'),
         'whatsapp' => env('WHATSAPP_NUMBER', '6285609009009'),
         'email' => env('COMPANY_OFFICE_EMAIL', 'drainusantara@gmail.com'),
-        'google_maps_url' => env('GOOGLE_MAPS_URL', 'https://maps.google.com/?cid=drainusantara'),
-        'address' => [
-            'full' => env('COMPANY_OFFICE_ADDRESS', 'Jl. Manunggal XVII No. 104, RT.5/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, DKI Jakarta 13810'),
+        'maps_url' => env('GOOGLE_MAPS_PROFILE_URL', env('GOOGLE_MAPS_URL', null)),
+        'google_maps_url' => env('GOOGLE_MAPS_URL', env('GOOGLE_MAPS_PROFILE_URL', null)),
+        'address' => env('COMPANY_OFFICE_ADDRESS', null),
+        'address_details' => [
+            'full' => env('COMPANY_OFFICE_ADDRESS', null),
             'street' => 'Jl. Manunggal XVII No. 104, RT.5/RW.11, Lubang Buaya, Kec. Cipayung',
             'locality' => 'Kota Jakarta Timur',
             'region' => 'DKI Jakarta',

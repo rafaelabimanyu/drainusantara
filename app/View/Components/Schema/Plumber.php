@@ -143,10 +143,26 @@ class Plumber extends Component
             $address['postalCode'] = $this->area->postal_code;
         }
 
-        return [
+        $sameAs = array_values(array_filter([
+            config('services.company.maps_url'),
+            config('services.social.instagram'),
+            config('services.social.tiktok'),
+            config('services.social.youtube'),
+            config('services.social.facebook'),
+            config('services.social.linkedin'),
+            'https://www.wikidata.org/wiki/Q193633',
+            'https://www.wikidata.org/wiki/Q258385',
+        ]));
+
+        $schemaData = [
             '@context' => 'https://schema.org',
             '@type' => 'Plumber',
             'name' => $this->name,
+            'alternateName' => 'Drainusantara',
+            'brand' => [
+                '@type' => 'Brand',
+                'name' => 'Drainusantara',
+            ],
             'legalName' => 'PT JAWA JAYA ROOTER',
             'url' => $canonicalUrl,
             'image' => $imageUrl,
@@ -175,6 +191,15 @@ class Plumber extends Component
             ],
             'areaServed' => $areaServed,
             'address' => $address,
+            'serviceType' => [
+                'Jasa Saluran Mampet',
+                'Jasa Pipa Mampet',
+                'Pelancaran Pipa Tanpa Bongkar',
+                'Plumber',
+                'Drain Cleaning Service',
+                'Rooter Service',
+            ],
+            'sameAs' => $sameAs,
             'hasOfferCatalog' => [
                 '@type' => 'OfferCatalog',
                 'name' => 'Layanan Pelancaran Pipa Mampet',
@@ -186,6 +211,12 @@ class Plumber extends Component
                 'url' => url('/'),
             ],
         ];
+
+        if ($mapsUrl = config('services.company.maps_url')) {
+            $schemaData['hasMap'] = $mapsUrl;
+        }
+
+        return $schemaData;
     }
 
     /**

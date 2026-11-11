@@ -99,7 +99,7 @@
                 </a>
             </div>
 
-            <nav class="hidden sm:flex items-center gap-2 text-xs text-slate-500 mb-6 font-medium flex-wrap" aria-label="Breadcrumb">
+            <nav class="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-500 mb-6 font-medium flex-wrap" aria-label="Breadcrumb">
                 <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -949,8 +949,9 @@
                                     $neighborSlug = \Illuminate\Support\Str::slug($neighbor);
                                 @endphp
                                 <a href="{{ route('area.detail', ['city' => $currentCitySlug, 'district' => $neighborSlug]) }}" 
-                                   class="px-3 py-2 rounded-md bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center gap-1.5">
-                                    <span>{{ $neighbor }}</span>
+                                   class="px-3 py-2 rounded-md bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center gap-1.5"
+                                   title="Jasa Saluran Pipa Mampet {{ $neighbor }}, {{ $cityName }}">
+                                    <span>Tukang Pipa {{ $neighbor }}</span>
                                 </a>
                             @endforeach
                         </div>

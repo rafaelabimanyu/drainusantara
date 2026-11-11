@@ -249,8 +249,15 @@ class AboutController extends Controller
         $companyPage = CompanyPage::getByKey('garansi');
 
         PageMetadata::title($companyPage->meta_title ?: 'Ketentuan Resmi Garansi 30 Hari Kalender');
-        SEOMeta::setDescription($companyPage->meta_description ?: 'Syarat dan ketentuan resmi jaminan garansi 30 hari kalender Drainusantara, komitmen No Cure No Pay, serta alur klaim kunjungan ulang bebas biaya.');
+        SEOMeta::setDescription($companyPage->meta_description ?: 'Garansi resmi 30 hari pelancaran saluran pipa mampet tanpa bongkar keramik. Komitmen No Cure No Pay: Tidak lancar, tidak bayar! Klaim mudah via WhatsApp 24 jam.');
         SEOMeta::setCanonical(route('about.warranty'));
+        SEOMeta::addKeyword([
+            'garansi saluran mampet 30 hari',
+            'no cure no pay jasa pipa',
+            'jaminan pipa mampet tuntas',
+            'klaim garansi drainusantara',
+            'garansi pelancaran kloset wastafel',
+        ]);
 
         OpenGraph::setDescription($companyPage->meta_description ?: 'Perlindungan purna jual nyata: nota digital resmi, komitmen No Cure No Pay, dan respon klaim prioritas.');
         OpenGraph::setUrl(route('about.warranty'));

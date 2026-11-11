@@ -62,10 +62,24 @@ class HomeController extends Controller
         JsonLdMulti::setTitle('Drainusantara - Jasa Saluran Pipa Mampet Tanpa Bongkar');
         JsonLdMulti::setDescription('Jasa pelancaran saluran pipa mampet profesional, mesin rooter spiral baja, dan inspeksi kamera CCTV pipa bergaransi 30 hari.');
         JsonLdMulti::setType('Plumber');
-        JsonLdMulti::addValues([
+
+        $homeSameAs = array_values(array_unique(array_filter([
+            config('services.company.maps_url'),
+            config('services.company.google_maps_url'),
+            config('services.social.instagram'),
+            config('services.social.tiktok'),
+            config('services.social.youtube'),
+            config('services.social.facebook'),
+            config('services.social.linkedin'),
+            'https://www.wikidata.org/wiki/Q193633',
+            'https://www.wikidata.org/wiki/Q258385',
+        ])));
+
+        $plumberValues = [
             '@id' => url('/#organization'),
-            'name' => 'Drainusantara - Jasa Saluran Pipa Mampet',
-            'legalName' => 'PT Jawa Jaya Rooter',
+            'name' => 'Drainusantara',
+            'alternateName' => 'Drainusantara - Jasa Saluran Pipa Mampet',
+            'legalName' => 'PT JAWA JAYA ROOTER',
             'url' => url('/'),
             'logo' => asset('images/logo/WebIcon.webp'),
             'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
@@ -83,17 +97,32 @@ class HomeController extends Controller
             ],
             'address' => $this->getHeadquartersAddress(),
             'geo' => $this->getHeadquartersGeo(),
-            'sameAs' => $this->getSameAsUrls(),
-            'hasMap' => config('services.company.google_maps_url') ?: null,
+            'sameAs' => $homeSameAs,
             'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
             'serviceType' => [
-                'Jasa Saluran Pipa Mampet',
+                'Jasa Saluran Mampet',
+                'Jasa Pipa Mampet',
+                'Pelancaran Saluran Air',
+                'Plumber',
+                'Drain Cleaning Service',
+                'Rooter Service',
                 'Inspeksi Kamera CCTV Pipa 30M',
                 'Pelancaran Kloset & WC Toilet',
                 'Pelancaran Wastafel Cuci Piring',
                 'Pembersihan Lemak Pipa & Grease Trap',
             ],
-        ]);
+            'parentOrganization' => [
+                '@type' => 'Organization',
+                'name' => 'PT JAWA JAYA ROOTER',
+                'url' => url('/'),
+            ],
+        ];
+
+        if ($mapsUrl = config('services.company.maps_url', config('services.company.google_maps_url'))) {
+            $plumberValues['hasMap'] = $mapsUrl;
+        }
+
+        JsonLdMulti::addValues($plumberValues);
 
         $serviceJsonLd = JsonLdMulti::newJsonLd();
         $serviceJsonLd->setType('Service');

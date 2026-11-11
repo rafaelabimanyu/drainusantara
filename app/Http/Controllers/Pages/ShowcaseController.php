@@ -14,6 +14,7 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -56,14 +57,22 @@ class ShowcaseController extends Controller
     /**
      * Display a single Case Study (Studi Kasus) detail page.
      */
-    public function showCaseStudy(string $slug): View
+    public function showCaseStudy(string $slug): View|RedirectResponse
     {
         $caseStudy = Cache::remember('case_study_'.$slug, 86400, function () use ($slug) {
             return Gallery::where('slug', $slug)
                 ->where('is_active', true)
                 ->with(['service', 'equipment'])
-                ->firstOrFail();
+                ->first();
         });
+
+        if (! $caseStudy) {
+            if (str_contains($slug, 'talang') || str_contains($slug, 'rooftop')) {
+                return redirect()->to('/artikel/waspada-musim-hujan-bahaya-tumpukan-daun-kering-di-talang-air-anda', 301);
+            }
+
+            return redirect()->route('gallery', [], 301);
+        }
 
         $relatedCaseStudies = Gallery::where('is_active', true)
             ->where('id', '!=', $caseStudy->id)
@@ -107,14 +116,18 @@ class ShowcaseController extends Controller
     /**
      * Display a single Partnership / Client Portfolio detail page.
      */
-    public function showPartnership(string $slug): View
+    public function showPartnership(string $slug): View|RedirectResponse
     {
         $partnership = Cache::remember('partnership_'.$slug, 86400, function () use ($slug) {
             return Portfolio::where('slug', $slug)
                 ->where('is_active', true)
                 ->with('services')
-                ->firstOrFail();
+                ->first();
         });
+
+        if (! $partnership) {
+            return redirect()->route('gallery', [], 301);
+        }
 
         $relatedPartnerships = Portfolio::where('is_active', true)
             ->where('id', '!=', $partnership->id)

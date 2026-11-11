@@ -286,5 +286,19 @@ class GalleryEnhancementsTest extends TestCase
         $response->assertSee('snap-x snap-mandatory', false);
         $response->assertSee('Pembersihan Pipa Kamar Mandi Rumah');
     }
+
+    public function test_missing_case_study_gracefully_redirects_with_301(): void
+    {
+        $response = $this->get('/studi-kasus/non-existent-case-study');
+        $response->assertStatus(301);
+        $response->assertRedirect(route('gallery'));
+    }
+
+    public function test_talang_rooftop_case_study_redirects_to_rainwater_article_when_not_in_db(): void
+    {
+        $response = $this->get('/studi-kasus/pelancaran-pipa-talang-air-hujan-rooftop-hunian');
+        $response->assertStatus(301);
+        $response->assertRedirect('/artikel/waspada-musim-hujan-bahaya-tumpukan-daun-kering-di-talang-air-anda');
+    }
 }
 

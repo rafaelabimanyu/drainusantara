@@ -160,4 +160,19 @@ class AreaPageTest extends TestCase
         $response->assertSee('Apakah pengerjaan saluran mampet di Banyumanik membongkar lantai keramik?');
         $response->assertSee('Plumber');
     }
+
+    public function test_jakarta_aliases_redirect_with_301(): void
+    {
+        $res1 = $this->get('/area/jakarta');
+        $res1->assertStatus(301);
+        $res1->assertRedirect(route('area.province', ['province' => 'dki-jakarta']));
+
+        $res2 = $this->get('/area/dki-jakarta');
+        $res2->assertStatus(301);
+        $res2->assertRedirect(route('area.province', ['province' => 'dki-jakarta']));
+
+        $res3 = $this->get('/area/jakarta/tebet');
+        $res3->assertStatus(301);
+        $res3->assertRedirect(route('area.detail', ['city' => 'jakarta-selatan', 'district' => 'tebet']));
+    }
 }
