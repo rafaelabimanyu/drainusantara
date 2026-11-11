@@ -105,8 +105,9 @@
                 </p>
                 <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-xs sm:text-sm space-y-1">
                     <p class="font-bold text-slate-900">PT JAWA JAYA ROOTER &bull; Drainusantara Support</p>
+                    <p>Alamat Pusat: <strong>{{ config('services.company.address.full', 'Jl. Manunggal XVII No. 104, RT.5/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, DKI Jakarta 13810') }}</strong></p>
                     <p>Hotline &amp; Dispatch 24 Jam: <strong>0856-0900-9009</strong></p>
-                    <p>Surel Resmi: <strong>[EMAIL_ADDRESS]</strong></p>
+                    <p>Surel Resmi: <strong>{{ config('services.company.email', 'drainusantara@gmail.com') }}</strong></p>
                 </div>
             </section>
 

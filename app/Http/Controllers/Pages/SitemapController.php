@@ -133,6 +133,38 @@ class SitemapController extends Controller
         $urls = [];
         $todayAtom = now()->startOfDay()->toAtomString();
 
+        // Calculate dynamic baseline lastmod timestamps from actual database entities
+        $latestArticleTime = null;
+        try {
+            $latestArticleTime = Article::where('is_published', true)->max('updated_at');
+        } catch (\Throwable) {}
+
+        $latestAreaTime = null;
+        try {
+            $latestAreaTime = CoverageArea::max('updated_at');
+        } catch (\Throwable) {}
+
+        $latestGalleryTime = null;
+        try {
+            $latestGalleryTime = Gallery::where('is_active', true)->max('updated_at');
+        } catch (\Throwable) {}
+
+        $latestServiceTime = null;
+        try {
+            $latestServiceTime = Service::where('is_active', true)->max('updated_at');
+        } catch (\Throwable) {}
+
+        $latestRawTimestamp = $latestArticleTime ?? $latestAreaTime ?? $latestServiceTime ?? now()->startOfDay();
+        $latestGeneralCarbon = ($latestRawTimestamp instanceof \Carbon\CarbonInterface)
+            ? $latestRawTimestamp
+            : \Illuminate\Support\Carbon::parse($latestRawTimestamp);
+        $fallbackLastmod = $latestGeneralCarbon->toAtomString();
+
+        $homeLastmod = $fallbackLastmod;
+        $areaLastmod = ($latestAreaTime ? \Illuminate\Support\Carbon::parse($latestAreaTime) : $latestGeneralCarbon)->toAtomString();
+        $articleLastmod = ($latestArticleTime ? \Illuminate\Support\Carbon::parse($latestArticleTime) : $latestGeneralCarbon)->toAtomString();
+        $galleryLastmod = ($latestGalleryTime ? \Illuminate\Support\Carbon::parse($latestGalleryTime) : $latestGeneralCarbon)->toAtomString();
+
         // Load company pages timestamps for accurate lastmod
         $companyPageMods = [];
         try {
@@ -141,19 +173,19 @@ class SitemapController extends Controller
             // Graceful fallback
         }
 
-        $getCompanyMod = function (string $key) use ($companyPageMods): ?string {
+        $getCompanyMod = function (string $key) use ($companyPageMods, $fallbackLastmod): string {
             if (isset($companyPageMods[$key]) && $companyPageMods[$key]) {
                 return $companyPageMods[$key]->toAtomString();
             }
-            return null;
+            return $fallbackLastmod;
         };
 
         // Core static pages with explicit priority & changefreq
-        $urls[] = ['loc' => url('/'), 'lastmod' => null, 'changefreq' => 'daily', 'priority' => '1.0'];
-        $urls[] = ['loc' => route('contact'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.9'];
-        $urls[] = ['loc' => url('/area'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.9'];
-        $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => null, 'changefreq' => 'daily', 'priority' => '0.8'];
-        $urls[] = ['loc' => url('/galeri'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => url('/'), 'lastmod' => $homeLastmod, 'changefreq' => 'daily', 'priority' => '1.0'];
+        $urls[] = ['loc' => route('contact'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
+        $urls[] = ['loc' => url('/area'), 'lastmod' => $areaLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
+        $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => $articleLastmod, 'changefreq' => 'daily', 'priority' => '0.8'];
+        $urls[] = ['loc' => url('/galeri'), 'lastmod' => $galleryLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('how-it-works'), 'lastmod' => $getCompanyMod('cara-kerja'), 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('about.profile'), 'lastmod' => $getCompanyMod('profil'), 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('about.holding'), 'lastmod' => $getCompanyMod('holding'), 'changefreq' => 'weekly', 'priority' => '0.8'];
@@ -161,9 +193,9 @@ class SitemapController extends Controller
         $urls[] = ['loc' => route('about.equipment'), 'lastmod' => $getCompanyMod('peralatan'), 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => $getCompanyMod('portofolio'), 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('about.warranty'), 'lastmod' => $getCompanyMod('garansi'), 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.faq'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => null, 'changefreq' => 'monthly', 'priority' => '0.5'];
-        $urls[] = ['loc' => route('legal.terms'), 'lastmod' => null, 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => route('about.faq'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => route('legal.terms'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
 
         // Regional landing routes - indexed O(1) hash map lookup
         $provinces = RegionService::all();
@@ -180,7 +212,7 @@ class SitemapController extends Controller
 
         foreach ($provinces as $provSlug => $prov) {
             $provArea = $areaLookup[Str::lower($prov['name']) . '|[provinsi]'] ?? null;
-            $provLastmod = ($provArea?->updated_at ?? $provArea?->created_at)?->toAtomString();
+            $provLastmod = ($provArea?->updated_at ?? $provArea?->created_at)?->toAtomString() ?: $areaLastmod;
 
             $urls[] = [
                 'loc' => route('area.province', ['province' => $provSlug]),
@@ -191,7 +223,7 @@ class SitemapController extends Controller
 
             foreach ($prov['cities'] as $citySlug => $city) {
                 $cityArea = $areaLookup[Str::lower($city['name']) . '|[kota]'] ?? null;
-                $cityLastmod = ($cityArea?->updated_at ?? $cityArea?->created_at)?->toAtomString();
+                $cityLastmod = ($cityArea?->updated_at ?? $cityArea?->created_at)?->toAtomString() ?: $areaLastmod;
 
                 $urls[] = [
                     'loc' => route('area.city', ['city' => $citySlug]),
@@ -210,9 +242,10 @@ class SitemapController extends Controller
                     }
 
                     $districtSlug = Str::slug($district);
+                    $districtLastmod = ($area?->updated_at ?? $area?->created_at)?->toAtomString() ?: $areaLastmod;
                     $urls[] = [
                         'loc' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
-                        'lastmod' => ($area?->updated_at ?? $area?->created_at)?->toAtomString(),
+                        'lastmod' => $districtLastmod,
                         'changefreq' => 'weekly',
                         'priority' => '0.8',
                     ];
@@ -276,9 +309,7 @@ class SitemapController extends Controller
                     'priority' => '0.7',
                 ];
             }
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('Sitemap equipments query error: ' . $e->getMessage());
-        }
+        } catch (\Throwable) {}
 
         return $this->formatSitemapXml($urls);
     }
@@ -298,29 +329,30 @@ class SitemapController extends Controller
         }
 
         $urls = [];
+        $fallbackLastmod = now()->startOfDay()->toAtomString();
 
         // Core static pages
-        $urls[] = ['loc' => url('/'), 'lastmod' => null, 'changefreq' => 'daily', 'priority' => '1.0'];
-        $urls[] = ['loc' => route('contact'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.9'];
-        $urls[] = ['loc' => url('/area'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.9'];
-        $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => null, 'changefreq' => 'daily', 'priority' => '0.8'];
-        $urls[] = ['loc' => url('/galeri'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('how-it-works'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.profile'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.holding'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.k3'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.equipment'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.warranty'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('about.faq'), 'lastmod' => null, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => null, 'changefreq' => 'monthly', 'priority' => '0.5'];
-        $urls[] = ['loc' => route('legal.terms'), 'lastmod' => null, 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => url('/'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'daily', 'priority' => '1.0'];
+        $urls[] = ['loc' => route('contact'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
+        $urls[] = ['loc' => url('/area'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
+        $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'daily', 'priority' => '0.8'];
+        $urls[] = ['loc' => url('/galeri'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('how-it-works'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.profile'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.holding'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.k3'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.equipment'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.warranty'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('about.faq'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => route('legal.terms'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
 
         $provinces = RegionService::all();
         foreach ($provinces as $provSlug => $prov) {
             $urls[] = [
                 'loc' => route('area.province', ['province' => $provSlug]),
-                'lastmod' => null,
+                'lastmod' => $fallbackLastmod,
                 'changefreq' => 'weekly',
                 'priority' => '0.9',
             ];
@@ -328,7 +360,7 @@ class SitemapController extends Controller
             foreach ($prov['cities'] as $citySlug => $city) {
                 $urls[] = [
                     'loc' => route('area.city', ['city' => $citySlug]),
-                    'lastmod' => null,
+                    'lastmod' => $fallbackLastmod,
                     'changefreq' => 'weekly',
                     'priority' => '0.9',
                 ];
@@ -337,7 +369,7 @@ class SitemapController extends Controller
                     $districtSlug = Str::slug($district);
                     $urls[] = [
                         'loc' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
-                        'lastmod' => null,
+                        'lastmod' => $fallbackLastmod,
                         'changefreq' => 'weekly',
                         'priority' => '0.8',
                     ];

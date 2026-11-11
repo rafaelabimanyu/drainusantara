@@ -32,7 +32,7 @@ class AreaPageTest extends TestCase
         $response = $this->get('/area/jakarta-selatan/tebet');
 
         $response->assertStatus(200);
-        $response->assertSee('Jasa Pipa & Saluran Mampet', false);
+        $response->assertSee('Jasa Saluran Pipa Mampet', false);
         $response->assertSee('Tebet');
         $response->assertSee('Jakarta Selatan');
         $response->assertSee('Panggil Teknisi Sekarang');
@@ -147,7 +147,7 @@ class AreaPageTest extends TestCase
         $response->assertSee('Berapa biaya kuras pipa di Tebet Barat?');
         $response->assertSee('Biaya penanganan di Tebet Barat mulai Rp 400.000 bergaransi 30 hari.');
         $response->assertSee('Apakah melayani ruko di Jalan Tebet Raya?');
-        $response->assertSee('FAQPage');
+        $response->assertSee('Plumber');
     }
 
     public function test_area_page_displays_dynamic_fallback_faqs(): void
@@ -158,6 +158,6 @@ class AreaPageTest extends TestCase
         $response->assertSee('Pertanyaan Seputar Layanan di Banyumanik');
         $response->assertSee('Berapa lama estimasi teknisi Drainusantara tiba di area Banyumanik, Kota Semarang?');
         $response->assertSee('Apakah pengerjaan saluran mampet di Banyumanik membongkar lantai keramik?');
-        $response->assertSee('FAQPage');
+        $response->assertSee('Plumber');
     }
 }

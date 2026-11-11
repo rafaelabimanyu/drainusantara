@@ -47,7 +47,7 @@
         : "Halo Tim Drainusantara, saya membutuhkan jasa pelancaran pipa saluran mampet di area {$cityData['name']}. Mohon info estimasi biaya dan kedatangan teknisi ke lokasi.";
     $cityWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($customWaText);
     
-    $heroHeadline = $area->cta_headline ?: "Jasa Saluran Mampet di <span class=\"text-sky-700\">{$cityData['name']}</span>";
+    $heroHeadline = $area->cta_headline ?: "Jasa Saluran Pipa Mampet <span class=\"text-sky-700\">{$cityData['name']}</span>";
     $startingPriceFormatted = 'Rp ' . number_format($area->resolved_price, 0, ',', '.');
     
     // Fallback latar belakang banner kota bila tidak ada kustom dari CMS

@@ -131,7 +131,7 @@
                     </div>
 
                     <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight">
-                        Jasa Pipa & Saluran Mampet <span class="text-sky-700">{{ $area->district }}</span>
+                        Jasa Saluran Pipa Mampet <span class="text-sky-700">{{ $area->district }}</span>
                     </h1>
 
                     <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">

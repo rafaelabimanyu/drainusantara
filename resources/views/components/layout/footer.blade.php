@@ -27,19 +27,33 @@
                     <div class="text-[11px] text-slate-400">Siaga 24 Jam Nonstop &bull; No Cure No Pay</div>
                 </div>
 
-                {{-- Alamat Kantor & Workshop (Otomatis tampil jika konfigurasi / env COMPANY_OFFICE_ADDRESS diisi) --}}
-                @if(filled(config('services.company.address', env('COMPANY_OFFICE_ADDRESS'))))
                 <div class="pt-1 text-xs text-slate-400 space-y-1">
-                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Kantor &amp; Workshop:</div>
+                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Email Kantor Resmi:</div>
+                    <a href="mailto:{{ config('services.company.email', 'drainusantara@gmail.com') }}" class="text-slate-300 hover:text-sky-400 text-xs inline-flex items-center gap-1.5 transition-colors">
+                        <svg class="w-3.5 h-3.5 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <span>{{ config('services.company.email', 'drainusantara@gmail.com') }}</span>
+                    </a>
+                </div>
+
+                {{-- Alamat Kantor Pusat & Workshop PT JAWA JAYA ROOTER --}}
+                <div class="pt-1 text-xs text-slate-400 space-y-1">
+                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Kantor Pusat &amp; Workshop:</div>
                     <p class="text-xs text-slate-300 leading-relaxed flex items-start gap-1.5">
                         <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        <span>{{ config('services.company.address', env('COMPANY_OFFICE_ADDRESS')) }}</span>
+                        <span>{{ config('services.company.address.full', 'Jl. Manunggal XVII No. 104, RT.5/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, DKI Jakarta 13810') }}</span>
                     </p>
+                    @if(config('services.company.google_maps_url'))
+                    <a href="{{ config('services.company.google_maps_url') }}" target="_blank" rel="noopener noreferrer" class="text-[11px] text-sky-400 hover:text-sky-300 inline-flex items-center gap-1 font-medium transition-colors">
+                        <span>Lihat Lokasi di Google Maps</span>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </a>
+                    @endif
                 </div>
-                @endif
 
                 <!-- Icon Sosial Media Terhubung -->
                 <div class="pt-2">

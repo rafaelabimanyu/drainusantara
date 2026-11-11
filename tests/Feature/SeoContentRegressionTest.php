@@ -62,9 +62,10 @@ class SeoContentRegressionTest extends TestCase
         $this->assertSame($area->updated_at->toAtomString(), (string) $entries[url('/area/semarang/candisari')]->lastmod);
         $this->assertSame($article->updated_at->toAtomString(), (string) $entries[route('articles.show', 'panduan')]->lastmod);
         $this->assertArrayNotHasKey(route('articles.show', 'draft'), $entries);
-        foreach (['/', '/tentang-kami/profil', '/area', '/area/semarang', '/area/semarang/tembalang'] as $path) {
-            $this->assertFalse(isset($entries[url($path)]->lastmod), $path);
-        }
+        $this->assertSame($article->updated_at->toAtomString(), (string) $entries[url('/')]->lastmod);
+        $this->assertSame($area->updated_at->toAtomString(), (string) $entries[url('/area')]->lastmod);
+        $this->assertSame($area->updated_at->toAtomString(), (string) $entries[url('/area/semarang')]->lastmod);
+        $this->assertSame($area->updated_at->toAtomString(), (string) $entries[url('/area/semarang/tembalang')]->lastmod);
         $first = $this->get('/sitemap.xml')->getContent();
         $this->travel(2)->days();
         \Illuminate\Support\Facades\Cache::forget('sitemap.xml');
