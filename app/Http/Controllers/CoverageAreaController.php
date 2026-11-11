@@ -168,8 +168,20 @@ class CoverageAreaController extends Controller
             $counter++;
         }
 
-        $metaTitle = !empty($validated['meta_title']) ? $validated['meta_title'] : mb_substr("Jasa Saluran Mampet di {$validated['district']}, {$validated['city']} - Drainusantara Bergaransi", 0, 255);
-        $metaDescription = !empty($validated['meta_description']) ? $validated['meta_description'] : "Jasa pelancaran pipa wastafel, toilet, dan floor drain mampet di {$validated['district']}, {$validated['city']} tanpa bongkar keramik & garansi 30 hari. Hubungi teknisi terdekat sekarang!";
+        $defaultMetaTitle = ($validated['type'] ?? 'district') === 'province'
+            ? "Jasa Saluran Pipa Mampet {$validated['city']} - Tanpa Bongkar & Garansi 30 Hari"
+            : ((($validated['type'] ?? 'district') === 'city')
+                ? "Jasa Saluran Pipa Mampet {$validated['city']} - Tanpa Bongkar & Garansi 30 Hari"
+                : "Jasa Saluran Pipa Mampet {$validated['district']}, {$validated['city']} - Tanpa Bongkar & Garansi 30 Hari");
+
+        $defaultMetaDescription = ($validated['type'] ?? 'district') === 'province'
+            ? "Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah {$validated['city']}. Armada siaga di seluruh kota dengan garansi resmi 30 hari."
+            : ((($validated['type'] ?? 'district') === 'city')
+                ? "Jasa saluran pipa mampet di {$validated['city']} & tukang saluran mampet panggilan 24 jam. Ahli wastafel, WC kloset tersumbat & kuras grease trap tanpa bongkar keramik pakai spiral baja rotary. Garansi 30 hari!"
+                : "Jasa saluran pipa mampet di {$validated['district']}, {$validated['city']}. Tukang pipa & WC mampet terdekat pelancar wastafel serta saluran air tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!");
+
+        $metaTitle = !empty($validated['meta_title']) ? $validated['meta_title'] : mb_substr($defaultMetaTitle, 0, 255);
+        $metaDescription = !empty($validated['meta_description']) ? $validated['meta_description'] : mb_substr($defaultMetaDescription, 0, 500);
 
         $faqs = $this->cleanFaqs($validated['faqs'] ?? []);
         $advantages = $this->cleanAdvantages($validated['advantages'] ?? []);
@@ -341,9 +353,9 @@ class CoverageAreaController extends Controller
                 'district' => $validated['district'],
                 'postal_code' => array_key_exists('postal_code', $validated) ? $validated['postal_code'] : $coverageArea->postal_code,
                 'starting_price' => array_key_exists('starting_price', $validated) ? $validated['starting_price'] : $coverageArea->starting_price,
-                'meta_title' => array_key_exists('meta_title', $validated) ? $validated['meta_title'] : $coverageArea->meta_title,
-                'meta_description' => array_key_exists('meta_description', $validated) ? $validated['meta_description'] : $coverageArea->meta_description,
-                'geo_keywords' => array_key_exists('geo_keywords', $validated) ? $validated['geo_keywords'] : $coverageArea->geo_keywords,
+                'meta_title' => array_key_exists('meta_title', $validated) ? ($validated['meta_title'] ?: null) : $coverageArea->meta_title,
+                'meta_description' => array_key_exists('meta_description', $validated) ? ($validated['meta_description'] ?: null) : $coverageArea->meta_description,
+                'geo_keywords' => array_key_exists('geo_keywords', $validated) ? ($validated['geo_keywords'] ?: null) : $coverageArea->geo_keywords,
                 'latitude' => array_key_exists('latitude', $validated) ? $validated['latitude'] : $coverageArea->latitude,
                 'longitude' => array_key_exists('longitude', $validated) ? $validated['longitude'] : $coverageArea->longitude,
                 'content' => array_key_exists('content', $validated) ? $validated['content'] : $coverageArea->content,

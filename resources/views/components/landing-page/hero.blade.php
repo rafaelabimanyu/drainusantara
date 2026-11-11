@@ -29,7 +29,7 @@
             <div class="lg:col-span-7 space-y-6 text-left">
                 
                 <div class="inline-flex items-center px-3 py-1 bg-slate-100 border border-slate-200 rounded-md text-xs font-semibold text-slate-700">
-                    <span>Armada Siaga: Jabodetabek, Semarang &amp; Bandar Lampung</span>
+                    <span>Armada Siaga: Jabodetabek, Bandung Raya, Semarang, Lampung &amp; Bali</span>
                 </div>
 
                 <h1 class="text-white text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight sm:leading-[1.12]">
@@ -38,7 +38,7 @@
                 </h1>
 
                 <p class="text-sm md:text-lg font-semibold text-white leading-relaxed max-w-2xl">
-                    Jasa pelancaran saluran pipa mampet untuk rumah tinggal, ruko, dan resto di Jabodetabek, Semarang, dan Lampung. Mengatasi wastafel dapur berlemak, kloset meluap, serta floor drain buntu menggunakan mesin spiral baja Ridgid tanpa membongkar lantai keramik. Garansi tertulis 30 hari.
+                    Jasa saluran pipa mampet &amp; tukang pipa tersumbat profesional di Jabodetabek, Bandung Raya, Semarang, Lampung, dan Bali. Ahli melancarkan wastafel dapur berlemak, jasa WC mampet / kloset meluap, saluran kamar mandi (floor drain), talang air, hingga kuras grease trap restoran menggunakan mesin spiral baja Ridgid tanpa bongkar keramik lantai. Garansi tertulis 30 hari (No Cure No Pay).
                 </p>
 
                 <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm font-semibold text-white pt-1">

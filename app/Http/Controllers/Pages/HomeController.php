@@ -29,20 +29,32 @@ class HomeController extends Controller
     public function index(): View
     {
         PageMetadata::title('Jasa Saluran Pipa Mampet Tanpa Bongkar');
-        SEOMeta::setDescription('Jasa pelancar saluran pipa mampet wastafel & kloset tanpa bongkar keramik di Jabodetabek, Bandung, Semarang, Lampung & Bali. Mesin spiral baja, garansi 30 hari.');
+        SEOMeta::setDescription('Jasa saluran pipa mampet wastafel & WC kloset tanpa bongkar keramik di Jabodetabek, Bandung Raya, Semarang, Lampung & Bali. Tukang pipa tersumbat profesional, mesin spiral baja Ridgid, garansi 30 hari.');
         SEOMeta::setCanonical(url()->current());
         SEOMeta::addKeyword([
             'jasa saluran pipa mampet',
-            'pelancar pipa tersumbat',
-            'tanpa bongkar keramik',
-            'drain cleaner rooter',
+            'jasa saluran mampet',
+            'jasa pipa mampet',
+            'tukang saluran mampet',
+            'tukang pipa tersumbat',
+            'ahli saluran air mampet',
+            'jasa pelancaran pipa mampet terdekat',
             'jasa wastafel mampet',
-            'jasa kloset mampet',
+            'jasa wc mampet',
+            'kloset duduk tersumbat',
+            'saluran air kamar mandi mampet',
+            'floor drain mampet',
+            'talang air tersumbat',
+            'jasa kuras grease trap restoran',
+            'tanpa bongkar keramik',
+            'tanpa bobok lantai',
+            'mesin spiral baja ridgid',
             'inspeksi cctv pipa',
             'garansi 30 hari',
+            'no cure no pay',
             'drainusantara',
             'jabodetabek',
-            'bandung',
+            'bandung raya',
             'semarang',
             'bandar lampung',
             'bali',
@@ -88,10 +100,13 @@ class HomeController extends Controller
             'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
             'serviceType' => [
                 'Jasa Saluran Pipa Mampet',
+                'Tukang Saluran Mampet & Pipa Tersumbat',
                 'Inspeksi Kamera CCTV Pipa 30M',
-                'Pelancaran Kloset & WC Toilet',
-                'Pelancaran Wastafel Cuci Piring',
-                'Pembersihan Lemak Pipa & Grease Trap',
+                'Jasa WC Mampet & Pelancaran Kloset Duduk/Jongkok',
+                'Pelancaran Wastafel & Bak Cuci Piring Mampet Lemak',
+                'Pelancaran Floor Drain & Saluran Kamar Mandi',
+                'Jasa Kuras Grease Trap Restoran & Kafe',
+                'Pelancaran Talang Air & Bak Kontrol Tersumbat',
             ],
         ]);
 

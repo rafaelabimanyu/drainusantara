@@ -60,6 +60,7 @@
     $comparisons = $area->resolved_comparison;
     $serviceCategories = $area->resolved_service_categories;
     $displayGalleries = ($galleries ?? collect())->take(3);
+    $districtHeroHeadline = $area->cta_headline ?: "Jasa Saluran Pipa Mampet <span class=\"text-sky-700\">{$area->district}</span>, {$area->city} — Tukang Pipa &amp; WC Mampet Terdekat";
 @endphp
 
 @push('styles')
@@ -131,11 +132,11 @@
                     </div>
 
                     <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight">
-                        Jasa Saluran Pipa Mampet <span class="text-sky-700">{{ $area->district }}</span>
+                        {!! $districtHeroHeadline !!}
                     </h1>
 
                     <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
-                        Pelancaran wastafel cuci piring, kloset toilet, dan pipa saluran pembuangan di <strong>{{ $area->district }}, {{ $area->city }}</strong>. Penanganan mekanis spiral rotary tanpa bongkar keramik lantai, bebas zat kimia perusak pipa PVC, dan bergaransi resmi 30 hari.
+                        Jasa saluran pipa mampet di <strong>{{ $area->district }}, {{ $area->city }}</strong> &amp; tukang pipa tersumbat terdekat. Pelancar wastafel cuci piring, kloset toilet meluap, dan floor drain kamar mandi tanpa bongkar keramik lantai, bebas bahan kimia soda api, dengan garansi resmi 30 hari.
                     </p>
 
                     <!-- 4-Grid Feature Badges -->
@@ -200,7 +201,7 @@
                         <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                             <img 
                                 src="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
-                                alt="Teknisi Drainusantara Penanganan Saluran Pipa Mampet di {{ $area->district }}" 
+                                alt="Teknisi Jasa Saluran Pipa Mampet {{ $area->district }}, {{ $area->city }} Tanpa Bongkar Keramik" 
                                 width="700" 
                                 height="525" 
                                 loading="eager"
@@ -407,7 +408,7 @@
                         Katalog Layanan Spesialis Wilayah {{ strtoupper($area->district) }}
                     </p>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                        Layanan Pelancaran Pipa Mampet Area {{ $area->district }}
+                        Ahli Wastafel &amp; Saluran Kamar Mandi Mampet di {{ $area->district }} Tanpa Bobok Lantai
                     </h2>
                     <p class="text-xs sm:text-sm text-slate-600 mt-1">
                         Pilihan penanganan mekanis bergaransi resmi. Tuntas tanpa bongkar keramik hunian Anda.
@@ -949,6 +950,7 @@
                                     $neighborSlug = \Illuminate\Support\Str::slug($neighbor);
                                 @endphp
                                 <a href="{{ route('area.detail', ['city' => $currentCitySlug, 'district' => $neighborSlug]) }}" 
+                                   title="Tukang Saluran Pipa Mampet {{ $neighbor }}"
                                    class="px-3 py-2 rounded-md bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center gap-1.5">
                                     <span>{{ $neighbor }}</span>
                                 </a>
@@ -976,6 +978,7 @@
                                     : route('area.city', ['city' => $otherCity['slug']]);
                             @endphp
                             <a href="{{ $targetUrl }}" 
+                               title="Jasa Saluran Pipa Mampet {{ $otherCity['name'] }}"
                                class="px-3 py-2 rounded-md bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center">
                                 {{ $otherCity['name'] }}
                             </a>

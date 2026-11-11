@@ -47,7 +47,7 @@
         : "Halo Tim Drainusantara, saya membutuhkan jasa pelancaran pipa saluran mampet di area {$cityData['name']}. Mohon info estimasi biaya dan kedatangan teknisi ke lokasi.";
     $cityWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($customWaText);
     
-    $heroHeadline = $area->cta_headline ?: "Jasa Saluran Pipa Mampet <span class=\"text-sky-700\">{$cityData['name']}</span>";
+    $heroHeadline = $area->cta_headline ?: "Jasa Saluran Pipa Mampet <span class=\"text-sky-700\">{$cityData['name']}</span> &amp; Tukang Saluran Mampet 24 Jam";
     $startingPriceFormatted = 'Rp ' . number_format($area->resolved_price, 0, ',', '.');
     
     // Fallback latar belakang banner kota bila tidak ada kustom dari CMS
@@ -237,7 +237,7 @@
                     <div class="flex flex-wrap items-center gap-1.5 pt-1 text-xs text-slate-600 reveal-soft delay-125">
                         <span class="font-bold text-slate-800 text-[11px] sm:text-xs">Titik Siaga {{ $cityData['name'] }}:</span>
                         @foreach(array_slice($cityData['districts'] ?? [], 0, 5) as $dName)
-                            <a href="{{ route('area.detail', ['city' => $cityData['slug'], 'district' => Str::slug($dName)]) }}" class="inline-flex items-center px-2 py-0.5 rounded-md bg-white hover:bg-sky-50 hover:text-sky-800 border border-slate-200 transition-colors text-[10px] sm:text-[11px] font-medium text-slate-700 shadow-2xs">
+                            <a href="{{ route('area.detail', ['city' => $cityData['slug'], 'district' => Str::slug($dName)]) }}" title="Tukang Saluran Pipa Mampet {{ $dName }}" class="inline-flex items-center px-2 py-0.5 rounded-md bg-white hover:bg-sky-50 hover:text-sky-800 border border-slate-200 transition-colors text-[10px] sm:text-[11px] font-medium text-slate-700 shadow-2xs">
                                 {{ $dName }}
                             </a>
                         @endforeach
@@ -338,7 +338,7 @@
                         <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                             <img 
                                 src="{{ !empty($area->hero_image) ? asset($area->hero_image) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
-                                alt="Teknisi Drainusantara Penanganan Saluran Mampet di {{ $cityData['name'] }}" 
+                                alt="Teknisi Jasa Saluran Pipa Mampet {{ $cityData['name'] }} Tanpa Bongkar Keramik" 
                                 width="600" 
                                 height="450" 
                                 loading="eager"
@@ -529,7 +529,7 @@
                         KATALOG SPESIALIS MASALAH PIPA
                     </p>
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-                        Layanan Pelancaran Saluran Pipa di {{ $cityData['name'] }}
+                        Jasa WC/Kloset &amp; Wastafel Mampet di {{ $cityData['name'] }} Tanpa Bongkar
                     </h2>
                     <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-3xl leading-relaxed">
                         Pembersihan kerak minyak masakan, endapan busa sabun, dan sumbatan kotoran menggunakan mesin spiral rotary baja elastis. Dikerjakan langsung dari lubang pipa eksisting tanpa merusak keramik lantai maupun dinding.
@@ -652,7 +652,7 @@
                     SEKTOR PENANGANAN DI {{ strtoupper($cityData['name']) }}
                 </p>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Solusi Pipa untuk Beragam Kategori Bangunan
+                    Jasa Kuras Grease Trap Restoran &amp; Perawatan Pipa Gedung {{ $cityData['name'] }} — Solusi Pipa untuk Beragam Kategori Bangunan
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-600 mt-1">
                     Dari perumahan residensial, kafe &amp; restoran komersial, hingga gedung bertingkat dan kawasan industri.
@@ -821,13 +821,13 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-10">
                 <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
-                    KOMPARASI TRANSPARAN METODE KERJA
+                    KOMPARASI TRANSPARAN BIAYA &amp; METODE KERJA
                 </p>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Tukang Konvensional vs Standar Drainusantara
+                    Biaya Tukang Pipa Mampet {{ $cityData['name'] }}: Tukang Konvensional vs Standar Drainusantara
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                    Hindari risiko pembongkaran lantai dan bahaya pipa PVC rapuh akibat cairan kimia keras.
+                    Tarif transparan mulai Rp {{ number_format($area->resolved_price, 0, ',', '.') }} dengan jaminan No Cure No Pay dan nota garansi resmi 30 hari. Hindari risiko bongkar keramik dan pipa rapuh akibat soda api.
                 </p>
             </div>
 
@@ -1016,7 +1016,7 @@
                         <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 transition-all flex flex-col justify-between shadow-2xs card-lift min-h-14">
                             <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">{{ $distType }}</span>
                             <h3 class="text-xs sm:text-sm font-bold text-slate-800 hover:text-sky-800 truncate">
-                                <a href="{{ $districtUrl }}" class="hover:underline">
+                                <a href="{{ $districtUrl }}" title="Jasa Saluran Pipa Mampet {{ $dist }}" class="hover:underline">
                                     {{ $dist }}
                                 </a>
                             </h3>

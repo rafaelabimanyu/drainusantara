@@ -16,10 +16,10 @@
                 Katalog Spesialis Masalah
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Layanan Penanganan Saluran Pipa Mampet
+                Layanan Jasa Saluran Pipa Mampet &amp; Tukang Pipa Tersumbat
             </h2>
             <p class="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
-                Pembersihan kerak pipa buangan wastafel, kloset duduk, floor drain, talang, dan grease trap menggunakan mesin spiral baja rotary. Dikerjakan dari lubang pipa eksisting tanpa merusak lantai keramik.
+                Spesialis pelancaran wastafel mampet lemak, jasa kloset &amp; WC tersumbat (bukan sedot WC), floor drain kamar mandi, talang air, dan kuras grease trap restoran menggunakan mesin spiral baja Ridgid rotary. Penanganan langsung tanpa bobok keramik lantai bergaransi resmi 30 hari.
             </p>
             <div class="flex md:hidden items-center justify-center gap-1.5 text-xs text-sky-700 font-medium mt-3" aria-hidden="true">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

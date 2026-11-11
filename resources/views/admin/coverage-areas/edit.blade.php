@@ -280,30 +280,116 @@
             </div>
         </div>
 
-        <!-- SECTION 4: SEO GEO TERSEMBUNYI (BACKEND ONLY) -->
-        <div class="space-y-4">
-            <div class="border-b border-slate-200 pb-2">
-                <div class="flex items-center gap-2">
-                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">4. SEO Geo &amp; Meta Tags (Tersembunyi)</h2>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">Backend Only</span>
+        <!-- SECTION 4: SEO GEO & MASTER KEYWORD ARCHITECTURE -->
+        <div class="space-y-4" x-data="{
+            metaTitle: @js(old('meta_title', $coverageArea->meta_title ?? '')),
+            metaDescription: @js(old('meta_description', $coverageArea->meta_description ?? '')),
+            geoKeywords: @js(old('geo_keywords', $coverageArea->geo_keywords ?? '')),
+            
+            getResolvedLocation() {
+                const areaType = document.querySelector('input[name=type]:checked')?.value || @js($coverageArea->type ?: 'district');
+                const provinceInput = document.getElementById('province_name_input')?.value || document.getElementById('city_province_input')?.value || @js($coverageArea->province_name ?? '');
+                const cityInput = document.getElementById('city_name_input')?.value || document.getElementById('city')?.value || @js($coverageArea->city);
+                const districtInput = document.getElementById('district')?.value || @js($coverageArea->district);
+                return { areaType, provinceInput, cityInput, districtInput };
+            },
+            
+            getDefaultTitle() {
+                const { areaType, provinceInput, cityInput, districtInput } = this.getResolvedLocation();
+                if (areaType === 'province') {
+                    return `Jasa Saluran Pipa Mampet ${provinceInput || cityInput || 'Provinsi'} - Tanpa Bongkar & Garansi 30 Hari`;
+                } else if (areaType === 'city') {
+                    return `Jasa Saluran Pipa Mampet ${cityInput || 'Kota'} - Tanpa Bongkar & Garansi 30 Hari`;
+                } else {
+                    const loc = [districtInput, cityInput].filter(d => d && d !== '[KOTA]' && d !== '[PROVINSI]').join(', ') || 'Wilayah';
+                    return `Jasa Saluran Pipa Mampet ${loc} - Tanpa Bongkar & Garansi 30 Hari`;
+                }
+            },
+            
+            getDefaultDescription() {
+                const { areaType, provinceInput, cityInput, districtInput } = this.getResolvedLocation();
+                if (areaType === 'province') {
+                    return `Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah ${provinceInput || cityInput || 'Provinsi'}. Armada siaga di seluruh kota dengan garansi resmi 30 hari.`;
+                } else if (areaType === 'city') {
+                    return `Jasa saluran pipa mampet di ${cityInput || 'Kota'} & tukang saluran mampet panggilan 24 jam. Ahli wastafel, WC kloset tersumbat & kuras grease trap tanpa bongkar keramik pakai spiral baja rotary. Garansi 30 hari!`;
+                } else {
+                    const loc = [districtInput, cityInput].filter(d => d && d !== '[KOTA]' && d !== '[PROVINSI]').join(', ') || 'wilayah Anda';
+                    return `Jasa saluran pipa mampet di ${loc}. Tukang pipa & WC mampet terdekat pelancar wastafel serta saluran air tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!`;
+                }
+            },
+            
+            generateSeoTemplate() {
+                const { areaType, provinceInput, cityInput, districtInput } = this.getResolvedLocation();
+                this.metaTitle = this.getDefaultTitle();
+                this.metaDescription = this.getDefaultDescription();
+                
+                if (areaType === 'province') {
+                    const p = provinceInput || cityInput || 'wilayah';
+                    this.geoKeywords = `jasa saluran pipa mampet ${p}, tukang saluran mampet ${p}, tukang pipa tersumbat ${p}, jasa wc mampet ${p}, wastafel mampet ${p}, kuras grease trap ${p}, tanpa bongkar keramik, garansi 30 hari`;
+                } else if (areaType === 'city') {
+                    const c = cityInput || 'kota';
+                    this.geoKeywords = `jasa saluran pipa mampet ${c}, tukang saluran mampet ${c}, tukang pipa tersumbat ${c}, jasa wc mampet ${c}, pelancar wastafel ${c}, kuras grease trap ${c}, saluran air kamar mandi ${c}, tanpa bongkar keramik, garansi 30 hari, no cure no pay`;
+                } else {
+                    const d = districtInput || 'area';
+                    const c = cityInput || 'kota';
+                    this.geoKeywords = `jasa saluran pipa mampet ${d}, tukang saluran mampet ${d}, tukang pipa mampet ${d}, tukang pipa terdekat ${d}, jasa wc mampet ${d}, wastafel mampet ${d}, pipa mampet ${c}, tanpa bongkar keramik, garansi 30 hari, no cure no pay`;
+                }
+            }
+        }">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-2">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">4. SEO Geo &amp; Meta Tags (Master Keyword Sync)</h2>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">CMS-First</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">Prioritas utama: jika diisi admin, teks kustom dipakai. Jika dikosongkan, sistem memakai fallback template cerdas kaya keyword.</p>
                 </div>
-                <p class="text-xs text-slate-500">Data ini HANYA disuntikkan ke tag &lt;head&gt; dan Schema JSON-LD Plumber Google tanpa terlihat mengotori visual frontend.</p>
+                <button type="button" @click="generateSeoTemplate()" class="self-start sm:self-auto px-3 py-1.5 text-xs font-semibold rounded-md border border-sky-300 text-sky-700 bg-sky-50 hover:bg-sky-100 transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span>Generate Template SEO &amp; Keyword Lokal</span>
+                </button>
+            </div>
+
+            <!-- Live Google SERP Snippet Preview -->
+            <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5 shadow-2xs">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Preview Hasil Pencarian Google (SERP Preview):</span>
+                <div class="bg-white p-3 rounded-md border border-slate-200 space-y-1 font-sans">
+                    <div class="text-[11px] text-slate-500 truncate">https://drainusantara.id &gt; area &gt; ...</div>
+                    <div class="text-sm font-semibold text-blue-700 hover:underline cursor-pointer truncate" x-text="(metaTitle ? metaTitle : getDefaultTitle()) + ' | Drainusantara'"></div>
+                    <div class="text-xs text-slate-600 line-clamp-2 leading-relaxed" x-text="metaDescription ? metaDescription : getDefaultDescription()"></div>
+                </div>
+                <div class="text-[11px] text-slate-500 flex items-center gap-1">
+                    <span class="inline-block w-2 h-2 rounded-full" :class="metaTitle ? 'bg-emerald-500' : 'bg-sky-500'"></span>
+                    <span x-text="metaTitle ? 'Menggunakan custom title dari Admin' : 'Menggunakan generator SEO dinamis (Fallback Otomatis)'"></span>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="sm:col-span-2">
-                    <label for="meta_title" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">SEO Meta Title</label>
-                    <input type="text" name="meta_title" id="meta_title" value="{{ old('meta_title', $coverageArea->meta_title) }}" placeholder="Jasa Saluran Mampet di {{ $coverageArea->district }}, {{ $coverageArea->city }} - Drainusantara Bergaransi" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="meta_title" class="block text-xs font-bold uppercase tracking-wider text-slate-700">SEO Meta Title</label>
+                        <span class="text-[11px] font-mono" :class="metaTitle.length > 70 ? 'text-rose-600 font-bold' : (metaTitle.length > 60 ? 'text-amber-600 font-bold' : 'text-slate-500')">
+                            <span x-text="metaTitle.length"></span>/60 karakter (Rekomendasi)
+                        </span>
+                    </div>
+                    <input type="text" name="meta_title" id="meta_title" x-model="metaTitle" :placeholder="getDefaultTitle()" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">
+                    <p class="text-[11px] text-slate-500 mt-1">Biarkan kosong untuk menggunakan template SEO dinamis otomatis.</p>
                 </div>
 
                 <div class="sm:col-span-2">
-                    <label for="meta_description" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">SEO Meta Description</label>
-                    <textarea name="meta_description" id="meta_description" rows="2" class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('meta_description', $coverageArea->meta_description) }}</textarea>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="meta_description" class="block text-xs font-bold uppercase tracking-wider text-slate-700">SEO Meta Description</label>
+                        <span class="text-[11px] font-mono" :class="metaDescription.length > 170 ? 'text-rose-600 font-bold' : (metaDescription.length > 160 ? 'text-amber-600 font-bold' : 'text-slate-500')">
+                            <span x-text="metaDescription.length"></span>/160 karakter (Rekomendasi)
+                        </span>
+                    </div>
+                    <textarea name="meta_description" id="meta_description" x-model="metaDescription" rows="2.5" :placeholder="getDefaultDescription()" class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs"></textarea>
+                    <p class="text-[11px] text-slate-500 mt-1">Biarkan kosong untuk menggunakan meta deskripsi dinamis kaya keyword.</p>
                 </div>
 
                 <div class="sm:col-span-2">
                     <label for="geo_keywords" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Geo Keywords Lokal (Pisahkan dengan koma)</label>
-                    <textarea name="geo_keywords" id="geo_keywords" rows="2" placeholder="saluran mampet {{ $coverageArea->district }}, sedot wc {{ $coverageArea->district }}, pelancar wastafel {{ $coverageArea->district }}, tukang pipa {{ $coverageArea->district }}" class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs">{{ old('geo_keywords', $coverageArea->geo_keywords) }}</textarea>
+                    <textarea name="geo_keywords" id="geo_keywords" x-model="geoKeywords" rows="2" placeholder="saluran mampet {{ $coverageArea->district }}, sedot wc {{ $coverageArea->district }}, pelancar wastafel {{ $coverageArea->district }}, tukang pipa {{ $coverageArea->district }}" class="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-sm focus:border-sky-700 focus:ring-2 focus:ring-sky-700/20 outline-hidden transition shadow-2xs"></textarea>
                     <p class="text-[11px] text-slate-500 mt-1">Disematkan langsung ke meta keywords dan Schema hasOfferCatalog.</p>
                 </div>
 

@@ -339,7 +339,7 @@ class AreaController extends Controller
                 'district' => '[KOTA]',
                 'slug' => $cityData['slug'],
                 'meta_title' => "Jasa Saluran Pipa Mampet {$searchCityName} - Tanpa Bongkar & Garansi 30 Hari",
-                'meta_description' => "Jasa saluran pipa mampet di {$cityData['name']}. Pelancaran wastafel, kloset toilet & floor drain tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!",
+                'meta_description' => "Jasa saluran pipa mampet di {$cityData['name']} & tukang saluran mampet panggilan 24 jam. Ahli wastafel, WC kloset tersumbat & kuras grease trap tanpa bongkar keramik pakai spiral baja rotary. Garansi 30 hari!",
                 'content' => "Layanan penanganan saluran pipa mampet di seluruh wilayah {$cityData['name']} dan sekitarnya.",
                 'is_active' => true,
             ]);
@@ -358,7 +358,7 @@ class AreaController extends Controller
             $cleanTitle = "Jasa Saluran Pipa Mampet {$searchCityName} - Tanpa Bongkar & Garansi 30 Hari";
         }
 
-        $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$cityData['name']}. Pelancaran wastafel, kloset toilet & floor drain tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!";
+        $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$cityData['name']} & tukang saluran mampet panggilan 24 jam. Ahli wastafel, WC kloset tersumbat & kuras grease trap tanpa bongkar keramik pakai spiral baja rotary. Garansi 30 hari!";
 
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
@@ -366,12 +366,19 @@ class AreaController extends Controller
         SEOMeta::addKeyword([
             "jasa saluran pipa mampet {$searchCityName}",
             "jasa saluran mampet {$searchCityName}",
-            "pipa mampet {$searchCityName}",
+            "tukang saluran mampet {$searchCityName}",
+            "tukang pipa tersumbat {$searchCityName}",
+            "jasa wc mampet {$searchCityName}",
             "wastafel mampet {$searchCityName}",
             "toilet mampet {$searchCityName}",
-            "sedot lemak {$searchCityName}",
+            "saluran air kamar mandi mampet {$searchCityName}",
+            "kuras grease trap {$searchCityName}",
+            "ahli saluran air mampet {$searchCityName}",
+            "jasa pelancaran pipa mampet terdekat {$searchCityName}",
             'tanpa bongkar keramik',
+            'tanpa bobok lantai',
             'garansi 30 hari',
+            'no cure no pay',
             'drainusantara',
         ]);
 
@@ -535,7 +542,7 @@ class AreaController extends Controller
                 'city' => $cityFormatted,
                 'district' => $districtFormatted,
                 'meta_title' => "Jasa Saluran Pipa Mampet {$districtFormatted}, {$cityFormatted} - Tanpa Bongkar & Garansi 30 Hari",
-                'meta_description' => "Jasa saluran pipa mampet di {$districtFormatted}, {$cityFormatted}. Pelancaran wastafel, kloset toilet & floor drain 100% tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!",
+                'meta_description' => "Jasa saluran pipa mampet di {$districtFormatted}, {$cityFormatted}. Tukang pipa & WC mampet terdekat pelancar wastafel serta saluran air tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!",
                 'content' => "Layanan penanganan saluran pipa mampet berstandar profesional di area {$districtFormatted}, {$cityFormatted} dan sekitarnya.",
                 'is_active' => true,
             ]);
@@ -554,7 +561,7 @@ class AreaController extends Controller
             $cleanTitle = "Jasa Saluran Pipa Mampet {$area->district}, {$area->city} - Tanpa Bongkar & Garansi 30 Hari";
         }
 
-        $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$area->district}, {$area->city}. Pelancaran wastafel, kloset toilet & floor drain 100% tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!";
+        $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$area->district}, {$area->city}. Tukang pipa & WC mampet terdekat pelancar wastafel serta saluran air tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!";
 
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
@@ -562,12 +569,19 @@ class AreaController extends Controller
         $keywords = [
             "jasa saluran pipa mampet {$area->district}",
             "jasa saluran mampet {$area->district}",
-            "pipa mampet {$area->district}",
+            "tukang saluran mampet {$area->district}",
+            "tukang pipa mampet {$area->district}",
+            "tukang pipa terdekat {$area->district}",
+            "jasa wc mampet {$area->district}",
             "wastafel mampet {$area->district}",
             "toilet wc mampet {$area->district}",
+            "saluran air kamar mandi mampet {$area->district}",
             "saluran pipa mampet {$area->city}",
+            "tukang pipa tersumbat {$area->city}",
             'tanpa bongkar keramik',
+            'tanpa bobok lantai',
             'garansi 30 hari',
+            'no cure no pay',
             'drainusantara',
         ];
 
