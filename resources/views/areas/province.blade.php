@@ -700,10 +700,10 @@
                                 </div>
                                 <div class="p-4 space-y-2">
                                     <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider block">
-                                        {{ $item->location ?: $provinceData['name'] }}
+                                        {{ $item->display_location ?? ($item->location ?: $provinceData['name']) }}
                                     </span>
                                     <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-1">
-                                        {{ $item->title }}
+                                        {{ $item->display_title ?? $item->title }}
                                     </h3>
                                     <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                                         {{ $item->description ?: 'Pelancaran saluran mampet tuntas dengan metode spiral rotary mekanis.' }}

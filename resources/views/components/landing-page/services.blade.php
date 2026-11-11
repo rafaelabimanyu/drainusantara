@@ -114,11 +114,12 @@
 
                     <div class="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between gap-3">
                         <div>
-                            <span class="text-xs text-slate-500 block leading-tight mb-1">Estimasi Tarif:</span>
+                            <span class="text-xs text-slate-500 block leading-tight mb-0.5">Estimasi Biaya:</span>
                             <div class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
-                                {{ $price > 0 ? 'Mulai dari Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}
+                                {{ $price > 0 ? 'Mulai Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}
                             </div>
-                            <span class="text-xs text-slate-500 block mt-0.5">Detail &amp; konsultasi via WA</span>
+                            <span class="text-[10px] text-emerald-700 font-semibold block leading-tight mt-0.5">No Cure No Pay • Garansi 30 Hari</span>
+                            <span class="text-[10px] text-slate-500 block mt-0.5">Hemat s/d 70% vs bongkar keramik</span>
                         </div>
 
                         <a href="{{ $specificWaUrl }}" target="_blank" rel="noopener noreferrer" 

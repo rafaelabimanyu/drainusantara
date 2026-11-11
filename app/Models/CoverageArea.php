@@ -150,6 +150,46 @@ class CoverageArea extends Model
     }
 
     /**
+     * Get resolved presence description with rich geographical and plumbing differentiation.
+     */
+    public function getResolvedPresenceDescriptionAttribute(): string
+    {
+        if (! empty($this->presence_description)) {
+            return $this->presence_description;
+        }
+
+        $cityData = RegionService::findCity($this->city);
+        $citySlug = $cityData['slug'] ?? Str::slug($this->city);
+        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->district);
+
+        return $profile['presence_prose'];
+    }
+
+    /**
+     * Get regional taxonomy profile for local SEO de-thinning.
+     *
+     * @return array{
+     *     zone: string,
+     *     zone_name: string,
+     *     characteristics: string,
+     *     challenges: string,
+     *     building_focus: string,
+     *     technical_solution: string,
+     *     prominent_areas: array<int, string>,
+     *     presence_prose: string,
+     *     advantages_focus: string,
+     *     local_faqs: array<int, array{question: string, answer: string}>
+     * }
+     */
+    public function getResolvedRegionalProfileAttribute(): array
+    {
+        $cityData = RegionService::findCity($this->city);
+        $citySlug = $cityData['slug'] ?? Str::slug($this->city);
+
+        return \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->district);
+    }
+
+    /**
      * Get resolved FAQs either from custom CMS entries or dynamic local templates.
      *
      * @return array<int, array{question: string, answer: string}>
@@ -169,6 +209,11 @@ class CoverageArea extends Model
         $district = $this->district ?: 'wilayah Anda';
         $city = $this->city ?: 'sekitarnya';
         $priceFormatted = 'Rp ' . number_format($this->resolved_price, 0, ',', '.');
+
+        $cityData = RegionService::findCity($this->city);
+        $citySlug = $cityData['slug'] ?? Str::slug($this->city);
+        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->district);
+        $zoneFaqs = $profile['local_faqs'] ?? [];
 
         if ($this->isProvince()) {
             $provName = $this->province_name ?: $this->city;
@@ -197,7 +242,7 @@ class CoverageArea extends Model
         }
 
         if ($this->isCity()) {
-            return [
+            $baseCityFaqs = [
                 [
                     'question' => "Berapa lama estimasi teknisi Drainusantara tiba di lokasi {$city}?",
                     'answer' => "Armada siaga teknisi kami di posko {$city} bergerak cepat menuju lokasi Anda secepatnya setelah konfirmasi pemesanan, menyesuaikan rute lalu lintas terdekat.",
@@ -206,22 +251,28 @@ class CoverageArea extends Model
                     'question' => "Apakah pengerjaan saluran mampet di {$city} membongkar lantai keramik?",
                     'answer' => "Sama sekali tidak (100% tanpa bongkar ubin/keramik). Kami menggunakan mesin spiral baja rotary Ridgid berdaya puntir tinggi yang meliuk mengikuti alur pipa PVC hingga titik sumbatan terdalam tanpa merusak struktur ubin lantai.",
                 ],
-                [
-                    'question' => "Jenis saluran apa saja yang dilayani di {$city}?",
-                    'answer' => "Kami menangani wastafel cuci piring, kloset toilet duduk/jongkok, floor drain kamar mandi, bak kontrol perumahan, talang pipa atap, hingga pembersihan rutin grease trap restoran & ruko di seluruh area {$city}.",
-                ],
-                [
-                    'question' => "Berapa biaya jasa pelancaran pipa mampet di {$city}?",
-                    'answer' => "Biaya jasa penanganan transparan mulai dari {$priceFormatted} dengan komitmen No Cure No Pay (jika saluran gagal mengalir plong, Anda bebas dari biaya jasa pengerjaan).",
-                ],
-                [
-                    'question' => "Apakah ada garansi resmi untuk pengerjaan saluran di {$city}?",
-                    'answer' => "Ya, setiap pengerjaan yang dinyatakan tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi sumbatan ulang di titik yang sama dalam masa garansi, tim kami melancarkan ulang gratis tanpa biaya tambahan.",
-                ],
             ];
+
+            if (! empty($zoneFaqs[0])) {
+                $baseCityFaqs[] = $zoneFaqs[0];
+            }
+            if (! empty($zoneFaqs[2])) {
+                $baseCityFaqs[] = $zoneFaqs[2];
+            }
+
+            $baseCityFaqs[] = [
+                'question' => "Berapa biaya jasa pelancaran pipa mampet di {$city}?",
+                'answer' => "Biaya jasa penanganan transparan mulai dari {$priceFormatted} dengan komitmen No Cure No Pay (jika saluran gagal mengalir plong, Anda bebas dari biaya jasa pengerjaan).",
+            ];
+            $baseCityFaqs[] = [
+                'question' => "Apakah ada garansi resmi untuk pengerjaan saluran di {$city}?",
+                'answer' => "Ya, setiap pengerjaan yang dinyatakan tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi sumbatan ulang di titik yang sama dalam masa garansi, tim kami melancarkan ulang gratis tanpa biaya tambahan.",
+            ];
+
+            return $baseCityFaqs;
         }
 
-        return [
+        $baseDistrictFaqs = [
             [
                 'question' => "Berapa lama estimasi teknisi Drainusantara tiba di area {$district}, {$city}?",
                 'answer' => "Armada siaga teknisi kami di posko {$city} bergerak cepat, teknisi menuju ke lokasi anda secepatnya setelah konfirmasi pemesanan, menyesuaikan rute lalu lintas terdekat.",
@@ -230,19 +281,25 @@ class CoverageArea extends Model
                 'question' => "Apakah pengerjaan saluran mampet di {$district} membongkar lantai keramik?",
                 'answer' => "Sama sekali tidak (100% tanpa bongkar ubin/keramik). Kami menggunakan mesin spiral baja rotary berdaya puntir tinggi yang meliuk mengikuti alur pipa PVC hingga titik sumbatan terdalam tanpa merusak struktur lantai.",
             ],
-            [
-                'question' => "Jenis saluran apa saja yang dilayani di {$district}?",
-                'answer' => "Kami menangani pelancaran wastafel sink cuci piring, kloset toilet duduk/jongkok, floor drain kamar mandi, bak kontrol rumah, talang pipa atap, hingga pembersihan rutin grease trap restoran & ruko di seluruh area {$district}.",
-            ],
-            [
-                'question' => "Berapa biaya jasa pelancaran pipa mampet di {$district}?",
-                'answer' => "Biaya jasa penanganan mulai dari {$priceFormatted} dengan skema No Cure No Pay (jika saluran gagal mengalir lancar, Anda bebas dari biaya jasa pengerjaan).",
-            ],
-            [
-                'question' => "Apakah ada garansi resmi untuk pengerjaan di {$district}?",
-                'answer' => "Ya, setiap pengerjaan yang dinyatakan tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi sumbatan ulang di titik yang sama dalam masa garansi, tim kami melancarkan ulang tanpa biaya tambahan.",
-            ],
         ];
+
+        if (! empty($zoneFaqs[0])) {
+            $baseDistrictFaqs[] = $zoneFaqs[0];
+        }
+        if (! empty($zoneFaqs[1])) {
+            $baseDistrictFaqs[] = $zoneFaqs[1];
+        }
+
+        $baseDistrictFaqs[] = [
+            'question' => "Berapa biaya jasa pelancaran pipa mampet di {$district}?",
+            'answer' => "Biaya jasa penanganan mulai dari {$priceFormatted} dengan skema No Cure No Pay (jika saluran gagal mengalir lancar, Anda bebas dari biaya jasa pengerjaan).",
+        ];
+        $baseDistrictFaqs[] = [
+            'question' => "Apakah ada garansi resmi untuk pengerjaan di {$district}?",
+            'answer' => "Ya, setiap pengerjaan yang dinyatakan tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi sumbatan ulang di titik yang sama dalam masa garansi, tim kami melancarkan ulang tanpa biaya tambahan.",
+        ];
+
+        return $baseDistrictFaqs;
     }
 
     /**
@@ -263,12 +320,17 @@ class CoverageArea extends Model
             ? ($this->province_name ?: $this->city) 
             : ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]' ? $this->district : $this->city);
 
+        $cityData = RegionService::findCity($this->city);
+        $citySlug = $cityData['slug'] ?? Str::slug($this->city);
+        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->district);
+        $advantageFocus = $profile['advantages_focus'] ?? 'Mengikis kerak lemak beku tanpa membongkar keramik lantai hunian.';
+
         return [
             [
                 'title' => 'Rotary Ridgid 400 RPM Tanpa Bongkar',
                 'code' => 'SOP-01',
                 'badge' => 'Standar Terverifikasi',
-                'description' => 'Kabel spiral baja tempered meliuk fleksibel menembus leher angsa sifon hingga 30 meter. Mengikis kerak lemak beku tanpa membongkar keramik lantai hunian.',
+                'description' => "Kabel spiral baja tempered meliuk fleksibel menembus leher angsa sifon hingga 30 meter di {$locationName}. {$advantageFocus}",
                 'checkpoints' => [
                     'Kabel baja tempered elastis 16mm - 20mm',
                     'Jangkauan penetrasi fleksibel hingga 30 meter',

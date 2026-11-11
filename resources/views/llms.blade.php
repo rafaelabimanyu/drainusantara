@@ -15,7 +15,7 @@ Melayani cakupan rumah tangga (residensial), ruko, restoran komersial, dan hotel
 
 ## Kontak Darurat & Lokasi
 - **Reservasi WhatsApp (24/7):** https://wa.me/{{ $whatsappNumber }}
-- **Markas Pusat:** Jl. Duren Sawit Raya No. 45, Duren Sawit, Jakarta Timur 13440, Indonesia.
+- **Markas Pusat:** Jl. Manunggal XVII No. 104, RT.5/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur 13810, Indonesia.
 
 ## Katalog Layanan Teknis
 @forelse($services as $service)
@@ -31,7 +31,7 @@ Melayani cakupan rumah tangga (residensial), ruko, restoran komersial, dan hotel
 
 ## Peta Situs Kontekstual
 - [Beranda (SLA & Harga)]({{ route('home') }})
-- [Direktori Posko Kota & Kecamatan]({{ route('area.index') }})
+- [Direktori Posko Kota & Kecamatan]({{ route('area.index') }}): daftar provinsi, kota, dan area layanan
 - [Dokumentasi Before/After]({{ route('gallery') }})
 - [Basis Pengetahuan Sanitasi]({{ route('articles.index') }})
 - [Profil Perusahaan PT Jawa Jaya]({{ route('about.profile') }})

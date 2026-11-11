@@ -37,15 +37,20 @@
                     </a>
                 </div>
 
-                {{-- Alamat Kantor Pusat & Workshop PT JAWA JAYA ROOTER --}}
+                {{-- Alamat Kantor & Workshop PT JAWA JAYA ROOTER --}}
+                @php
+                    $rawAddress = config('services.company.address');
+                    $officeAddress = is_array($rawAddress) ? ($rawAddress['full'] ?? null) : $rawAddress;
+                @endphp
+                @if($officeAddress)
                 <div class="pt-1 text-xs text-slate-400 space-y-1">
-                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Kantor Pusat &amp; Workshop:</div>
+                    <div class="text-slate-200 font-bold uppercase text-[11px] tracking-wider">Kantor &amp; Workshop:</div>
                     <p class="text-xs text-slate-300 leading-relaxed flex items-start gap-1.5">
                         <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        <span>{{ config('services.company.address.full', 'Jl. Manunggal XVII No. 104, RT.5/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, DKI Jakarta 13810') }}</span>
+                        <span>{{ $officeAddress }}</span>
                     </p>
                     @if(config('services.company.google_maps_url'))
                     <a href="{{ config('services.company.google_maps_url') }}" target="_blank" rel="noopener noreferrer" class="text-[11px] text-sky-400 hover:text-sky-300 inline-flex items-center gap-1 font-medium transition-colors">
@@ -54,6 +59,7 @@
                     </a>
                     @endif
                 </div>
+                @endif
 
                 <!-- Icon Sosial Media Terhubung -->
                 <div class="pt-2">

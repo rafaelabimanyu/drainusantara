@@ -20,6 +20,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -168,10 +169,17 @@ class AreaController extends Controller
             ]);
         }
 
-        $rawTitle = $area->meta_title ?: "Jasa Saluran Pipa Mampet {$provinceData['name']} - Tanpa Bongkar & Garansi 30 Hari";
-        $cleanTitle = PageMetadata::cleanTitle($rawTitle);
-        if (! str_contains(strtolower($cleanTitle), 'garansi')) {
-            $cleanTitle .= ' - Tanpa Bongkar & Garansi 30 Hari';
+        if ($area->meta_title) {
+            $cleanTitle = PageMetadata::cleanTitle($area->meta_title);
+            if (preg_match('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', $cleanTitle)) {
+                $locationPart = preg_replace('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', '', $cleanTitle);
+                $cleanTitle = "Jasa Saluran Pipa Mampet {$locationPart}";
+                if (! str_contains(strtolower($cleanTitle), 'garansi')) {
+                    $cleanTitle .= ' - Tanpa Bongkar & Garansi 30 Hari';
+                }
+            }
+        } else {
+            $cleanTitle = "Jasa Saluran Pipa Mampet {$provinceData['name']} - Tanpa Bongkar & Garansi 30 Hari";
         }
 
         $description = $area->meta_description ?: "Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah {$provinceData['name']}. Armada siaga di seluruh kota dengan garansi resmi 30 hari.";
@@ -283,12 +291,8 @@ class AreaController extends Controller
                     ->get();
             });
         }
-
-        $articles = Article::published()
-            ->orderByRaw('COALESCE(published_at, created_at) DESC')
-            ->latest('id')
-            ->take(3)
-            ->get();
+        $galleries = $this->mapGalleriesForLocation($galleries, $provinceData['name']);
+        $articles = $this->getArticlesForLocation($provinceData['name'], 3);
 
         return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries', 'area', 'faqs', 'equipments', 'articles'));
     }
@@ -341,12 +345,17 @@ class AreaController extends Controller
             ]);
         }
 
-        $rawTitle = $area->meta_title ?: "Jasa Saluran Pipa Mampet {$searchCityName} - Tanpa Bongkar & Garansi 30 Hari";
-        $cleanTitle = PageMetadata::cleanTitle($rawTitle);
-        $cleanTitle = preg_replace('/^Jasa Saluran (?:Pipa )?Mampet (?:di )?/i', '', $cleanTitle);
-        $cleanTitle = "Jasa Saluran Pipa Mampet {$cleanTitle}";
-        if (! str_contains(strtolower($cleanTitle), 'garansi')) {
-            $cleanTitle .= ' - Tanpa Bongkar & Garansi 30 Hari';
+        if ($area->meta_title) {
+            $cleanTitle = PageMetadata::cleanTitle($area->meta_title);
+            if (preg_match('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', $cleanTitle)) {
+                $locationPart = preg_replace('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', '', $cleanTitle);
+                $cleanTitle = "Jasa Saluran Pipa Mampet {$locationPart}";
+                if (! str_contains(strtolower($cleanTitle), 'garansi')) {
+                    $cleanTitle .= ' - Tanpa Bongkar & Garansi 30 Hari';
+                }
+            }
+        } else {
+            $cleanTitle = "Jasa Saluran Pipa Mampet {$searchCityName} - Tanpa Bongkar & Garansi 30 Hari";
         }
 
         $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$cityData['name']}. Pelancaran wastafel, kloset toilet & floor drain tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!";
@@ -483,12 +492,8 @@ class AreaController extends Controller
                 $galleries = $galleries->concat($fallbackGalleries);
             }
         }
-
-        $articles = Article::published()
-            ->orderByRaw('COALESCE(published_at, created_at) DESC')
-            ->latest('id')
-            ->take(3)
-            ->get();
+        $galleries = $this->mapGalleriesForLocation($galleries, $cityData['name']);
+        $articles = $this->getArticlesForLocation($cityData['name'], 3);
 
         return view('areas.city', compact('cityData', 'services', 'reviews', 'area', 'faqs', 'equipments', 'galleries', 'articles'));
     }
@@ -536,12 +541,17 @@ class AreaController extends Controller
             ]);
         }
 
-        $rawTitle = $area->meta_title ?: "Jasa Saluran Pipa Mampet {$area->district}, {$area->city} - Tanpa Bongkar & Garansi 30 Hari";
-        $cleanTitle = PageMetadata::cleanTitle($rawTitle);
-        $cleanTitle = preg_replace('/^Jasa Saluran (?:Pipa )?Mampet (?:di )?/i', '', $cleanTitle);
-        $cleanTitle = "Jasa Saluran Pipa Mampet {$cleanTitle}";
-        if (! str_contains(strtolower($cleanTitle), 'garansi')) {
-            $cleanTitle .= ' - Tanpa Bongkar & Garansi 30 Hari';
+        if ($area->meta_title) {
+            $cleanTitle = PageMetadata::cleanTitle($area->meta_title);
+            if (preg_match('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', $cleanTitle)) {
+                $locationPart = preg_replace('/^Jasa (?:Saluran )?(?:Pipa )?Mampet (?:di )?/i', '', $cleanTitle);
+                $cleanTitle = "Jasa Saluran Pipa Mampet {$locationPart}";
+                if (! str_contains(strtolower($cleanTitle), 'garansi')) {
+                    $cleanTitle .= ' - Tanpa Bongkar & Garansi 30 Hari';
+                }
+            }
+        } else {
+            $cleanTitle = "Jasa Saluran Pipa Mampet {$area->district}, {$area->city} - Tanpa Bongkar & Garansi 30 Hari";
         }
 
         $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$area->district}, {$area->city}. Pelancaran wastafel, kloset toilet & floor drain 100% tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!";
@@ -715,13 +725,73 @@ class AreaController extends Controller
                 $galleries = $galleries->concat($fallbackGalleries);
             }
         }
-
-        $articles = Article::published()
-            ->orderByRaw('COALESCE(published_at, created_at) DESC')
-            ->latest('id')
-            ->take(3)
-            ->get();
+        $galleries = $this->mapGalleriesForLocation($galleries, $area->city);
+        $articles = $this->getArticlesForLocation($area->city, 3);
 
         return view('areas.district', compact('area', 'services', 'reviews', 'cityData', 'equipments', 'galleries', 'articles'));
+    }
+
+    /**
+     * Map gallery items to ensure no geographic dissonance on non-local pages.
+     *
+     * @param  \Illuminate\Support\Collection<int, \App\Models\Gallery>  $galleries
+     * @return \Illuminate\Support\Collection<int, \App\Models\Gallery>
+     */
+    private function mapGalleriesForLocation(Collection $galleries, string $locationName): Collection
+    {
+        $pureLoc = strtolower(trim(str_ireplace(['kota', 'kabupaten'], '', $locationName)));
+
+        return $galleries->map(function ($g) use ($pureLoc) {
+            $itemLocLower = strtolower($g->location ?? '');
+            $isLocal = ! empty($pureLoc) && str_contains($itemLocLower, $pureLoc);
+
+            if ($isLocal) {
+                $g->display_location = $g->location;
+                $g->display_title = $g->title;
+            } else {
+                $g->display_location = 'Standar Operasional Nasional Drainusantara';
+                $serviceName = $g->service ? $g->service->name : 'Pipa Saluran';
+                $g->display_title = "Studi Kasus: Pelancaran {$serviceName} Tanpa Bongkar";
+            }
+
+            return $g;
+        });
+    }
+
+    /**
+     * Get prioritized articles matching the local city, backfilled to $limit with latest articles.
+     *
+     * @return \Illuminate\Support\Collection<int, \App\Models\Article>
+     */
+    private function getArticlesForLocation(string $cityName, int $limit = 3): Collection
+    {
+        $pureCity = trim(str_ireplace(['kota', 'kabupaten'], '', $cityName));
+
+        $localArticles = Article::published()
+            ->where(function ($q) use ($pureCity, $cityName) {
+                $q->where('title', 'like', "%{$pureCity}%")
+                    ->orWhere('slug', 'like', "%{$pureCity}%")
+                    ->orWhere('content', 'like', "%{$pureCity}%");
+                if ($pureCity !== $cityName && ! empty($pureCity)) {
+                    $q->orWhere('title', 'like', "%{$cityName}%")
+                        ->orWhere('slug', 'like', "%{$cityName}%");
+                }
+            })
+            ->orderByRaw('COALESCE(published_at, created_at) DESC')
+            ->latest('id')
+            ->take($limit)
+            ->get();
+
+        if ($localArticles->count() < $limit) {
+            $fallback = Article::published()
+                ->whereNotIn('id', $localArticles->pluck('id'))
+                ->orderByRaw('COALESCE(published_at, created_at) DESC')
+                ->latest('id')
+                ->take($limit - $localArticles->count())
+                ->get();
+            $localArticles = $localArticles->concat($fallback);
+        }
+
+        return $localArticles;
     }
 }
