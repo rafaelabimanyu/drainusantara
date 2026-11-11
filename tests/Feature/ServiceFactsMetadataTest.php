@@ -56,9 +56,9 @@ class ServiceFactsMetadataTest extends TestCase
             ['/tentang-kami/garansi', 'Ketentuan Resmi Garansi 30 Hari Kalender'],
             ['/tentang-kami/faq', 'Tanya Jawab (FAQ) Pelancaran Pipa'],
             ['/area', 'Wilayah Jangkauan Teknisi Pipa Mampet'],
-            ['/area/provinsi/banten', 'Jasa Saluran Mampet Banten'],
-            ['/area/tangerang-selatan', 'Jasa Pipa Mampet Tangerang Selatan'],
-            ['/area/tangerang-selatan/serpong', 'Jasa Saluran Mampet Serpong, Tangerang Selatan'],
+            ['/area/provinsi/banten', 'Jasa Saluran Pipa Mampet Banten - Tanpa Bongkar & Garansi 30 Hari'],
+            ['/area/tangerang-selatan', 'Jasa Saluran Pipa Mampet Tangerang Selatan - Tanpa Bongkar & Garansi 30 Hari'],
+            ['/area/tangerang-selatan/serpong', 'Jasa Saluran Pipa Mampet Serpong, Tangerang Selatan - Tanpa Bongkar & Garansi 30 Hari'],
             ['/galeri', 'Dokumentasi Hasil Pengerjaan Pipa Mampet'],
             ['/pengetahuan', 'Panduan & Edukasi Perawatan Saluran Pipa'],
         ];

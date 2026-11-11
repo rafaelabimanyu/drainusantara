@@ -20,6 +20,42 @@
     submitted: false,
     generatedWaUrl: '',
 
+    getEstimate() {
+        let min = 400;
+        let max = 550;
+
+        if (this.problem === 'kloset') { min = 450; max = 650; }
+        else if (this.problem === 'floordrain') { min = 400; max = 550; }
+        else if (this.problem === 'talang') { min = 450; max = 650; }
+        else if (this.problem === 'greasetrap') { min = 550; max = 850; }
+        else if (this.problem === 'pipautama') { min = 500; max = 750; }
+
+        if (this.property === 'ruko') { min += 50; max += 100; }
+        else if (this.property === 'resto') { min += 100; max += 150; }
+        else if (this.property === 'kantor') { min += 100; max += 200; }
+
+        return 'Rp ' + min + '.000 - Rp ' + max + '.000';
+    },
+
+    getMethodExplanation() {
+        if (this.problem === 'wastafel') {
+            return 'Pembersihan kerak minyak & lemak leher angsa menggunakan mesin spiral rotary Ridgid K-50 tanpa melepas sink.';
+        }
+        if (this.problem === 'kloset') {
+            return 'Penetrasian leher angsa toilet duduk/jongkok menggunakan spiral fleksibel 400 RPM tanpa mencabut kloset.';
+        }
+        if (this.problem === 'floordrain') {
+            return 'Pengikisan endapan rambut & busa sabun pipa pembuangan kamar mandi hingga plong tanpa membongkar keramik.';
+        }
+        if (this.problem === 'talang') {
+            return 'Pembersihan endapan lumpur, lumut, dan tumpukan daun pada pipa vertikal rooftop dengan kabel spiral jangkauan panjang.';
+        }
+        if (this.problem === 'greasetrap') {
+            return 'Pengangkatan kerak lemak beku & pembersihan saluran grease trap komersial berstandar higienis.';
+        }
+        return 'Pelancaran jalur pipa pembuangan induk / bak kontrol dengan mesin rooter berkekuatan putar tinggi.';
+    },
+
     selectProblem(key, title) {
         this.problem = key;
         this.problemTitle = title;
@@ -50,9 +86,10 @@
             '----------------------------------------',
             '• Titik Masalah: ' + this.problemTitle,
             '• Tipe Bangunan: ' + this.propertyTitle,
-            '• Wilayah: ' + this.city,
+            '• Wilayah Lokasi: ' + this.city,
             '• Kondisi Saluran: ' + this.condition,
-            '• Riwayat Soda Api: ' + (this.chemicalHistory === 'ya' ? 'Pernah pakai soda api/kimia' : 'Belum pernah pakai soda api'),
+            '• Estimasi Biaya Awal: ' + this.getEstimate() + ' (No Cure No Pay)',
+            '• Riwayat Soda Api: ' + (this.chemicalHistory === 'ya' ? 'PERNAH PAKAI (Perlu penanganan khusus pipa PVC)' : 'Belum pernah pakai (Aman)'),
         ];
         if (this.customerName.trim()) {
             lines.push('• Nama Pemesan: ' + this.customerName.trim());
@@ -61,7 +98,7 @@
             lines.push('• Patokan Alamat: ' + this.addressNotes.trim());
         }
         lines.push('----------------------------------------');
-        lines.push('Halo Admin Drainusantara, mohon info estimasi biaya pengerjaan mekanis spiral baja dan jadwal kedatangan teknisi terdekat. Terima kasih.');
+        lines.push('Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran pipa mampet di atas. Mohon info jadwal kedatangan teknisi terdekat dan diagnosa gratis. Terima kasih.');
         return lines.join('\n');
     },
 
@@ -353,12 +390,21 @@
                     <div><span class="text-slate-500">Kondisi:</span> <span class="font-bold text-slate-900 block" x-text="condition"></span></div>
                 </div>
 
-                <div class="pt-2 border-t border-slate-200 flex items-center justify-between text-xs font-semibold text-slate-800">
-                    <span>Estimasi Biaya Transparan:</span>
-                    <span class="text-emerald-700 font-extrabold text-sm">Mulai Rp 400.000</span>
+                <div class="pt-2.5 border-t border-slate-200 space-y-1.5">
+                    <div class="flex items-center justify-between text-xs font-semibold text-slate-800">
+                        <span>Estimasi Rentang Biaya:</span>
+                        <span class="text-emerald-700 font-extrabold text-sm sm:text-base" x-text="getEstimate()"></span>
+                    </div>
+                    <div class="text-[11px] text-slate-600 bg-white p-2.5 rounded-md border border-slate-200 mt-1">
+                        <span class="font-bold text-sky-800 block mb-0.5">Metode Penanganan:</span>
+                        <span x-text="getMethodExplanation()"></span>
+                    </div>
+                    <div x-show="chemicalHistory === 'ya'" class="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-md border border-amber-200 mt-1">
+                        ⚠️ <strong>Perhatian Khusus Soda Api:</strong> Karena pernah disiram zat kimia, teknisi akan menggunakan mata bor spiral fleksibel bertorsi halus untuk melindungi sambungan PVC yang rentan rapuh.
+                    </div>
                 </div>
-                <div class="text-[10px] text-slate-500">
-                    * Garansi resmi 30 hari nota tertulis • Tanpa bongkar keramik • Bayar setelah lancar.
+                <div class="text-[10px] text-slate-500 pt-1">
+                    * Garansi resmi 30 hari nota tertulis • 100% tanpa bongkar keramik • <strong>No Cure No Pay</strong> (tidak lancar tidak bayar).
                 </div>
             </div>
 

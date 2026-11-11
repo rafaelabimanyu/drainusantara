@@ -97,6 +97,42 @@
                             </div>
                         </div>
 
+                        <!-- Email Resmi -->
+                        <div class="flex items-start gap-3.5 p-3.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                            <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Email Kantor Resmi</span>
+                                <a href="mailto:{{ config('services.company.email', 'drainusantara@gmail.com') }}" class="text-sm sm:text-base font-extrabold text-slate-900 hover:text-sky-700 transition-colors">
+                                    {{ config('services.company.email', 'drainusantara@gmail.com') }}
+                                </a>
+                                <span class="text-[11px] text-slate-500 block mt-0.5">Korespondensi resmi, penawaran B2B &amp; administrasi</span>
+                            </div>
+                        </div>
+
+                        <!-- Alamat Kantor Pusat & Workshop -->
+                        <div class="flex items-start gap-3.5 p-3.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                            <div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Kantor Pusat &amp; Workshop (HQ)</span>
+                                <p class="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                                    PT JAWA JAYA ROOTER &bull; Drainusantara
+                                </p>
+                                <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                    {{ config('services.company.address.full', 'Jl. Manunggal XVII No. 104, RT.5/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, DKI Jakarta 13810') }}
+                                </p>
+                                @if(config('services.company.google_maps_url'))
+                                <a href="{{ config('services.company.google_maps_url') }}" target="_blank" rel="noopener noreferrer"
+                                   class="inline-flex items-center gap-1 text-[11px] font-bold text-sky-700 hover:text-sky-800 mt-1.5">
+                                    <span>Buka di Google Maps &rarr;</span>
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+
                         <!-- Jam Operasional -->
                         <div class="flex items-start gap-3.5 p-3.5 rounded-lg bg-slate-50 border border-slate-200/80">
                             <div class="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">

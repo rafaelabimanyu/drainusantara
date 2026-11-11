@@ -120,7 +120,7 @@ class CoverageAreaLandingEnhancedTest extends TestCase
         $response->assertStatus(200);
 
         // City Hero & Sections
-        $response->assertSee('Jasa Saluran Mampet di <span class="text-sky-700">Jakarta Selatan</span>', false);
+        $response->assertSee('Jasa Saluran Pipa Mampet <span class="text-sky-700">Jakarta Selatan</span>', false);
         $response->assertSee('id="layanan-kota"', false);
         $response->assertSee('id="peralatan-kota"', false);
         $response->assertSee('Tukang Konvensional vs Standar Drainusantara', false);

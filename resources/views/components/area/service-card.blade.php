@@ -57,10 +57,11 @@
     </div>
     <div class="mt-2.5 sm:mt-3 pt-2.5 sm:pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
         <div class="min-w-0 pr-1">
-            <span class="text-[10px] sm:text-[11px] text-slate-500 font-medium block leading-tight">Biaya Mulai:</span>
+            <span class="text-[10px] sm:text-[11px] text-slate-500 font-medium block leading-tight">Estimasi Biaya:</span>
             <span class="text-xs sm:text-base font-extrabold text-slate-900 tracking-tight truncate block">
-                {{ ($isModel && $catalog->price_starting_from === 0) ? 'Hubungi untuk harga' : ($price > 0 ? 'Rp ' . number_format($price, 0, ',', '.') : 'Hubungi untuk harga') }}
+                {{ ($isModel && $catalog->price_starting_from === 0) ? 'Hubungi untuk harga' : ($price > 0 ? 'Mulai Rp ' . number_format($price, 0, ',', '.') : 'Hubungi untuk harga') }}
             </span>
+            <span class="text-[9px] sm:text-[10px] font-semibold text-emerald-700 block leading-tight mt-0.5">No Cure No Pay • Garansi 30 Hari</span>
         </div>
         <a href="{{ $itemWaUrl }}" target="_blank" rel="noopener noreferrer" 
            class="min-h-10 shrink-0 inline-flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-[11px] sm:text-xs py-2 px-3 rounded-lg shadow-2xs transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500">

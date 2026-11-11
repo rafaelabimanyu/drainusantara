@@ -65,7 +65,7 @@ class GeoSeoTest extends TestCase
         $response->assertSee('"latitude":' . $coords['lat'], false);
         $response->assertSee('"longitude":' . $coords['lng'], false);
         $response->assertSee('PT JAWA JAYA ROOTER', false);
-        $response->assertSee('"@type":"OfferCatalog"', false);
+        $response->assertSee('"@type":"Service"', false);
         $response->assertSee('"@type":"OpeningHoursSpecification"', false);
         $response->assertSee('"@type":"AdministrativeArea"', false);
     }
@@ -107,7 +107,7 @@ class GeoSeoTest extends TestCase
         $response->assertSee('Kecamatan Tebet', false);
         $response->assertSee('Kecamatan Cilandak', false);
         $response->assertSee('PT JAWA JAYA ROOTER', false);
-        $response->assertSee('"@type":"OfferCatalog"', false);
+        $response->assertSee('"@type":"Service"', false);
     }
 
     public function test_province_page_renders_iso3166_geotags(): void
@@ -152,8 +152,8 @@ class GeoSeoTest extends TestCase
         $response->assertSee('<meta name="geo.placename" content="Sanur, Kota Denpasar">', false);
         $response->assertSee('<meta name="geo.position" content="-8.6882;115.2625">', false);
         $response->assertSee('<meta name="ICBM" content="-8.6882, 115.2625">', false);
-        $response->assertSee('"@type":"AggregateRating"', false);
-        $response->assertSee('"ratingValue":"4.9"', false);
+        $response->assertSee('"@type":"Plumber"', false);
+        $response->assertSee('"@type":"Service"', false);
     }
 
     public function test_layout_avoids_duplicate_conflicting_geo_tags_on_area_pages(): void

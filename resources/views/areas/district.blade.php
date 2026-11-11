@@ -131,7 +131,7 @@
                     </div>
 
                     <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-snug sm:leading-tight">
-                        Jasa Pipa & Saluran Mampet <span class="text-sky-700">{{ $area->district }}</span>
+                        Jasa Saluran Pipa Mampet <span class="text-sky-700">{{ $area->district }}</span>
                     </h1>
 
                     <p class="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl">
@@ -141,8 +141,9 @@
                     <!-- 4-Grid Feature Badges -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 max-w-2xl pt-1">
                         <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
-                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Biaya Mulai</div>
+                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Estimasi Biaya</div>
                             <div class="text-xs sm:text-sm font-extrabold text-slate-900">Mulai {{ $startingPriceFormatted }}</div>
+                            <div class="text-[9px] sm:text-[10px] text-emerald-700 font-bold mt-0.5 leading-tight">No Cure No Pay</div>
                         </div>
 
                         <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
@@ -187,6 +188,10 @@
                             </svg>
                         </a>
                     </div>
+                    <p class="text-[11px] text-slate-500 pt-1 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <span>Konsultasi &amp; Diagnosa Awal Gratis via WhatsApp • Hemat s/d 70% vs Bongkar Lantai</span>
+                    </p>
                 </div>
 
                 <!-- Right Hero Dispatch Visual Card -->
@@ -255,8 +260,35 @@
                     </h2>
 
                     <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
-                        {{ $area->presence_description ?: "Drainusantara hadir secara resmi melayani kawasan {$area->district}, {$area->city} dengan posko armada reaksi cepat. Mengatasi keluhan wastafel tumpat, toilet mampet, dan pipa got pembuangan secara higienis, bersih, dan berstandar teknis profesional tanpa risiko kerusakan struktur lantai hunian Anda." }}
+                        {{ $area->resolved_presence_description }}
                     </p>
+
+                    @php
+                        $regProfile = $area->resolved_regional_profile;
+                    @endphp
+                    <!-- Local Regional Characteristics & Pipe Dynamics -->
+                    <div class="p-3.5 sm:p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-2 text-xs">
+                        <div class="flex items-center gap-2 text-sky-800 font-bold uppercase tracking-wider text-[11px]">
+                            <svg class="w-4 h-4 text-sky-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>Analisis Karakteristik Pipa {{ $area->district }} ({{ $regProfile['zone_name'] }})</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-600 pt-0.5">
+                            <div>
+                                <strong class="text-slate-800 font-semibold block text-[11px]">Tantangan Sumbatan Dominan:</strong>
+                                <span class="leading-relaxed">{{ $regProfile['challenges'] }}</span>
+                            </div>
+                            <div>
+                                <strong class="text-slate-800 font-semibold block text-[11px]">Metode Teknis Armada:</strong>
+                                <span class="leading-relaxed">{{ $regProfile['technical_solution'] }}</span>
+                            </div>
+                        </div>
+                        @if(!empty($regProfile['prominent_areas']))
+                            <div class="pt-1.5 border-t border-slate-200/80 text-[11px] text-slate-500">
+                                <span class="font-semibold text-slate-700">Area &amp; Koridor Reaksi Cepat:</span>
+                                <span>{{ implode(' • ', $regProfile['prominent_areas']) }}</span>
+                            </div>
+                        @endif
+                    </div>
 
                     <!-- Hint Geser di Mobile -->
                     <div class="flex sm:hidden items-center justify-start gap-1.5 text-xs text-sky-700 font-medium pt-1" aria-hidden="true">
@@ -645,10 +677,10 @@
                                 </div>
                                 <div class="p-4 space-y-2">
                                     <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider block">
-                                        {{ $galleryItem->location ?: $area->district . ', ' . $area->city }}
+                                        {{ $galleryItem->display_location ?? ($galleryItem->location ?: $area->district . ', ' . $area->city) }}
                                     </span>
                                     <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-1">
-                                        {{ $galleryItem->title }}
+                                        {{ $galleryItem->display_title ?? $galleryItem->title }}
                                     </h3>
                                     <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                                         {{ $galleryItem->description ?: 'Pelancaran saluran mampet tuntas dengan metode spiral rotary mekanis.' }}
@@ -1005,7 +1037,7 @@
                 {{ $cta['headline'] }}
             </h2>
             <p class="text-slate-300 text-xs sm:text-sm mt-2 max-w-lg mx-auto leading-relaxed">
-                Teknisi siaga kami siap menuju titik lokasi Anda di {{ $area->district }}, {{ $area->city }}. Penanganan mekanis tanpa bongkar keramik, biaya mulai {{ $startingPriceFormatted }}, dan dilindungi garansi 30 hari.
+                Teknisi siaga kami siap meluncur ke titik lokasi Anda di {{ $area->district }}, {{ $area->city }}. Penanganan mekanis tanpa bongkar keramik, estimasi mulai {{ $startingPriceFormatted }} (No Cure No Pay), konsultasi gratis via WhatsApp, dan dilindungi garansi 30 hari.
             </p>
 
             <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto">

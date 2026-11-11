@@ -132,7 +132,19 @@
                     </div>
                     <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
                         <span class="text-slate-500 font-medium">Cakupan Posko</span>
-                        <span class="font-bold text-slate-900 text-right">Jabodetabek, Semarang, Lampung</span>
+                        <span class="font-bold text-slate-900 text-right">Jabodetabek, Semarang, Lampung, Bali</span>
+                    </div>
+                    <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
+                        <span class="text-slate-500 font-medium">Hotline &amp; WA</span>
+                        <a href="tel:085609009009" class="font-bold text-sky-700 hover:text-sky-800 text-right">0856-0900-9009</a>
+                    </div>
+                    <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
+                        <span class="text-slate-500 font-medium">Email Resmi</span>
+                        <a href="mailto:{{ config('services.company.email', 'drainusantara@gmail.com') }}" class="font-bold text-sky-700 hover:text-sky-800 text-right">{{ config('services.company.email', 'drainusantara@gmail.com') }}</a>
+                    </div>
+                    <div class="pb-2.5 border-b border-slate-100 flex flex-col gap-1">
+                        <span class="text-slate-500 font-medium">Kantor Pusat &amp; Workshop</span>
+                        <span class="font-semibold text-slate-900 text-xs leading-relaxed">{{ config('services.company.address.full', 'Jl. Manunggal XVII No. 104, RT.5/RW.11, Lubang Buaya, Kec. Cipayung, Kota Jakarta Timur, DKI Jakarta 13810') }}</span>
                     </div>
                     <div class="pb-2.5 border-b border-slate-100 flex justify-between items-center">
                         <span class="text-slate-500 font-medium">Waktu Operasional</span>

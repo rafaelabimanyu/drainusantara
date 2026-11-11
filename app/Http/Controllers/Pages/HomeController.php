@@ -63,32 +63,66 @@ class HomeController extends Controller
         JsonLdMulti::setDescription('Jasa pelancaran saluran pipa mampet profesional, mesin rooter spiral baja, dan inspeksi kamera CCTV pipa bergaransi 30 hari.');
         JsonLdMulti::setType('Plumber');
         JsonLdMulti::addValues([
-            'name' => 'Drainusantara',
+            '@id' => url('/#organization'),
+            'name' => 'Drainusantara - Jasa Saluran Pipa Mampet',
+            'legalName' => 'PT Jawa Jaya Rooter',
             'url' => url('/'),
+            'logo' => asset('images/logo/WebIcon.webp'),
             'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
             'telephone' => $this->formatInternationalPhone(),
+            'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
             'priceRange' => 'Mulai Rp 400.000',
             'openingHours' => 'Mo-Su 00:00-24:00',
-            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
-            'aggregateRating' => [
-                '@type' => 'AggregateRating',
-                'ratingValue' => '4.9',
-                'reviewCount' => 128,
-                'bestRating' => '5',
-                'worstRating' => '1',
+            'openingHoursSpecification' => [
+                [
+                    '@type' => 'OpeningHoursSpecification',
+                    'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    'opens' => '00:00',
+                    'closes' => '23:59',
+                ],
             ],
+            'address' => $this->getHeadquartersAddress(),
+            'geo' => $this->getHeadquartersGeo(),
+            'sameAs' => $this->getSameAsUrls(),
+            'hasMap' => config('services.company.google_maps_url') ?: null,
+            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
             'serviceType' => [
-                'Pelancaran Saluran Mampet',
-                'Inspeksi Kamera CCTV Pipa',
-                'Pelancaran Kloset & WC',
-                'Pelancaran Wastafel & Sink',
-                'Pembersihan Lemak Pipa',
+                'Jasa Saluran Pipa Mampet',
+                'Inspeksi Kamera CCTV Pipa 30M',
+                'Pelancaran Kloset & WC Toilet',
+                'Pelancaran Wastafel Cuci Piring',
+                'Pembersihan Lemak Pipa & Grease Trap',
+            ],
+        ]);
+
+        $serviceJsonLd = JsonLdMulti::newJsonLd();
+        $serviceJsonLd->setType('Service');
+        $serviceJsonLd->addValues([
+            '@id' => url('/#service-pelancaran-pipa'),
+            'name' => 'Jasa Saluran Pipa Mampet Tanpa Bongkar',
+            'serviceType' => 'Plumbing Service',
+            'description' => 'Layanan pelancaran saluran pipa wastafel, kloset toilet, floor drain, dan talang air dengan mesin spiral rotary Ridgid tanpa bongkar keramik bergaransi 30 hari.',
+            'provider' => [
+                '@id' => url('/#organization'),
+            ],
+            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
+            'offers' => [
+                '@type' => 'Offer',
+                'price' => '400000',
+                'priceCurrency' => 'IDR',
+                'availability' => 'https://schema.org/InStock',
+                'priceSpecification' => [
+                    '@type' => 'PriceSpecification',
+                    'price' => '400000',
+                    'priceCurrency' => 'IDR',
+                ],
             ],
         ]);
 
         $webSiteJsonLd = JsonLdMulti::newJsonLd();
         $webSiteJsonLd->setType('WebSite');
         $webSiteJsonLd->addValues([
+            '@id' => url('/#website'),
             'name' => 'Drainusantara',
             'url' => url('/'),
             'potentialAction' => [

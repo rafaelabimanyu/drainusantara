@@ -47,7 +47,7 @@
         : "Halo Tim Drainusantara, saya membutuhkan jasa pelancaran pipa saluran mampet di area {$cityData['name']}. Mohon info estimasi biaya dan kedatangan teknisi ke lokasi.";
     $cityWaUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($customWaText);
     
-    $heroHeadline = $area->cta_headline ?: "Jasa Saluran Mampet di <span class=\"text-sky-700\">{$cityData['name']}</span>";
+    $heroHeadline = $area->cta_headline ?: "Jasa Saluran Pipa Mampet <span class=\"text-sky-700\">{$cityData['name']}</span>";
     $startingPriceFormatted = 'Rp ' . number_format($area->resolved_price, 0, ',', '.');
     
     // Fallback latar belakang banner kota bila tidak ada kustom dari CMS
@@ -257,8 +257,9 @@
                                 </svg>
                             </div>
                             <div class="min-w-0">
-                                <div class="text-[10px] sm:text-xs text-slate-500 font-medium leading-tight">Biaya Mulai</div>
-                                <div class="text-xs sm:text-sm font-extrabold text-sky-900 truncate">{{ $startingPriceFormatted }}</div>
+                                <div class="text-[10px] sm:text-xs text-slate-500 font-medium leading-tight">Estimasi Biaya</div>
+                                <div class="text-xs sm:text-sm font-extrabold text-sky-900 truncate">Mulai {{ $startingPriceFormatted }}</div>
+                                <div class="text-[9px] sm:text-[10px] text-emerald-700 font-bold mt-0.5 leading-tight">No Cure No Pay</div>
                             </div>
                         </div>
 
@@ -325,6 +326,10 @@
                             </svg>
                         </a>
                     </div>
+                    <p class="text-[11px] text-slate-500 pt-1 flex items-center gap-1.5 reveal-soft delay-225">
+                        <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        <span>Konsultasi &amp; Diagnosa Awal Gratis via WhatsApp • Hemat s/d 70% vs Bongkar Keramik</span>
+                    </p>
                 </div>
 
                 <!-- Kolom Ringkasan Posko Siaga Lokal (Sama persis seperti Provinsi) -->
@@ -372,9 +377,7 @@
         $presenceImg = !empty($area->presence_image) 
             ? (filter_var($area->presence_image, FILTER_VALIDATE_URL) ? $area->presence_image : asset($area->presence_image))
             : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
-        $presenceText = !empty($area->presence_description)
-            ? $area->presence_description
-            : "Drainusantara hadir secara resmi melayani seluruh wilayah {$cityData['name']} sebagai solusi modern penanganan saluran pipa mampet tanpa pembongkaran lantai keramik maupun dinding. Didukung armada teknisi motoris dan mobil reaksi cepat yang ditempatkan pada titik-titik posko strategis, kami menjamin penanganan tuntas dengan standar alat mekanis spiral baja elastis bergaransi resmi 30 hari.";
+        $presenceText = $area->resolved_presence_description;
     @endphp
     <section id="kehadiran-lokal-kota" class="py-14 sm:py-20 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -420,6 +423,33 @@
 
                     <div class="text-sm sm:text-base text-slate-600 leading-relaxed space-y-3">
                         <p>{{ $presenceText }}</p>
+                    </div>
+
+                    @php
+                        $regProfile = $area->resolved_regional_profile;
+                    @endphp
+                    <!-- Local Regional Characteristics & Pipe Dynamics -->
+                    <div class="p-3.5 sm:p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-2 text-xs">
+                        <div class="flex items-center gap-2 text-sky-800 font-bold uppercase tracking-wider text-[11px]">
+                            <svg class="w-4 h-4 text-sky-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>Karakteristik Jalur Pipa {{ $cityData['name'] }} ({{ $regProfile['zone_name'] }})</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-600 pt-0.5">
+                            <div>
+                                <strong class="text-slate-800 font-semibold block text-[11px]">Karakter &amp; Tantangan Wilayah:</strong>
+                                <span class="leading-relaxed">{{ $regProfile['challenges'] }}</span>
+                            </div>
+                            <div>
+                                <strong class="text-slate-800 font-semibold block text-[11px]">Metode Teknis Armada:</strong>
+                                <span class="leading-relaxed">{{ $regProfile['technical_solution'] }}</span>
+                            </div>
+                        </div>
+                        @if(!empty($regProfile['prominent_areas']))
+                            <div class="pt-1.5 border-t border-slate-200/80 text-[11px] text-slate-500">
+                                <span class="font-semibold text-slate-700">Area &amp; Koridor Reaksi Cepat:</span>
+                                <span>{{ implode(' • ', $regProfile['prominent_areas']) }}</span>
+                            </div>
+                        @endif
                     </div>
 
                     <!-- 3 Poin Kunci Kehadiran Lokal (Carousel di Mobile) -->
@@ -763,10 +793,10 @@
                                 </div>
                                 <div class="p-4 space-y-2">
                                     <span class="text-[11px] font-bold text-sky-700 uppercase tracking-wider block">
-                                        {{ $galleryItem->location ?: $cityData['name'] }}
+                                        {{ $galleryItem->display_location ?? ($galleryItem->location ?: $cityData['name']) }}
                                     </span>
                                     <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-1">
-                                        {{ $galleryItem->title }}
+                                        {{ $galleryItem->display_title ?? $galleryItem->title }}
                                     </h3>
                                     <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                                         {{ $galleryItem->description ?: 'Pelancaran saluran mampet tuntas dengan metode spiral rotary mekanis.' }}
