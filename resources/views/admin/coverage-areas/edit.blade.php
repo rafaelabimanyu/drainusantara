@@ -125,14 +125,57 @@
 
         <!-- SECTION 2: FOTO HERO WILAYAH -->
         <div class="space-y-4">
-            <div class="border-b border-slate-200 pb-2">
-                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">2. Foto Hero Section Wilayah</h2>
-                <p class="text-xs text-slate-500">Foto latar belakang khusus hero section wilayah ini. Mewarisi hierarki kota/provinsi jika dikosongkan.</p>
+            <div class="border-b border-slate-200 pb-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900">2. Foto Hero Section Wilayah</h2>
+                    <p class="text-xs text-slate-500">Foto latar belakang khusus hero section wilayah ini. Mewarisi hierarki kota/provinsi jika dikosongkan.</p>
+                </div>
+                @php
+                    $source = $coverageArea->image_source;
+                    $badgeColor = match($source) {
+                        'cms_custom' => 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                        'district_asset' => 'bg-sky-50 text-sky-800 border-sky-200',
+                        'city_asset' => 'bg-indigo-50 text-indigo-800 border-indigo-200',
+                        'province_asset' => 'bg-amber-50 text-amber-800 border-amber-200',
+                        default => 'bg-slate-100 text-slate-700 border-slate-200',
+                    };
+                    $sourceLabel = match($source) {
+                        'cms_custom' => 'Kustom CMS (Upload)',
+                        'district_asset' => 'Aset Dedicated Kecamatan',
+                        'city_asset' => 'Aset Induk Kota/Kabupaten',
+                        'province_asset' => 'Aset Induk Provinsi',
+                        default => 'Armada Standar Drainusantara',
+                    };
+                @endphp
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border {{ $badgeColor }} self-start sm:self-auto">
+                    <span class="w-1.5 h-1.5 rounded-full {{ $source === 'cms_custom' ? 'bg-emerald-500' : 'bg-sky-500' }}"></span>
+                    Sumber: {{ $sourceLabel }}
+                </span>
+            </div>
+
+            <!-- Preview Foto Aktif Ter-resolve -->
+            <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div class="w-36 h-24 rounded-md overflow-hidden bg-slate-900 border border-slate-200 shrink-0">
+                    <img src="{{ $coverageArea->resolved_hero_image }}" 
+                         alt="Foto Aktif {{ $coverageArea->district ?: $coverageArea->city }}" 
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="text-xs space-y-1">
+                    <div class="font-bold text-slate-800">Foto Aktif yang Ditampilkan di Website:</div>
+                    <div class="text-slate-600 font-mono text-[11px] break-all">{{ $coverageArea->resolved_hero_image }}</div>
+                    <p class="text-slate-500 text-[11px] leading-relaxed">
+                        @if(!empty($coverageArea->hero_image))
+                            Wilayah ini sedang menggunakan gambar kustom khusus. Anda dapat mengunggah file baru di bawah atau mencentang opsi hapus untuk kembali menggunakan aset lokal otomatis.
+                        @else
+                            Wilayah ini secara otomatis mencocokkan aset foto lokal dari <code>public/images/areas</code>. Jika Anda mengunggah file kustom di bawah, gambar kustom akan diutamakan.
+                        @endif
+                    </p>
+                </div>
             </div>
 
             <x-form.image-upload 
                 name="hero_image" 
-                label="Unggah Foto Hero Wilayah" 
+                label="Unggah / Timpa Foto Hero Wilayah" 
                 :current="$coverageArea->hero_image"
                 :allowUrl="true" 
                 urlName="hero_image_url" 

@@ -34,25 +34,8 @@
     $districtType = \App\Services\RegionService::districtType($cityData ?? [], $area->district);
     $districtLabel = str_starts_with($area->district, $districtType.' ') ? $area->district : $districtType.' '.$area->district;
 
-    $rawHero = !empty($area->hero_image) ? (filter_var($area->hero_image, FILTER_VALIDATE_URL) ? $area->hero_image : asset($area->hero_image)) : null;
-
-    $heroBgImage = $rawHero
-        ?: ($customHeroBg 
-            ?: (file_exists(public_path("images/areas/districts/{$citySlug}-{$districtSlug}.webp"))
-                ? asset("images/areas/districts/{$citySlug}-{$districtSlug}.webp")
-                : (file_exists(public_path("images/areas/districts/{$districtSlug}.webp"))
-                    ? asset("images/areas/districts/{$districtSlug}.webp")
-                    : (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
-                        ? asset("images/areas/cities/{$citySlug}.webp")
-                        : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
-                            ? asset("images/areas/provinces/{$provinceSlug}.webp")
-                            : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
-                                ? asset("images/areas/provinces/{$provinceSlug}.jpg")
-                                : null))))));
-
-    $presencePhoto = !empty($area->presence_image) 
-        ? (filter_var($area->presence_image, FILTER_VALIDATE_URL) ? $area->presence_image : asset($area->presence_image))
-        : ($heroBgImage ?: asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+    $heroBgImage = $resolvedAreaImage ?? $area->resolved_hero_image;
+    $presencePhoto = $area->resolved_presence_image;
 
     $areaFaqs = $area->resolved_faqs;
     $posko = $area->resolved_posko;
@@ -60,6 +43,7 @@
     $comparisons = $area->resolved_comparison;
     $serviceCategories = $area->resolved_service_categories;
     $displayGalleries = ($galleries ?? collect())->take(3);
+    $analysis = $area->resolved_district_analysis;
     $districtHeroHeadline = $area->cta_headline ?: "Jasa Saluran Pipa Mampet <span class=\"text-sky-700\">{$area->district}</span>, {$area->city} — Tukang Pipa &amp; WC Mampet Terdekat";
 @endphp
 
@@ -200,7 +184,7 @@
                     <div class="bg-white rounded-xl p-3 sm:p-4 border border-slate-200 shadow-xs space-y-3">
                         <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                             <img 
-                                src="{{ asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
+                                src="{{ $resolvedAreaImage ?? $area->resolved_hero_image }}" 
                                 alt="Teknisi Jasa Saluran Pipa Mampet {{ $area->district }}, {{ $area->city }} Tanpa Bongkar Keramik" 
                                 width="700" 
                                 height="525" 
@@ -334,6 +318,14 @@
         </div>
     </section>
 
+    <!-- 2.5 SECTION PROFIL LAYANAN & CAKUPAN LOKAL -->
+    <x-area.district-profile-section 
+        :location-name="$area->district" 
+        :location-title="$area->district . ', ' . $area->city" 
+        :analysis="$analysis" 
+        :whatsapp-url="$emergencyWaUrl" 
+    />
+
     <!-- 3. SECTION LAYANAN 1 BARIS CAROUSEL -->
     @php
         $defaultServices = [
@@ -405,13 +397,13 @@
             <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
-                        Katalog Layanan Spesialis Wilayah {{ strtoupper($area->district) }}
+                        Katalog Layanan Spesialis Wilayah {{ strtoupper($area->district) }}, {{ strtoupper($area->city) }}
                     </p>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                        Ahli Wastafel &amp; Saluran Kamar Mandi Mampet di {{ $area->district }} Tanpa Bobok Lantai
+                        Ahli Wastafel &amp; Saluran Kamar Mandi Mampet di {{ $area->district }}, {{ $area->city }} Tanpa Bobok Lantai
                     </h2>
                     <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                        Pilihan penanganan mekanis bergaransi resmi. Tuntas tanpa bongkar keramik hunian Anda.
+                        Pilihan penanganan mekanis bergaransi resmi untuk warga {{ $area->district }}, {{ $area->city }}. Tuntas tanpa bongkar keramik hunian Anda.
                     </p>
                 </div>
                 <div class="flex items-center gap-3 self-end sm:self-auto">
@@ -457,9 +449,9 @@
             section-id="peralatan-kecamatan"
             :area-name="$area->district . ', ' . $area->city"
             bg-color="bg-slate-50"
-            eyebrow="STANDAR ALAT INDUSTRI SIAGA DI {{ strtoupper($area->district) }}"
-            title="Peralatan Mekanis Teknisi Drainusantara"
-            description="Didukung peralatan standar internasional yang menjamin pipa lancar plong tanpa perlu membongkar keramik lantai hunian Anda."
+            eyebrow="STANDAR ALAT INDUSTRI SIAGA DI {{ strtoupper($area->district) }}, {{ strtoupper($area->city) }}"
+            title="Peralatan Mekanis Siaga di {{ $area->district }}, {{ $area->city }}"
+            description="Didukung peralatan standar internasional yang siaga di {{ $area->district }}, {{ $area->city }} untuk menjamin pipa lancar plong tanpa bongkar keramik lantai hunian Anda."
         />
     </div>
 
@@ -477,7 +469,7 @@
                     <span>SOP TEKNISI RESMI</span>
                 </div>
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-                    Standar Operasional Wilayah {{ $area->district }}
+                    Standar Operasional Wilayah {{ $area->district }}, {{ $area->city }}
                 </h2>
                 <p class="text-xs sm:text-sm md:text-base text-slate-600 mt-2 leading-relaxed">
                     Setiap penanganan saluran pipa mampet di {{ $area->district }}, {{ $area->city }} dijalankan dengan 5 pilar operasional: metode mekanis non-destruktif, transparansi biaya No Cure No Pay, dan garansi tertulis 30 hari.
@@ -533,13 +525,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-10">
                 <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
-                    SEKTOR PENANGANAN DI {{ strtoupper($area->district) }}
+                    SEKTOR PENANGANAN DI {{ strtoupper($area->district) }}, {{ strtoupper($area->city) }}
                 </p>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Solusi Pipa untuk Beragam Kategori Bangunan
+                    Solusi Pipa untuk Beragam Kategori Bangunan di {{ $area->district }}, {{ $area->city }}
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                    Dari hunian rumah tinggal, restoran komersial dengan lemak beku, hingga fasilitas industri dan perkantoran bertingkat.
+                    Dari hunian rumah tinggal, restoran komersial dengan lemak beku, hingga fasilitas industri dan perkantoran di {{ $area->district }}, {{ $area->city }}.
                 </p>
             </div>
 
@@ -636,7 +628,7 @@
                         <span>BUKTI RIIL LAPANGAN</span>
                     </div>
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-                        Dokumentasi Pengerjaan di Lapangan
+                        Dokumentasi Pengerjaan di Lapangan {{ $area->district }}, {{ $area->city }}
                     </h2>
                     <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                         Hasil Pengerjaan Teknisi di Lapangan: Dokumentasi riil penanganan saluran pipa tersumbat pada sektor hunian residensial dan tempat usaha komersial di {{ $area->district }}, {{ $area->city }} menggunakan mesin rooter spiral elektrik serta inspeksi kamera endoskopi.
@@ -708,13 +700,13 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-2xl mx-auto mb-10">
                 <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">
-                    KOMPARASI TRANSPARAN METODE KERJA
+                    KOMPARASI TRANSPARAN BIAYA &amp; METODE KERJA DI {{ strtoupper($area->district) }}
                 </p>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Tukang Konvensional vs Standar Drainusantara
+                    Tukang Konvensional vs Standar Drainusantara di {{ $area->district }}, {{ $area->city }}
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                    Ketahui perbedaan mendasar penanganan sebelum Anda mengambil risiko pembongkaran lantai atau pipa pecah.
+                    Ketahui perbedaan mendasar penanganan di {{ $area->district }}, {{ $area->city }} sebelum Anda mengambil risiko pembongkaran lantai atau pipa pecah.
                 </p>
             </div>
 
@@ -774,10 +766,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-8">
                 <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">EDUKASI PERPIPAAN</p>
+                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800 mb-1">EDUKASI &amp; PANDUAN PIPA {{ strtoupper($area->district) }}, {{ strtoupper($area->city) }}</p>
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                        Artikel &amp; Panduan Saluran Air Bersih
+                        Artikel &amp; Panduan Saluran Air Bersih untuk Warga {{ $area->district }}, {{ $area->city }}
                     </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
+                        Tips perawatan pipa, mitigasi lemak dapur, dan panduan saluran pembuangan di {{ $area->district }}, {{ $area->city }}.
+                    </p>
                 </div>
                 <a href="{{ route('articles.index') }}" class="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center gap-1">
                     <span>Lihat Semua Blog</span>
@@ -998,8 +993,11 @@
                     TANYA JAWAB OPERASIONAL
                 </p>
                 <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Pertanyaan Seputar Layanan di {{ $area->district }}
+                    Pertanyaan Seputar Layanan di {{ $area->district }}, {{ $area->city }}
                 </h3>
+                <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl mx-auto">
+                    Konsultasi teknis, respon armada, dan garansi resmi pembersihan pipa tanpa bongkar di {{ $area->district }}, {{ $area->city }}.
+                </p>
             </div>
 
             <div x-data="{ active: null }" class="space-y-3">

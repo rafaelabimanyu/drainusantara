@@ -126,6 +126,13 @@
                 <p class="text-xs text-slate-500">Foto latar belakang hero section. Mewarisi hierarki kota/provinsi jika dikosongkan.</p>
             </div>
 
+            <div class="p-3 bg-sky-50/80 rounded-lg border border-sky-200/80 flex items-start gap-3 text-xs text-sky-900">
+                <svg class="w-4 h-4 text-sky-700 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <p class="leading-relaxed">
+                    <strong>Pencocokan Otomatis Cerdas:</strong> Jika Anda mengosongkan form ini, sistem akan otomatis mencocokkan foto wilayah dari folder aset <code>public/images/areas</code> secara berjenjang (Kecamatan &rarr; Kota &rarr; Provinsi &rarr; Armada Standar). Unggah foto kustom hanya jika Anda ingin menimpa gambar otomatis tersebut.
+                </p>
+            </div>
+
             <x-form.image-upload 
                 name="hero_image" 
                 label="Unggah Foto Hero Wilayah" 

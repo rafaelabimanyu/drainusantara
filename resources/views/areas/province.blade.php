@@ -26,13 +26,7 @@
     $waUrl = "https://wa.me/{$whatsappNumber}?text={$waMsg}";
 
     $provinceSlug = $provinceData['slug'] ?? \Illuminate\Support\Str::slug($provinceData['name']);
-    $heroBgImage = !empty($area->hero_image) 
-        ? asset($area->hero_image)
-        : (file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
-            ? asset("images/areas/provinces/{$provinceSlug}.webp")
-            : (file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
-                ? asset("images/areas/provinces/{$provinceSlug}.jpg")
-                : ($provinceData['hero_image'] ?? null)));
+    $heroBgImage = $resolvedAreaImage ?? $area->resolved_hero_image;
 
     $defaultProblemCatalogs = [
         [
@@ -280,7 +274,7 @@
                     <div class="bg-white rounded-xl p-3 sm:p-4 border border-slate-200 shadow-xs space-y-3 card-lift">
                         <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                             <img 
-                                src="{{ !empty($area->hero_image) ? asset($area->hero_image) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
+                                src="{{ $resolvedAreaImage ?? $area->resolved_hero_image }}" 
                                 alt="Teknisi Drainusantara Penanganan Saluran Mampet di Provinsi {{ $provinceData['name'] }}" 
                                 width="600" 
                                 height="450" 
@@ -317,9 +311,7 @@
 
     <!-- 2. SECTION DRAINUSANTARA HADIR DI PROVINSI (TANPA CTA DAN HOTLINE) -->
     @php
-        $presenceImg = !empty($area->presence_image) 
-            ? (filter_var($area->presence_image, FILTER_VALIDATE_URL) ? $area->presence_image : asset($area->presence_image))
-            : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
+        $presenceImg = $area->resolved_presence_image;
         $presenceText = !empty($area->presence_description)
             ? $area->presence_description
             : "Drainusantara hadir secara resmi melayani seluruh wilayah Provinsi {$provinceData['name']} sebagai solusi modern penanganan saluran pipa mampet tanpa pembongkaran lantai keramik maupun dinding. Didukung armada teknisi motoris dan mobil reaksi cepat yang ditempatkan pada titik-titik posko strategis kota dan kabupaten, kami menjamin penanganan tuntas dengan standar alat mekanis spiral baja elastis bergaransi resmi 30 hari.";

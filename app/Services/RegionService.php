@@ -993,6 +993,14 @@ class RegionService
     }
 
     /**
+     * Resolve the best-matching image URL for a given region hierarchy.
+     */
+    public static function resolveAreaImage(?string $provinceSlug, ?string $citySlug = null, ?string $district = null): string
+    {
+        return AreaImageResolver::resolveUrl(null, $provinceSlug, $citySlug, $district);
+    }
+
+    /**
      * Sub-regions clustering for Bandung Raya.
      *
      * @return array<string, array<int, string>>

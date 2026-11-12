@@ -12,6 +12,7 @@ use App\Models\Equipment;
 use App\Models\Gallery;
 use App\Models\Review;
 use App\Models\Service;
+use App\Services\AreaImageResolver;
 use App\Services\RegionService;
 use App\Support\PageMetadata;
 use Artesaos\SEOTools\Facades\JsonLdMulti;
@@ -101,12 +102,14 @@ class AreaController extends Controller
         SEOMeta::setDescription('Daftar jangkauan posko siaga teknisi pipa mampet Drainusantara di Jabodetabek, Semarang, & Lampung. Siaga 24 jam respon cepat & garansi 30 hari.');
         SEOMeta::setCanonical(url()->current());
 
+        $areaImage = AreaImageResolver::resolveUrl(null, 'dki-jakarta');
+
         OpenGraph::setDescription('Armada siaga teknisi pelancar saluran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.');
         OpenGraph::setUrl(url()->current());
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage($areaImage);
 
         TwitterCard::setDescription('Armada siaga teknisi pelancar saluran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.');
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setImage($areaImage);
 
         JsonLdMulti::setTitle('Wilayah Jangkauan Layanan Drainusantara');
         JsonLdMulti::setType('Plumber');
@@ -115,7 +118,7 @@ class AreaController extends Controller
             'name' => 'Drainusantara - Wilayah Jangkauan Layanan',
             'legalName' => 'PT Jawa Jaya Rooter',
             'url' => route('area.index'),
-            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
+            'image' => $areaImage,
             'telephone' => $this->formatInternationalPhone(),
             'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
             'address' => $this->getHeadquartersAddress(),
@@ -198,12 +201,14 @@ class AreaController extends Controller
             'drainusantara',
         ]);
 
+        $resolvedAreaImage = AreaImageResolver::resolveUrl($area, $provinceData['slug']);
+
         OpenGraph::setDescription($description);
         OpenGraph::setUrl(url()->current());
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage($resolvedAreaImage);
 
         TwitterCard::setDescription($description);
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setImage($resolvedAreaImage);
 
         $firstCityKey = array_key_first($provinceData['cities'] ?? []);
         $provCentroid = RegionService::centroid($firstCityKey ?? 'jakarta-timur');
@@ -216,7 +221,7 @@ class AreaController extends Controller
             'name' => "Drainusantara Provinsi {$provinceData['name']} - Jasa Saluran Pipa Mampet",
             'legalName' => 'PT Jawa Jaya Rooter',
             'url' => url()->current(),
-            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
+            'image' => $resolvedAreaImage,
             'areaServed' => $provinceData['name'],
             'telephone' => $this->formatInternationalPhone(),
             'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
@@ -294,7 +299,7 @@ class AreaController extends Controller
         $galleries = $this->mapGalleriesForLocation($galleries, $provinceData['name']);
         $articles = $this->getArticlesForLocation($provinceData['name'], 3);
 
-        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries', 'area', 'faqs', 'equipments', 'articles'));
+        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries', 'area', 'faqs', 'equipments', 'articles', 'resolvedAreaImage'));
     }
 
     /**
@@ -382,12 +387,14 @@ class AreaController extends Controller
             'drainusantara',
         ]);
 
+        $resolvedAreaImage = AreaImageResolver::resolveUrl($area, $cityData['province_slug'], $cityData['slug']);
+
         OpenGraph::setDescription($description);
         OpenGraph::setUrl(url()->current());
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage($resolvedAreaImage);
 
         TwitterCard::setDescription($description);
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setImage($resolvedAreaImage);
 
         $resolvedCoords = $area->resolved_coordinates;
         $districtsServed = array_map(fn ($d) => [
@@ -400,7 +407,7 @@ class AreaController extends Controller
             'name' => "Drainusantara {$cityData['name']} - Jasa Saluran Pipa Mampet",
             'legalName' => 'PT Jawa Jaya Rooter',
             'url' => route('area.city', ['city' => $cityData['slug']]),
-            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
+            'image' => $resolvedAreaImage,
             'areaServed' => ! empty($districtsServed) ? $districtsServed : "{$cityData['name']}, {$cityData['province_name']}",
             'telephone' => $this->formatInternationalPhone(),
             'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
@@ -502,7 +509,7 @@ class AreaController extends Controller
         $galleries = $this->mapGalleriesForLocation($galleries, $cityData['name']);
         $articles = $this->getArticlesForLocation($cityData['name'], 3);
 
-        return view('areas.city', compact('cityData', 'services', 'reviews', 'area', 'faqs', 'equipments', 'galleries', 'articles'));
+        return view('areas.city', compact('cityData', 'services', 'reviews', 'area', 'faqs', 'equipments', 'galleries', 'articles', 'resolvedAreaImage'));
     }
 
     /**
@@ -592,15 +599,17 @@ class AreaController extends Controller
 
         SEOMeta::addKeyword($keywords);
 
+        $resolvedAreaImage = AreaImageResolver::resolveUrl($area, $cityData['province_slug'] ?? null, $cityData['slug'] ?? null, $area->district);
+
         OpenGraph::setDescription($description);
         OpenGraph::setUrl(url()->current());
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
         OpenGraph::addProperty('site_name', 'Drainusantara');
-        OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage($resolvedAreaImage);
 
         TwitterCard::setDescription($description);
-        TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setImage($resolvedAreaImage);
 
         $provinceSlug = $cityData['province_slug'] ?? 'dki-jakarta';
         $provinceName = $cityData['province_name'] ?? 'DKI Jakarta';
@@ -614,7 +623,7 @@ class AreaController extends Controller
             'name' => "Drainusantara {$area->district} - Jasa Saluran Pipa Mampet",
             'legalName' => 'PT Jawa Jaya Rooter',
             'url' => url()->current(),
-            'image' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
+            'image' => $resolvedAreaImage,
             'telephone' => $this->formatInternationalPhone(),
             'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
             'priceRange' => 'Mulai Rp ' . number_format($area->resolved_price, 0, ',', '.'),
@@ -739,10 +748,10 @@ class AreaController extends Controller
                 $galleries = $galleries->concat($fallbackGalleries);
             }
         }
-        $galleries = $this->mapGalleriesForLocation($galleries, $area->city);
+        $galleries = $this->mapGalleriesForLocation($galleries, "{$area->district}, {$area->city}");
         $articles = $this->getArticlesForLocation($area->city, 3);
 
-        return view('areas.district', compact('area', 'services', 'reviews', 'cityData', 'equipments', 'galleries', 'articles'));
+        return view('areas.district', compact('area', 'services', 'reviews', 'cityData', 'equipments', 'galleries', 'articles', 'resolvedAreaImage'));
     }
 
     /**
@@ -753,9 +762,10 @@ class AreaController extends Controller
      */
     private function mapGalleriesForLocation(Collection $galleries, string $locationName): Collection
     {
-        $pureLoc = strtolower(trim(str_ireplace(['kota', 'kabupaten'], '', $locationName)));
+        $pureLoc = strtolower(trim(str_ireplace(['kota', 'kabupaten', '[kota]', '[provinsi]'], '', $locationName)));
+        $displayLoc = trim(str_ireplace(['[KOTA]', '[PROVINSI]'], '', $locationName)) ?: 'Nasional';
 
-        return $galleries->map(function ($g) use ($pureLoc) {
+        return $galleries->map(function ($g) use ($pureLoc, $displayLoc) {
             $itemLocLower = strtolower($g->location ?? '');
             $isLocal = ! empty($pureLoc) && str_contains($itemLocLower, $pureLoc);
 
@@ -763,9 +773,10 @@ class AreaController extends Controller
                 $g->display_location = $g->location;
                 $g->display_title = $g->title;
             } else {
-                $g->display_location = 'Standar Operasional Nasional Drainusantara';
-                $serviceName = $g->service ? $g->service->name : 'Pipa Saluran';
-                $g->display_title = "Studi Kasus: Pelancaran {$serviceName} Tanpa Bongkar";
+                $g->display_location = "Standar Layanan Drainusantara {$displayLoc}";
+                $serviceName = $g->service ? trim($g->service->name) : 'Pipa Saluran';
+                $cleanService = preg_replace('/^pelancaran\s+/i', '', $serviceName);
+                $g->display_title = "Studi Kasus Layanan {$displayLoc}: Pelancaran {$cleanService} Tanpa Bongkar";
             }
 
             return $g;
@@ -779,8 +790,9 @@ class AreaController extends Controller
      */
     private function getArticlesForLocation(string $cityName, int $limit = 3): Collection
     {
-        $pureCity = trim(str_ireplace(['kota', 'kabupaten'], '', $cityName));
+        $pureCity = trim(str_ireplace(['kota', 'kabupaten', '[kota]', '[provinsi]'], '', $cityName));
 
+        // Prioritas 1: Artikel lokal yang relevan dengan kota aktif
         $localArticles = Article::published()
             ->where(function ($q) use ($pureCity, $cityName) {
                 $q->where('title', 'like', "%{$pureCity}%")
@@ -797,13 +809,35 @@ class AreaController extends Controller
             ->get();
 
         if ($localArticles->count() < $limit) {
-            $fallback = Article::published()
+            // Daftar keyword kota lain yang harus di-exclude dari artikel edukasi umum
+            $allCityKeywords = [
+                'jakarta', 'jaksel', 'jaktim', 'jakbar', 'jakpus', 'jakut',
+                'bogor', 'depok', 'tangerang', 'tangsel', 'bekasi', 'cikarang', 'cinere',
+                'bandung', 'cimahi',
+                'semarang', 'demak', 'ungaran',
+                'lampung',
+                'bali', 'denpasar', 'badung', 'gianyar', 'tabanan',
+            ];
+
+            $excludeKeywords = array_values(array_filter($allCityKeywords, function ($k) use ($pureCity) {
+                return ! str_contains(strtolower($pureCity), $k);
+            }));
+
+            // Prioritas 2: Artikel edukasi umum yang TIDAK memuat nama kota lain di title/slug
+            $generalEducational = Article::published()
                 ->whereNotIn('id', $localArticles->pluck('id'))
+                ->where(function ($q) use ($excludeKeywords) {
+                    foreach ($excludeKeywords as $keyword) {
+                        $q->where('title', 'not like', "%{$keyword}%")
+                          ->where('slug', 'not like', "%{$keyword}%");
+                    }
+                })
                 ->orderByRaw('COALESCE(published_at, created_at) DESC')
                 ->latest('id')
                 ->take($limit - $localArticles->count())
                 ->get();
-            $localArticles = $localArticles->concat($fallback);
+
+            $localArticles = $localArticles->concat($generalEducational);
         }
 
         return $localArticles;

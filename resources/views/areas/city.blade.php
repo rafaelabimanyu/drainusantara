@@ -20,19 +20,7 @@
 
 @push('head')
     @php
-        $customHeroBg = !empty($area->hero_image) ? asset($area->hero_image) : null;
-        $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($cityData['name']);
-        $provinceSlug = $cityData['province_slug'] ?? null;
-        $heroBgImage = $customHeroBg 
-            ?: (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
-                ? asset("images/areas/cities/{$citySlug}.webp")
-                : (file_exists(public_path("images/areas/cities/{$citySlug}.jpg"))
-                    ? asset("images/areas/cities/{$citySlug}.jpg")
-                    : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
-                        ? asset("images/areas/provinces/{$provinceSlug}.webp")
-                        : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
-                            ? asset("images/areas/provinces/{$provinceSlug}.jpg")
-                            : null))));
+        $heroBgImage = $resolvedAreaImage ?? $area->resolved_hero_image;
     @endphp
     @if(!empty($heroBgImage))
     <link rel="preload" as="image" href="{{ $heroBgImage }}" fetchpriority="high">
@@ -50,28 +38,14 @@
     $heroHeadline = $area->cta_headline ?: "Jasa Saluran Pipa Mampet <span class=\"text-sky-700\">{$cityData['name']}</span> &amp; Tukang Saluran Mampet 24 Jam";
     $startingPriceFormatted = 'Rp ' . number_format($area->resolved_price, 0, ',', '.');
     
-    // Fallback latar belakang banner kota bila tidak ada kustom dari CMS
-    if (!isset($heroBgImage)) {
-        $customHeroBg = !empty($area->hero_image) ? asset($area->hero_image) : null;
-        $citySlug = $cityData['slug'] ?? \Illuminate\Support\Str::slug($cityData['name']);
-        $provinceSlug = $cityData['province_slug'] ?? null;
-        $heroBgImage = $customHeroBg 
-            ?: (file_exists(public_path("images/areas/cities/{$citySlug}.webp"))
-                ? asset("images/areas/cities/{$citySlug}.webp")
-                : (file_exists(public_path("images/areas/cities/{$citySlug}.jpg"))
-                    ? asset("images/areas/cities/{$citySlug}.jpg")
-                    : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.webp"))
-                        ? asset("images/areas/provinces/{$provinceSlug}.webp")
-                        : ($provinceSlug && file_exists(public_path("images/areas/provinces/{$provinceSlug}.jpg"))
-                            ? asset("images/areas/provinces/{$provinceSlug}.jpg")
-                            : null))));
-    }
+    $heroBgImage = $resolvedAreaImage ?? $area->resolved_hero_image;
 
     $posko = $area->resolved_posko;
     $advantages = $area->resolved_advantages;
     $comparisons = $area->resolved_comparison;
     $serviceCategories = $area->resolved_service_categories;
     $articlesList = $articles ?? collect();
+    $analysis = $area->resolved_district_analysis;
 
     $defaultProblemCatalogs = [
         [
@@ -337,7 +311,7 @@
                     <div class="bg-white rounded-xl p-3 sm:p-4 border border-slate-200 shadow-xs space-y-3 card-lift">
                         <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
                             <img 
-                                src="{{ !empty($area->hero_image) ? asset($area->hero_image) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
+                                src="{{ $resolvedAreaImage ?? $area->resolved_hero_image }}" 
                                 alt="Teknisi Jasa Saluran Pipa Mampet {{ $cityData['name'] }} Tanpa Bongkar Keramik" 
                                 width="600" 
                                 height="450" 
@@ -374,9 +348,7 @@
 
     <!-- 2. SECTION DRAINUSANTARA HADIR DI KOTA (TANPA CTA DAN HOTLINE) -->
     @php
-        $presenceImg = !empty($area->presence_image) 
-            ? (filter_var($area->presence_image, FILTER_VALIDATE_URL) ? $area->presence_image : asset($area->presence_image))
-            : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
+        $presenceImg = $area->resolved_presence_image;
         $presenceText = $area->resolved_presence_description;
     @endphp
     <section id="kehadiran-lokal-kota" class="py-14 sm:py-20 bg-white border-b border-slate-200">
@@ -493,6 +465,14 @@
             </div>
         </div>
     </section>
+
+    <!-- 2.5 SECTION PROFIL LAYANAN & CAKUPAN LOKAL -->
+    <x-area.district-profile-section 
+        :location-name="$cityData['name']" 
+        :location-title="$cityData['name']" 
+        :analysis="$analysis" 
+        :whatsapp-url="$cityWaUrl" 
+    />
 
     <!-- 3. SECTION LAYANAN 1 BARIS CAROUSEL -->
     <section id="layanan-kota" class="py-14 lg:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-16"
@@ -751,7 +731,7 @@
                         <span>BUKTI RIIL LAPANGAN</span>
                     </div>
                     <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-                        Hasil Pengerjaan Teknisi di Lapangan
+                        Hasil Pengerjaan Teknisi di {{ $cityData['name'] }}
                     </h2>
                     <p class="text-slate-600 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                         Dokumentasi riil penanganan saluran pipa tersumbat pada sektor hunian residensial dan tempat usaha komersial di {{ $cityData['name'] }} menggunakan mesin rooter spiral elektrik serta inspeksi kamera endoskopi.
@@ -887,10 +867,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800">EDUKASI PERPIPAAN</p>
+                    <p class="text-xs font-bold uppercase tracking-wider text-sky-800">EDUKASI &amp; PANDUAN PIPA {{ strtoupper($cityData['name']) }}</p>
                     <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                        Artikel &amp; Panduan Saluran Air Bersih
+                        Artikel &amp; Panduan Saluran Air Bersih untuk Warga {{ $cityData['name'] }}
                     </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
+                        Tips perawatan pipa, mitigasi lemak dapur, dan panduan higienis saluran pembuangan di {{ $cityData['name'] }}.
+                    </p>
                 </div>
                 <a href="{{ route('articles.index') }}" class="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center gap-1">
                     <span>Lihat Semua Blog</span>
@@ -1006,21 +989,35 @@
                 </div>
 
                 <!-- Grid Area -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                     @foreach($cityData['districts'] as $dist)
                         @php
                             $districtSlug = Str::slug($dist);
                             $districtUrl = route('area.detail', ['city' => $cityData['slug'], 'district' => $districtSlug]);
                             $distType = \App\Services\RegionService::districtType($cityData, $dist);
+                            $featureText = match($loop->iteration % 4) {
+                                0 => 'Melayani Rumah, Ruko & Resto • Siaga 24 Jam',
+                                1 => 'Unit Reaksi Cepat • Tanpa Bongkar Lantai',
+                                2 => 'Garansi Resmi 30 Hari • No Cure No Pay',
+                                default => 'Teknisi Meluncur Cepat • Bebas Soda Api',
+                            };
                         @endphp
-                        <div class="p-3 rounded-lg border border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 transition-all flex flex-col justify-between shadow-2xs card-lift min-h-14">
-                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">{{ $distType }}</span>
-                            <h3 class="text-xs sm:text-sm font-bold text-slate-800 hover:text-sky-800 truncate">
-                                <a href="{{ $districtUrl }}" title="Jasa Saluran Pipa Mampet {{ $dist }}" class="hover:underline">
-                                    {{ $dist }}
+                        <div class="p-3.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-300 transition-all flex flex-col justify-between shadow-2xs card-lift min-h-20 group">
+                            <div>
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1 block">{{ $distType }}</span>
+                                <h3 class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-sky-800 truncate">
+                                    <a href="{{ $districtUrl }}" title="Jasa Saluran Pipa Mampet {{ $dist }}" class="hover:underline">
+                                        {{ $dist }}
+                                    </a>
+                                </h3>
+                                <span class="text-[10px] text-slate-500 mt-1 block leading-tight">{{ $featureText }}</span>
+                            </div>
+                            <div class="pt-2 border-t border-slate-200/60 mt-2">
+                                <a href="{{ $districtUrl }}" class="text-[11px] font-semibold text-sky-800 group-hover:text-sky-950 flex items-center justify-between">
+                                    <span>Tukang Pipa {{ $dist }}</span>
+                                    <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </a>
-                            </h3>
-                            <span class="text-[10px] text-slate-500 mt-1">Armada Siaga</span>
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -1128,7 +1125,7 @@
                 RESPON CEPAT WILAYAH {{ strtoupper($cityData['name']) }}
             </p>
             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
-                Saluran Pipa di Lokasi Anda Tersumbat Hari Ini?
+                Saluran Pipa di {{ $cityData['name'] }} Tersumbat Hari Ini?
             </h2>
             <p class="text-slate-300 text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
                 Tim teknisi kami siap merespon konsultasi dan menjadwalkan kedatangan armada ke seluruh penjuru {{ $cityData['name'] }}. Pengerjaan mekanis tanpa membongkar lantai keramik dan dilindungi garansi tertulis 30 hari kalender.

@@ -123,6 +123,84 @@ class CoverageArea extends Model
         return ! $this->isProvince() && ! $this->isCity();
     }
 
+    public function getCleanDistrict(): ?string
+    {
+        $d = trim((string) $this->district);
+        if ($d === '' || $d === '[KOTA]' || $d === '[PROVINSI]' || $d === '{kota}' || $d === '{provinsi}' || $d === '{kecamatan}' || $d === '[KECAMATAN]') {
+            return null;
+        }
+
+        return $d;
+    }
+
+    /**
+     * Get resolved hero image URL via AreaImageResolver (CMS Upload -> Local Asset -> Fallback).
+     */
+    public function getResolvedHeroImageAttribute(): string
+    {
+        return \App\Services\AreaImageResolver::resolveUrl($this);
+    }
+
+    /**
+     * Get resolved presence image URL via AreaImageResolver.
+     */
+    public function getResolvedPresenceImageAttribute(): string
+    {
+        return \App\Services\AreaImageResolver::resolvePresenceUrl($this);
+    }
+
+    /**
+     * Get image resolution source ('cms_custom', 'district_asset', 'city_asset', 'province_asset', 'default_fleet').
+     */
+    public function getImageSourceAttribute(): string
+    {
+        return \App\Services\AreaImageResolver::resolve($this)['source'];
+    }
+
+    /**
+     * Sync resolved asset images into the database coverage_areas table.
+     *
+     * @param bool $overwriteCustom Whether to overwrite existing custom uploads
+     * @return array{updated: int, skipped: int, total: int}
+     */
+    public static function syncAreaImages(bool $overwriteCustom = false): array
+    {
+        $areas = self::orderBy('id')->get();
+        $updated = 0;
+        $skipped = 0;
+
+        foreach ($areas as $area) {
+            $hasExistingCustom = ! empty($area->hero_image);
+
+            if ($hasExistingCustom && ! $overwriteCustom) {
+                $skipped++;
+                continue;
+            }
+
+            $resolved = \App\Services\AreaImageResolver::resolve($area);
+            $newPath = $resolved['path'];
+
+            if (in_array($resolved['source'], ['district_asset', 'city_asset', 'province_asset'], true)) {
+                $area->hero_image = $newPath;
+
+                if (empty($area->presence_image)) {
+                    $area->presence_image = $newPath;
+                }
+
+                $area->save();
+                $updated++;
+            } else {
+                $skipped++;
+            }
+        }
+
+        return [
+            'updated' => $updated,
+            'skipped' => $skipped,
+            'total' => $areas->count(),
+        ];
+    }
+
     /**
      * Get resolved galleries (hasil pengerjaan) chosen via CMS, or empty collection if none selected.
      *
@@ -155,14 +233,15 @@ class CoverageArea extends Model
     public function getResolvedPresenceDescriptionAttribute(): string
     {
         if (! empty($this->presence_description)) {
-            return $this->presence_description;
+            return $this->sanitizeText($this->presence_description);
         }
 
         $cityData = RegionService::findCity($this->city);
         $citySlug = $cityData['slug'] ?? Str::slug($this->city);
-        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->district);
+        $district = ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]') ? $this->district : null;
+        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $district, $this->city);
 
-        return $profile['presence_prose'];
+        return $this->sanitizeText($profile['presence_prose']);
     }
 
     /**
@@ -185,8 +264,59 @@ class CoverageArea extends Model
     {
         $cityData = RegionService::findCity($this->city);
         $citySlug = $cityData['slug'] ?? Str::slug($this->city);
+        $district = ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]') ? $this->district : null;
 
-        return \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->district);
+        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $district, $this->city);
+
+        return \App\Services\RegionalTaxonomy::sanitizeRecursive($profile, $this->city, $district);
+    }
+
+    /**
+     * Get deep localized analysis cards and service standards for this coverage area.
+     *
+     * @return array{
+     *     sub_zone: string,
+     *     landmarks: array<int, string>,
+     *     analysis_cards: array<int, array{title: string, badge: string, icon: string, description: string, detail: string}>,
+     *     service_specs: array<int, array{label: string, value: string, badge?: string}>
+     * }
+     */
+    public function getResolvedDistrictAnalysisAttribute(): array
+    {
+        $cityData = RegionService::findCity($this->city);
+        $citySlug = $cityData['slug'] ?? Str::slug($this->city);
+        $district = ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]') ? $this->district : null;
+
+        $analysis = \App\Services\RegionalTaxonomy::getDistrictAnalysis($citySlug, $district, $this->city);
+
+        return \App\Services\RegionalTaxonomy::sanitizeRecursive($analysis, $this->city, $district);
+    }
+
+    /**
+     * Sanitize text by removing placeholder strings.
+     */
+    public function sanitizeText(string $text): string
+    {
+        $district = ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]') ? $this->district : '';
+        $city = $this->city ?: '';
+        $prov = $this->province_name ?: $city;
+
+        $replacements = [
+            '[KOTA]' => $city,
+            '[kota]' => $city,
+            '{kota}' => $city,
+            '[KECAMATAN]' => $district ?: $city,
+            '[kecamatan]' => $district ?: $city,
+            '{kecamatan}' => $district ?: $city,
+            '[PROVINSI]' => $prov,
+            '[provinsi]' => $prov,
+            '{provinsi}' => $prov,
+            'Pelancaran Pelancaran' => 'Pelancaran',
+            'pelancaran pelancaran' => 'pelancaran',
+            'Studi Kasus: Pelancaran Pelancaran' => 'Studi Kasus: Pelancaran',
+        ];
+
+        return str_replace(array_keys($replacements), array_values($replacements), $text);
     }
 
     /**
@@ -202,22 +332,28 @@ class CoverageArea extends Model
             }));
 
             if (! empty($filtered)) {
-                return $filtered;
+                return array_map(function ($faq) {
+                    return [
+                        'question' => $this->sanitizeText($faq['question']),
+                        'answer' => $this->sanitizeText($faq['answer']),
+                    ];
+                }, $filtered);
             }
         }
 
-        $district = $this->district ?: 'wilayah Anda';
+        $district = ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]') ? $this->district : $this->city;
         $city = $this->city ?: 'sekitarnya';
         $priceFormatted = 'Rp ' . number_format($this->resolved_price, 0, ',', '.');
 
         $cityData = RegionService::findCity($this->city);
         $citySlug = $cityData['slug'] ?? Str::slug($this->city);
-        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->district);
+        $districtParam = ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]') ? $this->district : null;
+        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $districtParam, $this->city);
         $zoneFaqs = $profile['local_faqs'] ?? [];
 
         if ($this->isProvince()) {
             $provName = $this->province_name ?: $this->city;
-            return [
+            $provFaqs = [
                 [
                     'question' => "Berapa lama estimasi kedatangan teknisi Drainusantara di wilayah {$provName}?",
                     'answer' => "Posko armada kami tersebar di kota-kota strategis {$provName}. Teknisi siaga langsung meluncur ke lokasi Anda secepatnya setelah konfirmasi pesanan via WhatsApp.",
@@ -239,6 +375,8 @@ class CoverageArea extends Model
                     'answer' => "Setiap pekerjaan yang selesai tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi kendala berulang pada titik yang sama selama masa garansi, teknisi kami datang kembali untuk perbaikan tuntas tanpa biaya tambahan.",
                 ],
             ];
+
+            return array_map(fn($f) => ['question' => $this->sanitizeText($f['question']), 'answer' => $this->sanitizeText($f['answer'])], $provFaqs);
         }
 
         if ($this->isCity()) {
@@ -269,7 +407,7 @@ class CoverageArea extends Model
                 'answer' => "Ya, setiap pengerjaan yang dinyatakan tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi sumbatan ulang di titik yang sama dalam masa garansi, tim kami melancarkan ulang gratis tanpa biaya tambahan.",
             ];
 
-            return $baseCityFaqs;
+            return array_map(fn($f) => ['question' => $this->sanitizeText($f['question']), 'answer' => $this->sanitizeText($f['answer'])], $baseCityFaqs);
         }
 
         $baseDistrictFaqs = [
@@ -299,7 +437,7 @@ class CoverageArea extends Model
             'answer' => "Ya, setiap pengerjaan yang dinyatakan tuntas dilindungi nota digital garansi resmi 30 hari kalender. Jika terjadi sumbatan ulang di titik yang sama dalam masa garansi, tim kami melancarkan ulang tanpa biaya tambahan.",
         ];
 
-        return $baseDistrictFaqs;
+        return array_map(fn($f) => ['question' => $this->sanitizeText($f['question']), 'answer' => $this->sanitizeText($f['answer'])], $baseDistrictFaqs);
     }
 
     /**
@@ -318,11 +456,11 @@ class CoverageArea extends Model
 
         $locationName = $this->isProvince() 
             ? ($this->province_name ?: $this->city) 
-            : ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]' ? $this->district : $this->city);
+            : ($this->getCleanDistrict() ?: $this->city);
 
         $cityData = RegionService::findCity($this->city);
         $citySlug = $cityData['slug'] ?? Str::slug($this->city);
-        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->district);
+        $profile = \App\Services\RegionalTaxonomy::getProfile($citySlug, $this->getCleanDistrict(), $this->city);
         $advantageFocus = $profile['advantages_focus'] ?? 'Mengikis kerak lemak beku tanpa membongkar keramik lantai hunian.';
 
         return [
@@ -439,13 +577,18 @@ class CoverageArea extends Model
      */
     public function getResolvedPoskoAttribute(): array
     {
-        $district = $this->district ?: $this->city;
+        $cleanDistrict = $this->getCleanDistrict();
+        $district = $cleanDistrict ?: $this->city;
         $city = $this->city;
 
+        $rawName = $this->posko_name ?: "Posko Siaga Drainusantara Unit {$district}";
+        $rawAddress = $this->posko_address ?: "Pusat Operasional Armada Siaga Drainusantara Area {$city} (Siaga menjangkau seluruh kelurahan di {$district} dan sekitarnya).";
+        $rawRadius = $this->posko_coverage_radius ?: 'Radius Jangkauan 15-20 KM • Teknisi Menuju ke Lokasi Anda Secepatnya';
+
         return [
-            'name' => $this->posko_name ?: "Posko Siaga Drainusantara Unit {$district}",
-            'address' => $this->posko_address ?: "Pusat Operasional Armada Siaga Drainusantara Area {$city} (Siaga menjangkau seluruh kelurahan di {$district} dan sekitarnya).",
-            'radius' => $this->posko_coverage_radius ?: 'Radius Jangkauan 15-20 KM • Teknisi Menuju ke Lokasi Anda Secepatnya',
+            'name' => $this->sanitizeText($rawName),
+            'address' => $this->sanitizeText($rawAddress),
+            'radius' => $this->sanitizeText($rawRadius),
         ];
     }
 
@@ -509,17 +652,24 @@ class CoverageArea extends Model
      */
     public function getResolvedCtaAttribute(): array
     {
-        $district = $this->district ?: $this->city;
+        $cleanDistrict = $this->getCleanDistrict();
+        $district = $cleanDistrict ?: $this->city;
         $city = $this->city;
 
         $defaultHeadline = "Saluran Air di {$district} Tersumbat Hari Ini?";
         $defaultButton = "Panggil Teknisi Sekarang";
-        $defaultWa = "Halo teknisi Drainusantara, saya butuh perbaikan saluran mampet di area {$district}, {$city}. Mohon info biaya dan estimasi kedatangan teknisi ke lokasi saya.";
+        $defaultWa = $cleanDistrict
+            ? "Halo teknisi Drainusantara, saya butuh perbaikan saluran mampet di area {$cleanDistrict}, {$city}. Mohon info biaya dan estimasi kedatangan teknisi ke lokasi saya."
+            : "Halo teknisi Drainusantara, saya butuh perbaikan saluran mampet di area {$city}. Mohon info biaya dan estimasi kedatangan teknisi ke lokasi saya.";
+
+        $rawHeadline = $this->cta_headline ?: $defaultHeadline;
+        $rawButton = $this->cta_button_text ?: $defaultButton;
+        $rawWa = $this->cta_whatsapp_text ?: $defaultWa;
 
         return [
-            'headline' => $this->cta_headline ?: $defaultHeadline,
-            'button_text' => $this->cta_button_text ?: $defaultButton,
-            'whatsapp_text' => $this->cta_whatsapp_text ?: $defaultWa,
+            'headline' => $this->sanitizeText($rawHeadline),
+            'button_text' => $this->sanitizeText($rawButton),
+            'whatsapp_text' => $this->sanitizeText($rawWa),
         ];
     }
 
@@ -575,12 +725,15 @@ class CoverageArea extends Model
             })->first();
 
             if (! $provArea) {
+                $provRes = \App\Services\AreaImageResolver::resolve(null, $provSlug);
                 self::create([
                     'type' => 'province',
                     'province_name' => $provName,
                     'city' => $provName,
                     'district' => '[PROVINSI]',
                     'slug' => $provSlug,
+                    'hero_image' => $provRes['path'],
+                    'presence_image' => $provRes['path'],
                     'meta_title' => "Jasa Saluran Mampet {$provName} - Drainusantara Bergaransi",
                     'meta_description' => "Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah {$provName}. Armada siaga di seluruh kota dengan garansi resmi 30 hari.",
                     'content' => "Layanan penanganan saluran pipa mampet berstandar profesional di seluruh kota/kabupaten Provinsi {$provName}. Didukung armada mekanis spiral rotary tanpa bongkar keramik.",
@@ -594,8 +747,20 @@ class CoverageArea extends Model
                 ]);
                 $created++;
             } else {
+                $updates = [];
                 if ($provArea->type !== 'province' || empty($provArea->province_name)) {
-                    $provArea->update(['type' => 'province', 'province_name' => $provName]);
+                    $updates['type'] = 'province';
+                    $updates['province_name'] = $provName;
+                }
+                if (empty($provArea->hero_image)) {
+                    $provRes = \App\Services\AreaImageResolver::resolve(null, $provSlug);
+                    $updates['hero_image'] = $provRes['path'];
+                    if (empty($provArea->presence_image)) {
+                        $updates['presence_image'] = $provRes['path'];
+                    }
+                }
+                if (! empty($updates)) {
+                    $provArea->update($updates);
                 }
                 $existing++;
             }
@@ -613,12 +778,15 @@ class CoverageArea extends Model
                 })->first();
 
                 if (! $cityArea) {
+                    $cityRes = \App\Services\AreaImageResolver::resolve(null, $provSlug, $citySlug);
                     self::create([
                         'type' => 'city',
                         'province_name' => $provName,
                         'city' => $cityName,
                         'district' => '[KOTA]',
                         'slug' => $citySlug,
+                        'hero_image' => $cityRes['path'],
+                        'presence_image' => $cityRes['path'],
                         'meta_title' => "Jasa Saluran Mampet {$cityName} - Drainusantara Bergaransi",
                         'meta_description' => "Jasa pelancaran wastafel, kloset toilet, dan saluran mampet di {$cityName} tanpa bongkar keramik & garansi 30 hari. Hubungi teknisi terdekat sekarang!",
                         'content' => "Layanan penanganan saluran pipa mampet di seluruh wilayah {$cityName} dan sekitarnya.",
@@ -633,8 +801,20 @@ class CoverageArea extends Model
                     ]);
                     $created++;
                 } else {
+                    $updates = [];
                     if ($cityArea->type !== 'city' || empty($cityArea->province_name)) {
-                        $cityArea->update(['type' => 'city', 'province_name' => $provName]);
+                        $updates['type'] = 'city';
+                        $updates['province_name'] = $provName;
+                    }
+                    if (empty($cityArea->hero_image)) {
+                        $cityRes = \App\Services\AreaImageResolver::resolve(null, $provSlug, $citySlug);
+                        $updates['hero_image'] = $cityRes['path'];
+                        if (empty($cityArea->presence_image)) {
+                            $updates['presence_image'] = $cityRes['path'];
+                        }
+                    }
+                    if (! empty($updates)) {
+                        $cityArea->update($updates);
                     }
                     $existing++;
                 }
@@ -650,19 +830,34 @@ class CoverageArea extends Model
                     })->first();
 
                     if ($area) {
+                        $updates = [];
                         if ($area->type !== 'district' || empty($area->province_name)) {
-                            $area->update(['type' => 'district', 'province_name' => $provName]);
+                            $updates['type'] = 'district';
+                            $updates['province_name'] = $provName;
+                        }
+                        if (empty($area->hero_image)) {
+                            $distRes = \App\Services\AreaImageResolver::resolve(null, $provSlug, $citySlug, $district);
+                            $updates['hero_image'] = $distRes['path'];
+                            if (empty($area->presence_image)) {
+                                $updates['presence_image'] = $distRes['path'];
+                            }
+                        }
+                        if (! empty($updates)) {
+                            $area->update($updates);
                         }
                         $existing++;
                         continue;
                     }
 
+                    $distRes = \App\Services\AreaImageResolver::resolve(null, $provSlug, $citySlug, $district);
                     self::create([
                         'type' => 'district',
                         'province_name' => $provName,
                         'city' => $cityName,
                         'district' => $district,
                         'slug' => $slug,
+                        'hero_image' => $distRes['path'],
+                        'presence_image' => $distRes['path'],
                         'meta_title' => "Jasa Saluran Mampet di {$district}, {$cityName} - Drainusantara Bergaransi",
                         'meta_description' => "Jasa pipa mampet wastafel, toilet, & talang air di {$district}, {$cityName}. Tanpa bongkar keramik pakai spiral baja, respons chat via WhatsApp & garansi 30 hari.",
                         'content' => "Layanan penanganan saluran pipa mampet berstandar profesional di area {$district}, {$cityName} dan sekitarnya. Teknisi siaga berbekal mesin rotary spiral elektrik tanpa bongkar ubin.",

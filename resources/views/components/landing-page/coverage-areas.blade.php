@@ -35,8 +35,8 @@
             <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-1">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-jakarta-indonesia-city-jakarta-drainusantara.webp') }}"
-                         alt="Wilayah DKI Jakarta"
+                    <img src="{{ \App\Services\AreaImageResolver::resolveUrl(null, 'dki-jakarta') }}"
+                         alt="Jasa Saluran Pipa Mampet DKI Jakarta - Armada Drainusantara"
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
@@ -108,8 +108,8 @@
             <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-2">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-kota-bekasi-jawa-barat-drainusantara.webp') }}"
-                         alt="Wilayah Bodetabek"
+                    <img src="{{ \App\Services\AreaImageResolver::resolveUrl(null, 'jawa-barat', 'bekasi-cikarang') }}"
+                         alt="Jasa Saluran Pipa Mampet Bodetabek - Armada Drainusantara"
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
@@ -179,8 +179,8 @@
             <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-3">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-kota-bekasi-jawa-barat-drainusantara.webp') }}"
-                         alt="Wilayah Bandung Raya & Cimahi"
+                    <img src="{{ \App\Services\AreaImageResolver::resolveUrl(null, 'jawa-barat', 'bandung') }}"
+                         alt="Jasa Saluran Pipa Mampet Bandung Raya & Cimahi - Armada Drainusantara"
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
@@ -243,8 +243,8 @@
             <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-4">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-semarang-lampung-drainusantara.webp') }}"
-                         alt="Wilayah Semarang & Demak"
+                    <img src="{{ \App\Services\AreaImageResolver::resolveUrl(null, 'jawa-tengah', 'semarang') }}"
+                         alt="Jasa Saluran Pipa Mampet Semarang Raya & Demak - Armada Drainusantara"
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
@@ -308,8 +308,8 @@
             <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-5">
                 <!-- Card Background Image Layer -->
                 <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                    <img src="{{ asset('assets/wilayah/jasa-saluran-pipa-mampet-semarang-lampung-drainusantara.webp') }}"
-                         alt="Wilayah Bandar Lampung"
+                    <img src="{{ \App\Services\AreaImageResolver::resolveUrl(null, 'lampung', 'bandar-lampung') }}"
+                         alt="Jasa Saluran Pipa Mampet Bandar Lampung - Armada Drainusantara"
                          loading="lazy"
                          decoding="async"
                          class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
