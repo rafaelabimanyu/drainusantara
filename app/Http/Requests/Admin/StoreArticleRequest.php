@@ -22,6 +22,8 @@ class StoreArticleRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:100'],
             'sub_category' => ['nullable', 'string', 'max:100'],
+            'service_id' => ['nullable', 'integer', 'exists:services,id'],
+            'city' => ['nullable', 'string', 'max:100'],
             'thumbnail' => $hasUpload
                 ? [new OptimizedImage]
                 : ['nullable', 'string', 'max:255'],

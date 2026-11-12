@@ -63,6 +63,7 @@ if (app()->environment('local', 'testing')) {
 Route::get('/pengetahuan', [Pages\ArticleController::class, 'articles'])->name('articles.index');
 Route::get('/blog', fn () => redirect()->route('articles.index', [], 301))->name('articles.blog');
 Route::get('/artikel', fn () => redirect()->route('articles.index', [], 301))->name('articles.legacy');
+Route::get('/pengetahuan/{slug}', fn (string $slug) => redirect()->route('articles.show', ['slug' => $slug], 301));
 Route::get('/artikel/{slug}', [Pages\ArticleController::class, 'articleDetail'])->name('articles.show');
 
 // Human HTML Sitemap & Dynamic XML Sitemap

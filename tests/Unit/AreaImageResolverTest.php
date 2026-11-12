@@ -31,10 +31,10 @@ class AreaImageResolverTest extends TestCase
         $resolved = AreaImageResolver::resolve(null, 'dki-jakarta', 'jakarta-selatan', 'Tebet');
 
         $this->assertSame('district_asset', $resolved['source']);
-        $this->assertStringContainsString('tebet.jpg', $resolved['path']);
+        $this->assertStringContainsString('tebet.webp', $resolved['path']);
         $this->assertFileExists(public_path($resolved['path']));
         $this->assertStringContainsString('DKI%20JAKARTA', $resolved['url']);
-        $this->assertStringContainsString('tebet.jpg', $resolved['url']);
+        $this->assertStringContainsString('tebet.webp', $resolved['url']);
     }
 
     public function test_resolve_dedicated_city_photo(): void
@@ -43,7 +43,7 @@ class AreaImageResolverTest extends TestCase
         $resolved = AreaImageResolver::resolve(null, 'jawa-tengah', 'semarang');
 
         $this->assertSame('city_asset', $resolved['source']);
-        $this->assertStringContainsString('semarang.jpg', $resolved['path']);
+        $this->assertStringContainsString('semarang.webp', $resolved['path']);
         $this->assertFileExists(public_path($resolved['path']));
     }
 
@@ -98,7 +98,7 @@ class AreaImageResolverTest extends TestCase
         $this->assertNotEmpty($heroUrl);
         $this->assertNotEmpty($presenceUrl);
         $this->assertSame('district_asset', $source);
-        $this->assertStringContainsString('tebet.jpg', $heroUrl);
+        $this->assertStringContainsString('tebet.webp', $heroUrl);
     }
 
     public function test_region_service_resolve_area_image_helper(): void
@@ -106,7 +106,7 @@ class AreaImageResolverTest extends TestCase
         $url = RegionService::resolveAreaImage('dki-jakarta', 'jakarta-selatan', 'Tebet');
 
         $this->assertNotEmpty($url);
-        $this->assertStringContainsString('tebet.jpg', $url);
+        $this->assertStringContainsString('tebet.webp', $url);
         $this->assertStringContainsString('DKI%20JAKARTA', $url);
     }
 }

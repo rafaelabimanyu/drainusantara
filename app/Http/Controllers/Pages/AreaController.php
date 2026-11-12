@@ -508,8 +508,9 @@ class AreaController extends Controller
         }
         $galleries = $this->mapGalleriesForLocation($galleries, $cityData['name']);
         $articles = $this->getArticlesForLocation($cityData['name'], 3);
+        $localReviews = $area->resolved_local_reviews;
 
-        return view('areas.city', compact('cityData', 'services', 'reviews', 'area', 'faqs', 'equipments', 'galleries', 'articles', 'resolvedAreaImage'));
+        return view('areas.city', compact('cityData', 'services', 'reviews', 'localReviews', 'area', 'faqs', 'equipments', 'galleries', 'articles', 'resolvedAreaImage'));
     }
 
     /**
@@ -750,8 +751,9 @@ class AreaController extends Controller
         }
         $galleries = $this->mapGalleriesForLocation($galleries, "{$area->district}, {$area->city}");
         $articles = $this->getArticlesForLocation($area->city, 3);
+        $localReviews = $area->resolved_local_reviews;
 
-        return view('areas.district', compact('area', 'services', 'reviews', 'cityData', 'equipments', 'galleries', 'articles', 'resolvedAreaImage'));
+        return view('areas.district', compact('area', 'services', 'reviews', 'localReviews', 'cityData', 'equipments', 'galleries', 'articles', 'resolvedAreaImage'));
     }
 
     /**

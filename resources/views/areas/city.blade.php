@@ -796,6 +796,14 @@
         </div>
     </section>
 
+    <!-- 7b. SECTION RATING & ULASAN PELANGGAN LOKAL -->
+    <x-area.local-reviews-section 
+        :area="$area" 
+        :locationName="$cityData['name']" 
+        :reviews="$localReviews" 
+        :whatsappUrl="$cityWaUrl" 
+    />
+
     <!-- 8. SECTION KOMPARASI: TUKANG VS DRAINUSANTARA -->
     <section id="perbandingan-kota" class="py-12 sm:py-18 bg-white border-b border-slate-200">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

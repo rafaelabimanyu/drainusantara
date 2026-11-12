@@ -45,6 +45,10 @@ class AreaImageResolver
 
             $clean = ltrim(str_replace('\\', '/', $presence), '/');
             $decoded = rawurldecode($clean);
+            $webpAlt = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $decoded);
+            if ($webpAlt !== $decoded && file_exists(public_path($webpAlt))) {
+                $decoded = $webpAlt;
+            }
 
             return asset(self::encodePath($decoded));
         }
@@ -79,14 +83,20 @@ class AreaImageResolver
 
             $clean = ltrim(str_replace('\\', '/', $hero), '/');
             $decoded = rawurldecode($clean);
+            $webpAlt = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $decoded);
+            if ($webpAlt !== $decoded && file_exists(public_path($webpAlt))) {
+                $decoded = $webpAlt;
+            }
             $enc = self::encodePath($decoded);
 
             $source = 'cms_custom';
             if (str_contains($decoded, '/KECAMATAN') || str_contains($decoded, '/kecamatan')) {
                 $source = 'district_asset';
-            } elseif (str_contains($decoded, 'images/areas/provinces/')) {
+            } elseif (str_contains($decoded, 'images/areas/provinces/') || preg_match('/\/(banten|dki-jakarta)\.(webp|jpg|jpeg|png)$/i', $decoded)) {
                 $source = 'province_asset';
-            } elseif (str_contains($decoded, 'images/areas/') && (str_ends_with($decoded, 'semarang.jpg') || str_ends_with($decoded, 'tangerang-kota.jpg') || str_ends_with($decoded, 'tangerang-selatan.jpg') || str_ends_with($decoded, 'bekasi-cikarang.jpg') || str_ends_with($decoded, 'depok-cinere.jpg') || str_ends_with($decoded, 'jakarta-selatan.jpg') || str_ends_with($decoded, 'jakarta-barat.jpg') || str_ends_with($decoded, 'jakarta-timur.jpg') || str_ends_with($decoded, 'jakarta-utara.jpg') || str_ends_with($decoded, 'jakarta-pusat.jpg'))) {
+            } elseif (str_contains($decoded, 'images/areas/') && (
+                preg_match('/\b(semarang|tangerang-kota|tangerang-selatan|bekasi-cikarang|depok-cinere|jakarta-selatan|jakarta-barat|jakarta-timur|jakarta-utara|jakarta-pusat)\.(webp|jpg|jpeg|png)$/i', $decoded)
+            )) {
                 $source = 'city_asset';
             }
 
@@ -175,7 +185,7 @@ class AreaImageResolver
      *
      * @return array{0: string|null, 1: string|null, 2: string|null} [provinceSlug, citySlug, district]
      */
-    protected static function extractGeoParams(?CoverageArea $area, ?string $provinceSlug, ?string $citySlug, ?string $district): array
+    public static function extractGeoParams(?CoverageArea $area, ?string $provinceSlug, ?string $citySlug, ?string $district): array
     {
         $pSlug = $provinceSlug;
         $cSlug = $citySlug;
@@ -251,7 +261,7 @@ class AreaImageResolver
     protected static function findDistrictAsset(?string $provinceSlug, string $citySlug, string $district): ?string
     {
         $dSlug = Str::slug($district);
-        $extensions = ['jpg', 'webp', 'png', 'jpeg'];
+        $extensions = ['webp', 'jpg', 'jpeg', 'png'];
 
         // District slug variations (e.g. Setiabudi vs setia-budi)
         $districtVariants = array_unique(array_filter([
@@ -341,7 +351,7 @@ class AreaImageResolver
      */
     protected static function findCityAsset(?string $provinceSlug, string $citySlug): ?string
     {
-        $extensions = ['jpg', 'webp', 'png', 'jpeg'];
+        $extensions = ['webp', 'jpg', 'jpeg', 'png'];
         $candidatePaths = [];
 
         // DKI Jakarta Cities

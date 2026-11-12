@@ -9,6 +9,8 @@ use App\Support\MediaLifecycle;
 use App\Http\Requests\Admin\StoreArticleRequest;
 use App\Http\Requests\Admin\UpdateArticleRequest;
 use App\Models\Article;
+use App\Models\Service;
+use App\Services\RegionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,7 +33,10 @@ class ArticleController extends Controller
      */
     public function create(): View
     {
-        return view('admin.articles.create');
+        $services = Service::where('is_active', true)->orderBy('name')->get();
+        $cities = RegionService::allCities();
+
+        return view('admin.articles.create', compact('services', 'cities'));
     }
 
     /**
@@ -96,6 +101,8 @@ class ArticleController extends Controller
                 'content_images' => !empty($contentImages) ? $contentImages : null,
                 'category' => $validated['category'] ?? 'Tips & Edukasi',
                 'sub_category' => $validated['sub_category'] ?? null,
+                'service_id' => $validated['service_id'] ?? null,
+                'city' => $validated['city'] ?? null,
                 'tags' => $validated['tags'] ?? null,
                 'excerpt' => $validated['excerpt'] ?? Str::limit(strip_tags($validated['content']), 120),
                 'content' => $validated['content'],
@@ -115,7 +122,10 @@ class ArticleController extends Controller
      */
     public function edit(Article $article): View
     {
-        return view('admin.articles.edit', compact('article'));
+        $services = Service::where('is_active', true)->orderBy('name')->get();
+        $cities = RegionService::allCities();
+
+        return view('admin.articles.edit', compact('article', 'services', 'cities'));
     }
 
     /**
@@ -179,6 +189,8 @@ class ArticleController extends Controller
                 'title' => $validated['title'],
                 'category' => array_key_exists('category', $validated) ? $validated['category'] : $article->category,
                 'sub_category' => array_key_exists('sub_category', $validated) ? $validated['sub_category'] : $article->sub_category,
+                'service_id' => array_key_exists('service_id', $validated) ? $validated['service_id'] : $article->service_id,
+                'city' => array_key_exists('city', $validated) ? $validated['city'] : $article->city,
                 'thumbnail' => $thumbnailUrl,
                 'image_placement' => $validated['image_placement'] ?? ($article->image_placement ?? 'content'),
                 'content_images' => !empty($contentImages) ? $contentImages : null,

@@ -138,18 +138,13 @@ class ArticleController extends Controller
             'dateModified' => $article->updated_at->toIso8601String(),
             'image' => $thumbnailUrl,
             'author' => [
-                '@type' => 'Person',
-                'name' => 'Tim Ahli Drainusantara',
-                'jobTitle' => 'Spesialis Drainase & Pemipaan',
-                'worksFor' => [
-                    '@type' => 'Organization',
-                    'name' => 'Drainusantara',
-                    'url' => url('/'),
-                ],
+                '@type' => 'Organization',
+                'name' => 'Tim Ahli Teknis Drainusantara (PT Jawa Jaya Rooter)',
+                'url' => url('/'),
             ],
             'publisher' => [
                 '@type' => 'Organization',
-                'name' => 'Drainusantara',
+                'name' => 'PT JAWA JAYA ROOTER',
                 'url' => url('/'),
                 'logo' => [
                     '@type' => 'ImageObject',

@@ -695,6 +695,14 @@
         </div>
     </section>
 
+    <!-- 7b. SECTION RATING & ULASAN PELANGGAN LOKAL -->
+    <x-area.local-reviews-section 
+        :area="$area" 
+        :locationName="$area->district . ', ' . $area->city" 
+        :reviews="$localReviews ?? []" 
+        :whatsappUrl="$emergencyWaUrl" 
+    />
+
     <!-- 8. SECTION KOMPARASI: TUKANG KONVENSIONAL VS DRAINUSANTARA -->
     <section id="perbandingan-area" data-section="perbandingan-kecamatan" class="py-12 sm:py-18 bg-slate-50 border-b border-slate-200">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

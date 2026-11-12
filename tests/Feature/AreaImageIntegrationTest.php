@@ -65,7 +65,7 @@ class AreaImageIntegrationTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('SEMARANG', false);
-        $response->assertSee('semarang.jpg', false);
+        $response->assertSee('semarang.webp', false);
     }
 
     public function test_district_page_renders_with_dedicated_district_image(): void
@@ -82,7 +82,7 @@ class AreaImageIntegrationTest extends TestCase
         $response = $this->get('/area/jakarta-selatan/tebet');
 
         $response->assertStatus(200);
-        $response->assertSee('tebet.jpg', false);
+        $response->assertSee('tebet.webp', false);
         $response->assertSee('DKI%20JAKARTA', false);
     }
 
@@ -111,7 +111,7 @@ class AreaImageIntegrationTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Foto Aktif yang Ditampilkan di Website:');
         $response->assertSee('Sumber: Aset Dedicated Kecamatan');
-        $response->assertSee('tebet.jpg', false);
+        $response->assertSee('tebet.webp', false);
     }
 }
 

@@ -655,6 +655,28 @@ class RegionService
     }
 
     /**
+     * Get a flattened list of all cities across all provinces.
+     *
+     * @return array<int, array{name: string, slug: string, province_name: string, province_slug: string}>
+     */
+    public static function allCities(): array
+    {
+        $cities = [];
+        foreach (self::all() as $province) {
+            foreach ($province['cities'] as $city) {
+                $cities[] = [
+                    'name' => $city['name'],
+                    'slug' => $city['slug'],
+                    'province_name' => $province['name'],
+                    'province_slug' => $province['slug'],
+                ];
+            }
+        }
+
+        return $cities;
+    }
+
+    /**
      * Find a city by slug across all provinces.
      */
     public static function findCity(string $citySlug): ?array

@@ -40,19 +40,33 @@ class SyncAreaImagesCommand extends Command
             $hasExistingCustom = ! empty($area->hero_image);
 
             if ($hasExistingCustom && ! $overwrite) {
-                $skipped++;
+                // If existing path is .jpg/.png but .webp exists, update it
+                $clean = ltrim(str_replace('\\', '/', $area->hero_image), '/');
+                $webpAlt = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $clean);
+                if ($webpAlt !== $clean && file_exists(public_path($webpAlt))) {
+                    $area->hero_image = $webpAlt;
+                    if (! empty($area->presence_image)) {
+                        $area->presence_image = preg_replace('/\.(jpg|jpeg|png)$/i', '.webp', $area->presence_image);
+                    }
+                    $area->save();
+                    $updated++;
+                } else {
+                    $skipped++;
+                }
                 continue;
             }
 
-            $resolved = AreaImageResolver::resolve($area);
+            // Resolve fresh by geographical parameters
+            [$pSlug, $cSlug, $dist] = AreaImageResolver::extractGeoParams($area, null, null, null);
+            $resolved = AreaImageResolver::resolve(null, $pSlug, $cSlug, $dist);
             $newPath = $resolved['path'];
 
             // Only update if source is from local assets (district, city, province)
             if (in_array($resolved['source'], ['district_asset', 'city_asset', 'province_asset'], true)) {
                 $area->hero_image = $newPath;
 
-                // Also populate presence_image if empty
-                if (empty($area->presence_image)) {
+                // Also populate presence_image
+                if (empty($area->presence_image) || $overwrite) {
                     $area->presence_image = $newPath;
                 }
 

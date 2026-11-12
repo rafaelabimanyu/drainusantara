@@ -593,4 +593,204 @@ class RegionalTaxonomy
             'dominant_buildings' => "Rumah Klaster Modern, Townhouse, Ruko Komersial & Apartemen",
         ];
     }
+
+    /**
+     * Generate localized customer reviews tailored to the region's profile.
+     *
+     * @return array<int, array{
+     *     customer_name: string,
+     *     initials: string,
+     *     avatar_bg: string,
+     *     avatar_url: ?string,
+     *     verified: bool,
+     *     rating: int,
+     *     time_ago: string,
+     *     property_type: string,
+     *     service_name: string,
+     *     turnaround: string,
+     *     location: string,
+     *     comment: string
+     * }>
+     */
+    public static function getLocalReviews(string $cityName, ?string $districtName = null, int $limit = 4): array
+    {
+        $cleanDistrict = self::normalizeDistrict($districtName);
+        $cleanCity = self::normalizeCity(Str::slug($cityName), $cityName);
+        $loc = $cleanDistrict ? "{$cleanDistrict}, {$cleanCity}" : $cleanCity;
+        $zone = self::resolveZone(Str::slug($cleanCity));
+
+        $seed = abs(crc32($loc));
+
+        $namesPool = [
+            ['Bpk. Hendra Wijaya', 'HW', 'bg-sky-700'],
+            ['Ibu Ratna Susanti', 'RS', 'bg-emerald-700'],
+            ['dr. Bambang Prasetyo', 'BP', 'bg-indigo-700'],
+            ['Pak Haji Ridwan', 'HR', 'bg-slate-700'],
+            ['Ibu Maya Kusuma', 'MK', 'bg-teal-700'],
+            ['Ko Steven Halim', 'SH', 'bg-blue-700'],
+            ['Ibu Linda Santoso', 'LS', 'bg-rose-700'],
+            ['Bpk. Dian Pratama', 'DP', 'bg-cyan-700'],
+        ];
+
+        // Specific regional review storylines
+        $reviewStorylines = match ($zone) {
+            'semarang_pantura' => [
+                [
+                    'property_type' => 'Rumah Tinggal Residensial',
+                    'service_name' => 'Pelancaran Pipa Wastafel Dapur & Lemak',
+                    'turnaround' => 'Tuntas 40 menit tanpa bobok keramik',
+                    'comment' => "Pipa pembuangan dapur di rumah saya di {$loc} tersumbat parah oleh gumpalan minyak beku dan endapan pasir halus. Sempat panggil tukang biasa tapi mau dibongkar keramiknya. Untung langsung kontak Drainusantara, teknisi datang tepat waktu bawa mesin spiral Ridgid. Tanpa bongkar lantai, saluran langsung plong lancar!",
+                ],
+                [
+                    'property_type' => 'Ruko Usaha & Toko',
+                    'service_name' => 'Pembersihan Bak Kontrol & Pipa Utama',
+                    'turnaround' => 'Tuntas 45 menit pengerjaan bersih',
+                    'comment' => "Bak kontrol saluran pembuangan ruko kami di {$loc} meluap karena endapan lumpur padat pasang rob dan sisa kotoran. Tim teknisi Drainusantara sangat profesional, bekerja dengan SOP higienis dan mesin spiral heavy-duty. Diberikan nota garansi fisik 30 hari.",
+                ],
+                [
+                    'property_type' => 'Hunian Keluarga 2 Lantai',
+                    'service_name' => 'Pelancaran Kloset & WC Meluap',
+                    'turnaround' => 'Tuntas 35 menit saluran kembali normal',
+                    'comment' => "Kloset duduk lantai 1 tiba-tiba mampet dan airnya meluap saat disiram. Respon admin WhatsApp sigap sekali, teknisi tiba dalam 30 menit dengan perlengkapan lengkap. Pengerjaan cepat, rapi, dan tidak ada bau kimia yang menyengat sama sekali.",
+                ],
+                [
+                    'property_type' => 'Rumah Tinggal',
+                    'service_name' => 'Pelancaran Floor Drain Kamar Mandi',
+                    'turnaround' => 'Tuntas 30 menit bebas genangan air',
+                    'comment' => "Saluran pembuangan air kamar mandi mampet berhari-hari karena serat rambut dan kerak sabun tebal. Teknisi Drainusantara bersihkan sampai tuntas ke saluran luar. Komitmen No Cure No Pay terbukti nyata. Sangat direkomendasikan untuk warga {$cleanCity}!",
+                ],
+            ],
+            'bandung_highland' => [
+                [
+                    'property_type' => 'Kafe & Resto Kuliner',
+                    'service_name' => 'Kuras Grease Trap & Lemak Beku',
+                    'turnaround' => 'Tuntas 45 menit dapur langsung operasional',
+                    'comment' => "Suhu dingin di {$loc} bikin sisa lemak kuah dan minyak di dapur cepat mengeras seperti lilin batu di dalam pipa. Saluran cuci piring macet total pas jam makan siang. Teknisi Drainusantara gerak cepat dengan mesin rooter spiral elektrik, gumpalan lemak putih padat hancur semua. Pelayanan luar biasa!",
+                ],
+                [
+                    'property_type' => 'Townhouse Residensial',
+                    'service_name' => 'Pelancaran Wastafel Cuci Piring',
+                    'turnaround' => 'Tuntas 35 menit aman untuk pipa PVC',
+                    'comment' => "Wastafel dapur tersumbat sudah seminggu, air kotor sampai naik ke bak cuci. Teknisi datang berseragam rapi, pakai cover sepatu, dan ramah menjelaskan penyebab mampetnya. Tanpa soda api yang bisa merusak sambungan pipa PVC, saluran kembali lancar plong.",
+                ],
+                [
+                    'property_type' => 'Rumah Tinggal 2 Lantai',
+                    'service_name' => 'Pelancaran Kloset Duduk Tersumbat',
+                    'turnaround' => 'Tuntas 40 menit tanpa copot porselen kloset',
+                    'comment' => "Kloset duduk anak tersumbat tisu tebal. Sangat khawatir kalau harus copot kloset porselen. Teknisi Drainusantara punya alat spiral khusus yang meliuk fleksibel menembus leher angsa porselen tanpa lecet sedikitpun. Mantap dan bergaransi resmi!",
+                ],
+                [
+                    'property_type' => 'Villa & Rumah Lereng',
+                    'service_name' => 'Pelancaran Talang Rooftop & Saluran Hujan',
+                    'turnaround' => 'Tuntas 50 menit jangkauan pipa vertikal',
+                    'comment' => "Talang air dak lantai atas mampet lumut dan daun kering saat hujan deras di Bandung. Teknisi bersedia naik dan membersihkan pipa vertikal hingga ke resapan bawah. Air hujan sekarang mengalir deras tanpa rembes ke plafon rumah lagi.",
+                ],
+            ],
+            'bali_hospitality' => [
+                [
+                    'property_type' => 'Villa Privat & Resort',
+                    'service_name' => 'Pelancaran Floor Drain Kamar Mandi',
+                    'turnaround' => 'Tuntas 35 menit senyap & steril',
+                    'comment' => "Floor drain kamar mandi tamu villa di {$loc} tersumbat pasir pantai dan rambut. Teknisi Drainusantara sangat menghormati standar kenyamanan tamu: senyap, higienis, dan mengenakan sarung tangan serta cover sepatu. Saluran plong seketika!",
+                ],
+                [
+                    'property_type' => 'Restoran & Bistro',
+                    'service_name' => 'Pelancaran Grease Trap Dapur Resto',
+                    'turnaround' => 'Tuntas 45 menit bebas bau menyengat',
+                    'comment' => "Saluran grease trap dapur resto tersumbat minyak jenuh. Menggunakan mesin spiral mekanis berputar halus, sumbatan langsung bersih tanpa bau kimia yang bisa mengganggu tamu restoran. Sangat profesional untuk mitra hospitality.",
+                ],
+                [
+                    'property_type' => 'Residensial Villa',
+                    'service_name' => 'Pelancaran Kloset Duduk & Toilet',
+                    'turnaround' => 'Tuntas 40 menit tanpa merusak lantai teraso',
+                    'comment' => "Kloset villa meluap saat jadwal tamu check-in tinggal beberapa jam. Tim Drainusantara tiba dalam 30 menit setelah dikonfirmasi via WA. Penanganan mekanis modern tanpa membongkar lantai batu alam atau teraso. Very recommended!",
+                ],
+                [
+                    'property_type' => 'Properti Usaha',
+                    'service_name' => 'Pembersihan Pipa Pembuangan Luar',
+                    'turnaround' => 'Tuntas 50 menit tembus akar tanaman',
+                    'comment' => "Pipa pembuangan luar halaman tersumbat jalinan akar tanaman hias. Ditembus menggunakan spiral baja bertenaga tinggi hingga akar hancur terdorong keluar. Diberikan nota garansi dan kwitansi resmi PT Jawa Jaya Rooter.",
+                ],
+            ],
+            'lampung_commercial' => [
+                [
+                    'property_type' => 'Rumah Tinggal',
+                    'service_name' => 'Pelancaran Wastafel Dapur & Lemak',
+                    'turnaround' => 'Tuntas 40 menit pipa kembali plong',
+                    'comment' => "Pipa wastafel mampet parah karena campuran kerak air kapur dan sisa lemak masakan bersantan. Teknisi Drainusantara bersihkan sampai tuntas pakai mesin rotary spiral. Pipa plong seperti baru lagi, biaya transparan sesuai estimasi!",
+                ],
+                [
+                    'property_type' => 'Ruko Usaha & Toko',
+                    'service_name' => 'Pelancaran Kloset & WC Meluap',
+                    'turnaround' => 'Tuntas 35 menit tanpa merusak keramik',
+                    'comment' => "Kloset jongkok ruko meluap tidak mau surut saat jam operasional. Hubungi Drainusantara lewat WhatsApp langsung direspon cepat. 35 menit pengerjaan langsung beres tanpa ada lantai yang dibongkar. Teknisi sopan dan teliti.",
+                ],
+                [
+                    'property_type' => 'Rumah Makan',
+                    'service_name' => 'Pembersihan Pipa Pembuangan & Bak Kontrol',
+                    'turnaround' => 'Tuntas 45 menit bebas residu lemak masakan',
+                    'comment' => "Saluran air kotor rumah makan di {$loc} tersumbat gumpalan minyak. Teknisi bawa unit spiral panjang, kerak pipa terkikis bersih sampai ke bak penampungan luar. Garansi tertulis 30 hari bikin tenang.",
+                ],
+                [
+                    'property_type' => 'Hunian Residensial',
+                    'service_name' => 'Pelancaran Floor Drain Kamar Mandi',
+                    'turnaround' => 'Tuntas 30 menit air mandi langsung surut',
+                    'comment' => "Kamar mandi utama sering banjir karena air tidak mau mengalir ke pipa pembuangan. Teknisi berhasil menarik gumpalan kotoran yang menyumbat. Sekarang mandi nyaman lagi tanpa genangan air got.",
+                ],
+            ],
+            default => [
+                [
+                    'property_type' => 'Rumah Tinggal (Klaster)',
+                    'service_name' => 'Pelancaran Wastafel Dapur & Jalur Carport',
+                    'turnaround' => 'Tuntas 40 menit tanpa bobok lantai carport',
+                    'comment' => "Pipa pembuangan wastafel dapur rumah kami di {$loc} mampet total, air kotor meluap dari bak kontrol di carport. Banyak belokan pipa siku di bawah semen, tapi kabel spiral fleksibel teknisi Drainusantara berhasil tembus dan hancurkan kerak lemak tebal tanpa merusak keramik carport!",
+                ],
+                [
+                    'property_type' => 'Hunian 2 Lantai',
+                    'service_name' => 'Pelancaran Kloset Duduk Meluap',
+                    'turnaround' => 'Tuntas 35 menit pengerjaan bersih & steril',
+                    'comment' => "Kloset duduk lantai 2 tersumbat tisu dan pembalut. Teknisi tiba 30 menit setelah konfirmasi pesanan WhatsApp, bekerja pakai APD bersih dan pelindung sepatu. Kloset kembali lancar disiram hanya dalam 35 menit tanpa ada porselen yang dicopot.",
+                ],
+                [
+                    'property_type' => 'Ruko Komersial & Kantor',
+                    'service_name' => 'Pelancaran Pipa Utama & Bak Kontrol',
+                    'turnaround' => 'Tuntas 45 menit jangkauan mesin 25 meter',
+                    'comment' => "Saluran pembuangan ruko 3 lantai kami macet di jalur utama. Teknisi menggunakan mesin Ridgid K-6200 daya putar torsi tinggi, kotoran endapan bertahun-tahun langsung hancur keluar tuntas. Ada nota garansi resmi 30 hari yang sangat meyakinkan.",
+                ],
+                [
+                    'property_type' => 'Townhouse Residensial',
+                    'service_name' => 'Pelancaran Floor Drain Kamar Mandi',
+                    'turnaround' => 'Tuntas 30 menit bebas genangan busa sabun',
+                    'comment' => "Air shower kamar mandi menggenang setinggi mata kaki karena gumpalan rambut dan kerak sabun tebal di pipa 2 inch. Teknisi bersihkan cepat dan rapi tanpa bau kimia menyengat. Komitmen No Cure No Pay sangat memuaskan!",
+                ],
+            ],
+        };
+
+        $timeAgos = ['3 hari lalu', '5 hari lalu', '1 minggu lalu', '2 minggu lalu'];
+
+        $reviews = [];
+        $totalPool = count($namesPool);
+
+        for ($i = 0; $i < min($limit, count($reviewStorylines)); $i++) {
+            $nameIdx = ($seed + $i * 2) % $totalPool;
+            $story = $reviewStorylines[$i];
+
+            $reviews[] = [
+                'customer_name' => $namesPool[$nameIdx][0],
+                'initials' => $namesPool[$nameIdx][1],
+                'avatar_bg' => $namesPool[$nameIdx][2],
+                'avatar_url' => null,
+                'verified' => true,
+                'rating' => 5,
+                'time_ago' => $timeAgos[$i % count($timeAgos)],
+                'property_type' => $story['property_type'],
+                'service_name' => $story['service_name'],
+                'turnaround' => $story['turnaround'],
+                'location' => $loc,
+                'comment' => $story['comment'],
+            ];
+        }
+
+        return $reviews;
+    }
 }

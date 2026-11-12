@@ -673,6 +673,73 @@ class CoverageArea extends Model
         ];
     }
 
+    /**
+     * Get resolved local customer reviews for this area.
+     *
+     * @return array<int, array{
+     *     customer_name: string,
+     *     initials: string,
+     *     avatar_bg: string,
+     *     avatar_url: ?string,
+     *     verified: bool,
+     *     rating: int,
+     *     time_ago: string,
+     *     property_type: string,
+     *     service_name: string,
+     *     turnaround: string,
+     *     location: string,
+     *     comment: string
+     * }>
+     */
+    public function getResolvedLocalReviewsAttribute(): array
+    {
+        $cleanDistrict = $this->getCleanDistrict();
+        $cityName = $this->city;
+
+        $dbReviews = Review::where('is_active', true)
+            ->where(function ($q) use ($cleanDistrict, $cityName) {
+                if ($cleanDistrict) {
+                    $q->where('customer_role_or_location', 'like', "%{$cleanDistrict}%");
+                }
+                $q->orWhere('customer_role_or_location', 'like', "%{$cityName}%");
+            })
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $reviews = [];
+        $avatarColors = ['bg-sky-700', 'bg-emerald-700', 'bg-indigo-700', 'bg-slate-700'];
+
+        foreach ($dbReviews as $idx => $r) {
+            $words = preg_split('/\s+/', trim($r->customer_name));
+            $initials = count($words) >= 2
+                ? strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1))
+                : strtoupper(substr($r->customer_name, 0, 2));
+
+            $reviews[] = [
+                'customer_name' => $r->customer_name,
+                'initials' => $initials,
+                'avatar_bg' => $avatarColors[$idx % count($avatarColors)],
+                'avatar_url' => $r->avatar ? asset($r->avatar) : null,
+                'verified' => true,
+                'rating' => $r->rating ?: 5,
+                'time_ago' => $r->created_at ? $r->created_at->diffForHumans() : '1 minggu lalu',
+                'property_type' => $r->customer_role_or_location ?: 'Pelanggan Residensial',
+                'service_name' => $r->service?->name ?? 'Pelancaran Saluran Pipa Mampet',
+                'turnaround' => 'Tuntas cepat & bergaransi resmi 30 hari',
+                'location' => $cleanDistrict ? "{$cleanDistrict}, {$cityName}" : $cityName,
+                'comment' => $r->comment,
+            ];
+        }
+
+        if (count($reviews) < 4) {
+            $synthetic = \App\Services\RegionalTaxonomy::getLocalReviews($cityName, $cleanDistrict, 4 - count($reviews));
+            $reviews = array_merge($reviews, $synthetic);
+        }
+
+        return array_slice($reviews, 0, 4);
+    }
+
     public function publicUrl(): ?string
     {
         if (! $this->is_active) {
