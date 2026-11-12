@@ -98,6 +98,14 @@ class ArticleController extends Controller
     }
 
     /**
+     * Display the Article Detail page via URL Silo structure: /edukasi/{category}/{subcategory}/{slug}
+     */
+    public function articleSiloDetail(string $category, string $subcategory, string $slug): View
+    {
+        return $this->articleDetail($slug);
+    }
+
+    /**
      * Display the Article Detail page.
      */
     public function articleDetail(string $slug): View

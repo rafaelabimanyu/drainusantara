@@ -20,6 +20,8 @@ class StoreArticleRequest extends FormRequest
 
         return [
             'title' => ['required', 'string', 'max:255'],
+            'category_id' => ['nullable', 'integer', 'exists:article_categories,id'],
+            'subcategory_id' => ['nullable', 'integer', 'exists:article_subcategories,id'],
             'category' => ['nullable', 'string', 'max:100'],
             'sub_category' => ['nullable', 'string', 'max:100'],
             'service_id' => ['nullable', 'integer', 'exists:services,id'],

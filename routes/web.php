@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ArticleCategoryController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ArticleSubcategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyPageController;
 use App\Http\Controllers\ContactMessageController;
@@ -64,6 +66,7 @@ Route::get('/pengetahuan', [Pages\ArticleController::class, 'articles'])->name('
 Route::get('/blog', fn () => redirect()->route('articles.index', [], 301))->name('articles.blog');
 Route::get('/artikel', fn () => redirect()->route('articles.index', [], 301))->name('articles.legacy');
 Route::get('/pengetahuan/{slug}', fn (string $slug) => redirect()->route('articles.show', ['slug' => $slug], 301));
+Route::get('/edukasi/{category}/{subcategory}/{slug}', [Pages\ArticleController::class, 'articleSiloDetail'])->name('articles.silo');
 Route::get('/artikel/{slug}', [Pages\ArticleController::class, 'articleDetail'])->name('articles.show');
 
 // Human HTML Sitemap & Dynamic XML Sitemap
@@ -149,7 +152,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('portfolios', PortfolioController::class)->except('show');
     Route::resource('staff', StaffController::class)->except('show');
     Route::resource('equipments', EquipmentController::class)->except('show');
+    Route::post('articles/upload-image', [ArticleController::class, 'uploadEditorImage'])->name('articles.upload-image');
     Route::resource('articles', ArticleController::class)->except('show');
+    Route::resource('article-categories', ArticleCategoryController::class)->except('show');
+    Route::resource('article-subcategories', ArticleSubcategoryController::class)->except('show');
+    Route::get('api/categories/{articleCategory}/subcategories', [ArticleCategoryController::class, 'subcategories'])->name('categories.subcategories');
     Route::resource('reviews', ReviewController::class)->except('show');
     Route::resource('company-pages', CompanyPageController::class)->only(['index', 'edit', 'update']);
     Route::post('faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('faqs.toggle');

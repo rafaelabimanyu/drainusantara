@@ -50,6 +50,8 @@ class Article extends Model
         'content',
         'category',
         'sub_category',
+        'category_id',
+        'subcategory_id',
         'service_id',
         'city',
         'tags',
@@ -64,11 +66,23 @@ class Article extends Model
     {
         return [
             'content_images' => 'array',
+            'category_id' => 'integer',
+            'subcategory_id' => 'integer',
             'service_id' => 'integer',
             'views_count' => 'integer',
             'is_published' => 'boolean',
             'published_at' => 'datetime',
         ];
+    }
+
+    public function categoryRelation(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ArticleCategory::class, 'category_id');
+    }
+
+    public function subcategoryRelation(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ArticleSubcategory::class, 'subcategory_id');
     }
 
     public function service(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -434,10 +448,14 @@ HTML;
     }
 
     /**
-     * Normalized category slug for filtering ('edukasi', 'penguatan-brand', 'promo-penawaran').
+     * Normalized category slug for filtering ('edukasi', 'penguatan-brand', 'promo-penawaran', etc.).
      */
     public function getCategorySlugAttribute(): string
     {
+        if ($this->relationLoaded('categoryRelation') && $this->categoryRelation) {
+            return $this->categoryRelation->slug;
+        }
+
         $raw = strtolower((string) $this->category);
 
         if (str_contains($raw, 'promo') || str_contains($raw, 'penawaran') || str_contains($raw, 'diskon')) {
@@ -448,6 +466,13 @@ HTML;
             return 'penguatan-brand';
         }
 
+        if (!empty($raw)) {
+            $cat = ArticleCategory::where('name', $this->category)->orWhere('slug', $this->category)->first();
+            if ($cat) {
+                return $cat->slug;
+            }
+        }
+
         return 'edukasi';
     }
 
@@ -456,11 +481,46 @@ HTML;
      */
     public function getCategoryLabelAttribute(): string
     {
+        if ($this->relationLoaded('categoryRelation') && $this->categoryRelation) {
+            return $this->categoryRelation->name;
+        }
+
+        if (!empty($this->category)) {
+            $cat = ArticleCategory::where('name', $this->category)->orWhere('slug', $this->category)->first();
+            if ($cat) {
+                return $cat->name;
+            }
+        }
+
         return match ($this->category_slug) {
             'promo-penawaran' => self::CATEGORY_PROMO,
             'penguatan-brand' => self::CATEGORY_BRAND,
             default => self::CATEGORY_EDUKASI,
         };
+    }
+
+    /**
+     * Normalized sub-category slug for URL Silo.
+     */
+    public function getSubcategorySlugAttribute(): string
+    {
+        if ($this->relationLoaded('subcategoryRelation') && $this->subcategoryRelation) {
+            return $this->subcategoryRelation->slug;
+        }
+
+        if (!empty($this->sub_category)) {
+            return Str::slug($this->sub_category);
+        }
+
+        return 'panduan';
+    }
+
+    /**
+     * URL Silo SEO Friendly (e.g. /edukasi/{kategori}/{sub-kategori}/{slug-artikel}).
+     */
+    public function getSiloUrlAttribute(): string
+    {
+        return url("/edukasi/{$this->category_slug}/{$this->subcategory_slug}/{$this->slug}");
     }
 
     /**

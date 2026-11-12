@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             FaqSeeder::class,
             BaliAreaSeeder::class,
             ReviewSeeder::class,
+            ArticleCategorySeeder::class,
             ArticleSeeder::class,
         ]);
 

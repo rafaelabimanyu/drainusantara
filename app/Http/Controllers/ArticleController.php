@@ -9,8 +9,11 @@ use App\Support\MediaLifecycle;
 use App\Http\Requests\Admin\StoreArticleRequest;
 use App\Http\Requests\Admin\UpdateArticleRequest;
 use App\Models\Article;
+use App\Models\ArticleCategory;
+use App\Models\ArticleSubcategory;
 use App\Models\Service;
 use App\Services\RegionService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -33,10 +36,11 @@ class ArticleController extends Controller
      */
     public function create(): View
     {
+        $categories = ArticleCategory::ensureDefaults();
         $services = Service::where('is_active', true)->orderBy('name')->get();
         $cities = RegionService::allCities();
 
-        return view('admin.articles.create', compact('services', 'cities'));
+        return view('admin.articles.create', compact('categories', 'services', 'cities'));
     }
 
     /**
@@ -93,14 +97,54 @@ class ArticleController extends Controller
                 }
             }
 
+            $categoryId = !empty($validated['category_id']) ? (int) $validated['category_id'] : null;
+            $subcategoryId = !empty($validated['subcategory_id']) ? (int) $validated['subcategory_id'] : null;
+            $categoryName = array_key_exists('category', $validated) ? ($validated['category'] ?: null) : null;
+            $subCategoryName = array_key_exists('sub_category', $validated) ? ($validated['sub_category'] ?: null) : null;
+
+            if ($categoryId) {
+                $cat = ArticleCategory::find($categoryId);
+                if ($cat) {
+                    $categoryName = $cat->name;
+                }
+            } elseif ($categoryName) {
+                $cat = ArticleCategory::where('name', $categoryName)->orWhere('slug', Str::slug($categoryName))->first();
+                if ($cat) {
+                    $categoryId = $cat->id;
+                    $categoryName = $cat->name;
+                }
+            }
+
+            if ($subcategoryId) {
+                $sub = ArticleSubcategory::find($subcategoryId);
+                if ($sub) {
+                    $subCategoryName = $sub->name;
+                    if (!$categoryId) {
+                        $categoryId = $sub->category_id;
+                        $categoryName = $sub->category->name ?? $categoryName;
+                    }
+                }
+            } elseif ($subCategoryName && $categoryId) {
+                $sub = ArticleSubcategory::where('category_id', $categoryId)
+                    ->where(function ($q) use ($subCategoryName): void {
+                        $q->where('name', $subCategoryName)->orWhere('slug', Str::slug($subCategoryName));
+                    })->first();
+                if ($sub) {
+                    $subcategoryId = $sub->id;
+                    $subCategoryName = $sub->name;
+                }
+            }
+
             $media->save($record, [
                 'title' => $validated['title'],
                 'slug' => $slug,
                 'thumbnail' => $thumbnailUrl,
                 'image_placement' => $validated['image_placement'] ?? 'content',
                 'content_images' => !empty($contentImages) ? $contentImages : null,
-                'category' => $validated['category'] ?? 'Tips & Edukasi',
-                'sub_category' => $validated['sub_category'] ?? null,
+                'category' => $categoryName,
+                'sub_category' => $subCategoryName,
+                'category_id' => $categoryId,
+                'subcategory_id' => $subcategoryId,
                 'service_id' => $validated['service_id'] ?? null,
                 'city' => $validated['city'] ?? null,
                 'tags' => $validated['tags'] ?? null,
@@ -122,10 +166,11 @@ class ArticleController extends Controller
      */
     public function edit(Article $article): View
     {
+        $categories = ArticleCategory::ensureDefaults();
         $services = Service::where('is_active', true)->orderBy('name')->get();
         $cities = RegionService::allCities();
 
-        return view('admin.articles.edit', compact('article', 'services', 'cities'));
+        return view('admin.articles.edit', compact('article', 'categories', 'services', 'cities'));
     }
 
     /**
@@ -185,10 +230,62 @@ class ArticleController extends Controller
                 }
             }
 
+            $hasCatKey = array_key_exists('category', $validated);
+            $categoryName = $hasCatKey ? ($validated['category'] ?: null) : $article->category;
+
+            $hasSubKey = array_key_exists('sub_category', $validated);
+            $subCategoryName = $hasSubKey ? ($validated['sub_category'] ?: null) : $article->sub_category;
+
+            $categoryId = array_key_exists('category_id', $validated)
+                ? (!empty($validated['category_id']) ? (int) $validated['category_id'] : null)
+                : $article->category_id;
+            $subcategoryId = array_key_exists('subcategory_id', $validated)
+                ? (!empty($validated['subcategory_id']) ? (int) $validated['subcategory_id'] : null)
+                : $article->subcategory_id;
+
+            if ($categoryId && $categoryName) {
+                $cat = ArticleCategory::find($categoryId);
+                if ($cat) {
+                    $categoryName = $cat->name;
+                }
+            } elseif ($categoryName) {
+                $cat = ArticleCategory::where('name', $categoryName)->orWhere('slug', Str::slug($categoryName))->first();
+                if ($cat) {
+                    $categoryId = $cat->id;
+                    $categoryName = $cat->name;
+                }
+            } elseif ($hasCatKey && is_null($categoryName)) {
+                $categoryId = null;
+            }
+
+            if ($subcategoryId && $subCategoryName) {
+                $sub = ArticleSubcategory::find($subcategoryId);
+                if ($sub) {
+                    $subCategoryName = $sub->name;
+                    if (!$categoryId) {
+                        $categoryId = $sub->category_id;
+                        $categoryName = $sub->category->name ?? $categoryName;
+                    }
+                }
+            } elseif ($subCategoryName && $categoryId) {
+                $sub = ArticleSubcategory::where('category_id', $categoryId)
+                    ->where(function ($q) use ($subCategoryName): void {
+                        $q->where('name', $subCategoryName)->orWhere('slug', Str::slug($subCategoryName));
+                    })->first();
+                if ($sub) {
+                    $subcategoryId = $sub->id;
+                    $subCategoryName = $sub->name;
+                }
+            } elseif ($hasSubKey && is_null($subCategoryName)) {
+                $subcategoryId = null;
+            }
+
             $media->save($article, [
                 'title' => $validated['title'],
-                'category' => array_key_exists('category', $validated) ? $validated['category'] : $article->category,
-                'sub_category' => array_key_exists('sub_category', $validated) ? $validated['sub_category'] : $article->sub_category,
+                'category' => $categoryName,
+                'sub_category' => $subCategoryName,
+                'category_id' => $categoryId,
+                'subcategory_id' => $subcategoryId,
                 'service_id' => array_key_exists('service_id', $validated) ? $validated['service_id'] : $article->service_id,
                 'city' => array_key_exists('city', $validated) ? $validated['city'] : $article->city,
                 'thumbnail' => $thumbnailUrl,
@@ -206,6 +303,36 @@ class ArticleController extends Controller
 
         return redirect()->route('admin.articles.index')
             ->with('success', "Artikel '{$article->title}' berhasil diperbarui!");
+    }
+
+    /**
+     * Upload an inline image from TinyMCE/Rich Editor, converted to WebP.
+     */
+    public function uploadEditorImage(Request $request): JsonResponse
+    {
+        $request->validate([
+            'file' => ['required', 'file', 'image', 'mimes:jpeg,png,webp,jpg', 'max:20480'],
+        ]);
+
+        $file = $request->file('file');
+        if (! $file || ! $file->isValid()) {
+            return response()->json(['error' => 'Berkas gambar tidak valid atau gagal diunggah.'], 422);
+        }
+
+        $media = new MediaLifecycle;
+        try {
+            $path = $media->upload($file, 'articles', true);
+            $url = asset(ltrim($path, '/'));
+
+            return response()->json([
+                'location' => $url,
+                'path' => $path,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'error' => 'Gagal memproses dan mengonversi gambar ke WebP: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
