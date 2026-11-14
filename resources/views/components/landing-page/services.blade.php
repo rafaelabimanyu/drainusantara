@@ -91,7 +91,7 @@
                         </div>
 
                         <h3 class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-sky-700 transition-colors mb-2">
-                            {{ $title }}
+                            <a href="{{ route('services.show', ['slug' => $slug]) }}">{{ $title }}</a>
                         </h3>
 
                         <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
@@ -122,11 +122,17 @@
                             <span class="text-[10px] text-slate-500 block mt-0.5">Hemat s/d 70% vs bongkar keramik</span>
                         </div>
 
-                        <a href="{{ $specificWaUrl }}" target="_blank" rel="noopener noreferrer" 
-                           class="btn-press inline-flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 min-h-11"
-                           aria-label="Konsultasi detail tarif penanganan {{ $title }} via WhatsApp">
-                            <span>Konsultasi Detail (WA)</span>
-                        </a>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <a href="{{ route('services.show', ['slug' => $slug]) }}" 
+                               class="inline-flex items-center justify-center text-xs font-bold px-3 py-2.5 rounded-md bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 transition-colors min-h-11">
+                                <span>Detail</span>
+                            </a>
+                            <a href="{{ $specificWaUrl }}" target="_blank" rel="noopener noreferrer" 
+                               class="btn-press inline-flex items-center justify-center gap-1 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm px-3 sm:px-3.5 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-11"
+                               aria-label="Konsultasi detail tarif penanganan {{ $title }} via WhatsApp">
+                                <span>Konsultasi WA</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             @endforeach

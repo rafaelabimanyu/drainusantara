@@ -40,45 +40,55 @@ class WhatsAppService
             case 'area.detail':
                 $city = Str::title(str_replace('-', ' ', (string) ($params['city'] ?? '')));
                 $district = Str::title(str_replace('-', ' ', (string) ($params['district'] ?? '')));
-                return "Halo Admin Drainusantara, saya butuh bantuan darurat teknisi pipa mampet untuk area Kecamatan {$district}, {$city}. Apakah ada jadwal terdekat?";
+                return "Halo Tim Drainusantara, saya membutuhkan jasa pelancaran pipa mampet di area Kecamatan {$district}, {$city}. Mohon info estimasi biaya dan teknisi terdekat.";
 
             case 'area.city':
                 $city = Str::title(str_replace('-', ' ', (string) ($params['city'] ?? '')));
-                return "Halo Admin Drainusantara, saya butuh penanganan saluran pipa mampet di wilayah {$city}. Mohon info estimasi biaya dan kedatangan teknisi.";
+                return "Halo Tim Drainusantara, saya butuh penanganan saluran pipa mampet di wilayah {$city}. Mohon info armada terdekat.";
 
             case 'area.province':
                 $province = Str::title(str_replace('-', ' ', (string) ($params['province'] ?? '')));
-                return "Halo Admin Drainusantara, saya ingin cek ketersediaan armada teknisi pipa mampet di Provinsi {$province}. Mohon infonya.";
+                return "Halo Tim Drainusantara, saya ingin konsultasi layanan saluran pipa mampet untuk wilayah {$province}.";
 
             case 'area.index':
-                return "Halo Admin Drainusantara, saya ingin info cakupan posko teknisi pelancar pipa mampet untuk lokasi saya. Terima kasih.";
+                return "Halo Tim Drainusantara, saya ingin info cakupan posko teknisi pelancar pipa mampet untuk lokasi saya. Terima kasih.";
 
             case 'equipment.show':
                 $slug = (string) ($params['slug'] ?? '');
                 $name = Str::title(str_replace('-', ' ', $slug));
-                return "Halo Admin Drainusantara, saya ingin konsultasi penanganan saluran menggunakan unit {$name}. Mohon info estimasi biaya dan jadwal kedatangan teknisi.";
+                return "Halo Tim Drainusantara, saya ingin konsultasi penanganan saluran menggunakan unit {$name}. Mohon info estimasi biaya dan jadwal kedatangan teknisi.";
 
             case 'about.equipment':
-                return "Halo Admin Drainusantara, saya ingin konsultasi mengenai peralatan mesin spiral baja dan kamera inspeksi CCTV pipa tanpa bongkar keramik.";
+                return "Halo Tim Drainusantara, saya ingin konsultasi mengenai peralatan mesin spiral baja dan kamera inspeksi CCTV pipa tanpa bongkar keramik.";
 
             case 'about.warranty':
-                return "Halo Admin Drainusantara, saya ingin konsultasi terkait ketentuan garansi resmi pengerjaan saluran 30 hari Drainusantara.";
+                return "Halo Tim Drainusantara, saya ingin konsultasi terkait ketentuan garansi resmi pengerjaan saluran 30 hari Drainusantara.";
 
             case 'about.k3':
-                return "Halo Admin Drainusantara, saya ingin info mengenai standar operasional dan SOP K3 teknisi Drainusantara.";
+                return "Halo Tim Drainusantara, saya ingin info mengenai standar operasional dan SOP K3 teknisi Drainusantara.";
 
             case 'about.holding':
             case 'about.portfolio':
-                return "Halo Admin Drainusantara, kami ingin konsultasi kerja sama pemeliharaan saluran berkala B2B untuk restoran/hotel/perkantoran.";
+                return "Halo Tim Drainusantara, kami ingin konsultasi kerja sama pemeliharaan saluran berkala B2B untuk restoran/hotel/perkantoran.";
 
             case 'articles.show':
-                return "Halo Admin Drainusantara, saya sedang membaca panduan teknis saluran pipa mampet dan ingin konsultasi masalah pipa di lokasi saya.";
+            case 'articles.silo':
+                $slug = (string) ($params['slug'] ?? '');
+                $article = $slug !== '' ? \App\Models\Article::where('slug', $slug)->first() : null;
+                $title = $article ? $article->title : 'Edukasi';
+                return "Halo Tim Drainusantara, saya sedang membaca artikel '{$title}' dan ingin konsultasi penanganan saluran pipa di tempat saya.";
 
             case 'case-study.show':
-                return "Halo Admin Drainusantara, saya melihat dokumentasi studi kasus pengerjaan pipa mampet dan ingin memesan layanan serupa.";
+                $slug = (string) ($params['slug'] ?? '');
+                $gallery = $slug !== '' ? \App\Models\Gallery::where('slug', $slug)->first() : null;
+                $title = $gallery ? $gallery->title : 'Studi Kasus';
+                return "Halo Tim Drainusantara, saya melihat dokumentasi '{$title}' dan ingin tanya estimasi untuk penanganan serupa.";
 
             case 'partnership.show':
-                return "Halo Admin Drainusantara, kami tertarik dengan kerja sama kemitraan B2B seperti yang tertera di portofolio Anda.";
+                $slug = (string) ($params['slug'] ?? '');
+                $portfolio = $slug !== '' ? \App\Models\Portfolio::where('slug', $slug)->first() : null;
+                $title = $portfolio ? ($portfolio->project_title ?: $portfolio->client_name) : 'Kemitraan';
+                return "Halo Tim Drainusantara, saya melihat dokumentasi '{$title}' dan ingin tanya estimasi untuk penanganan serupa.";
 
             default:
                 return "Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.";

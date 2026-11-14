@@ -32,7 +32,9 @@ class ArticleStudioAndRendererTest extends TestCase
             'published_at' => now(),
         ]);
 
-        $response = $this->get(route('articles.show', $article->slug));
+        $this->get(route('articles.show', $article->slug))->assertRedirect($article->silo_url);
+
+        $response = $this->get($article->silo_url);
 
         $response->assertStatus(200);
         $response->assertSee('Catatan Penting', false);
@@ -82,7 +84,8 @@ class ArticleStudioAndRendererTest extends TestCase
         ]);
 
         $createdArticle = Article::where('title', 'Solusi Wastafel Mampet di Semarang Tanpa Bongkar')->firstOrFail();
-        $detailResponse = $this->get(route('articles.show', $createdArticle->slug));
+        $this->get(route('articles.show', $createdArticle->slug))->assertRedirect($createdArticle->silo_url);
+        $detailResponse = $this->get($createdArticle->silo_url);
 
         $detailResponse->assertStatus(200);
         $detailResponse->assertSee('Layanan Spesialis: Pelancaran Wastafel Mampet', false);

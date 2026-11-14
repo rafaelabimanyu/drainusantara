@@ -55,7 +55,7 @@
                             </div>
 
                             <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-sky-700 transition-colors line-clamp-2 leading-snug">
-                                <a href="{{ route('articles.show', $article->slug) }}">
+                                <a href="{{ $article->silo_url }}">
                                     {{ $article->title }}
                                 </a>
                             </h3>
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="p-6 pt-0 border-t border-slate-100 mt-4 flex items-center justify-between text-xs">
-                        <a href="{{ route('articles.show', $article->slug) }}" class="font-bold text-sky-700 group-hover:text-sky-800 inline-flex items-center transition-colors">
+                        <a href="{{ $article->silo_url }}" class="font-bold text-sky-700 group-hover:text-sky-800 inline-flex items-center transition-colors">
                             <span>Baca Selengkapnya</span>
                         </a>
                         <span class="text-slate-400 text-[11px]">Tim Ahli Drainusantara</span>

@@ -11,6 +11,7 @@ use App\Models\Service;
 use App\Rules\OptimizedImage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class PortfolioController extends Controller
@@ -134,6 +135,11 @@ class PortfolioController extends Controller
             $record->services()->sync($validated['service_ids'] ?? []);
         });
 
+        Cache::forget('landing.portfolios');
+        if (!empty($record->slug)) {
+            Cache::forget('partnership_' . $record->slug);
+        }
+
         return redirect()->route('admin.portfolios.index')
             ->with('success', "Portofolio '{$validated['client_name']}' berhasil ditambahkan!");
     }
@@ -185,6 +191,7 @@ class PortfolioController extends Controller
             'is_active' => ['nullable', 'boolean'],
         ]);
 
+        $oldSlug = $portfolio->slug;
         $media = new MediaLifecycle;
         $media->run($portfolio, function () use ($request, $validated, $media, $portfolio): void {
             $imageUrl = $portfolio->image;
@@ -256,6 +263,14 @@ class PortfolioController extends Controller
             $portfolio->services()->sync($validated['service_ids'] ?? []);
         });
 
+        Cache::forget('landing.portfolios');
+        if ($oldSlug) {
+            Cache::forget('partnership_' . $oldSlug);
+        }
+        if (!empty($portfolio->slug)) {
+            Cache::forget('partnership_' . $portfolio->slug);
+        }
+
         return redirect()->route('admin.portfolios.index')
             ->with('success', "Portofolio '{$portfolio->client_name}' berhasil diperbarui!");
     }
@@ -266,10 +281,14 @@ class PortfolioController extends Controller
     public function destroy(Portfolio $portfolio): RedirectResponse
     {
         $clientName = $portfolio->client_name;
-
-
+        $slug = $portfolio->slug;
 
         (new MediaLifecycle)->run($portfolio, fn () => $portfolio->delete());
+
+        Cache::forget('landing.portfolios');
+        if ($slug) {
+            Cache::forget('partnership_' . $slug);
+        }
 
         return redirect()->route('admin.portfolios.index')
             ->with('success', "Klien B2B '{$clientName}' berhasil dihapus.");

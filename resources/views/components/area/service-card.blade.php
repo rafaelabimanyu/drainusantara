@@ -49,7 +49,7 @@
             {{ $category }}
         </span>
         <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-1.5 tracking-tight leading-snug group-hover:text-sky-700 transition-colors line-clamp-2">
-            {{ $title }}
+            <a href="{{ route('services.show', ['slug' => $slug]) }}">{{ $title }}</a>
         </h3>
         <p class="text-xs text-slate-600 leading-relaxed line-clamp-2 mb-2">
             {{ $desc }}

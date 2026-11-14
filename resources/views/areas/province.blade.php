@@ -808,7 +808,7 @@
                                     <span>{{ number_format($post->views_count ?? 0, 0, ',', '.') }} views</span>
                                 </div>
                                 <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-2">
-                                    <a href="{{ route('articles.show', $post->slug) }}" class="hover:text-sky-700 transition-colors">
+                                    <a href="{{ $post->silo_url }}" class="hover:text-sky-700 transition-colors">
                                         {{ $post->title }}
                                     </a>
                                 </h3>
@@ -818,7 +818,7 @@
                             </div>
                         </div>
                         <div class="p-4 pt-0">
-                            <a href="{{ route('articles.show', $post->slug) }}" class="text-xs font-semibold text-sky-700 hover:underline flex items-center gap-1">
+                            <a href="{{ $post->silo_url }}" class="text-xs font-semibold text-sky-700 hover:underline flex items-center gap-1">
                                 <span>Baca Selengkapnya</span>
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                             </a>

@@ -661,7 +661,13 @@
                         <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-slate-50 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
                             <div>
                                 <div class="relative aspect-16/10 bg-slate-900 overflow-hidden">
-                                    <img src="{{ $galleryPhoto }}" alt="{{ $galleryItem->title }}" class="w-full h-full object-cover">
+                                    <img src="{{ $galleryPhoto }}" 
+                                         alt="Dokumentasi Jasa Saluran Pipa Mampet di {{ $area->district }}, {{ $area->city }} - {{ $galleryItem->title }}" 
+                                         width="600" 
+                                         height="375" 
+                                         loading="lazy" 
+                                         decoding="async" 
+                                         class="w-full h-full object-cover">
                                     @if($hasComparison)
                                         <span class="absolute top-2 left-2 bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-2xs">
                                             Foto Before - After
@@ -805,7 +811,13 @@
                     <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-white shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
                         <div>
                             <div class="relative aspect-16/10 bg-slate-100 overflow-hidden">
-                                <img src="{{ $coverImg }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                <img src="{{ $coverImg }}" 
+                                     alt="{{ $post->title }}" 
+                                     width="600" 
+                                     height="375" 
+                                     loading="lazy" 
+                                     decoding="async" 
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                 <div class="absolute top-2.5 left-2.5">
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-900/80 text-white backdrop-blur-xs border border-white/20">
                                         {{ $catBadge }}
@@ -821,7 +833,7 @@
                                     <span>{{ number_format($post->views_count ?? 0, 0, ',', '.') }} views</span>
                                 </div>
                                 <h3 class="text-sm font-bold text-slate-900 tracking-tight line-clamp-2">
-                                    <a href="{{ route('articles.show', $post->slug) }}" class="hover:text-sky-700 transition-colors">
+                                    <a href="{{ $post->silo_url }}" class="hover:text-sky-700 transition-colors">
                                         {{ $post->title }}
                                     </a>
                                 </h3>
@@ -831,7 +843,7 @@
                             </div>
                         </div>
                         <div class="p-4 pt-0">
-                            <a href="{{ route('articles.show', $post->slug) }}" class="text-xs font-semibold text-sky-700 hover:underline flex items-center gap-1">
+                            <a href="{{ $post->silo_url }}" class="text-xs font-semibold text-sky-700 hover:underline flex items-center gap-1">
                                 <span>Baca Selengkapnya</span>
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                             </a>
@@ -906,7 +918,7 @@
                     ->flatMap(fn($prov) => $prov['cities'])
                     ->reject(fn($c) => ($c['slug'] ?? '') === $currentCitySlug);
 
-                $customSupportingTags = is_array($area->supporting_tags) ? $area->supporting_tags : [];
+                $customSupportingTags = $area->resolved_supporting_tags;
             @endphp
 
             <!-- Custom Supporting Tags/Landmarks if any -->

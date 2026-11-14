@@ -310,7 +310,7 @@
 
             <!-- Desktop CTA: Tunggal (CTA WhatsApp Hijau, 'Cek Estimasi' dihilangkan agar navbar lega & fokus) -->
             <div class="hidden lg:flex items-center">
-                <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+                <a href="{{ $contextualWaUrl ?? ('https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode($contextualWaMsg ?? 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')) }}"
                    :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -326,7 +326,7 @@
             <!-- Mobile & Tablet Actions (Header Responsif untuk Layar < lg) -->
             <div class="flex items-center gap-2 lg:hidden">
                 <!-- 1. Tombol WhatsApp Compact Mobile -->
-                <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+                <a href="{{ $contextualWaUrl ?? ('https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode($contextualWaMsg ?? 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')) }}"
                    :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')"
                    target="_blank" 
                    rel="noopener noreferrer" 

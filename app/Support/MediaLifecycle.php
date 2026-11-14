@@ -23,6 +23,11 @@ final class MediaLifecycle
         CompanyPage::class => ['hero_image'],
     ];
 
+    private const ARRAY_FIELDS = [
+        Article::class => ['content_images'],
+        Portfolio::class => ['documentation_images'],
+    ];
+
     private const DIRECTORIES = [
         'images/services', 'assets/TOOLKIT', 'images/staff', 'images/portfolio',
         'images/dokumentasi', 'storage/articles', 'storage/reviews', 'images/areas',
@@ -53,7 +58,7 @@ final class MediaLifecycle
 
     public function run(Model $model, Closure $write): void
     {
-        $old = array_map(fn ($field) => $model->getRawOriginal($field), self::FIELDS[$model::class]);
+        $old = $this->extractModelPaths($model);
         $connection = $model->getConnection();
         try {
             $connection->transaction(function () use ($write, $old, $connection): void {
@@ -72,6 +77,46 @@ final class MediaLifecycle
             }
             throw $exception;
         }
+    }
+
+    private function extractModelPaths(Model $model): array
+    {
+        $paths = [];
+        $class = $model::class;
+
+        if (isset(self::FIELDS[$class])) {
+            foreach (self::FIELDS[$class] as $field) {
+                $val = $model->getRawOriginal($field);
+                if (is_string($val) && $val !== '') {
+                    $paths[] = $val;
+                }
+            }
+        }
+
+        if (isset(self::ARRAY_FIELDS[$class])) {
+            foreach (self::ARRAY_FIELDS[$class] as $field) {
+                $raw = $model->getRawOriginal($field);
+                if (is_string($raw)) {
+                    $decoded = json_decode($raw, true);
+                } elseif (is_array($raw)) {
+                    $decoded = $raw;
+                } else {
+                    $decoded = null;
+                }
+
+                if (is_array($decoded)) {
+                    foreach ($decoded as $item) {
+                        if (is_array($item) && !empty($item['path']) && is_string($item['path'])) {
+                            $paths[] = $item['path'];
+                        } elseif (is_string($item) && $item !== '') {
+                            $paths[] = $item;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $paths;
     }
 
     public function save(Model $model, array $attributes): void
@@ -169,6 +214,28 @@ final class MediaLifecycle
                     foreach ($fields as $field) {
                         if (self::localPath($record->getRawOriginal($field)) === $path) {
                             return;
+                        }
+                    }
+                }
+            }
+            foreach (self::ARRAY_FIELDS as $class => $fields) {
+                foreach ($class::query()->select($fields)->cursor() as $record) {
+                    foreach ($fields as $field) {
+                        $raw = $record->getRawOriginal($field);
+                        if (is_string($raw)) {
+                            $decoded = json_decode($raw, true);
+                        } elseif (is_array($raw)) {
+                            $decoded = $raw;
+                        } else {
+                            $decoded = null;
+                        }
+                        if (is_array($decoded)) {
+                            foreach ($decoded as $item) {
+                                $itemPath = is_array($item) ? ($item['path'] ?? null) : (is_string($item) ? $item : null);
+                                if ($itemPath && self::localPath($itemPath) === $path) {
+                                    return;
+                                }
+                            }
                         }
                     }
                 }

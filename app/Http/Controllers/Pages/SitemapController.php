@@ -182,6 +182,18 @@ class SitemapController extends Controller
 
         // Core static pages with explicit priority & changefreq
         $urls[] = ['loc' => url('/'), 'lastmod' => $homeLastmod, 'changefreq' => 'daily', 'priority' => '1.0'];
+        $urls[] = ['loc' => url('/layanan'), 'lastmod' => $latestGeneralCarbon->toAtomString(), 'changefreq' => 'weekly', 'priority' => '0.9'];
+
+        // Dedicated Service Landing Pages (Anti-Cannibalization Silo)
+        foreach (\App\Services\ServiceCatalogRegistry::all() as $svc) {
+            $urls[] = [
+                'loc' => url('/layanan/' . $svc['slug']),
+                'lastmod' => $latestGeneralCarbon->toAtomString(),
+                'changefreq' => 'weekly',
+                'priority' => '0.85',
+            ];
+        }
+
         $urls[] = ['loc' => route('contact'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
         $urls[] = ['loc' => url('/area'), 'lastmod' => $areaLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
         $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => $articleLastmod, 'changefreq' => 'daily', 'priority' => '0.8'];
@@ -253,12 +265,14 @@ class SitemapController extends Controller
             }
         }
 
-        // Published knowledge articles
+        // Published knowledge articles (Silo Structure)
         try {
-            $articles = Article::where('is_published', true)->get(['slug', 'updated_at', 'created_at']);
+            $articles = Article::where('is_published', true)
+                ->with(['categoryRelation', 'subcategoryRelation'])
+                ->get();
             foreach ($articles as $article) {
                 $urls[] = [
-                    'loc' => route('articles.show', ['slug' => $article->slug]),
+                    'loc' => $article->silo_url,
                     'lastmod' => ($article->updated_at ?? $article->created_at)?->toAtomString(),
                     'changefreq' => 'monthly',
                     'priority' => '0.7',
@@ -266,6 +280,21 @@ class SitemapController extends Controller
             }
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::warning('Sitemap articles query error: ' . $e->getMessage());
+        }
+
+        // Educational Categories Silo Landing Pages
+        try {
+            $categories = \App\Models\ArticleCategory::orderBy('sort_order')->get();
+            foreach ($categories as $cat) {
+                $urls[] = [
+                    'loc' => url("/edukasi/{$cat->slug}"),
+                    'lastmod' => ($cat->updated_at ?? $cat->created_at)?->toAtomString() ?: $articleLastmod,
+                    'changefreq' => 'weekly',
+                    'priority' => '0.8',
+                ];
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Sitemap categories query error: ' . $e->getMessage());
         }
 
         // Case Studies (Studi Kasus)
@@ -463,7 +492,6 @@ class SitemapController extends Controller
             '',
             '# Dynamic Discovery Sitemaps & AI Catalogs',
             "Sitemap: {$sitemapUrl}",
-            "Sitemap: {$aiCatalogUrl}",
             "# AI-Catalog: {$aiCatalogUrl}",
             '',
         ];

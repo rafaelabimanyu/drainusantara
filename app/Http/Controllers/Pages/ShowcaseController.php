@@ -101,7 +101,10 @@ class ShowcaseController extends Controller
 
         $this->addBreadcrumb(['Studi Kasus', route('gallery')], [$caseStudy->title, route('case-study.show', $slug)]);
 
-        return view('studi-kasus.show', compact('caseStudy', 'relatedCaseStudies'));
+        $contextualWaMsg = "Halo Tim Drainusantara, saya melihat dokumentasi '{$caseStudy->title}' dan ingin tanya estimasi untuk penanganan serupa.";
+        $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
+
+        return view('studi-kasus.show', compact('caseStudy', 'relatedCaseStudies', 'contextualWaMsg', 'contextualWaUrl'));
     }
 
     /**
@@ -158,7 +161,11 @@ class ShowcaseController extends Controller
 
         $this->addBreadcrumb(['Kemitraan', route('gallery')], [$partnership->client_name, route('partnership.show', $slug)]);
 
-        return view('kemitraan.show', compact('partnership', 'relatedPartnerships'));
+        $targetTitle = $partnership->project_title ?: $partnership->client_name;
+        $contextualWaMsg = "Halo Tim Drainusantara, saya melihat dokumentasi '{$targetTitle}' dan ingin tanya estimasi untuk penanganan serupa.";
+        $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
+
+        return view('kemitraan.show', compact('partnership', 'relatedPartnerships', 'contextualWaMsg', 'contextualWaUrl'));
     }
 }
 

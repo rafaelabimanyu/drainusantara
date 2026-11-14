@@ -13,6 +13,7 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -53,7 +54,7 @@ class ArticleController extends Controller
         TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
         $this->addBreadcrumb(['Blog', route('articles.index')]);
 
-        $query = Article::where('is_published', true);
+        $query = Article::where('is_published', true)->with(['categoryRelation', 'subcategoryRelation']);
         if ($searchTerm !== '') {
             $like = '%' . $searchTerm . '%';
             $query->where(function ($q) use ($like) {
@@ -64,11 +65,36 @@ class ArticleController extends Controller
             });
         }
 
+        if ($request->filled('category')) {
+            $catParam = strtolower((string) $request->input('category'));
+            if ($catParam !== 'all') {
+                $query->where(function ($q) use ($catParam) {
+                    $q->whereHas('categoryRelation', fn ($rel) => $rel->where('slug', $catParam)->orWhereRaw('LOWER(name) = ?', [$catParam]))
+                      ->orWhereRaw('LOWER(category) = ?', [$catParam])
+                      ->orWhere('category', 'like', "%{$catParam}%");
+                });
+            }
+        }
+
+        if ($request->filled('sub')) {
+            $subParam = strtolower((string) $request->input('sub'));
+            if ($subParam !== 'all') {
+                $query->where(function ($q) use ($subParam) {
+                    $q->whereHas('subcategoryRelation', fn ($rel) => $rel->where('slug', $subParam)->orWhereRaw('LOWER(name) = ?', [$subParam]))
+                      ->orWhereRaw('LOWER(sub_category) = ?', [$subParam])
+                      ->orWhere('sub_category', 'like', "%{$subParam}%");
+                });
+            }
+        }
+
         $articles = $query->latest('published_at')->paginate(12)->withQueryString();
 
-        $featuredArticle = Article::where('is_published', true)
-            ->latest('published_at')
-            ->first();
+        $featuredArticle = ($searchTerm !== '' || ($request->filled('category') && strtolower((string) $request->input('category')) !== 'all') || ($request->filled('sub') && strtolower((string) $request->input('sub')) !== 'all'))
+            ? null
+            : Article::where('is_published', true)
+                ->with(['categoryRelation', 'subcategoryRelation'])
+                ->latest('published_at')
+                ->first();
 
         $youtubeVideos = [
             [
@@ -100,20 +126,39 @@ class ArticleController extends Controller
     /**
      * Display the Article Detail page via URL Silo structure: /edukasi/{category}/{subcategory}/{slug}
      */
-    public function articleSiloDetail(string $category, string $subcategory, string $slug): View
-    {
-        return $this->articleDetail($slug);
-    }
-
-    /**
-     * Display the Article Detail page.
-     */
-    public function articleDetail(string $slug): View
+    public function articleSiloDetail(string $category, string $subcategory, string $slug): View|RedirectResponse
     {
         $article = Article::where('slug', $slug)
             ->where('is_published', true)
+            ->with(['categoryRelation', 'subcategoryRelation'])
             ->firstOrFail();
 
+        // Enforce strict category and subcategory slug match. If mismatched, 301 redirect to canonical silo URL
+        if ($category !== $article->category_slug || $subcategory !== $article->subcategory_slug) {
+            return redirect()->to($article->silo_url, 301);
+        }
+
+        return $this->renderArticleView($article);
+    }
+
+    /**
+     * Legacy article detail route (/artikel/{slug}): 301 Permanent Redirect to official Silo URL.
+     */
+    public function articleDetail(string $slug): RedirectResponse
+    {
+        $article = Article::where('slug', $slug)
+            ->where('is_published', true)
+            ->with(['categoryRelation', 'subcategoryRelation'])
+            ->firstOrFail();
+
+        return redirect()->to($article->silo_url, 301);
+    }
+
+    /**
+     * Render the full Article Detail view with optimized metadata, canonical, and schemas.
+     */
+    protected function renderArticleView(Article $article): View
+    {
         $sessionKey = 'viewed_article_' . $article->id;
         if (!session()->has($sessionKey)) {
             $article->increment('views_count');
@@ -127,10 +172,10 @@ class ArticleController extends Controller
 
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($metaDescription);
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical($article->silo_url);
 
         OpenGraph::setDescription($metaDescription);
-        OpenGraph::setUrl(url()->current());
+        OpenGraph::setUrl($article->silo_url);
         OpenGraph::addProperty('type', 'article');
         OpenGraph::addImage($thumbnailUrl);
 
@@ -159,37 +204,64 @@ class ArticleController extends Controller
                     'url' => asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'),
                 ],
             ],
-            'articleSection' => $article->category ?? 'Tips & Edukasi',
+            'articleSection' => $article->category_label ?? 'Edukasi',
             'inLanguage' => 'id-ID',
             'mainEntityOfPage' => [
                 '@type' => 'WebPage',
-                '@id' => url()->current(),
+                '@id' => $article->silo_url,
             ],
         ]);
+
+        $breadcrumbElements = [
+            ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
+            ['@type' => 'ListItem', 'position' => 2, 'name' => 'Edukasi', 'item' => route('articles.index')],
+            ['@type' => 'ListItem', 'position' => 3, 'name' => $article->category_label, 'item' => url('/edukasi/' . $article->category_slug)],
+        ];
+
+        if (!empty($article->sub_category)) {
+            $breadcrumbElements[] = [
+                '@type' => 'ListItem',
+                'position' => 4,
+                'name' => $article->sub_category,
+                'item' => url('/edukasi/' . $article->category_slug . '/' . $article->subcategory_slug),
+            ];
+            $breadcrumbElements[] = [
+                '@type' => 'ListItem',
+                'position' => 5,
+                'name' => $article->title,
+                'item' => $article->silo_url,
+            ];
+        } else {
+            $breadcrumbElements[] = [
+                '@type' => 'ListItem',
+                'position' => 4,
+                'name' => $article->title,
+                'item' => $article->silo_url,
+            ];
+        }
 
         $breadcrumb = JsonLdMulti::newJsonLd();
         $breadcrumb->setType('BreadcrumbList');
         $breadcrumb->addValues([
-            'itemListElement' => [
-                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
-                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Blog', 'item' => route('articles.index')],
-                ['@type' => 'ListItem', 'position' => 3, 'name' => $article->title, 'item' => url()->current()],
-            ],
+            'itemListElement' => $breadcrumbElements,
         ]);
 
         $prevArticle = Article::where('is_published', true)
             ->where('published_at', '<', $article->published_at ?? $article->created_at)
+            ->with(['categoryRelation', 'subcategoryRelation'])
             ->orderByDesc('published_at')
             ->first();
 
         $nextArticle = Article::where('is_published', true)
             ->where('published_at', '>', $article->published_at ?? $article->created_at)
+            ->with(['categoryRelation', 'subcategoryRelation'])
             ->orderBy('published_at')
             ->first();
 
         // 1. Sidebar: Panduan Lainnya (Artikel terbaru kecuali artikel aktif)
         $recentArticles = Article::where('is_published', true)
             ->where('id', '!=', $article->id)
+            ->with(['categoryRelation', 'subcategoryRelation'])
             ->latest('published_at')
             ->take(3)
             ->get();
@@ -199,7 +271,9 @@ class ArticleController extends Controller
 
         $relatedArticles = Article::where('is_published', true)
             ->whereNotIn('id', $excludedIds)
-            ->when($article->category, fn ($q) => $q->where('category', $article->category))
+            ->when($article->category_id, fn ($q) => $q->where('category_id', $article->category_id))
+            ->when(!$article->category_id && $article->category, fn ($q) => $q->where('category', $article->category))
+            ->with(['categoryRelation', 'subcategoryRelation'])
             ->latest('published_at')
             ->take(3)
             ->get();
@@ -209,13 +283,17 @@ class ArticleController extends Controller
             $combinedExcluded = array_merge($excludedIds, $relatedArticles->pluck('id')->all());
             $fallback = Article::where('is_published', true)
                 ->whereNotIn('id', $combinedExcluded)
+                ->with(['categoryRelation', 'subcategoryRelation'])
                 ->latest('published_at')
                 ->take($needed)
                 ->get();
             $relatedArticles = $relatedArticles->concat($fallback);
         }
 
-        return view('articles.show', compact('article', 'recentArticles', 'relatedArticles', 'prevArticle', 'nextArticle'));
+        $contextualWaMsg = "Halo Tim Drainusantara, saya sedang membaca artikel '{$article->title}' dan ingin konsultasi penanganan saluran pipa di tempat saya.";
+        $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
+
+        return view('articles.show', compact('article', 'recentArticles', 'relatedArticles', 'prevArticle', 'nextArticle', 'contextualWaMsg', 'contextualWaUrl'));
     }
 }
 

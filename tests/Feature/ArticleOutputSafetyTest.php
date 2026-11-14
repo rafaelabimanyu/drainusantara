@@ -17,7 +17,8 @@ class ArticleOutputSafetyTest extends TestCase
             'title' => $payload, 'slug' => 'json-ld-probe', 'content' => 'Isi aman',
             'meta_description' => $payload, 'is_published' => true, 'published_at' => now(),
         ]);
-        $html = $this->get(route('articles.show', $article->slug))->assertOk()->getContent();
+        $this->get(route('articles.show', $article->slug))->assertRedirect($article->silo_url);
+        $html = $this->get($article->silo_url)->assertOk()->getContent();
         $dom = new \DOMDocument;
         @$dom->loadHTML($html);
         $xpath = new \DOMXPath($dom);
@@ -31,6 +32,8 @@ class ArticleOutputSafetyTest extends TestCase
         $this->assertCount(1, $schemas['BreadcrumbList']);
         $this->assertSame($payload, $schemas['Article'][0]['headline']);
         $this->assertSame($payload, $schemas['Article'][0]['description']);
-        $this->assertSame($payload, $schemas['BreadcrumbList'][0]['itemListElement'][2]['name']);
+        $breadcrumbs = $schemas['BreadcrumbList'][0]['itemListElement'];
+        $lastBreadcrumb = end($breadcrumbs);
+        $this->assertSame($payload, $lastBreadcrumb['name']);
     }
 }

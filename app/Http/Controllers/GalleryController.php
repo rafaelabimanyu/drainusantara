@@ -10,6 +10,7 @@ use App\Models\Equipment;
 use App\Models\Gallery;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use App\Support\MediaLifecycle;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -94,6 +95,13 @@ class GalleryController extends Controller
             $record->equipment()->sync($validated['equipment_ids'] ?? []);
         });
 
+        Cache::forget('galleries.all_active');
+        Cache::forget('galleries.top3');
+        Cache::forget('landing.galleries');
+        if (!empty($record->slug)) {
+            Cache::forget('case_study_' . $record->slug);
+        }
+
         return redirect()->route('admin.galleries.index')
             ->with('success', "Item galeri '{$validated['title']}' berhasil ditambahkan!");
     }
@@ -115,6 +123,7 @@ class GalleryController extends Controller
     public function update(UpdateGalleryRequest $request, Gallery $gallery): RedirectResponse
     {
         $validated = $request->validated();
+        $oldSlug = $gallery->slug;
 
         $media = new MediaLifecycle;
         $media->run($gallery, function () use ($request, $validated, $media, $gallery): void {
@@ -168,6 +177,16 @@ class GalleryController extends Controller
             $gallery->equipment()->sync($validated['equipment_ids'] ?? []);
         });
 
+        Cache::forget('galleries.all_active');
+        Cache::forget('galleries.top3');
+        Cache::forget('landing.galleries');
+        if ($oldSlug) {
+            Cache::forget('case_study_' . $oldSlug);
+        }
+        if (!empty($gallery->slug)) {
+            Cache::forget('case_study_' . $gallery->slug);
+        }
+
         return redirect()->route('admin.galleries.index')
             ->with('success', "Item galeri '{$gallery->title}' berhasil diperbarui!");
     }
@@ -178,12 +197,16 @@ class GalleryController extends Controller
     public function destroy(Gallery $gallery): RedirectResponse
     {
         $title = $gallery->title;
-
-
-
-
+        $slug = $gallery->slug;
 
         (new MediaLifecycle)->run($gallery, fn () => $gallery->delete());
+
+        Cache::forget('galleries.all_active');
+        Cache::forget('galleries.top3');
+        Cache::forget('landing.galleries');
+        if ($slug) {
+            Cache::forget('case_study_' . $slug);
+        }
 
         return redirect()->route('admin.galleries.index')
             ->with('success', "Item galeri '{$title}' berhasil dihapus.");

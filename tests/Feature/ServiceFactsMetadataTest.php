@@ -67,7 +67,7 @@ class ServiceFactsMetadataTest extends TestCase
     #[\PHPUnit\Framework\Attributes\DataProvider('legacyTitles')]
     public function test_cms_titles_strip_only_legacy_brand_suffixes(string $rawTitle, string $expected): void
     {
-        \App\Models\Article::create([
+        $article = \App\Models\Article::create([
             'title' => 'Panduan', 'slug' => 'panduan', 'meta_title' => $rawTitle,
             'content' => 'Pipa', 'is_published' => true,
         ]);
@@ -75,7 +75,7 @@ class ServiceFactsMetadataTest extends TestCase
             'city' => 'Tangerang Selatan', 'district' => 'Serpong', 'slug' => 'serpong',
             'meta_title' => $rawTitle, 'is_active' => true,
         ]);
-        foreach (['/artikel/panduan', '/area/tangerang-selatan/serpong'] as $path) {
+        foreach ([$article->silo_url, '/area/tangerang-selatan/serpong'] as $path) {
             $page = $this->page($path);
             $titles = $page->query('//head/title | //meta[@property="og:title"] | //meta[@name="twitter:title"]');
             $this->assertCount(3, $titles);

@@ -43,7 +43,7 @@
 
     <!-- 3. WhatsApp Hero Center (Floating FAB Simetris di Tengah) -->
     <div class="flex flex-col items-center justify-end w-full pb-1">
-        <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.') }}"
+        <a href="{{ $contextualWaUrl ?? ('https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode($contextualWaMsg ?? 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')) }}"
            :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saluran air di rumah saya sedang mampet. Mohon info teknisi terdekat.')" 
            target="_blank" 
            rel="noopener noreferrer" 

@@ -39,6 +39,15 @@ class RegionalTaxonomy
             default => self::jakartaMetropolitanProfile($citySlug, $cleanDistrict, $cleanCity),
         };
 
+        if ($cleanDistrict) {
+            $hyper = HyperLocalTaxonomy::getDistrictProfile($citySlug, $cleanDistrict, $cleanCity);
+            $profile['presence_prose'] = "Drainusantara hadir secara resmi di {$cleanDistrict}, {$cleanCity} dengan posko armada respons cepat. {$hyper['problem_desc']}";
+            $profile['prominent_areas'] = $hyper['landmarks'];
+            $profile['challenges'] = $hyper['problem_desc'];
+            $profile['technical_solution'] = $hyper['solution_desc'];
+            $profile['local_faqs'] = $hyper['faqs'];
+        }
+
         return self::sanitizeRecursive($profile, $cleanCity, $cleanDistrict);
     }
 
@@ -527,7 +536,23 @@ class RegionalTaxonomy
             ];
         }
 
-        // 2. BANDUNG RAYA
+        // 2. HYPER-LOCAL RESOLUTION FOR ALL OTHER DISTRICTS
+        if ($district && $districtSlug !== '') {
+            $hyper = HyperLocalTaxonomy::getDistrictProfile($citySlug, $district, $cityName);
+            return [
+                'zone_title' => "Kawasan {$hyper['typology_label']} {$loc}",
+                'landmarks' => $hyper['landmarks'],
+                'problem_desc' => $hyper['problem_desc'],
+                'problem_detail' => $hyper['problem_detail'],
+                'dispatch_desc' => $hyper['dispatch_desc'],
+                'dispatch_detail' => "Teknisi mobile membawa unit portable Ridgid berdaya puntir tinggi serta kamera CCTV IP68 siap menangani saluran pipa di {$loc}.",
+                'solution_desc' => $hyper['solution_desc'],
+                'solution_detail' => $hyper['solution_detail'],
+                'dominant_buildings' => $hyper['dominant_buildings'],
+            ];
+        }
+
+        // 3. BANDUNG RAYA (City Level Fallback)
         if (in_array($citySlug, ['bandung', 'kabupaten-bandung', 'kota-cimahi'], true)) {
             $landmarks = ['Dago & Dipatiukur', 'Riau & Trunojoyo', 'Setiabudi & Gegerkalong', 'Buahbatu & Batununggal', 'Antapani & Arcamanik', 'Cimahi & Baros', 'Kopo & Pasirkoja'];
 

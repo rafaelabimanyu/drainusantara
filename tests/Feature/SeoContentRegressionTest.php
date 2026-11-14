@@ -16,9 +16,10 @@ class SeoContentRegressionTest extends TestCase
             'title' => 'Legacy', 'slug' => 'legacy', 'content' => 'Pipa',
             'is_published' => true, 'created_at' => null, 'updated_at' => null,
         ]);
+        $article = \App\Models\Article::where('slug', 'legacy')->first();
         $xml = simplexml_load_string($this->get('/sitemap.xml')->assertOk()->getContent());
         $entry = collect(iterator_to_array($xml->url, false))
-            ->first(fn ($entry) => (string) $entry->loc === route('articles.show', 'legacy'));
+            ->first(fn ($entry) => (string) $entry->loc === $article->silo_url);
         $this->assertNotNull($entry);
         $this->assertFalse(isset($entry->lastmod));
     }
@@ -50,7 +51,7 @@ class SeoContentRegressionTest extends TestCase
         $article = \App\Models\Article::create([
             'title' => 'Panduan', 'slug' => 'panduan', 'content' => 'Pipa', 'is_published' => true,
         ]);
-        \App\Models\Article::create([
+        $draft = \App\Models\Article::create([
             'title' => 'Draft', 'slug' => 'draft', 'content' => 'Draft', 'is_published' => false,
         ]);
         $this->travelTo(\Illuminate\Support\Carbon::parse('2026-02-20 12:00:00'));
@@ -60,8 +61,8 @@ class SeoContentRegressionTest extends TestCase
             $entries[(string) $entry->loc] = $entry;
         }
         $this->assertSame($area->updated_at->toAtomString(), (string) $entries[url('/area/semarang/candisari')]->lastmod);
-        $this->assertSame($article->updated_at->toAtomString(), (string) $entries[route('articles.show', 'panduan')]->lastmod);
-        $this->assertArrayNotHasKey(route('articles.show', 'draft'), $entries);
+        $this->assertSame($article->updated_at->toAtomString(), (string) $entries[$article->silo_url]->lastmod);
+        $this->assertArrayNotHasKey($draft->silo_url, $entries);
         $this->assertSame($article->updated_at->toAtomString(), (string) $entries[url('/')]->lastmod);
         $this->assertSame($area->updated_at->toAtomString(), (string) $entries[url('/area')]->lastmod);
         $this->assertSame($area->updated_at->toAtomString(), (string) $entries[url('/area/semarang')]->lastmod);

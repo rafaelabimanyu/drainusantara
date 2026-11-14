@@ -276,6 +276,21 @@ class AreaController extends Controller
         );
 
         $faqs = $area->resolved_faqs;
+        if (! empty($faqs) && is_array($faqs)) {
+            $faqJsonLd = JsonLdMulti::newJsonLd();
+            $faqJsonLd->setType('FAQPage');
+            $faqJsonLd->addValues([
+                '@id' => route('area.province', ['province' => $province]) . '#faq',
+                'mainEntity' => array_map(static fn (array $faq): array => [
+                    '@type' => 'Question',
+                    'name' => $faq['question'],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => $faq['answer'],
+                    ],
+                ], $faqs),
+            ]);
+        }
 
         $services = Cache::remember('services.all_active', 86400, function () {
             return Service::where('is_active', true)->orderBy('order')->get();
@@ -299,7 +314,10 @@ class AreaController extends Controller
         $galleries = $this->mapGalleriesForLocation($galleries, $provinceData['name']);
         $articles = $this->getArticlesForLocation($provinceData['name'], 3);
 
-        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries', 'area', 'faqs', 'equipments', 'articles', 'resolvedAreaImage'));
+        $contextualWaMsg = "Halo Tim Drainusantara, saya ingin konsultasi layanan saluran pipa mampet untuk wilayah {$provinceData['name']}.";
+        $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
+
+        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries', 'area', 'faqs', 'equipments', 'articles', 'resolvedAreaImage', 'contextualWaMsg', 'contextualWaUrl'));
     }
 
     /**
@@ -474,6 +492,21 @@ class AreaController extends Controller
         );
 
         $faqs = $area->resolved_faqs;
+        if (! empty($faqs) && is_array($faqs)) {
+            $faqJsonLd = JsonLdMulti::newJsonLd();
+            $faqJsonLd->setType('FAQPage');
+            $faqJsonLd->addValues([
+                '@id' => route('area.city', ['city' => $cityData['slug']]) . '#faq',
+                'mainEntity' => array_map(static fn (array $faq): array => [
+                    '@type' => 'Question',
+                    'name' => $faq['question'],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => $faq['answer'],
+                    ],
+                ], $faqs),
+            ]);
+        }
 
         $services = Cache::remember('services.all_active', 86400, function () {
             return Service::where('is_active', true)->orderBy('order')->get();
@@ -488,29 +521,36 @@ class AreaController extends Controller
 
         $galleries = $area->getResolvedGalleries(3);
         if ($galleries->isEmpty()) {
-            $galleries = Gallery::where('is_active', true)
-                ->with('service')
-                ->where('location', 'like', "%{$cityData['name']}%")
-                ->latest()
-                ->take(3)
-                ->get();
-
-            if ($galleries->count() < 3) {
-                $fallbackGalleries = Gallery::where('is_active', true)
+            $galleries = Cache::remember('galleries.city.' . Str::slug($cityData['name']), 86400, function () use ($cityData) {
+                $cityGalleries = Gallery::where('is_active', true)
                     ->with('service')
-                    ->whereNotIn('id', $galleries->pluck('id'))
-                    ->orderBy('order')
+                    ->where('location', 'like', "%{$cityData['name']}%")
                     ->latest()
-                    ->take(3 - $galleries->count())
+                    ->take(3)
                     ->get();
-                $galleries = $galleries->concat($fallbackGalleries);
-            }
+
+                if ($cityGalleries->count() < 3) {
+                    $fallbackGalleries = Gallery::where('is_active', true)
+                        ->with('service')
+                        ->whereNotIn('id', $cityGalleries->pluck('id'))
+                        ->orderBy('order')
+                        ->latest()
+                        ->take(3 - $cityGalleries->count())
+                        ->get();
+                    $cityGalleries = $cityGalleries->concat($fallbackGalleries);
+                }
+
+                return $cityGalleries;
+            });
         }
         $galleries = $this->mapGalleriesForLocation($galleries, $cityData['name']);
         $articles = $this->getArticlesForLocation($cityData['name'], 3);
         $localReviews = $area->resolved_local_reviews;
 
-        return view('areas.city', compact('cityData', 'services', 'reviews', 'localReviews', 'area', 'faqs', 'equipments', 'galleries', 'articles', 'resolvedAreaImage'));
+        $contextualWaMsg = "Halo Tim Drainusantara, saya butuh penanganan saluran pipa mampet di wilayah {$cityData['name']}. Mohon info armada terdekat.";
+        $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
+
+        return view('areas.city', compact('cityData', 'services', 'reviews', 'localReviews', 'area', 'faqs', 'equipments', 'galleries', 'articles', 'resolvedAreaImage', 'contextualWaMsg', 'contextualWaUrl'));
     }
 
     /**
@@ -593,9 +633,8 @@ class AreaController extends Controller
             'drainusantara',
         ];
 
-        if (! empty($area->geo_keywords)) {
-            $extraKeywords = array_filter(array_map('trim', explode(',', $area->geo_keywords)));
-            $keywords = array_merge($keywords, $extraKeywords);
+        if (! empty($area->resolved_geo_keywords)) {
+            $keywords = array_values(array_unique(array_merge($keywords, $area->resolved_geo_keywords)));
         }
 
         SEOMeta::addKeyword($keywords);
@@ -713,6 +752,21 @@ class AreaController extends Controller
         );
 
         $faqs = $area->resolved_faqs;
+        if (! empty($faqs) && is_array($faqs)) {
+            $faqJsonLd = JsonLdMulti::newJsonLd();
+            $faqJsonLd->setType('FAQPage');
+            $faqJsonLd->addValues([
+                '@id' => route('area.detail', ['city' => $city, 'district' => $district]) . '#faq',
+                'mainEntity' => array_map(static fn (array $faq): array => [
+                    '@type' => 'Question',
+                    'name' => $faq['question'],
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => $faq['answer'],
+                    ],
+                ], $faqs),
+            ]);
+        }
 
         $services = Cache::remember('services.all_active', 86400, function () {
             return Service::where('is_active', true)->orderBy('order')->get();
@@ -728,32 +782,40 @@ class AreaController extends Controller
 
         $galleries = $area->getResolvedGalleries(3);
         if ($galleries->isEmpty()) {
-            $galleries = Gallery::where('is_active', true)
-                ->with('service')
-                ->where(function ($q) use ($area) {
-                    $q->where('location', 'like', "%{$area->district}%")
-                      ->orWhere('location', 'like', "%{$area->city}%");
-                })
-                ->latest()
-                ->take(3)
-                ->get();
-
-            if ($galleries->count() < 3) {
-                $fallbackGalleries = Gallery::where('is_active', true)
+            $cacheKey = 'galleries.district.' . Str::slug($area->city . '-' . $area->district);
+            $galleries = Cache::remember($cacheKey, 86400, function () use ($area) {
+                $districtGalleries = Gallery::where('is_active', true)
                     ->with('service')
-                    ->whereNotIn('id', $galleries->pluck('id'))
-                    ->orderBy('order')
+                    ->where(function ($q) use ($area) {
+                        $q->where('location', 'like', "%{$area->district}%")
+                          ->orWhere('location', 'like', "%{$area->city}%");
+                    })
                     ->latest()
-                    ->take(3 - $galleries->count())
+                    ->take(3)
                     ->get();
-                $galleries = $galleries->concat($fallbackGalleries);
-            }
+
+                if ($districtGalleries->count() < 3) {
+                    $fallbackGalleries = Gallery::where('is_active', true)
+                        ->with('service')
+                        ->whereNotIn('id', $districtGalleries->pluck('id'))
+                        ->orderBy('order')
+                        ->latest()
+                        ->take(3 - $districtGalleries->count())
+                        ->get();
+                    $districtGalleries = $districtGalleries->concat($fallbackGalleries);
+                }
+
+                return $districtGalleries;
+            });
         }
         $galleries = $this->mapGalleriesForLocation($galleries, "{$area->district}, {$area->city}");
         $articles = $this->getArticlesForLocation($area->city, 3);
         $localReviews = $area->resolved_local_reviews;
 
-        return view('areas.district', compact('area', 'services', 'reviews', 'localReviews', 'cityData', 'equipments', 'galleries', 'articles', 'resolvedAreaImage'));
+        $contextualWaMsg = "Halo Tim Drainusantara, saya membutuhkan jasa pelancaran pipa mampet di area Kecamatan {$area->district}, {$area->city}. Mohon info estimasi biaya dan teknisi terdekat.";
+        $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
+
+        return view('areas.district', compact('area', 'services', 'reviews', 'localReviews', 'cityData', 'equipments', 'galleries', 'articles', 'resolvedAreaImage', 'contextualWaMsg', 'contextualWaUrl'));
     }
 
     /**
@@ -792,56 +854,62 @@ class AreaController extends Controller
      */
     private function getArticlesForLocation(string $cityName, int $limit = 3): Collection
     {
-        $pureCity = trim(str_ireplace(['kota', 'kabupaten', '[kota]', '[provinsi]'], '', $cityName));
+        $cacheKey = 'area.articles.' . Str::slug($cityName) . '.' . $limit;
 
-        // Prioritas 1: Artikel lokal yang relevan dengan kota aktif
-        $localArticles = Article::published()
-            ->where(function ($q) use ($pureCity, $cityName) {
-                $q->where('title', 'like', "%{$pureCity}%")
-                    ->orWhere('slug', 'like', "%{$pureCity}%")
-                    ->orWhere('content', 'like', "%{$pureCity}%");
-                if ($pureCity !== $cityName && ! empty($pureCity)) {
-                    $q->orWhere('title', 'like', "%{$cityName}%")
-                        ->orWhere('slug', 'like', "%{$cityName}%");
-                }
-            })
-            ->orderByRaw('COALESCE(published_at, created_at) DESC')
-            ->latest('id')
-            ->take($limit)
-            ->get();
+        return Cache::remember($cacheKey, 86400, function () use ($cityName, $limit) {
+            $pureCity = trim(str_ireplace(['kota', 'kabupaten', '[kota]', '[provinsi]'], '', $cityName));
 
-        if ($localArticles->count() < $limit) {
-            // Daftar keyword kota lain yang harus di-exclude dari artikel edukasi umum
-            $allCityKeywords = [
-                'jakarta', 'jaksel', 'jaktim', 'jakbar', 'jakpus', 'jakut',
-                'bogor', 'depok', 'tangerang', 'tangsel', 'bekasi', 'cikarang', 'cinere',
-                'bandung', 'cimahi',
-                'semarang', 'demak', 'ungaran',
-                'lampung',
-                'bali', 'denpasar', 'badung', 'gianyar', 'tabanan',
-            ];
-
-            $excludeKeywords = array_values(array_filter($allCityKeywords, function ($k) use ($pureCity) {
-                return ! str_contains(strtolower($pureCity), $k);
-            }));
-
-            // Prioritas 2: Artikel edukasi umum yang TIDAK memuat nama kota lain di title/slug
-            $generalEducational = Article::published()
-                ->whereNotIn('id', $localArticles->pluck('id'))
-                ->where(function ($q) use ($excludeKeywords) {
-                    foreach ($excludeKeywords as $keyword) {
-                        $q->where('title', 'not like', "%{$keyword}%")
-                          ->where('slug', 'not like', "%{$keyword}%");
+            // Prioritas 1: Artikel lokal yang relevan dengan kota aktif
+            $localArticles = Article::published()
+                ->with(['categoryRelation', 'subcategoryRelation'])
+                ->where(function ($q) use ($pureCity, $cityName) {
+                    $q->where('title', 'like', "%{$pureCity}%")
+                        ->orWhere('slug', 'like', "%{$pureCity}%")
+                        ->orWhere('content', 'like', "%{$pureCity}%");
+                    if ($pureCity !== $cityName && ! empty($pureCity)) {
+                        $q->orWhere('title', 'like', "%{$cityName}%")
+                            ->orWhere('slug', 'like', "%{$cityName}%");
                     }
                 })
                 ->orderByRaw('COALESCE(published_at, created_at) DESC')
                 ->latest('id')
-                ->take($limit - $localArticles->count())
+                ->take($limit)
                 ->get();
 
-            $localArticles = $localArticles->concat($generalEducational);
-        }
+            if ($localArticles->count() < $limit) {
+                // Daftar keyword kota lain yang harus di-exclude dari artikel edukasi umum
+                $allCityKeywords = [
+                    'jakarta', 'jaksel', 'jaktim', 'jakbar', 'jakpus', 'jakut',
+                    'bogor', 'depok', 'tangerang', 'tangsel', 'bekasi', 'cikarang', 'cinere',
+                    'bandung', 'cimahi',
+                    'semarang', 'demak', 'ungaran',
+                    'lampung',
+                    'bali', 'denpasar', 'badung', 'gianyar', 'tabanan',
+                ];
 
-        return $localArticles;
+                $excludeKeywords = array_values(array_filter($allCityKeywords, function ($k) use ($pureCity) {
+                    return ! str_contains(strtolower($pureCity), $k);
+                }));
+
+                // Prioritas 2: Artikel edukasi umum yang TIDAK memuat nama kota lain di title/slug
+                $generalEducational = Article::published()
+                    ->with(['categoryRelation', 'subcategoryRelation'])
+                    ->whereNotIn('id', $localArticles->pluck('id'))
+                    ->where(function ($q) use ($excludeKeywords) {
+                        foreach ($excludeKeywords as $keyword) {
+                            $q->where('title', 'not like', "%{$keyword}%")
+                              ->where('slug', 'not like', "%{$keyword}%");
+                        }
+                    })
+                    ->orderByRaw('COALESCE(published_at, created_at) DESC')
+                    ->latest('id')
+                    ->take($limit - $localArticles->count())
+                    ->get();
+
+                $localArticles = $localArticles->concat($generalEducational);
+            }
+
+            return $localArticles;
+        });
     }
 }

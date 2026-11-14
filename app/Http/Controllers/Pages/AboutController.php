@@ -364,9 +364,53 @@ class AboutController extends Controller
 
         JsonLdMulti::setTitle($companyPage->meta_title ?: 'Cara Kerja & Standar Proses Pelancaran Pipa - Drainusantara');
         JsonLdMulti::setType('HowTo');
+        JsonLdMulti::addValues([
+            'name' => $companyPage->meta_title ?: 'Cara Kerja & Standar Proses Pelancaran Pipa Tanpa Bongkar',
+            'description' => '5 tahapan sistematis rekayasa sanitasi mekanis non-destruktif pelancaran saluran pipa mampet tanpa bongkar keramik bergaransi 30 hari.',
+            'step' => [
+                [
+                    '@type' => 'HowToStep',
+                    'position' => 1,
+                    'name' => 'Diagnosa & Inspeksi Visual Endoskopi CCTV IP68',
+                    'text' => 'Teknisi memasukkan kabel probe kamera endoskopi waterproof IP68 ke dalam lubang pipa pembuangan untuk memetakan posisi sumbatan dan mendeteksi kondisi internal pipa.',
+                    'url' => route('how-it-works') . '#langkah-1',
+                ],
+                [
+                    '@type' => 'HowToStep',
+                    'position' => 2,
+                    'name' => 'Penetrasi Spiral Baja Lentur (Ridgid Rotary Rooter)',
+                    'text' => 'Kabel spiral baja fleksibel diputar oleh mesin elektrik dengan torsi terukur, meliuk aman mengikuti lekukan leher angsa dan pipa PVC 90 derajat tanpa merusak fitting.',
+                    'url' => route('how-it-works') . '#langkah-2',
+                ],
+                [
+                    '@type' => 'HowToStep',
+                    'position' => 3,
+                    'name' => 'Pengikisan Kerak Lemak & Ekstraksi Sumbatan',
+                    'text' => 'Ujung spiral dipasangi mata pisau pemotong khusus untuk mengikis lemak beku, memotong serat akar pohon, atau menarik gumpalan rambut dan kain keluar dari pipa.',
+                    'url' => route('how-it-works') . '#langkah-3',
+                ],
+                [
+                    '@type' => 'HowToStep',
+                    'position' => 4,
+                    'name' => 'Pembilasan Debit Air Deras (Flushing) & Uji Alir Bersama',
+                    'text' => 'Mengalirkan debit air deras secara bersamaan dengan pemilik hunian untuk memverifikasi laju aliran air lancar sempurna di bak kontrol pembuangan akhir.',
+                    'url' => route('how-it-works') . '#langkah-4',
+                ],
+                [
+                    '@type' => 'HowToStep',
+                    'position' => 5,
+                    'name' => 'Sanitasi Area Kerja & Penerbitan Surat Garansi 30 Hari',
+                    'text' => 'Membersihkan dan mendisinfeksi area kerja pasca operasional serta menerbitkan dokumen surat garansi fisik resmi 30 hari kalender.',
+                    'url' => route('how-it-works') . '#langkah-5',
+                ],
+            ],
+        ]);
         $this->addAboutBreadcrumb('Cara Kerja & Proses', 'how-it-works');
 
-        return view('about.how-it-works', compact('companyPage'));
+        $contextualWaMsg = 'Halo Tim Drainusantara, saya ingin konsultasi standar pengerjaan pelancaran pipa tanpa bongkar.';
+        $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
+
+        return view('about.how-it-works', compact('companyPage', 'contextualWaMsg', 'contextualWaUrl'));
     }
 }
 

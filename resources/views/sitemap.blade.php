@@ -50,12 +50,12 @@
                             <p class="text-xs font-bold uppercase tracking-wider text-sky-800">KATALOG UTAMA</p>
                             <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">Layanan Pelancar Saluran Pipa</h2>
                         </div>
-                        <span class="text-xs text-slate-400 font-medium">{{ count($services) }} Layanan</span>
+                        <a href="{{ route('services.index') }}" class="text-xs text-sky-700 font-bold hover:underline">Semua Layanan &rarr;</a>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
                         @foreach($services as $serv)
-                            <a href="{{ url('/') }}/#layanan-{{ $serv->slug }}" 
+                            <a href="{{ route('services.show', ['slug' => $serv->slug]) }}" 
                                class="p-2.5 rounded-lg border border-slate-100 hover:border-sky-300 hover:bg-sky-50/40 text-slate-700 hover:text-sky-800 transition-all font-medium flex items-center justify-between group">
                                 <span class="truncate">{{ $serv->name }}</span>
                                 <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-700 shrink-0 ml-1.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -222,7 +222,7 @@
                     @if($articles->isNotEmpty())
                         <div class="space-y-2 text-xs sm:text-sm">
                             @foreach($articles->take(6) as $art)
-                                <a href="{{ route('articles.show', $art->slug) }}" 
+                                <a href="{{ $art->silo_url }}" 
                                    class="p-2.5 rounded-lg border border-slate-100 hover:border-sky-300 hover:bg-sky-50/40 text-slate-700 hover:text-sky-800 transition-all block">
                                     <span class="font-semibold block truncate text-slate-900 hover:text-sky-700">{{ $art->title }}</span>
                                     <span class="text-[11px] text-slate-400 block mt-0.5">{{ $art->category ?? 'Tips & Edukasi' }} &bull; {{ $art->reading_time }} Menit Baca</span>

@@ -48,8 +48,8 @@
                             <div class="flex items-center gap-2 mt-1 text-xs text-slate-500">
                                 <span class="font-medium text-slate-700">{{ $article->category_label }}</span>
                                 <span>&bull;</span>
-                                <a href="{{ route('articles.show', $article->slug) }}" target="_blank" class="hover:text-sky-700 font-mono">
-                                    /artikel/{{ $article->slug }} ↗
+                                <a href="{{ $article->silo_url }}" target="_blank" class="hover:text-sky-700 font-mono text-[11px]">
+                                    {{ parse_url($article->silo_url, PHP_URL_PATH) }} ↗
                                 </a>
                             </div>
                         </td>
@@ -76,7 +76,7 @@
                             </div>
                         </td>
                         <td class="px-5 py-3.5 text-right whitespace-nowrap space-x-1.5">
-                            <a href="{{ route('articles.show', $article->slug) }}" target="_blank"
+                            <a href="{{ $article->silo_url }}" target="_blank"
                                class="inline-flex items-center gap-1 text-slate-700 hover:bg-slate-100 border border-slate-200 px-2 py-1 rounded-md transition-colors text-xs font-semibold" title="Lihat di Web">
                                 <span>Lihat</span>
                             </a>

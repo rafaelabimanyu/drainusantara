@@ -66,6 +66,14 @@ Route::get('/pengetahuan', [Pages\ArticleController::class, 'articles'])->name('
 Route::get('/blog', fn () => redirect()->route('articles.index', [], 301))->name('articles.blog');
 Route::get('/artikel', fn () => redirect()->route('articles.index', [], 301))->name('articles.legacy');
 Route::get('/pengetahuan/{slug}', fn (string $slug) => redirect()->route('articles.show', ['slug' => $slug], 301));
+Route::get('/blog/{slug}', fn (string $slug) => redirect()->route('articles.show', ['slug' => $slug], 301));
+Route::get('/edukasi', fn () => redirect()->route('articles.index', [], 301))->name('articles.silo.index');
+Route::get('/edukasi/{category}', function (string $category) {
+    return redirect()->route('articles.index', ['category' => $category], 301);
+})->name('articles.silo.category');
+Route::get('/edukasi/{category}/{subcategory}', function (string $category, string $subcategory) {
+    return redirect()->route('articles.index', ['category' => $category, 'sub' => $subcategory], 301);
+})->name('articles.silo.subcategory');
 Route::get('/edukasi/{category}/{subcategory}/{slug}', [Pages\ArticleController::class, 'articleSiloDetail'])->name('articles.silo');
 Route::get('/artikel/{slug}', [Pages\ArticleController::class, 'articleDetail'])->name('articles.show');
 
@@ -118,8 +126,12 @@ Route::prefix('tentang-kami')->group(function () {
     Route::get('/faq', [Pages\AboutController::class, 'aboutFaq'])->name('about.faq');
 });
 Route::get('/peralatan/{slug}', fn ($slug) => redirect()->route('equipment.show', ['slug' => $slug], 301));
-Route::get('/area-layanan', fn () => redirect('/#area'))->name('areas.anchor');
-Route::get('/layanan', fn () => redirect('/#layanan', 301))->name('services.anchor');
+Route::get('/area-layanan', fn () => redirect('/#area', 301))->name('areas.anchor');
+
+// Halaman Publik Layanan Dedicated (Anti-Cannibalization Silo)
+Route::get('/layanan', [Pages\ServicePageController::class, 'index'])->name('services.index');
+Route::get('/layanan/{slug}', [Pages\ServicePageController::class, 'show'])->name('services.show');
+Route::get('/services/{slug}', fn ($slug) => redirect()->route('services.show', ['slug' => $slug], 301));
 
 // Halaman Kontak & Form Permohonan Layanan
 Route::get('/kontak', [Pages\ContactController::class, 'index'])->name('contact');
@@ -138,7 +150,7 @@ Route::post('/login', [AuthController::class, 'login'])
     ->middleware('throttle:5,1')
     ->name('login.attempt');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/admin/login', fn () => redirect()->route('login'));
+Route::get('/admin/login', fn () => redirect()->route('login', [], 301));
 
 // Custom CMS Admin Routes (Protected by auth middleware)
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {

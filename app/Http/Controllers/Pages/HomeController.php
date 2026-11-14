@@ -170,6 +170,7 @@ class HomeController extends Controller
 
         $articles = Cache::remember('landing.articles', 86400, function () {
             return Article::where('is_published', true)
+                ->with(['categoryRelation', 'subcategoryRelation'])
                 ->latest('published_at')
                 ->take(3)
                 ->get();

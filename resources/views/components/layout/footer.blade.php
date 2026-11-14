@@ -147,10 +147,12 @@
             <!-- Kolom 2: Layanan Spesialis Pipa -->
             <div class="flex flex-col justify-between space-y-4">
                 <div>
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-3.5 pb-2 border-b border-slate-800">Layanan Spesialis</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-sky-400 mb-3.5 pb-2 border-b border-slate-800">
+                        <a href="{{ route('services.index') }}" class="hover:text-white transition-colors">Layanan Spesialis</a>
+                    </h3>
                     <ul class="space-y-2.5 text-xs text-slate-300">
                         <li>
-                            <a href="{{ url('/#layanan') }}" class="group hover:text-white transition-colors flex items-center gap-2">
+                            <a href="{{ route('services.show', ['slug' => 'jasa-wc-dan-kloset-mampet']) }}" class="group hover:text-white transition-colors flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
@@ -158,7 +160,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/#layanan') }}" class="group hover:text-white transition-colors flex items-center gap-2">
+                            <a href="{{ route('services.show', ['slug' => 'jasa-wastafel-dan-cucian-piring-mampet']) }}" class="group hover:text-white transition-colors flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
@@ -166,7 +168,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/#layanan') }}" class="group hover:text-white transition-colors flex items-center gap-2">
+                            <a href="{{ route('services.show', ['slug' => 'jasa-kamar-mandi-dan-floor-drain-mampet']) }}" class="group hover:text-white transition-colors flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
@@ -174,7 +176,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/#layanan') }}" class="group hover:text-white transition-colors flex items-center gap-2">
+                            <a href="{{ route('services.show', ['slug' => 'jasa-talang-air-dan-saluran-utama-mampet']) }}" class="group hover:text-white transition-colors flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
@@ -182,7 +184,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/#layanan') }}" class="group hover:text-white transition-colors flex items-center gap-2">
+                            <a href="{{ route('services.show', ['slug' => 'jasa-talang-air-dan-saluran-utama-mampet']) }}" class="group hover:text-white transition-colors flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
@@ -190,15 +192,15 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/#layanan') }}" class="group hover:text-white transition-colors flex items-center gap-2">
+                            <a href="{{ route('services.show', ['slug' => 'jasa-hydro-jetting-dan-rooter-pipa']) }}" class="group hover:text-white transition-colors flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
-                                <span>Grease Trap Restoran &amp; Dapur Bisnis F&amp;B</span>
+                                <span>Hydro Jetting &amp; Kuras Grease Trap Lemak</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/#layanan') }}" class="group hover:text-white transition-colors flex items-center gap-2">
+                            <a href="{{ route('services.show', ['slug' => 'jasa-inspeksi-kamera-cctv-pipa']) }}" class="group hover:text-white transition-colors flex items-center gap-2">
                                 <svg class="w-3.5 h-3.5 text-sky-400 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
@@ -373,7 +375,7 @@
                         <span>Lihat Semua 114+ Wilayah &amp; Posko Layanan</span>
                         <span class="transition-transform group-hover:translate-x-1">&rarr;</span>
                     </a>
-                    <a href="{{ $contextualWaUrl ?? 'https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode('Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat ke alamat saya.') }}"
+                    <a href="{{ $contextualWaUrl ?? ('https://wa.me/' . ($whatsappNumber ?? '6285609009009') . '?text=' . rawurlencode($contextualWaMsg ?? 'Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat ke alamat saya.')) }}"
                        :href="'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(contextualWaMsg || 'Halo Admin Drainusantara, saya membutuhkan info teknisi terdekat ke alamat saya.')"
                        target="_blank" 
                        rel="noopener noreferrer" 

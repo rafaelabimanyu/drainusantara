@@ -70,7 +70,8 @@ class ComprehensiveEnhancementsV5Test extends TestCase
         $this->assertStringContainsString('Paragraf ke-1 mengenai penanganan', $rendered);
         $this->assertStringContainsString('Paragraf ke-200 mengenai penanganan', $rendered);
 
-        $response = $this->get(route('articles.show', $article->slug));
+        $this->get(route('articles.show', $article->slug))->assertRedirect($article->silo_url);
+        $response = $this->get($article->silo_url);
         $response->assertStatus(200);
         $response->assertSee('Paragraf ke-200 mengenai penanganan', false);
     }
@@ -132,7 +133,8 @@ class ComprehensiveEnhancementsV5Test extends TestCase
 
         $currentArticle = $created[0];
 
-        $response = $this->get(route('articles.show', $currentArticle->slug));
+        $this->get(route('articles.show', $currentArticle->slug))->assertRedirect($currentArticle->silo_url);
+        $response = $this->get($currentArticle->silo_url);
         $response->assertStatus(200);
 
         $recentArticles = $response->viewData('recentArticles');

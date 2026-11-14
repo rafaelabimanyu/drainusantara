@@ -293,6 +293,52 @@ class CoverageArea extends Model
     }
 
     /**
+     * Get resolved supporting tags / landmarks for local district de-thinning.
+     *
+     * @return array<int, string>
+     */
+    public function getResolvedSupportingTagsAttribute(): array
+    {
+        if (is_array($this->supporting_tags) && count($this->supporting_tags) > 0) {
+            return $this->supporting_tags;
+        }
+
+        $cityData = RegionService::findCity($this->city);
+        $citySlug = $cityData['slug'] ?? Str::slug($this->city);
+        $district = ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]') ? $this->district : null;
+
+        if ($district) {
+            $analysis = \App\Services\RegionalTaxonomy::getDistrictAnalysis($citySlug, $district, $this->city);
+            return $analysis['landmarks'] ?? [];
+        }
+
+        return [];
+    }
+
+    /**
+     * Get resolved localized geo SEO keywords.
+     *
+     * @return array<int, string>
+     */
+    public function getResolvedGeoKeywordsAttribute(): array
+    {
+        if (! empty($this->geo_keywords)) {
+            return array_filter(array_map('trim', explode(',', $this->geo_keywords)));
+        }
+
+        $cityData = RegionService::findCity($this->city);
+        $citySlug = $cityData['slug'] ?? Str::slug($this->city);
+        $district = ($this->district && $this->district !== '[KOTA]' && $this->district !== '[PROVINSI]') ? $this->district : null;
+
+        if ($district) {
+            $landmarks = $this->resolved_supporting_tags;
+            return \App\Services\HyperLocalTaxonomy::getKeywords($district, $this->city, $landmarks);
+        }
+
+        return [];
+    }
+
+    /**
      * Sanitize text by removing placeholder strings.
      */
     public function sanitizeText(string $text): string
@@ -426,6 +472,9 @@ class CoverageArea extends Model
         }
         if (! empty($zoneFaqs[1])) {
             $baseDistrictFaqs[] = $zoneFaqs[1];
+        }
+        if (! empty($zoneFaqs[2])) {
+            $baseDistrictFaqs[] = $zoneFaqs[2];
         }
 
         $baseDistrictFaqs[] = [

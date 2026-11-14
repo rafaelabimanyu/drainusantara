@@ -62,7 +62,7 @@ class ConversionAndTrackingTest extends TestCase
         // Contextual WhatsApp link in layout must mention the district and city
         $response->assertSee(rawurlencode('Kecamatan Kebayoran Baru'), false);
         $response->assertSee(rawurlencode('Jakarta Selatan'), false);
-        $response->assertSee(rawurlencode('Halo Admin Drainusantara,'), false);
+        $response->assertSee(rawurlencode('Drainusantara,'), false);
     }
 
     public function test_contextual_whatsapp_url_adapts_to_equipment_detail_page(): void

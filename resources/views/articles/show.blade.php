@@ -42,6 +42,12 @@
             <span class="text-slate-300">/</span>
             <a href="{{ route('articles.index') }}" class="hover:text-sky-700 transition-colors shrink-0">Blog</a>
             <span class="text-slate-300">/</span>
+            <a href="{{ url('/edukasi/' . $article->category_slug) }}" class="hover:text-sky-700 transition-colors shrink-0">{{ $article->category_label }}</a>
+            @if($article->sub_category)
+                <span class="text-slate-300">/</span>
+                <a href="{{ url('/edukasi/' . $article->category_slug . '/' . $article->subcategory_slug) }}" class="hover:text-sky-700 transition-colors shrink-0">{{ $article->sub_category }}</a>
+            @endif
+            <span class="text-slate-300">/</span>
             <span class="text-slate-800 truncate font-semibold">{{ $article->title }}</span>
         </nav>
 
@@ -410,7 +416,7 @@
                         </div>
                         <div class="space-y-4">
                             @foreach($recentArticles->take(3) as $related)
-                                <a href="{{ route('articles.show', $related->slug) }}" 
+                                <a href="{{ $related->silo_url }}" 
                                    class="group block border-b border-slate-100 pb-3 last:border-b-0 last:pb-0">
                                     <span class="text-[10px] font-bold text-sky-700 block mb-1">
                                         {{ $related->category ?? 'Tips' }}
@@ -457,7 +463,7 @@
                 <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6">
                     @foreach($relatedArticles as $related)
                         <article class="bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-sky-300 hover:shadow-md transition-all flex flex-col group card-lift overflow-hidden">
-                            <a href="{{ route('articles.show', $related->slug) }}" class="block relative overflow-hidden aspect-16/10 bg-slate-100">
+                            <a href="{{ $related->silo_url }}" class="block relative overflow-hidden aspect-16/10 bg-slate-100">
                                 @if($related->thumbnail)
                                     <img src="{{ $related->thumbnail }}" 
                                          alt="{{ $related->title }}" 
@@ -485,7 +491,7 @@
                                         <span>{{ number_format($related->views_count) }}x</span>
                                     </div>
                                     <h3 class="text-xs sm:text-base font-bold text-slate-900 group-hover:text-sky-700 transition-colors leading-snug line-clamp-2">
-                                        <a href="{{ route('articles.show', $related->slug) }}">
+                                        <a href="{{ $related->silo_url }}">
                                             {{ $related->title }}
                                         </a>
                                     </h3>

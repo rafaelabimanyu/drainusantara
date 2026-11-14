@@ -16,6 +16,7 @@ use App\Services\RegionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -156,6 +157,11 @@ class ArticleController extends Controller
                 'published_at' => $publishedAt,
             ]);
         });
+
+        Cache::forget('landing.articles');
+        if (!empty($validated['city'])) {
+            Cache::forget('area.articles.' . Str::slug($validated['city']) . '.3');
+        }
 
         return redirect()->route('admin.articles.index')
             ->with('success', "Artikel '{$validated['title']}' berhasil ditambahkan!");
@@ -301,6 +307,11 @@ class ArticleController extends Controller
             ]);
         });
 
+        Cache::forget('landing.articles');
+        if (!empty($validated['city'])) {
+            Cache::forget('area.articles.' . Str::slug($validated['city']) . '.3');
+        }
+
         return redirect()->route('admin.articles.index')
             ->with('success', "Artikel '{$article->title}' berhasil diperbarui!");
     }
@@ -341,7 +352,14 @@ class ArticleController extends Controller
     public function destroy(Article $article): RedirectResponse
     {
         $title = $article->title;
+        $city = $article->city;
+
         (new MediaLifecycle)->run($article, fn () => $article->delete());
+
+        Cache::forget('landing.articles');
+        if (!empty($city)) {
+            Cache::forget('area.articles.' . Str::slug($city) . '.3');
+        }
 
         return redirect()->route('admin.articles.index')
             ->with('success', "Artikel '{$title}' berhasil dihapus.");

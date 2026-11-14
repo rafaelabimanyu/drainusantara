@@ -74,7 +74,7 @@ class FrontendContentTest extends TestCase
             'published_at' => now(),
         ]);
 
-        foreach (['/pengetahuan', "/artikel/{$article->slug}"] as $url) {
+        foreach (['/pengetahuan', $article->silo_url] as $url) {
             $response = $this->get($url)->assertOk();
             $response->assertSeeText($title);
             $response->assertDontSee(e(e($title)), false);
@@ -102,7 +102,11 @@ class FrontendContentTest extends TestCase
             'published_at' => now(),
         ]);
 
-        $response = $this->get("/artikel/{$article->slug}");
+        $redirectResponse = $this->get("/artikel/{$article->slug}");
+        $redirectResponse->assertStatus(301);
+        $redirectResponse->assertRedirect($article->silo_url);
+
+        $response = $this->get($article->silo_url);
 
         $response->assertStatus(200);
         $response->assertSee('Cara Merawat Saluran Air Mandi');

@@ -452,7 +452,7 @@ HTML;
      */
     public function getCategorySlugAttribute(): string
     {
-        if ($this->relationLoaded('categoryRelation') && $this->categoryRelation) {
+        if ($this->categoryRelation) {
             return $this->categoryRelation->slug;
         }
 
@@ -481,7 +481,7 @@ HTML;
      */
     public function getCategoryLabelAttribute(): string
     {
-        if ($this->relationLoaded('categoryRelation') && $this->categoryRelation) {
+        if ($this->categoryRelation) {
             return $this->categoryRelation->name;
         }
 
@@ -504,7 +504,7 @@ HTML;
      */
     public function getSubcategorySlugAttribute(): string
     {
-        if ($this->relationLoaded('subcategoryRelation') && $this->subcategoryRelation) {
+        if ($this->subcategoryRelation) {
             return $this->subcategoryRelation->slug;
         }
 

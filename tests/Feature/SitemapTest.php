@@ -51,11 +51,11 @@ class SitemapTest extends TestCase
         $this->assertStringNotContainsString('http://localhost', $content);
     }
 
-    public function test_layanan_redirects_301_to_home_layanan_anchor(): void
+    public function test_layanan_renders_dedicated_service_catalog_index(): void
     {
         $response = $this->get('/layanan');
-        $response->assertStatus(301);
-        $response->assertRedirect('/#layanan');
+        $response->assertOk();
+        $response->assertSee('Layanan Jasa Saluran Pipa Mampet', false);
     }
 
     public function test_sitemap_xsl_file_exists_and_contains_proper_structure(): void

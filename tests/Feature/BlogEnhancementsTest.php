@@ -73,11 +73,12 @@ class BlogEnhancementsTest extends TestCase
         ]);
 
         // First visit
-        $this->get(route('articles.show', $article->slug))->assertOk();
+        $this->get(route('articles.show', $article->slug))->assertRedirect($article->silo_url);
+        $this->get($article->silo_url)->assertOk();
         $this->assertSame(6, $article->fresh()->views_count);
 
         // Immediate refresh with same session
-        $this->get(route('articles.show', $article->slug))->assertOk();
+        $this->get($article->silo_url)->assertOk();
         $this->assertSame(6, $article->fresh()->views_count);
     }
 
@@ -103,7 +104,7 @@ class BlogEnhancementsTest extends TestCase
         $this->assertStringContainsString('<ul>', $rendered);
         $this->assertStringContainsString('<iframe', $rendered);
 
-        $response = $this->get(route('articles.show', $article->slug));
+        $response = $this->get($article->silo_url);
         $response->assertOk();
         $response->assertSee('id="penyebab-utama-wastafel-mampet"', false);
         $response->assertSee('<strong>membatu</strong>', false);
@@ -123,7 +124,7 @@ class BlogEnhancementsTest extends TestCase
 
         $this->assertSame(['CCTV Pipa', 'Deteksi Retak', 'Drainase'], $article->tags_list);
 
-        $response = $this->get(route('articles.show', $article->slug));
+        $response = $this->get($article->silo_url);
         $response->assertOk();
         $response->assertSee('#CCTV Pipa');
         $response->assertSee('#Deteksi Retak');
@@ -175,7 +176,7 @@ class BlogEnhancementsTest extends TestCase
             'published_at' => now(),
         ]);
 
-        $response = $this->get(route('articles.show', $article->slug));
+        $response = $this->get($article->silo_url);
         $response->assertOk();
 
         // Lightbox trigger & interactive elements
