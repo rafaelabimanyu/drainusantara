@@ -5,16 +5,18 @@
 
     RewriteEngine On
 
-    # Canonical Redirect 1: www -> non-www (301), exclude local dev hosts
+    # Canonical Redirect 1: www -> non-www (301), exclude local dev & AutoSSL
     RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1|.*\.test)(:\d+)?$ [NC]
+    RewriteCond %{REQUEST_URI} !\.well-known/(acme-challenge|pki-validation)/ [NC]
     RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-    RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+    RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
 
-    # Canonical Redirect 2: HTTP -> HTTPS (301), proxy-safe (Cloudflare/Nginx)
+    # Canonical Redirect 2: HTTP -> HTTPS (301), proxy-safe, exclude local dev & AutoSSL
     RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1|.*\.test)(:\d+)?$ [NC]
+    RewriteCond %{REQUEST_URI} !\.well-known/(acme-challenge|pki-validation)/ [NC]
     RewriteCond %{HTTPS} !=on
     RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [L,R=301]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -26,8 +28,7 @@
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
 
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
