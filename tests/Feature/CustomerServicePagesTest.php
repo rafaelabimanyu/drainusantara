@@ -356,4 +356,29 @@ class CustomerServicePagesTest extends TestCase
 
         $this->assertStringContainsString(route('customer-service.index'), $homePage);
     }
+
+    public function test_official_social_urls_and_compact_bounded_pickers_are_rendered(): void
+    {
+        $expectedSocialUrls = [
+            '/customer-service/x' => 'https://x.com/Drainusantara',
+            '/customer-service/instagram' => 'https://www.instagram.com/drainusantara',
+            '/customer-service/youtube' => 'https://www.youtube.com/@Drainusantara',
+        ];
+
+        $homeHtml = $this->get('/')->assertOk()->getContent();
+        foreach ($expectedSocialUrls as $path => $expectedUrl) {
+            $this->assertStringContainsString($expectedUrl, $homeHtml, "Missing {$expectedUrl} in footer");
+            $this->resetSeoTools();
+            $pageHtml = $this->get($path)->assertOk()->getContent();
+            $this->assertStringContainsString($expectedUrl, $pageHtml, "Missing {$expectedUrl} on {$path}");
+        }
+
+        foreach (['/customer-service/facebook', '/customer-service/tiktok', '/customer-service/linkedin', '/kontak'] as $path) {
+            $this->resetSeoTools();
+            $html = $this->get($path)->assertOk()->getContent();
+            $this->assertStringContainsString('max-h-44 overflow-y-auto', $html, "Missing bounded dropdown scroll container on {$path}");
+            $this->assertStringContainsString('role="listbox"', $html, "Missing listbox picker on {$path}");
+            $this->assertStringNotContainsString('<select', $html, "Unexpected full-height native <select> on {$path}");
+        }
+    }
 }

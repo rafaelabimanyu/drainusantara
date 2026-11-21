@@ -219,25 +219,49 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        @php
+                            $contactCityGroups = array_values(array_map(static fn (array $prov): array => [
+                                'label' => (string) ($prov['name'] ?? ''),
+                                'options' => array_values(array_map(static fn (array $city): array => [
+                                    'value' => (string) ($city['name'] ?? ''),
+                                    'label' => (string) ($city['name'] ?? ''),
+                                ], $prov['cities'] ?? [])),
+                            ], $provinces));
+                            $contactServiceOptions = [
+                                ['value' => 'Wastafel & Cuci Piring', 'label' => 'Wastafel & Cuci Piring (Sink Lemak)'],
+                                ['value' => 'Kloset & WC Meluap', 'label' => 'Kloset & WC Duduk / Jongkok'],
+                                ['value' => 'Floor Drain Kamar Mandi', 'label' => 'Floor Drain Saluran Lantai Kamar Mandi'],
+                                ['value' => 'Talang Rooftop & Pipa Atap', 'label' => 'Talang Air Rooftop / Pipa Curah Hujan'],
+                                ['value' => 'Kuras Grease Trap Resto', 'label' => 'Pembersihan Grease Trap & Bak Lemak Resto'],
+                                ['value' => 'Pipa Utama & Bak Kontrol', 'label' => 'Pipa Utama Gedung & Bak Kontrol Luar'],
+                                ['value' => 'Inspeksi CCTV Pipa', 'label' => 'Inspeksi Kamera Endoskopi CCTV Pipa'],
+                                ['value' => 'Lainnya', 'label' => 'Titik Masalah Lainnya'],
+                            ];
+                            $contactPropertyOptions = [
+                                ['value' => 'Rumah Tinggal', 'label' => 'Rumah Tinggal / Residensial'],
+                                ['value' => 'Restoran Kafe FNB', 'label' => 'Restoran, Kafe & F&B'],
+                                ['value' => 'Apartemen Kondominium', 'label' => 'Apartemen & Kondominium'],
+                                ['value' => 'Ruko Bisnis & Rukan', 'label' => 'Ruko Bisnis & Rukan'],
+                                ['value' => 'Gedung Perkantoran / Hotel', 'label' => 'Gedung Perkantoran & Hotel'],
+                                ['value' => 'Pabrik & Industri', 'label' => 'Pabrik & Kawasan Industri'],
+                                ['value' => 'Lainnya', 'label' => 'Kategori Lainnya'],
+                            ];
+                        @endphp
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Kota / Wilayah -->
                             <div>
                                 <label for="city" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                                     Kota / Kabupaten
                                 </label>
-                                <select name="city" id="city"
-                                        class="w-full text-sm rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent">
-                                    <option value="">-- Pilih Kota Terdekat --</option>
-                                    @foreach($provinces as $prov)
-                                        <optgroup label="{{ $prov['name'] }}">
-                                            @foreach($prov['cities'] as $city)
-                                                <option value="{{ $city['name'] }}" {{ old('city') === $city['name'] ? 'selected' : '' }}>
-                                                    {{ $city['name'] }}
-                                                </option>
-                                            @endforeach
-                                        </optgroup>
-                                    @endforeach
-                                </select>
+                                <x-ui.compact-select
+                                    id="city"
+                                    name="city"
+                                    :value="old('city', '')"
+                                    :groups="$contactCityGroups"
+                                    placeholder="-- Pilih Kota Terdekat --"
+                                    :searchable="true"
+                                    search-placeholder="Cari kota terdekat..."
+                                />
                             </div>
 
                             <!-- Area / Kecamatan -->
@@ -247,27 +271,23 @@
                                 </label>
                                 <input type="text" name="district" id="district" value="{{ old('district') }}"
                                        placeholder="Contoh: Tebet / Coblong / Ungaran"
-                                       class="w-full text-sm rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent">
+                                       class="w-full h-10 text-xs sm:text-sm rounded-md border border-slate-300 px-3 py-1.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Jenis Titik Masalah -->
                             <div>
                                 <label for="service_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                                     Titik Saluran Tersumbat
                                 </label>
-                                <select name="service_type" id="service_type"
-                                        class="w-full text-sm rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent">
-                                    <option value="Wastafel & Cuci Piring">Wastafel & Cuci Piring (Sink Lemak)</option>
-                                    <option value="Kloset & WC Meluap">Kloset & WC Duduk / Jongkok</option>
-                                    <option value="Floor Drain Kamar Mandi">Floor Drain Saluran Lantai Kamar Mandi</option>
-                                    <option value="Talang Rooftop & Pipa Atap">Talang Air Rooftop / Pipa Curah Hujan</option>
-                                    <option value="Kuras Grease Trap Resto">Pembersihan Grease Trap & Bak Lemak Resto</option>
-                                    <option value="Pipa Utama & Bak Kontrol">Pipa Utama Gedung & Bak Kontrol Luar</option>
-                                    <option value="Inspeksi CCTV Pipa">Inspeksi Kamera Endoskopi CCTV Pipa</option>
-                                    <option value="Lainnya">Titik Masalah Lainnya</option>
-                                </select>
+                                <x-ui.compact-select
+                                    id="service_type"
+                                    name="service_type"
+                                    :value="old('service_type', 'Wastafel & Cuci Piring')"
+                                    :options="$contactServiceOptions"
+                                    :allow-clear="false"
+                                />
                             </div>
 
                             <!-- Kategori Properti / Bangunan -->
@@ -275,16 +295,13 @@
                                 <label for="property_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                                     Kategori Bangunan
                                 </label>
-                                <select name="property_type" id="property_type"
-                                        class="w-full text-sm rounded-lg border border-slate-300 px-3.5 py-2.5 text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent">
-                                    <option value="Rumah Tinggal">Rumah Tinggal / Residensial</option>
-                                    <option value="Restoran Kafe FNB">Restoran, Kafe & F&B</option>
-                                    <option value="Apartemen Kondominium">Apartemen & Kondominium</option>
-                                    <option value="Ruko Bisnis & Rukan">Ruko Bisnis & Rukan</option>
-                                    <option value="Gedung Perkantoran / Hotel">Gedung Perkantoran & Hotel</option>
-                                    <option value="Pabrik & Industri">Pabrik & Kawasan Industri</option>
-                                    <option value="Lainnya">Kategori Lainnya</option>
-                                </select>
+                                <x-ui.compact-select
+                                    id="property_type"
+                                    name="property_type"
+                                    :value="old('property_type', 'Rumah Tinggal')"
+                                    :options="$contactPropertyOptions"
+                                    :allow-clear="false"
+                                />
                             </div>
                         </div>
 

@@ -45,6 +45,13 @@
         'x' => $isDark ? 'bg-slate-950 text-white border-slate-600' : 'bg-slate-900 text-white border-slate-800',
         default => $isDark ? 'bg-emerald-950/80 text-emerald-300 border-emerald-800' : 'bg-emerald-50 text-emerald-800 border-emerald-200',
     };
+    $cityGroups = array_values(array_map(static fn (array $prov): array => [
+        'label' => (string) ($prov['name'] ?? ''),
+        'options' => array_values(array_map(static fn (array $city): array => [
+            'value' => (string) ($city['name'] ?? ''),
+            'label' => (string) ($city['name'] ?? ''),
+        ], $prov['cities'] ?? [])),
+    ], $regionSelectorData));
 @endphp
 
 <div x-data="{
@@ -112,11 +119,11 @@
         }
     }"
     @if($layout === 'bar')
-        class="{{ $isDark ? 'bg-slate-900 border border-slate-700 text-slate-100' : 'bg-white border border-slate-200 text-slate-900' }} rounded-lg p-4 sm:p-6 shadow-sm space-y-4"
+        class="{{ $isDark ? 'bg-slate-900 border border-slate-700 text-slate-100' : 'bg-white border border-slate-200 text-slate-900' }} rounded-lg p-3.5 sm:p-5 shadow-sm space-y-3"
     @elseif($layout === 'ribbon')
-        class="{{ $isDark ? 'bg-slate-900 border border-slate-700 text-slate-100' : 'bg-white border border-slate-200 text-slate-900' }} rounded-lg p-4 sm:p-7 shadow-xs space-y-5"
+        class="{{ $isDark ? 'bg-slate-900 border border-slate-700 text-slate-100' : 'bg-white border border-slate-200 text-slate-900' }} rounded-lg p-3.5 sm:p-5 shadow-xs space-y-3.5"
     @else
-        class="{{ $isDark ? 'bg-slate-800 border border-slate-700 text-slate-100' : 'bg-white border border-slate-200 text-slate-900' }} rounded-lg p-4 sm:p-6 shadow-xs space-y-4"
+        class="{{ $isDark ? 'bg-slate-800 border border-slate-700 text-slate-100' : 'bg-white border border-slate-200 text-slate-900' }} rounded-lg p-3.5 sm:p-5 shadow-xs space-y-3"
     @endif>
 
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -139,52 +146,47 @@
     </div>
 
     @if($layout === 'bar')
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-2.5 sm:gap-3 items-end">
             <div class="lg:col-span-3">
-                <label for="{{ $uid }}-city" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-city" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     1. Kota / Wilayah
                 </label>
-                <select id="{{ $uid }}-city"
-                        x-model="selectedCity"
-                        class="w-full min-h-12 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="">Pilih kota terdekat</option>
-                    @foreach($regionSelectorData as $prov)
-                        <optgroup label="{{ $prov['name'] }}">
-                            @foreach($prov['cities'] as $city)
-                                <option value="{{ $city['name'] }}">{{ $city['name'] }}</option>
-                            @endforeach
-                        </optgroup>
-                    @endforeach
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-city"
+                    x-model="selectedCity"
+                    :groups="$cityGroups"
+                    placeholder="Pilih kota terdekat"
+                    :searchable="true"
+                    search-placeholder="Cari kota layanan..."
+                />
             </div>
 
             <div class="lg:col-span-3">
-                <label for="{{ $uid }}-district" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-district" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     2. Kecamatan (Opsional)
                 </label>
-                <select id="{{ $uid }}-district"
-                        x-model="selectedDistrict"
-                        :disabled="!selectedCity || availableDistricts.length === 0"
-                        class="w-full min-h-12 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 disabled:bg-slate-100 disabled:text-slate-500 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="" x-text="selectedCity ? 'Semua area ' + selectedCity : 'Pilih kota dulu'"></option>
-                    <template x-for="dist in availableDistricts" :key="dist">
-                        <option :value="dist" x-text="dist"></option>
-                    </template>
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-district"
+                    x-model="selectedDistrict"
+                    options-expr="availableDistricts"
+                    disabled-expr="!selectedCity || availableDistricts.length === 0"
+                    placeholder="Pilih kota dulu"
+                    placeholder-expr="selectedCity ? 'Semua area ' + selectedCity : 'Pilih kota dulu'"
+                    :searchable="true"
+                    search-placeholder="Cari kecamatan..."
+                />
             </div>
 
             <div class="lg:col-span-3">
-                <label for="{{ $uid }}-problem" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-problem" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     3. Titik Saluran (Opsional)
                 </label>
-                <select id="{{ $uid }}-problem"
-                        x-model="selectedProblem"
-                        class="w-full min-h-12 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="">Konsultasi umum</option>
-                    @foreach($problemOptions as $option)
-                        <option value="{{ $option }}">{{ $option }}</option>
-                    @endforeach
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-problem"
+                    x-model="selectedProblem"
+                    :options="$problemOptions"
+                    placeholder="Konsultasi umum"
+                />
             </div>
 
             <div class="lg:col-span-3">
@@ -193,14 +195,14 @@
                    target="_blank"
                    rel="noopener noreferrer"
                    data-track-location="{{ $trackLocation }}"
-                   class="w-full min-h-12 inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-sm px-4 py-3 rounded-md border border-emerald-800 transition-colors btn-press focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 {{ $isDark ? 'focus-visible:ring-offset-slate-900' : 'focus-visible:ring-offset-white' }}">
+                   class="w-full min-h-11 inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-sm px-4 py-2.5 rounded-md border border-emerald-800 transition-colors btn-press focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 {{ $isDark ? 'focus-visible:ring-offset-slate-900' : 'focus-visible:ring-offset-white' }}">
                     <x-customer-service.channel-icon channel="whatsapp" class="w-4 h-4" />
                     <span>{{ $ctaLabel }}</span>
                 </a>
             </div>
         </div>
 
-        <div class="{{ $isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200' }} border rounded-md px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="{{ $isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200' }} border rounded-md px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <div class="min-w-0">
                 <span class="text-xs font-bold block {{ $isDark ? 'text-slate-300' : 'text-slate-700' }}">Format Pesan Siap Kirim:</span>
                 <p class="text-xs sm:text-sm break-words mt-0.5 {{ $isDark ? 'text-slate-100' : 'text-slate-800' }}" x-text="messageText">
@@ -209,62 +211,57 @@
             </div>
             <button type="button"
                     @click="copyTemplate()"
-                    class="w-full sm:w-auto min-h-11 px-3.5 py-2 rounded-md text-xs font-bold shrink-0 transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ $isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600' : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-300' }}">
+                    class="w-full sm:w-auto min-h-10 px-3 py-1.5 rounded-md text-xs font-bold shrink-0 transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ $isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600' : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-300' }}">
                 <span x-text="copied ? 'Teks Tersalin' : 'Salin Pesan'">Salin Pesan</span>
             </button>
         </div>
     @elseif($layout === 'ribbon')
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 sm:gap-3">
             <div>
-                <label for="{{ $uid }}-city" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-city" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     Langkah 1: Pilih Kota Layanan
                 </label>
-                <select id="{{ $uid }}-city"
-                        x-model="selectedCity"
-                        class="w-full min-h-12 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="">Pilih kota terdekat</option>
-                    @foreach($regionSelectorData as $prov)
-                        <optgroup label="{{ $prov['name'] }}">
-                            @foreach($prov['cities'] as $city)
-                                <option value="{{ $city['name'] }}">{{ $city['name'] }}</option>
-                            @endforeach
-                        </optgroup>
-                    @endforeach
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-city"
+                    x-model="selectedCity"
+                    :groups="$cityGroups"
+                    placeholder="Pilih kota terdekat"
+                    :searchable="true"
+                    search-placeholder="Cari kota layanan..."
+                />
             </div>
 
             <div>
-                <label for="{{ $uid }}-district" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-district" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     Langkah 2: Pilih Kecamatan (Opsional)
                 </label>
-                <select id="{{ $uid }}-district"
-                        x-model="selectedDistrict"
-                        :disabled="!selectedCity || availableDistricts.length === 0"
-                        class="w-full min-h-12 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 disabled:bg-slate-100 disabled:text-slate-500 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="" x-text="selectedCity ? 'Semua area ' + selectedCity : 'Pilih kota dulu'"></option>
-                    <template x-for="dist in availableDistricts" :key="dist">
-                        <option :value="dist" x-text="dist"></option>
-                    </template>
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-district"
+                    x-model="selectedDistrict"
+                    options-expr="availableDistricts"
+                    disabled-expr="!selectedCity || availableDistricts.length === 0"
+                    placeholder="Pilih kota dulu"
+                    placeholder-expr="selectedCity ? 'Semua area ' + selectedCity : 'Pilih kota dulu'"
+                    :searchable="true"
+                    search-placeholder="Cari kecamatan..."
+                />
             </div>
 
             <div>
-                <label for="{{ $uid }}-problem" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-problem" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     Langkah 3: Titik Saluran (Opsional)
                 </label>
-                <select id="{{ $uid }}-problem"
-                        x-model="selectedProblem"
-                        class="w-full min-h-12 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="">Belum memilih titik saluran (konsultasi umum)</option>
-                    @foreach($problemOptions as $option)
-                        <option value="{{ $option }}">{{ $option }}</option>
-                    @endforeach
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-problem"
+                    x-model="selectedProblem"
+                    :options="$problemOptions"
+                    placeholder="Belum memilih titik saluran (konsultasi umum)"
+                />
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center pt-1">
-            <div class="lg:col-span-8 order-2 lg:order-1 {{ $isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200' }} border rounded-md p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center pt-0.5">
+            <div class="lg:col-span-8 order-2 lg:order-1 {{ $isDark ? 'bg-slate-950 border-slate-800' : 'bg-slate-50 border-slate-200' }} border rounded-md p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                 <div class="min-w-0">
                     <span class="text-xs font-bold block {{ $isDark ? 'text-slate-300' : 'text-slate-700' }}">Pratinjau Pesan Admin {{ $channelName }}</span>
                     <p class="text-xs sm:text-sm break-words mt-0.5 {{ $isDark ? 'text-slate-100' : 'text-slate-800' }}" x-text="messageText">
@@ -273,7 +270,7 @@
                 </div>
                 <button type="button"
                         @click="copyTemplate()"
-                        class="w-full sm:w-auto min-h-11 px-3 py-2 rounded-md text-xs font-bold shrink-0 transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ $isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600' : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-300' }}">
+                        class="w-full sm:w-auto min-h-10 px-3 py-1.5 rounded-md text-xs font-bold shrink-0 transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ $isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600' : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-300' }}">
                     <span x-text="copied ? 'Teks Tersalin' : 'Salin Pesan'">Salin Pesan</span>
                 </button>
             </div>
@@ -284,70 +281,65 @@
                    target="_blank"
                    rel="noopener noreferrer"
                    data-track-location="{{ $trackLocation }}"
-                   class="w-full min-h-12 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-sm sm:text-base px-5 py-3 rounded-lg border border-emerald-800 transition-colors btn-press focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 {{ $isDark ? 'focus-visible:ring-offset-slate-900' : 'focus-visible:ring-offset-white' }}">
+                   class="w-full min-h-11 inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-sm px-4 py-2.5 rounded-lg border border-emerald-800 transition-colors btn-press focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 {{ $isDark ? 'focus-visible:ring-offset-slate-900' : 'focus-visible:ring-offset-white' }}">
                     <x-customer-service.channel-icon channel="whatsapp" class="w-5 h-5" />
                     <span>{{ $ctaLabel }}</span>
                 </a>
             </div>
         </div>
     @else
-        <div class="space-y-3.5">
+        <div class="space-y-2.5">
             <div>
-                <label for="{{ $uid }}-city" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-city" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     Kota / Kabupaten Proyek
                 </label>
-                <select id="{{ $uid }}-city"
-                        x-model="selectedCity"
-                        class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="">Pilih kota terdekat</option>
-                    @foreach($regionSelectorData as $prov)
-                        <optgroup label="{{ $prov['name'] }}">
-                            @foreach($prov['cities'] as $city)
-                                <option value="{{ $city['name'] }}">{{ $city['name'] }}</option>
-                            @endforeach
-                        </optgroup>
-                    @endforeach
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-city"
+                    x-model="selectedCity"
+                    :groups="$cityGroups"
+                    placeholder="Pilih kota terdekat"
+                    :searchable="true"
+                    search-placeholder="Cari kota layanan..."
+                />
             </div>
 
             <div>
-                <label for="{{ $uid }}-district" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-district" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     Kecamatan / Kawasan (Opsional)
                 </label>
-                <select id="{{ $uid }}-district"
-                        x-model="selectedDistrict"
-                        :disabled="!selectedCity || availableDistricts.length === 0"
-                        class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 disabled:bg-slate-100 disabled:text-slate-500 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="" x-text="selectedCity ? 'Semua area ' + selectedCity : 'Pilih kota dulu'"></option>
-                    <template x-for="dist in availableDistricts" :key="dist">
-                        <option :value="dist" x-text="dist"></option>
-                    </template>
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-district"
+                    x-model="selectedDistrict"
+                    options-expr="availableDistricts"
+                    disabled-expr="!selectedCity || availableDistricts.length === 0"
+                    placeholder="Pilih kota dulu"
+                    placeholder-expr="selectedCity ? 'Semua area ' + selectedCity : 'Pilih kota dulu'"
+                    :searchable="true"
+                    search-placeholder="Cari kecamatan..."
+                />
             </div>
 
             <div>
-                <label for="{{ $uid }}-problem" class="block text-xs font-bold mb-1.5 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
+                <label for="{{ $uid }}-problem" class="block text-xs font-bold mb-1 {{ $isDark ? 'text-slate-200' : 'text-slate-700' }}">
                     Titik Saluran Tersumbat (Opsional)
                 </label>
-                <select id="{{ $uid }}-problem"
-                        x-model="selectedProblem"
-                        class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                    <option value="">Belum memilih titik saluran (konsultasi umum)</option>
-                    @foreach($problemOptions as $option)
-                        <option value="{{ $option }}">{{ $option }}</option>
-                    @endforeach
-                </select>
+                <x-ui.compact-select
+                    id="{{ $uid }}-problem"
+                    x-model="selectedProblem"
+                    :options="$problemOptions"
+                    placeholder="Belum memilih titik saluran (konsultasi umum)"
+                />
             </div>
         </div>
 
-        <div class="{{ $isDark ? 'bg-slate-950 border-slate-700' : 'bg-slate-50 border-slate-200' }} border rounded-md p-3.5 space-y-2">
+        <div class="{{ $isDark ? 'bg-slate-950 border-slate-700' : 'bg-slate-50 border-slate-200' }} border rounded-md p-3 space-y-1.5">
             <div class="flex items-center justify-between gap-2">
                 <span class="text-xs font-bold {{ $isDark ? 'text-slate-300' : 'text-slate-700' }}">
                     Pratinjau Pesan Admin {{ $channelName }}
                 </span>
                 <button type="button"
                         @click="copyTemplate()"
-                        class="min-h-11 px-3 py-1.5 rounded-md text-xs font-bold transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ $isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600' : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-300' }}">
+                        class="min-h-9 px-2.5 py-1 rounded-md text-xs font-bold transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600 {{ $isDark ? 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600' : 'bg-white hover:bg-slate-100 text-slate-800 border border-slate-300' }}">
                     <span x-text="copied ? 'Teks Tersalin' : 'Salin Pesan'">Salin Pesan</span>
                 </button>
             </div>
@@ -361,7 +353,7 @@
            target="_blank"
            rel="noopener noreferrer"
            data-track-location="{{ $trackLocation }}"
-           class="w-full min-h-12 inline-flex items-center justify-center gap-2.5 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-sm sm:text-base px-5 py-3 rounded-lg border border-emerald-800 transition-colors btn-press focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 {{ $isDark ? 'focus-visible:ring-offset-slate-800' : 'focus-visible:ring-offset-white' }}">
+           class="w-full min-h-11 inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-sm px-4 py-2.5 rounded-lg border border-emerald-800 transition-colors btn-press focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 {{ $isDark ? 'focus-visible:ring-offset-slate-800' : 'focus-visible:ring-offset-white' }}">
             <x-customer-service.channel-icon channel="whatsapp" class="w-5 h-5" />
             <span>{{ $ctaLabel }}</span>
         </a>

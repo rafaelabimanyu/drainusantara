@@ -154,7 +154,7 @@
                     </p>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2.5" role="tablist" aria-label="Pilih gejala saluran mampet">
+                <div class="grid grid-cols-2 gap-2" role="tablist" aria-label="Pilih gejala saluran mampet">
                     <template x-for="(item, key) in symptoms" :key="key">
                         <button type="button"
                                 role="tab"
@@ -162,7 +162,7 @@
                                 :aria-selected="activeSymptom === key ? 'true' : 'false'"
                                 @click="activeSymptom = key"
                                 :class="activeSymptom === key ? 'bg-sky-700 text-white border-sky-500' : 'bg-slate-950 text-slate-200 border-slate-800 hover:border-cyan-500/60'"
-                                class="min-h-12 px-3 sm:px-3.5 py-2.5 rounded-md border text-left text-xs sm:text-sm font-bold transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400"
+                                class="min-h-10 px-2.5 sm:px-3 py-2 rounded-md border text-left text-xs font-bold transition-colors cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400"
                                 x-text="item.label">
                         </button>
                     </template>
@@ -189,40 +189,48 @@
                     </p>
                 </div>
 
-                <div class="space-y-3 pt-2 border-t border-slate-800">
+                @php
+                    $tiktokCityGroups = array_values(array_map(static fn (array $prov): array => [
+                        'label' => (string) ($prov['name'] ?? ''),
+                        'options' => array_values(array_map(static fn (array $city): array => [
+                            'value' => (string) ($city['name'] ?? ''),
+                            'label' => (string) ($city['name'] ?? ''),
+                        ], $prov['cities'] ?? [])),
+                    ], $regionSelectorData));
+                @endphp
+                <div class="space-y-2.5 pt-2 border-t border-slate-800">
                     <p class="text-sm font-extrabold text-white">2. Pilih Wilayah Anda untuk Menghubungi Admin TikTok</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         <div>
-                            <label for="wa-builder-tiktok-city" class="block text-xs font-bold text-slate-200 mb-1.5">
+                            <label for="wa-builder-tiktok-city" class="block text-xs font-bold text-slate-200 mb-1">
                                 Kota / Kabupaten
                             </label>
-                            <select id="wa-builder-tiktok-city"
-                                    x-model="selectedCity"
-                                    class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400">
-                                <option value="">Pilih kota terdekat</option>
-                                @foreach($regionSelectorData as $prov)
-                                    <optgroup label="{{ $prov['name'] }}">
-                                        @foreach($prov['cities'] as $city)
-                                            <option value="{{ $city['name'] }}">{{ $city['name'] }}</option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
+                            <x-ui.compact-select
+                                id="wa-builder-tiktok-city"
+                                x-model="selectedCity"
+                                :groups="$tiktokCityGroups"
+                                placeholder="Pilih kota terdekat"
+                                :searchable="true"
+                                search-placeholder="Cari kota layanan..."
+                                ring-class="focus-visible:ring-cyan-400"
+                            />
                         </div>
 
                         <div>
-                            <label for="wa-builder-tiktok-district" class="block text-xs font-bold text-slate-200 mb-1.5">
+                            <label for="wa-builder-tiktok-district" class="block text-xs font-bold text-slate-200 mb-1">
                                 Kecamatan (Opsional)
                             </label>
-                            <select id="wa-builder-tiktok-district"
-                                    x-model="selectedDistrict"
-                                    :disabled="!selectedCity || availableDistricts.length === 0"
-                                    class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 disabled:bg-slate-100 disabled:text-slate-500 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-400">
-                                <option value="" x-text="selectedCity ? 'Semua area ' + selectedCity : 'Pilih kota dulu'"></option>
-                                <template x-for="dist in availableDistricts" :key="dist">
-                                    <option :value="dist" x-text="dist"></option>
-                                </template>
-                            </select>
+                            <x-ui.compact-select
+                                id="wa-builder-tiktok-district"
+                                x-model="selectedDistrict"
+                                options-expr="availableDistricts"
+                                disabled-expr="!selectedCity || availableDistricts.length === 0"
+                                placeholder="Pilih kota dulu"
+                                placeholder-expr="selectedCity ? 'Semua area ' + selectedCity : 'Pilih kota dulu'"
+                                :searchable="true"
+                                search-placeholder="Cari kecamatan..."
+                                ring-class="focus-visible:ring-cyan-400"
+                            />
                         </div>
                     </div>
 

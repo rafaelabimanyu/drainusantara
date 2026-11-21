@@ -251,28 +251,39 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    @php
+                        $linkedinCityGroups = array_values(array_map(static fn (array $prov): array => [
+                            'label' => (string) ($prov['name'] ?? ''),
+                            'options' => array_values(array_map(static fn (array $city): array => [
+                                'value' => (string) ($city['name'] ?? ''),
+                                'label' => (string) ($city['name'] ?? ''),
+                            ], $prov['cities'] ?? [])),
+                        ], $provinces));
+                        $linkedinPropertyOptions = [
+                            ['value' => 'Restoran Kafe FNB', 'label' => 'Restoran, Kafe & F&B'],
+                            ['value' => 'Gedung Perkantoran / Hotel', 'label' => 'Gedung Perkantoran & Hotel'],
+                            ['value' => 'Ruko Bisnis & Rukan', 'label' => 'Ruko Bisnis & Ritel'],
+                            ['value' => 'Apartemen Kondominium', 'label' => 'Apartemen & Kondominium'],
+                            ['value' => 'Pabrik & Industri', 'label' => 'Pabrik & Kawasan Industri'],
+                        ];
+                    @endphp
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         <div>
-                            <label for="linkedin_city" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="linkedin_city" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                                 Kota Lokasi Proyek
                             </label>
-                            <select id="linkedin_city"
-                                    name="city"
-                                    class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                                <option value="">Pilih kota terdekat</option>
-                                @foreach($provinces as $prov)
-                                    <optgroup label="{{ $prov['name'] }}">
-                                        @foreach($prov['cities'] as $city)
-                                            <option value="{{ $city['name'] }}" {{ old('city') === $city['name'] ? 'selected' : '' }}>
-                                                {{ $city['name'] }}
-                                            </option>
-                                        @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
+                            <x-ui.compact-select
+                                id="linkedin_city"
+                                name="city"
+                                :value="old('city', '')"
+                                :groups="$linkedinCityGroups"
+                                placeholder="Pilih kota terdekat"
+                                :searchable="true"
+                                search-placeholder="Cari kota proyek..."
+                            />
                         </div>
                         <div>
-                            <label for="linkedin_district" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="linkedin_district" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                                 Kawasan / Kecamatan
                             </label>
                             <input id="linkedin_district"
@@ -280,36 +291,34 @@
                                    name="district"
                                    value="{{ old('district') }}"
                                    placeholder="Contoh: SCBD / Cikarang / Kuningan"
-                                   class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
+                                   class="w-full h-10 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         <div>
-                            <label for="linkedin_service_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="linkedin_service_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                                 Lingkup Pekerjaan
                             </label>
-                            <select id="linkedin_service_type"
-                                    name="service_type"
-                                    class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                                @foreach($linkedinProblems as $opt)
-                                    <option value="{{ $opt }}" {{ old('service_type') === $opt ? 'selected' : '' }}>{{ $opt }}</option>
-                                @endforeach
-                            </select>
+                            <x-ui.compact-select
+                                id="linkedin_service_type"
+                                name="service_type"
+                                :value="old('service_type', $linkedinProblems[0] ?? '')"
+                                :options="$linkedinProblems"
+                                :allow-clear="false"
+                            />
                         </div>
                         <div>
-                            <label for="linkedin_property_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            <label for="linkedin_property_type" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
                                 Sektor Properti
                             </label>
-                            <select id="linkedin_property_type"
-                                    name="property_type"
-                                    class="w-full min-h-11 rounded-md border border-slate-300 bg-white px-3.5 py-2.5 text-base sm:text-sm text-slate-900 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">
-                                <option value="Restoran Kafe FNB">Restoran, Kafe &amp; F&amp;B</option>
-                                <option value="Gedung Perkantoran / Hotel">Gedung Perkantoran &amp; Hotel</option>
-                                <option value="Ruko Bisnis & Rukan">Ruko Bisnis &amp; Ritel</option>
-                                <option value="Apartemen Kondominium">Apartemen &amp; Kondominium</option>
-                                <option value="Pabrik & Industri">Pabrik &amp; Kawasan Industri</option>
-                            </select>
+                            <x-ui.compact-select
+                                id="linkedin_property_type"
+                                name="property_type"
+                                :value="old('property_type', 'Restoran Kafe FNB')"
+                                :options="$linkedinPropertyOptions"
+                                :allow-clear="false"
+                            />
                         </div>
                     </div>
 
