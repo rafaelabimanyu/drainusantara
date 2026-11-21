@@ -29,14 +29,13 @@ class ArticleController extends Controller
         $page = \Illuminate\Pagination\Paginator::resolveCurrentPage();
         $searchTerm = trim((string) ($request->input('q') ?: $request->input('search')));
 
-        $canonicalParams = [];
-        if ($page > 1) {
-            $canonicalParams['page'] = $page;
-        }
         if ($searchTerm !== '') {
-            $canonicalParams['q'] = $searchTerm;
+            $canonical = route('articles.index');
+            SEOMeta::setRobots('noindex, follow');
+        } else {
+            $canonicalParams = $page > 1 ? ['page' => $page] : [];
+            $canonical = route('articles.index', $canonicalParams);
         }
-        $canonical = route('articles.index', $canonicalParams);
 
         $pageTitle = $searchTerm !== ''
             ? "Pencarian '{$searchTerm}' - Panduan Perawatan Pipa"

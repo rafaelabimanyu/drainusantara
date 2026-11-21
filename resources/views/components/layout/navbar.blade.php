@@ -1,7 +1,7 @@
 @props(['navServices' => null])
 @php
     $navRegions = \App\Services\RegionService::all();
-    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*');
+    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*') && !request()->is('customer-service*');
     $isAbout = request()->is('tentang-kami*') || request()->routeIs('about*') || request()->routeIs('how-it-works') || request()->is('cara-kerja*') || request()->is('proses-kerja*') || request()->routeIs('equipment.show') || request()->is('kemitraan*') || request()->routeIs('partnership.show');
     $isGallery = request()->is('galeri*') || request()->routeIs('gallery') || request()->is('studi-kasus*') || request()->routeIs('case-study*');
     $isArea = request()->is('area*') || request()->routeIs('area*');
@@ -303,7 +303,7 @@
 
                 <!-- 7. Kontak -->
                 <a href="{{ route('contact') }}" 
-                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ request()->routeIs('contact') ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
+                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ (request()->routeIs('contact') || request()->routeIs('customer-service.*')) ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'hover:text-white hover:bg-slate-800/60 text-slate-300 border-transparent' }}">
                     Kontak
                 </a>
             </nav>

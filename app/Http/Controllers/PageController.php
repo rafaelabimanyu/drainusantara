@@ -93,7 +93,7 @@ class PageController extends Controller
         return app(SitemapController::class)->robots();
     }
 
-    public function about(): View
+    public function about(): RedirectResponse
     {
         return app(AboutController::class)->about();
     }

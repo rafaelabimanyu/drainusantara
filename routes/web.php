@@ -138,6 +138,12 @@ Route::get('/kontak', [Pages\ContactController::class, 'index'])->name('contact'
 Route::post('/kontak', [Pages\ContactController::class, 'submit'])->middleware('throttle:10,1')->name('contact.submit');
 Route::get('/hubungi-kami', fn () => redirect()->route('contact', [], 301));
 
+// Customer Service Hub & Social Media Bio Landing Pages
+Route::get('/customer-service', [Pages\CustomerServiceController::class, 'index'])->name('customer-service.index');
+Route::get('/customer-service/{socialMedia}', [Pages\CustomerServiceController::class, 'show'])
+    ->whereIn('socialMedia', ['whatsapp', 'instagram', 'tiktok', 'facebook', 'youtube', 'linkedin'])
+    ->name('customer-service.show');
+
 // Halaman Legalitas & Kebijakan
 Route::get('/kebijakan-privasi', [Pages\LegalController::class, 'privacy'])->name('legal.privacy');
 Route::get('/privacy-policy', fn () => redirect()->route('legal.privacy', [], 301));

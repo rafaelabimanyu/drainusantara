@@ -397,6 +397,8 @@
             <div class="flex items-center gap-3 sm:gap-4 text-slate-400 text-xs flex-wrap justify-center sm:justify-end">
                 <a href="{{ route('contact') }}" class="hover:text-white transition-colors font-semibold text-sky-400">Kontak Kami</a>
                 <span class="text-slate-600">&bull;</span>
+                <a href="{{ route('customer-service.index') }}" class="hover:text-white transition-colors">Customer Service</a>
+                <span class="text-slate-600">&bull;</span>
                 <a href="{{ route('legal.privacy') }}" class="hover:text-white transition-colors">Kebijakan Privasi</a>
                 <span class="text-slate-600">&bull;</span>
                 <a href="{{ route('legal.terms') }}" class="hover:text-white transition-colors">Syarat &amp; Ketentuan</a>

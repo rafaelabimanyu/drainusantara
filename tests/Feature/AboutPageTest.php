@@ -22,12 +22,10 @@ class AboutPageTest extends TestCase
         $resProfile->assertSee('Staff &amp; Teknisi Lapangan Siaga', false);
         $resProfile->assertSee('Daftar Staff &amp; Teknisi Lapangan Sedang Diperbarui', false);
 
-        // Main alias /tentang-kami
+        // Main alias /tentang-kami redirects 301 to canonical /tentang-kami/profil
         $resMain = $this->get('/tentang-kami');
-        $resMain->assertStatus(200);
-        $resMain->assertSee('Profil Resmi Drainusantara');
-        $resMain->assertSee('STANDAR PERALATAN TEKNISI');
-        $resMain->assertSee('Peralatan Mekanis &amp; Diagnosis Visual Armada', false);
+        $resMain->assertStatus(301);
+        $resMain->assertRedirect(route('about.profile'));
 
         // 2. Struktur Induk PT Jawa Jaya Rooter
         $resHolding = $this->get('/tentang-kami/holding');

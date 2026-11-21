@@ -236,6 +236,29 @@
                     @endif
                 </section>
 
+                <!-- 6. Kanal Customer Service Media Sosial -->
+                <section class="bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-2xs">
+                    <div class="flex items-center justify-between pb-3.5 border-b border-slate-100 mb-4">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-sky-800">LAYANAN PELANGGAN</p>
+                            <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-0.5">Kanal Customer Service Media Sosial</h2>
+                        </div>
+                        <a href="{{ route('customer-service.index') }}" class="text-xs font-semibold text-sky-700 hover:underline">
+                            Pusat CS &rarr;
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
+                        @foreach(config('customer_service.channels', []) as $csSlug => $csItem)
+                            <a href="{{ route('customer-service.show', ['socialMedia' => $csSlug]) }}"
+                               class="p-2.5 rounded-lg border border-slate-100 hover:border-sky-300 hover:bg-sky-50/40 text-slate-700 hover:text-sky-800 transition-all font-medium flex items-center justify-between group">
+                                <span class="truncate">{{ $csItem['breadcrumb_label'] }}</span>
+                                <span class="text-slate-400 group-hover:text-sky-700 shrink-0 ml-1.5">&rarr;</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </section>
+
             </div>
 
         </div>

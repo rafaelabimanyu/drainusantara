@@ -30,49 +30,7 @@
             ? $partnership->image
             : asset($partnership->image);
     }
-
-    $seoImage = $partnership->image ?: ($partnership->logo ?: asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
-    $seoImageUrl = filter_var($seoImage, FILTER_VALIDATE_URL) ? $seoImage : asset($seoImage);
-
-    $articleJsonLd = [
-        '@context' => 'https://schema.org',
-        '@type' => 'Article',
-        'headline' => 'Kemitraan Pemeliharaan Saluran Drainase: ' . $partnership->client_name,
-        'description' => \Illuminate\Support\Str::limit(strip_tags($partnership->description ?? ''), 160),
-        'image' => $seoImageUrl,
-        'datePublished' => optional($partnership->created_at)->toIso8601String() ?? now()->toIso8601String(),
-        'dateModified' => optional($partnership->updated_at)->toIso8601String() ?? optional($partnership->created_at)->toIso8601String(),
-        'author' => [
-            '@type' => 'Organization',
-            'name' => 'Drainusantara',
-            'url' => url('/'),
-        ],
-        'publisher' => [
-            '@type' => 'Organization',
-            'name' => 'Drainusantara',
-            'logo' => [
-                '@type' => 'ImageObject',
-                'url' => asset('images/logo/WebIcon.webp'),
-            ],
-        ],
-        'collaboratedWith' => [
-            '@type' => 'Organization',
-            'name' => $partnership->client_name,
-            'description' => $partnership->client_type ?? 'Mitra Usaha',
-            'address' => $partnership->location ?? 'Indonesia',
-        ],
-        'mainEntityOfPage' => [
-            '@type' => 'WebPage',
-            '@id' => url()->current(),
-        ],
-    ];
 @endphp
-
-@push('head')
-<script type="application/ld+json">
-{!! json_encode($articleJsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR) !!}
-</script>
-@endpush
 
 @section('content')
 <article class="bg-white text-slate-800">

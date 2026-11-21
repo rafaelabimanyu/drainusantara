@@ -15,13 +15,13 @@ class BreadcrumbSchemaTest extends TestCase
             'area.index' => [['Beranda', url('/')], ['Area Layanan', route('area.index')]],
             'gallery' => [['Beranda', url('/')], ['Galeri', route('gallery')]],
             'articles.index' => [['Beranda', url('/')], ['Blog', route('articles.index')]],
-            'about.profile' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Profil Perusahaan', route('about.profile')]],
-            'about.holding' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Induk PT Jawa Jaya Rooter', route('about.holding')]],
-            'about.k3' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['SOP K3', route('about.k3')]],
-            'about.equipment' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Peralatan & Teknologi', route('about.equipment')]],
-            'about.portfolio' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Klien & Portofolio', route('about.portfolio')]],
-            'about.warranty' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['Ketentuan Garansi', route('about.warranty')]],
-            'about.faq' => [['Beranda', url('/')], ['Tentang Kami', route('about')], ['FAQ', route('about.faq')]],
+            'about.profile' => [['Beranda', url('/')], ['Tentang Kami', route('about.profile')], ['Profil Perusahaan', route('about.profile')]],
+            'about.holding' => [['Beranda', url('/')], ['Tentang Kami', route('about.profile')], ['Induk PT Jawa Jaya Rooter', route('about.holding')]],
+            'about.k3' => [['Beranda', url('/')], ['Tentang Kami', route('about.profile')], ['SOP K3', route('about.k3')]],
+            'about.equipment' => [['Beranda', url('/')], ['Tentang Kami', route('about.profile')], ['Peralatan & Teknologi', route('about.equipment')]],
+            'about.portfolio' => [['Beranda', url('/')], ['Tentang Kami', route('about.profile')], ['Klien & Portofolio', route('about.portfolio')]],
+            'about.warranty' => [['Beranda', url('/')], ['Tentang Kami', route('about.profile')], ['Ketentuan Garansi', route('about.warranty')]],
+            'about.faq' => [['Beranda', url('/')], ['Tentang Kami', route('about.profile')], ['FAQ', route('about.faq')]],
         ];
 
         foreach ($pages as $route => $expected) {

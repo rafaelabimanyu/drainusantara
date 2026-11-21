@@ -320,6 +320,37 @@
 
         </div>
 
+        <!-- Meja Customer Service per Media Sosial -->
+        <div class="mt-10 bg-white rounded-xl border border-slate-200 p-6 sm:p-8 shadow-2xs space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 border-b border-slate-100">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+                        Meja Customer Service per Media Sosial
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                        Akses jalur resmi tautan bio Instagram, TikTok, Facebook, YouTube, LinkedIn, dan WhatsApp dengan pemilih wilayah otomatis.
+                    </p>
+                </div>
+                <a href="{{ route('customer-service.index') }}"
+                   class="min-h-11 inline-flex items-center px-3.5 py-2 rounded-md border border-slate-300 bg-slate-50 hover:bg-slate-100 text-xs sm:text-sm font-bold text-slate-800 shrink-0 transition-colors">
+                    Lihat Pusat Customer Service
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                @foreach(config('customer_service.channels', []) as $csSlug => $csItem)
+                    <a href="{{ route('customer-service.show', ['socialMedia' => $csSlug]) }}"
+                       class="min-h-12 p-4 rounded-lg border border-slate-200 bg-slate-50 hover:bg-white hover:border-sky-600 transition-colors flex flex-col justify-between gap-1.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-sm font-extrabold text-slate-900">{{ $csItem['breadcrumb_label'] }}</span>
+                            <span class="text-xs font-bold text-sky-700">{{ $csItem['handle'] }}</span>
+                        </div>
+                        <span class="text-xs text-slate-600 leading-relaxed">{{ $csItem['summary'] }}</span>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
     </div>
 </section>
 @endsection

@@ -7,11 +7,6 @@
 
     {!! SEO::generate() !!}
 
-    <!-- Search Engine Crawler Bots -->
-    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="yandex" content="index, follow">
-
     <!-- Browser, Mobile OS & Progressive Display -->
     <meta name="theme-color" content="#0369a1" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
@@ -24,8 +19,11 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- Language & Regional Alternates -->
-    <link rel="alternate" hreflang="id" href="{{ url()->current() }}">
-    <link rel="alternate" hreflang="x-default" href="{{ url()->current() }}">
+    @php
+        $hreflangUrl = \Artesaos\SEOTools\Facades\SEOMeta::getCanonical() ?: url()->current();
+    @endphp
+    <link rel="alternate" hreflang="id" href="{{ $hreflangUrl }}">
+    <link rel="alternate" hreflang="x-default" href="{{ $hreflangUrl }}">
 
     <!-- Geo-Location standard Indonesia & Regional Targeting -->
     @hasSection('custom_geo')

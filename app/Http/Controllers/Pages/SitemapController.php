@@ -208,6 +208,15 @@ class SitemapController extends Controller
         $urls[] = ['loc' => route('about.faq'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
         $urls[] = ['loc' => route('legal.terms'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => route('customer-service.index'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        foreach (array_keys(config('customer_service.channels', [])) as $csSlug) {
+            $urls[] = [
+                'loc' => route('customer-service.show', ['socialMedia' => $csSlug]),
+                'lastmod' => $fallbackLastmod,
+                'changefreq' => 'weekly',
+                'priority' => '0.8',
+            ];
+        }
 
         // Regional landing routes - indexed O(1) hash map lookup
         $provinces = RegionService::all();
@@ -376,6 +385,15 @@ class SitemapController extends Controller
         $urls[] = ['loc' => route('about.faq'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
         $urls[] = ['loc' => route('legal.terms'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
+        $urls[] = ['loc' => route('customer-service.index'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
+        foreach (array_keys(config('customer_service.channels', [])) as $csSlug) {
+            $urls[] = [
+                'loc' => route('customer-service.show', ['socialMedia' => $csSlug]),
+                'lastmod' => $fallbackLastmod,
+                'changefreq' => 'weekly',
+                'priority' => '0.8',
+            ];
+        }
 
         $provinces = RegionService::all();
         foreach ($provinces as $provSlug => $prov) {

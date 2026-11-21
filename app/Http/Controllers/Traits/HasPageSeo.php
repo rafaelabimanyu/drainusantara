@@ -13,7 +13,7 @@ trait HasPageSeo
      */
     protected function addAboutBreadcrumb(string $name, string $route): void
     {
-        $this->addBreadcrumb(['Tentang Kami', route('about')], [$name, route($route)]);
+        $this->addBreadcrumb(['Tentang Kami', route('about.profile')], [$name, route($route)]);
     }
 
     /**
