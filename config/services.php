@@ -41,6 +41,7 @@ return [
         'youtube' => env('SOCIAL_YOUTUBE', 'https://youtube.com/@drainusantara'),
         'facebook' => env('SOCIAL_FACEBOOK', 'https://facebook.com/drainusantara'),
         'linkedin' => env('SOCIAL_LINKEDIN', 'https://linkedin.com/company/drainusantara'),
+        'x' => env('SOCIAL_X', 'https://x.com/drainusantara'),
         'whatsapp' => env('SOCIAL_WHATSAPP', 'https://wa.me/6285609009009'),
     ],
     'company' => [

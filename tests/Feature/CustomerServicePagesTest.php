@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Models\Article;
 use App\Models\Equipment;
 use App\Models\Gallery;
 use App\Models\Portfolio;
@@ -51,10 +52,10 @@ class CustomerServicePagesTest extends TestCase
         }, $scripts[1]));
     }
 
-    public function test_hub_and_all_six_channel_pages_render_uniquely_for_indexing(): void
+    public function test_hub_and_all_seven_channel_pages_render_uniquely_for_indexing(): void
     {
         $channels = config('customer_service.channels', []);
-        $this->assertCount(6, $channels);
+        $this->assertCount(7, $channels);
 
         $routes = [route('customer-service.index')];
         foreach (array_keys($channels) as $slug) {
@@ -132,10 +133,10 @@ class CustomerServicePagesTest extends TestCase
             }
         }
 
-        $this->assertCount(7, array_unique($titles), 'Page titles must be unique across all 7 CS pages.');
-        $this->assertCount(7, array_unique($descriptions), 'Meta descriptions must be unique across all 7 CS pages.');
-        $this->assertCount(7, array_unique($h1s), 'H1 headings must be unique across all 7 CS pages.');
-        $this->assertCount(28, array_unique($faqQuestions), 'All 28 FAQ questions across 7 pages must be distinct.');
+        $this->assertCount(8, array_unique($titles), 'Page titles must be unique across all 8 CS pages.');
+        $this->assertCount(8, array_unique($descriptions), 'Meta descriptions must be unique across all 8 CS pages.');
+        $this->assertCount(8, array_unique($h1s), 'H1 headings must be unique across all 8 CS pages.');
+        $this->assertCount(32, array_unique($faqQuestions), 'All 32 FAQ questions across 8 pages must be distinct.');
     }
 
     public function test_each_channel_uses_expected_whatsapp_greeting_template_and_number_override(): void
@@ -150,6 +151,7 @@ class CustomerServicePagesTest extends TestCase
             'facebook' => 'fb',
             'youtube' => 'youtube',
             'linkedin' => 'linkedin',
+            'x' => 'x',
         ];
 
         foreach ($expectedCodes as $slug => $code) {
@@ -184,8 +186,11 @@ class CustomerServicePagesTest extends TestCase
         }
     }
 
-    public function test_invalid_social_media_channel_returns_404(): void
+    public function test_invalid_social_media_channel_returns_404_and_twitter_aliases_to_x(): void
     {
+        $this->get('/customer-service/twitter')
+            ->assertStatus(301)
+            ->assertRedirect(route('customer-service.show', ['socialMedia' => 'x']));
         $this->get('/customer-service/threads')->assertNotFound();
         $this->get('/customer-service/unknown-channel')->assertNotFound();
     }
@@ -242,6 +247,16 @@ class CustomerServicePagesTest extends TestCase
             'order' => 1,
         ]);
 
+        Article::create([
+            'title' => 'Bahaya Soda Api pada Pipa PVC Dapur',
+            'slug' => 'bahaya-soda-api-pada-pipa-pvc-dapur',
+            'excerpt' => 'Reaksi panas soda api dapat melunakkan pipa PVC dan mengeras di belokan.',
+            'content' => 'Gunakan spiral baja rooter untuk hasil aman tanpa bongkar keramik.',
+            'category' => 'Edukasi',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
         $this->resetSeoTools();
         $this->get(route('customer-service.show', ['socialMedia' => 'whatsapp']))
             ->assertOk()
@@ -277,6 +292,12 @@ class CustomerServicePagesTest extends TestCase
             ->assertOk()
             ->assertSee('PT Kuliner Nusantara Jaya')
             ->assertSee('Form Permintaan Survei &amp; Penawaran B2B', false);
+
+        $this->resetSeoTools();
+        $this->get(route('customer-service.show', ['socialMedia' => 'x']))
+            ->assertOk()
+            ->assertSee('Bahaya Soda Api pada Pipa PVC Dapur')
+            ->assertSee('Alur Respon Cepat dari Mention &amp; DM X ke Teknisi Lapangan', false);
     }
 
     public function test_linkedin_b2b_form_submits_and_redirects_back_to_linkedin_page(): void

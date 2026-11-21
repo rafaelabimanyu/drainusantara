@@ -226,6 +226,43 @@ return [
                 ],
             ],
         ],
+        'x' => [
+            'slug' => 'x',
+            'admin_code' => 'x',
+            'name' => 'X (Twitter)',
+            'breadcrumb_label' => 'Customer Service X (Twitter)',
+            'handle' => '@drainusantara',
+            'social_config_key' => 'x',
+            'whatsapp_number' => env('WHATSAPP_NUMBER_X'),
+            'summary' => 'Tanggapan cepat untuk mention, DM, dan pembaca utasan edukasi sanitasi di akun X (Twitter) @drainusantara.',
+            'seo_title' => 'Customer Service Resmi X (Twitter) @drainusantara | Respon Cepat & Panduan Pipa',
+            'seo_description' => 'Tautan resmi bio X (Twitter) @drainusantara. Pilih kota dan kecamatan Anda untuk terhubung ke admin X Drainusantara via WhatsApp, baca panduan teknis saluran mampet, dan pesan teknisi siaga 24 jam.',
+            'seo_keywords' => [
+                'customer service x drainusantara',
+                'customer service twitter drainusantara',
+                'admin x drainusantara',
+                'twitter jasa saluran mampet',
+                'utasan tips pipa mampet',
+            ],
+            'faqs' => [
+                [
+                    'question' => 'Apakah laporan saluran mampet lewat mention atau DM di X (Twitter) langsung ditindaklanjuti ke WhatsApp?',
+                    'answer' => 'Ya. Untuk menjaga privasi alamat rumah dan pengiriman pin lokasi Google Maps, admin X akan mengarahkan detail laporan Anda ke WhatsApp posko terdekat melalui tombol di halaman ini.',
+                ],
+                [
+                    'question' => 'Data apa saja yang perlu disiapkan setelah membaca utasan edukasi di X @drainusantara?',
+                    'answer' => 'Cukup sebutkan kota serta kecamatan lokasi Anda, titik saluran yang tersumbat (wastafel, floor drain, kloset, atau grease trap), dan riwayat pemakaian soda api bila pernah dituang.',
+                ],
+                [
+                    'question' => 'Apakah tarif dan garansi pengerjaan via kanal X (Twitter) sama dengan halaman utama?',
+                    'answer' => 'Sama persis. Estimasi dasar mulai Rp 400.000 dengan sistem mekanis spiral baja rooter tanpa membongkar keramik, kebijakan No Cure No Pay, dan nota garansi resmi 30 hari kalender.',
+                ],
+                [
+                    'question' => 'Apakah admin X Drainusantara melayani panggilan darurat pipa meluap pada malam hari?',
+                    'answer' => 'Ya. Operator WhatsApp terhubung langsung dengan armada siaga 24 jam sehingga permintaan malam hari atau akhir pekan tetap dijadwalkan dari posko kota terdekat.',
+                ],
+            ],
+        ],
     ],
 
     'hub_faqs' => [
@@ -234,7 +271,7 @@ return [
             'answer' => 'Seluruh halaman /customer-service/{media-sosial} berada di domain resmi drainusantara.id dan terhubung ke nomor layanan utama 0856-0900-9009 di bawah naungan PT Jawa Jaya Rooter.',
         ],
         [
-            'question' => 'Apakah ada perbedaan tarif layanan antara memesan lewat WhatsApp, Instagram, TikTok, Facebook, YouTube, atau LinkedIn?',
+            'question' => 'Apakah ada perbedaan tarif layanan antara memesan lewat WhatsApp, Instagram, TikTok, Facebook, YouTube, LinkedIn, atau X (Twitter)?',
             'answer' => 'Tidak ada perbedaan tarif. Seluruh kanal memakai standar estimasi yang sama mulai Rp 400.000 dengan kebijakan No Cure No Pay dan garansi tertulis 30 hari kalender.',
         ],
         [

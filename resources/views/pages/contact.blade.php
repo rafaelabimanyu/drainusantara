@@ -328,7 +328,7 @@
                         Meja Customer Service per Media Sosial
                     </h2>
                     <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                        Akses jalur resmi tautan bio Instagram, TikTok, Facebook, YouTube, LinkedIn, dan WhatsApp dengan pemilih wilayah otomatis.
+                        Akses jalur resmi tautan bio Instagram, TikTok, Facebook, YouTube, LinkedIn, X (Twitter), dan WhatsApp dengan pemilih wilayah otomatis.
                     </p>
                 </div>
                 <a href="{{ route('customer-service.index') }}"

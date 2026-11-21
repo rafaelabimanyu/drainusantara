@@ -45,7 +45,7 @@
 
 <section class="relative z-20 -mt-8 sm:-mt-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     <div class="bg-white border border-slate-200 rounded-lg p-2.5 sm:p-4 shadow-sm">
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-2.5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-2.5">
             @foreach($channels as $slug => $item)
                 <a href="{{ route('customer-service.show', ['socialMedia' => $slug]) }}"
                    class="min-h-12 px-2.5 sm:px-3 py-2.5 rounded-md border border-slate-200 bg-slate-50 hover:bg-sky-50 hover:border-sky-600 text-slate-900 transition-colors card-lift flex items-center gap-2 sm:gap-2.5 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-600">

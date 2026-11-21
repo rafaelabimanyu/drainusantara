@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\HasPageSeo;
+use App\Models\Article;
 use App\Models\Equipment;
 use App\Models\Gallery;
 use App\Models\Portfolio;
@@ -45,7 +46,7 @@ class CustomerServiceController extends Controller
         $contextualWaUrl = "https://wa.me/{$whatsappNumber}?text=".rawurlencode($contextualWaMsg);
 
         $pageTitle = 'Pusat Customer Service Resmi & Verifikasi Akun Media Sosial';
-        $metaDesc = 'Direktori resmi customer service Drainusantara di WhatsApp, Instagram, TikTok, Facebook, YouTube, dan LinkedIn. Pilih kanal layanan sesuai kebutuhan hunian atau korporat B2B Anda.';
+        $metaDesc = 'Direktori resmi customer service Drainusantara di WhatsApp, Instagram, TikTok, Facebook, YouTube, LinkedIn, dan X (Twitter). Pilih kanal layanan sesuai kebutuhan hunian atau korporat B2B Anda.';
 
         PageMetadata::title($pageTitle);
         SEOMeta::setDescription($metaDesc);
@@ -206,6 +207,15 @@ class CustomerServiceController extends Controller
             'linkedin' => [
                 ...$viewData,
                 'portfolios' => Portfolio::where('is_active', true)->with('services:id,name')->orderBy('order')->limit(6)->get(),
+            ],
+            'x' => [
+                ...$viewData,
+                'articles' => Article::where('is_published', true)
+                    ->with(['categoryRelation', 'subcategoryRelation'])
+                    ->latest('published_at')
+                    ->latest('id')
+                    ->limit(6)
+                    ->get(),
             ],
             default => $viewData,
         };

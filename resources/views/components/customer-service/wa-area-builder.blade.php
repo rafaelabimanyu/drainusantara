@@ -33,6 +33,7 @@
         'fb' => 'facebook',
         'youtube' => 'youtube',
         'linkedin' => 'linkedin',
+        'x' => 'x',
     ];
     $resolvedSlug = $channelSlug ?: ($slugMap[$channelCode] ?? 'whatsapp');
     $accentIconBox = match ($resolvedSlug) {
@@ -41,6 +42,7 @@
         'facebook' => $isDark ? 'bg-blue-950/80 text-blue-300 border-blue-800' : 'bg-blue-50 text-blue-700 border-blue-200',
         'youtube' => $isDark ? 'bg-red-950/80 text-red-300 border-red-800' : 'bg-red-50 text-red-700 border-red-200',
         'linkedin' => $isDark ? 'bg-sky-950/80 text-sky-300 border-sky-800' : 'bg-sky-50 text-sky-800 border-sky-200',
+        'x' => $isDark ? 'bg-slate-950 text-white border-slate-600' : 'bg-slate-900 text-white border-slate-800',
         default => $isDark ? 'bg-emerald-950/80 text-emerald-300 border-emerald-800' : 'bg-emerald-50 text-emerald-800 border-emerald-200',
     };
 @endphp

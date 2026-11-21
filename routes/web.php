@@ -140,8 +140,9 @@ Route::get('/hubungi-kami', fn () => redirect()->route('contact', [], 301));
 
 // Customer Service Hub & Social Media Bio Landing Pages
 Route::get('/customer-service', [Pages\CustomerServiceController::class, 'index'])->name('customer-service.index');
+Route::get('/customer-service/twitter', fn () => redirect()->route('customer-service.show', ['socialMedia' => 'x'], 301));
 Route::get('/customer-service/{socialMedia}', [Pages\CustomerServiceController::class, 'show'])
-    ->whereIn('socialMedia', ['whatsapp', 'instagram', 'tiktok', 'facebook', 'youtube', 'linkedin'])
+    ->whereIn('socialMedia', ['whatsapp', 'instagram', 'tiktok', 'facebook', 'youtube', 'linkedin', 'x'])
     ->name('customer-service.show');
 
 // Halaman Legalitas & Kebijakan
