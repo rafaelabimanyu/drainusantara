@@ -13,7 +13,7 @@ trait HasPageSeo
      */
     protected function addAboutBreadcrumb(string $name, string $route): void
     {
-        $this->addBreadcrumb(['Tentang Kami', route('about')], [$name, route($route)]);
+        $this->addBreadcrumb(['Tentang Kami', route('about.profile')], [$name, route($route)]);
     }
 
     /**
@@ -88,6 +88,7 @@ trait HasPageSeo
             config('services.social.facebook'),
             config('services.social.youtube'),
             config('services.social.linkedin'),
+            config('services.social.x'),
         ];
 
         return array_values(array_filter($urls, fn ($url) => ! empty($url) && is_string($url) && filter_var($url, FILTER_VALIDATE_URL)));

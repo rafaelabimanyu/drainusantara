@@ -96,7 +96,7 @@
        
         <div class="flex-1 overflow-y-auto px-4 py-3 flex flex-col justify-start space-y-1">
             @php
-                $isDrawerHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*');
+                $isDrawerHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*') && !request()->is('customer-service*');
                 $isDrawerGallery = request()->is('galeri*') || request()->routeIs('gallery') || request()->is('studi-kasus*') || request()->routeIs('case-study*');
                 $isDrawerHowItWorks = request()->routeIs('how-it-works') || request()->is('cara-kerja*') || request()->is('proses-kerja*');
                 $isDrawerBlog = request()->is('artikel*') || request()->is('pengetahuan*') || request()->is('blog*') || request()->routeIs('articles*');
@@ -308,7 +308,7 @@
             <!-- 8. Kontak Kami -->
             <a href="{{ route('contact') }}" 
                @click="sidebarOpen = false"
-               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ request()->routeIs('contact') ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
+               class="flex items-center justify-between px-3.5 py-2.5 rounded-lg transition-all btn-press min-h-11 focus:outline-hidden focus:ring-2 focus:ring-sky-600 {{ (request()->routeIs('contact') || request()->routeIs('customer-service.*')) ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200/80' : 'text-slate-700 hover:text-sky-700 hover:bg-slate-50 active:bg-sky-50 border border-transparent' }}">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-md bg-sky-50 text-sky-700 flex items-center justify-center shrink-0 border border-sky-100" aria-hidden="true">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -138,7 +138,24 @@ class RegionalTaxonomy
         return match ($citySlug) {
             'semarang', 'kabupaten-semarang', 'demak' => 'semarang_pantura',
             'bandung', 'kabupaten-bandung', 'kota-cimahi' => 'bandung_highland',
-            'kota-denpasar', 'badung', 'gianyar', 'tabanan', 'buleleng', 'bangli' => 'bali_hospitality',
+            'kota-denpasar',
+            'denpasar',
+            'kabupaten-badung',
+            'badung',
+            'kabupaten-gianyar',
+            'gianyar',
+            'kabupaten-tabanan',
+            'tabanan',
+            'kabupaten-buleleng',
+            'buleleng',
+            'kabupaten-bangli',
+            'bangli',
+            'kabupaten-klungkung',
+            'klungkung',
+            'kabupaten-karangasem',
+            'karangasem',
+            'kabupaten-jembrana',
+            'jembrana' => 'bali_hospitality',
             'bandar-lampung' => 'lampung_commercial',
             'depok-cinere', 'bogor', 'tangerang-kota', 'tangerang-selatan', 'bekasi-cikarang' => 'bodetabek_cluster',
             default => 'jakarta_metropolitan',
@@ -569,8 +586,8 @@ class RegionalTaxonomy
             ];
         }
 
-        // 3. BALI (Denpasar, Badung, Gianyar, Tabanan)
-        if (in_array($citySlug, ['kota-denpasar', 'badung', 'gianyar', 'tabanan'], true)) {
+        // 3. BALI (Seluruh Kabupaten/Kota Bali)
+        if (self::resolveZone($citySlug) === 'bali_hospitality') {
             $landmarks = ['Kuta & Legian', 'Seminyak & Kerobokan', 'Canggu & Berawa', 'Sanur & Renon', 'Ubud & Tegallalang', 'Jimbaran & Bukit'];
 
             return [

@@ -40,6 +40,11 @@ class CacheService
         foreach (self::PUBLIC_KEYS as $key) {
             Cache::forget($key);
         }
+
+        $staticSitemapPath = public_path('sitemap.xml');
+        if (is_file($staticSitemapPath)) {
+            @unlink($staticSitemapPath);
+        }
     }
 
     /**

@@ -25,60 +25,7 @@
     }
 
     $equipmentList = $caseStudy->equipment ?? collect();
-    $equipmentNames = $equipmentList->pluck('name')->filter()->values()->all();
-
-    $rawImage = $caseStudy->before_image ?: ($caseStudy->image ?: $caseStudy->after_image);
-    $articleImageUrl = $rawImage 
-        ? (filter_var($rawImage, FILTER_VALIDATE_URL) ? $rawImage : asset($rawImage)) 
-        : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
-
-    $articleJsonLd = [
-        '@context' => 'https://schema.org',
-        '@type' => 'Article',
-        'headline' => $caseStudy->title,
-        'description' => \Illuminate\Support\Str::limit(strip_tags($caseStudy->description ?? ''), 160),
-        'image' => $articleImageUrl,
-        'datePublished' => optional($caseStudy->created_at)->toIso8601String() ?? now()->toIso8601String(),
-        'dateModified' => optional($caseStudy->updated_at)->toIso8601String() ?? optional($caseStudy->created_at)->toIso8601String(),
-        'author' => [
-            '@type' => 'Organization',
-            'name' => 'Drainusantara',
-            'url' => url('/'),
-        ],
-        'publisher' => [
-            '@type' => 'Organization',
-            'name' => 'Drainusantara',
-            'logo' => [
-                '@type' => 'ImageObject',
-                'url' => asset('images/logo/WebIcon.webp'),
-            ],
-        ],
-        'mainEntityOfPage' => [
-            '@type' => 'WebPage',
-            '@id' => url()->current(),
-        ],
-    ];
-
-    if (!empty($equipmentNames)) {
-        $articleJsonLd['about'] = [
-            '@type' => 'ItemList',
-            'itemListElement' => array_map(function ($name, $index) {
-                return [
-                    '@type' => 'ListItem',
-                    'position' => $index + 1,
-                    'name' => $name,
-                ];
-            }, $equipmentNames, array_keys($equipmentNames)),
-        ];
-    }
 @endphp
-
-@push('head')
-<script type="application/ld+json">
-{!! json_encode($articleJsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR) !!}
-</script>
-@endpush
-
 
 @section('content')
 <article class="bg-white text-slate-800">

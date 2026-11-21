@@ -13,7 +13,7 @@
                 </li>
                 <li aria-hidden="true" class="text-slate-600">/</li>
                 <li>
-                    <a href="{{ route('about') }}" class="hover:text-white transition-colors">Tentang Kami</a>
+                    <a href="{{ route('about.profile') }}" class="hover:text-white transition-colors">Tentang Kami</a>
                 </li>
                 <li aria-hidden="true" class="text-slate-600">/</li>
                 <li>

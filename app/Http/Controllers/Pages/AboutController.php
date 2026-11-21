@@ -17,6 +17,7 @@ use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -25,11 +26,11 @@ class AboutController extends Controller
     use HasPageSeo;
 
     /**
-     * Display the About Us main entry page (delegates to Profil Perusahaan).
+     * Redirect /tentang-kami to canonical /tentang-kami/profil page.
      */
-    public function about(): View
+    public function about(): RedirectResponse
     {
-        return $this->aboutProfile();
+        return redirect()->route('about.profile', [], 301);
     }
 
     /**
@@ -131,6 +132,9 @@ class AboutController extends Controller
 
         TwitterCard::setDescription($companyPage->meta_description ?: 'Mesin spiral Ridgid K-50/K-60 dan kamera pipa CCTV IP68.');
         TwitterCard::setImage(asset($companyPage->hero_image ?: 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+
+        JsonLdMulti::setTitle($companyPage->meta_title ?: 'Peralatan & Teknologi - Drainusantara');
+        JsonLdMulti::setType('AboutPage');
         $this->addAboutBreadcrumb('Peralatan & Teknologi', 'about.equipment');
 
         $equipments = Cache::remember('equipments.all_active', 86400, function () {
@@ -160,7 +164,7 @@ class AboutController extends Controller
             ->take(3)
             ->get();
 
-        $pageTitle = $equipment->name.' | Spesifikasi & Teknologi Drainusantara';
+        $pageTitle = $equipment->name.' | Spesifikasi & Teknologi';
         $metaDescription = $equipment->short_description 
             ?: Str::limit(strip_tags((string) ($equipment->description ?? '')), 160)
             ?: "Spesifikasi teknis unit {$equipment->name} armada Drainusantara untuk pelancaran saluran pipa mampet tanpa bongkar.";
@@ -171,25 +175,20 @@ class AboutController extends Controller
 
         $imageUrl = $equipment->image ? asset($equipment->image) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
 
-        OpenGraph::setTitle($pageTitle);
+        OpenGraph::setTitle($pageTitle.' Drainusantara');
         OpenGraph::setDescription($metaDescription);
         OpenGraph::setUrl(route('equipment.show', $slug));
         OpenGraph::addProperty('type', 'product');
         OpenGraph::addImage($imageUrl);
 
-        TwitterCard::setTitle($pageTitle);
+        TwitterCard::setTitle($pageTitle.' Drainusantara');
         TwitterCard::setDescription($metaDescription);
         TwitterCard::setImage($imageUrl);
 
-        $this->addBreadcrumb(
-            ['Tentang Kami', route('about')],
-            ['Peralatan & Teknologi', route('about.equipment')],
-            [$equipment->name, route('equipment.show', $slug)]
-        );
-
-        $productSchema = JsonLdMulti::newJsonLd();
-        $productSchema->setType('Product');
-        $productSchema->addValues([
+        JsonLdMulti::setTitle($equipment->name);
+        JsonLdMulti::setDescription($metaDescription);
+        JsonLdMulti::setType('Product');
+        JsonLdMulti::addValues([
             'name' => $equipment->name,
             'description' => $metaDescription,
             'image' => $imageUrl,
@@ -206,6 +205,12 @@ class AboutController extends Controller
                 'availability' => 'https://schema.org/InStock',
             ],
         ]);
+
+        $this->addBreadcrumb(
+            ['Tentang Kami', route('about.profile')],
+            ['Peralatan & Teknologi', route('about.equipment')],
+            [$equipment->name, route('equipment.show', $slug)]
+        );
 
         return view('about.equipment-detail', compact('equipment', 'relatedEquipments'));
     }

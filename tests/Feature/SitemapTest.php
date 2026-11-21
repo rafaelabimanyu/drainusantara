@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Article;
+use App\Services\CacheService;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
@@ -164,5 +166,63 @@ class SitemapTest extends TestCase
 
         $response->assertStatus(301);
         $response->assertRedirect(route('sitemap.html'));
+    }
+
+    public function test_sitemap_generate_command_warms_both_cache_keys_and_removes_stale_static_file(): void
+    {
+        $staticPath = public_path('sitemap.xml');
+        file_put_contents($staticPath, '<urlset><url><loc>https://stale.test</loc></url></urlset>');
+
+        try {
+            Cache::put('sitemap_xml', '<stale/>', 60);
+            Cache::put('sitemap.xml', '<stale/>', 60);
+            Cache::forget('seo.last_ping');
+
+            $this->artisan('sitemap:generate --ping')->assertSuccessful();
+
+            $this->assertFileDoesNotExist($staticPath);
+
+            $xmlPrimary = Cache::get('sitemap_xml');
+            $xmlLegacy = Cache::get('sitemap.xml');
+
+            $this->assertIsString($xmlPrimary);
+            $this->assertSame($xmlPrimary, $xmlLegacy);
+            $this->assertNotSame('<stale/>', $xmlPrimary);
+            $this->assertStringContainsString('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', $xmlPrimary);
+            $this->assertStringContainsString(url('/'), $xmlPrimary);
+            $this->assertTrue(Cache::has('seo.last_ping'));
+        } finally {
+            if (is_file($staticPath)) {
+                @unlink($staticPath);
+            }
+        }
+    }
+
+    public function test_clear_public_cache_removes_stale_static_sitemap_file(): void
+    {
+        $staticPath = public_path('sitemap.xml');
+        file_put_contents($staticPath, '<urlset/>');
+
+        try {
+            CacheService::clearPublicCache();
+
+            $this->assertFileDoesNotExist($staticPath);
+        } finally {
+            if (is_file($staticPath)) {
+                @unlink($staticPath);
+            }
+        }
+    }
+
+    public function test_sitemap_generate_is_scheduled_daily_in_jakarta_timezone(): void
+    {
+        $events = app(Schedule::class)->events();
+        $matching = collect($events)->first(
+            fn ($event) => str_contains((string) $event->command, 'sitemap:generate --ping')
+        );
+
+        $this->assertNotNull($matching);
+        $this->assertSame('0 2 * * *', $matching->expression);
+        $this->assertSame('Asia/Jakarta', $matching->timezone);
     }
 }

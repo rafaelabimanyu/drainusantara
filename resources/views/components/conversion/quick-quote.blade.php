@@ -276,32 +276,50 @@
         <div x-show="step === 2" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-6">
             
             <!-- 1. Kota / Wilayah -->
+            @php
+                $quoteCityGroups = [
+                    [
+                        'label' => 'DKI Jakarta',
+                        'options' => [
+                            ['value' => 'Jakarta Selatan', 'label' => 'Jakarta Selatan'],
+                            ['value' => 'Jakarta Timur', 'label' => 'Jakarta Timur'],
+                            ['value' => 'Jakarta Barat', 'label' => 'Jakarta Barat'],
+                            ['value' => 'Jakarta Pusat', 'label' => 'Jakarta Pusat'],
+                            ['value' => 'Jakarta Utara', 'label' => 'Jakarta Utara'],
+                        ],
+                    ],
+                    [
+                        'label' => 'Bodetabek',
+                        'options' => [
+                            ['value' => 'Tangerang & Tangsel', 'label' => 'Kota Tangerang & Tangsel'],
+                            ['value' => 'Bekasi & Cikarang', 'label' => 'Bekasi & Cikarang'],
+                            ['value' => 'Depok & Cinere', 'label' => 'Depok & Cinere'],
+                            ['value' => 'Bogor', 'label' => 'Bogor & Sekitarnya'],
+                        ],
+                    ],
+                    [
+                        'label' => 'Hub Regional',
+                        'options' => [
+                            ['value' => 'Semarang', 'label' => 'Kota Semarang & Sekitarnya'],
+                            ['value' => 'Bandar Lampung', 'label' => 'Bandar Lampung & Sekitarnya'],
+                            ['value' => 'Wilayah Lainnya', 'label' => 'Wilayah Lainnya'],
+                        ],
+                    ],
+                ];
+            @endphp
             <div>
-                <label for="quote-city-select" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+                <label for="quote-city-select" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     1. Wilayah / Kota Lokasi Anda:
                 </label>
-                <select id="quote-city-select" 
-                        x-model="city" 
-                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-hidden focus:border-sky-600 focus:bg-white font-medium">
-                    <optgroup label="DKI Jakarta">
-                        <option value="Jakarta Selatan">Jakarta Selatan</option>
-                        <option value="Jakarta Timur">Jakarta Timur</option>
-                        <option value="Jakarta Barat">Jakarta Barat</option>
-                        <option value="Jakarta Pusat">Jakarta Pusat</option>
-                        <option value="Jakarta Utara">Jakarta Utara</option>
-                    </optgroup>
-                    <optgroup label="Bodetabek">
-                        <option value="Tangerang & Tangsel">Kota Tangerang &amp; Tangsel</option>
-                        <option value="Bekasi & Cikarang">Bekasi &amp; Cikarang</option>
-                        <option value="Depok & Cinere">Depok &amp; Cinere</option>
-                        <option value="Bogor">Bogor &amp; Sekitarnya</option>
-                    </optgroup>
-                    <optgroup label="Hub Regional">
-                        <option value="Semarang">Kota Semarang &amp; Sekitarnya</option>
-                        <option value="Bandar Lampung">Bandar Lampung &amp; Sekitarnya</option>
-                        <option value="Wilayah Lainnya">Wilayah Lainnya</option>
-                    </optgroup>
-                </select>
+                <x-ui.compact-select
+                    id="quote-city-select"
+                    x-model="city"
+                    :groups="$quoteCityGroups"
+                    placeholder="Pilih kota lokasi Anda"
+                    :searchable="true"
+                    search-placeholder="Cari kota lokasi..."
+                    :allow-clear="false"
+                />
             </div>
 
             <!-- 2. Kondisi Aliran -->

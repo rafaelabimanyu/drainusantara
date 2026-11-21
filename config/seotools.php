@@ -65,7 +65,7 @@ return [
             'title' => 'Drainusantara - Jasa Saluran Pipa Mampet',
             'description' => 'Layanan pelancaran saluran mampet tanpa bongkar & inspeksi CCTV pipa.',
             'url' => null,
-            'type' => 'PlumbingService',
+            'type' => 'Plumber',
             'images' => ['/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'],
         ],
     ],

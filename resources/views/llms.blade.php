@@ -64,4 +64,5 @@ Melayani cakupan rumah tinggal (residensial), ruko, restoran komersial, gedung p
 - [Profil Perusahaan PT Jawa Jaya Rooter]({{ route('about.profile') }})
 - [Syarat & Ketentuan Garansi]({{ route('about.warranty') }})
 - [Katalog Peralatan]({{ route('about.equipment') }})
+- [Pusat Customer Service Resmi]({{ route('customer-service.index') }})
 - [FAQ & Bantuan]({{ route('about.faq') }})

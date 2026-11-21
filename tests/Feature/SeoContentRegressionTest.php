@@ -132,4 +132,151 @@ class SeoContentRegressionTest extends TestCase
         }
         $this->assertStringNotContainsString('PlumbingService', file_get_contents(base_path('AGENTS.md')));
     }
+
+    public function test_all_bali_cities_and_districts_resolve_to_bali_hospitality_not_jakarta(): void
+    {
+        $baliCities = array_keys(\App\Services\RegionService::all()['bali']['cities'] ?? []);
+        $this->assertCount(9, $baliCities);
+
+        foreach ($baliCities as $citySlug) {
+            $this->assertSame('bali_hospitality', \App\Services\RegionalTaxonomy::resolveZone($citySlug), $citySlug);
+        }
+
+        $response = $this->get('/area/kabupaten-badung/canggu')->assertOk();
+        $html = $response->getContent();
+        $this->assertStringContainsString('Pulau Dewata', $html);
+        $this->assertStringNotContainsString('Metropolitan Ibukota', $html);
+        $this->assertStringNotContainsString('wilayah Jakarta', $html);
+    }
+
+    public function test_article_search_pages_are_noindex_without_bot_override_and_align_hreflang(): void
+    {
+        \App\Models\Article::create([
+            'title' => 'Panduan Pipa Soda Api',
+            'slug' => 'panduan-pipa-soda-api',
+            'content' => 'Hindari soda api pada pipa PVC.',
+            'is_published' => true,
+        ]);
+
+        $response = $this->get('/pengetahuan?q=Soda+Api')->assertOk();
+        $dom = new \DOMDocument;
+        @$dom->loadHTML('<?xml encoding="utf-8" ?>'.$response->getContent());
+        $xpath = new \DOMXPath($dom);
+
+        $robots = $xpath->query('//meta[@name="robots"]');
+        $canonical = $xpath->query('//link[@rel="canonical"]');
+        $hreflangId = $xpath->query('//link[@rel="alternate" and @hreflang="id"]');
+        $hreflangDefault = $xpath->query('//link[@rel="alternate" and @hreflang="x-default"]');
+
+        $this->assertCount(1, $robots);
+        $this->assertSame('noindex, follow', $robots->item(0)->getAttribute('content'));
+        $this->assertSame(0, $xpath->query('//meta[@name="googlebot" or @name="bingbot" or @name="yandex"]')->length);
+        $this->assertCount(1, $canonical);
+        $this->assertSame(route('articles.index'), $canonical->item(0)->getAttribute('href'));
+        $this->assertSame(route('articles.index'), $hreflangId->item(0)->getAttribute('href'));
+        $this->assertSame(route('articles.index'), $hreflangDefault->item(0)->getAttribute('href'));
+    }
+
+    public function test_case_study_partnership_equipment_and_linkedin_cs_have_no_double_brand_title(): void
+    {
+        $gallery = \App\Models\Gallery::create([
+            'title' => 'Pelancaran Pipa Resto Kemang',
+            'slug' => 'pelancaran-pipa-resto-kemang',
+            'location' => 'Kemang, Jakarta Selatan',
+            'description' => 'Pelancaran pipa lemak resto tanpa bongkar.',
+            'is_active' => true,
+        ]);
+
+        $portfolio = \App\Models\Portfolio::create([
+            'client_name' => 'Resto Nusantara B2B',
+            'slug' => 'resto-nusantara-b2b',
+            'client_type' => 'Restoran & Kafe',
+            'location' => 'Jakarta Selatan',
+            'description' => 'Kontrak perawatan grease trap berkala.',
+            'is_active' => true,
+        ]);
+
+        $equipment = \App\Models\Equipment::create([
+            'name' => 'Mesin Rooter Ridgid K-50',
+            'slug' => 'mesin-rooter-ridgid-k-50',
+            'category' => 'Mesin Spiral Rooter',
+            'short_description' => 'Mesin rooter spiral baja fleksibel.',
+            'is_active' => true,
+        ]);
+
+        foreach ([
+            route('case-study.show', $gallery->slug),
+            route('partnership.show', $portfolio->slug),
+            route('equipment.show', $equipment->slug),
+            route('customer-service.show', ['socialMedia' => 'linkedin']),
+        ] as $url) {
+            app()->forgetInstance('seotools.json-ld-multi');
+            Facade::clearResolvedInstance('seotools.json-ld-multi');
+            $html = $this->get($url)->assertOk()->getContent();
+            $dom = new \DOMDocument;
+            @$dom->loadHTML('<?xml encoding="utf-8" ?>'.$html);
+            $title = trim((new \DOMXPath($dom))->evaluate('string(//title)'));
+            $this->assertLessThanOrEqual(1, substr_count($title, 'Drainusantara'), "Double brand suffix in title on {$url}: {$title}");
+        }
+
+        foreach ([route('case-study.show', $gallery->slug), route('partnership.show', $portfolio->slug)] as $url) {
+            app()->forgetInstance('seotools.json-ld-multi');
+            Facade::clearResolvedInstance('seotools.json-ld-multi');
+            $html = $this->get($url)->assertOk()->getContent();
+            preg_match_all('~<script type="application/ld\\+json"[^>]*>(.*?)</script>~s', $html, $scripts);
+            $schemas = array_merge(...array_map(static function (string $script): array {
+                $schema = json_decode($script, true, 512, JSON_THROW_ON_ERROR);
+
+                return $schema['@graph'] ?? (array_is_list($schema) ? $schema : [$schema]);
+            }, $scripts[1]));
+            $types = array_column($schemas, '@type');
+            $articleCount = count(array_filter($types, static fn ($t) => $t === 'Article'));
+            $breadcrumbCount = count(array_filter($types, static fn ($t) => $t === 'BreadcrumbList'));
+
+            $this->assertSame(1, $articleCount, $url);
+            $this->assertSame(1, $breadcrumbCount, $url);
+        }
+    }
+
+    public function test_equipment_detail_legal_and_area_schemas_have_no_plumbing_service_and_accurate_district_type(): void
+    {
+        $equipment = \App\Models\Equipment::create([
+            'name' => 'Mesin Rooter Ridgid K-50',
+            'slug' => 'mesin-rooter-ridgid-k-50',
+            'category' => 'Mesin Spiral Rooter',
+            'short_description' => 'Mesin rooter spiral baja fleksibel.',
+            'is_active' => true,
+        ]);
+
+        foreach ([
+            route('equipment.show', $equipment->slug) => 'Product',
+            route('legal.privacy') => 'WebPage',
+            route('legal.terms') => 'WebPage',
+        ] as $url => $expectedType) {
+            app()->forgetInstance('seotools.json-ld-multi');
+            Facade::clearResolvedInstance('seotools.json-ld-multi');
+            $html = $this->get($url)->assertOk()->getContent();
+            preg_match_all('~<script type="application/ld\\+json"[^>]*>(.*?)</script>~s', $html, $scripts);
+            $schemas = array_merge(...array_map(static function (string $script): array {
+                $schema = json_decode($script, true, 512, JSON_THROW_ON_ERROR);
+
+                return $schema['@graph'] ?? (array_is_list($schema) ? $schema : [$schema]);
+            }, $scripts[1]));
+            $types = array_column($schemas, '@type');
+
+            $this->assertContains($expectedType, $types, $url);
+            $this->assertNotContains('PlumbingService', $types, $url);
+        }
+
+        app()->forgetInstance('seotools.json-ld-multi');
+        Facade::clearResolvedInstance('seotools.json-ld-multi');
+        $bsdHtml = $this->get('/area/tangerang-selatan/bsd-city')->assertOk()->getContent();
+        preg_match_all('~<script type="application/ld\\+json"[^>]*>(.*?)</script>~s', $bsdHtml, $bsdScripts);
+        $bsdJsonLd = implode("\n", $bsdScripts[1]);
+        $this->assertStringContainsString('Kawasan BSD City', $bsdJsonLd);
+        $this->assertStringNotContainsString('Kecamatan BSD City', $bsdJsonLd);
+
+        $robotsTxt = $this->get('/robots.txt')->assertOk()->getContent();
+        $this->assertDoesNotMatchRegularExpression('/^Sitemap:.*\.json$/mi', $robotsTxt);
+    }
 }

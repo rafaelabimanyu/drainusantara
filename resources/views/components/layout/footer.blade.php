@@ -82,7 +82,7 @@
                     <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Ikuti Media Sosial:</div>
                     <div class="flex items-center gap-2">
                         <!-- Instagram -->
-                        <a href="{{ config('services.social.instagram', 'https://instagram.com/drainusantara') }}" 
+                        <a href="{{ config('services.social.instagram', 'https://www.instagram.com/drainusantara') }}" 
                            target="_blank" rel="noopener noreferrer" 
                            title="Instagram Drainusantara" aria-label="Instagram Drainusantara"
                            class="w-7 h-7 rounded-md bg-slate-800 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-rose-500 hover:to-purple-600 border border-slate-700 hover:border-transparent text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-xs">
@@ -102,7 +102,7 @@
                         </a>
 
                         <!-- YouTube -->
-                        <a href="{{ config('services.social.youtube', 'https://youtube.com/@drainusantara') }}" 
+                        <a href="{{ config('services.social.youtube', 'https://www.youtube.com/@Drainusantara') }}" 
                            target="_blank" rel="noopener noreferrer" 
                            title="YouTube Drainusantara" aria-label="YouTube Drainusantara"
                            class="w-7 h-7 rounded-md bg-slate-800 hover:bg-red-600 border border-slate-700 hover:border-red-500 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-xs">
@@ -138,6 +138,16 @@
                            class="w-7 h-7 rounded-md bg-slate-800 hover:bg-sky-700 border border-slate-700 hover:border-sky-600 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-xs">
                             <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                        </a>
+
+                        <!-- X (Twitter) -->
+                        <a href="{{ config('services.social.x', 'https://x.com/Drainusantara') }}" 
+                           target="_blank" rel="noopener noreferrer" 
+                           title="X (Twitter) Drainusantara" aria-label="X (Twitter) Drainusantara"
+                           class="w-7 h-7 rounded-md bg-slate-800 hover:bg-slate-950 border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-xs">
+                            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                             </svg>
                         </a>
                     </div>
@@ -396,6 +406,8 @@
             <p>&copy; {{ date('Y') }} PT JAWA JAYA ROOTER &bull; Drainusantara. Non-Destructive Plumbing &amp; Drain Rooter Engineering.</p>
             <div class="flex items-center gap-3 sm:gap-4 text-slate-400 text-xs flex-wrap justify-center sm:justify-end">
                 <a href="{{ route('contact') }}" class="hover:text-white transition-colors font-semibold text-sky-400">Kontak Kami</a>
+                <span class="text-slate-600">&bull;</span>
+                <a href="{{ route('customer-service.index') }}" class="hover:text-white transition-colors">Customer Service</a>
                 <span class="text-slate-600">&bull;</span>
                 <a href="{{ route('legal.privacy') }}" class="hover:text-white transition-colors">Kebijakan Privasi</a>
                 <span class="text-slate-600">&bull;</span>

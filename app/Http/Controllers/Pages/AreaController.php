@@ -417,7 +417,7 @@ class AreaController extends Controller
         $resolvedCoords = $area->resolved_coordinates;
         $districtsServed = array_map(fn ($d) => [
             '@type' => 'AdministrativeArea',
-            'name' => "Kecamatan {$d}",
+            'name' => RegionService::districtType($cityData, $d)." {$d}",
         ], $cityData['districts'] ?? []);
 
         $jsonLdValues = [
@@ -655,6 +655,7 @@ class AreaController extends Controller
         $provinceName = $cityData['province_name'] ?? 'DKI Jakarta';
 
         $resolvedCoords = $area->resolved_coordinates;
+        $districtLabel = RegionService::districtType($cityData, $area->district)." {$area->district}";
 
         JsonLdMulti::setTitle("Drainusantara - Area {$area->district}, {$area->city}");
         JsonLdMulti::setDescription($description);
@@ -678,7 +679,7 @@ class AreaController extends Controller
             ],
             'areaServed' => [
                 '@type' => 'AdministrativeArea',
-                'name' => "Kecamatan {$area->district}",
+                'name' => $districtLabel,
                 'containedInPlace' => [
                     '@type' => 'City',
                     'name' => $area->city,
@@ -729,7 +730,7 @@ class AreaController extends Controller
             ],
             'areaServed' => [
                 '@type' => 'AdministrativeArea',
-                'name' => "Kecamatan {$area->district}",
+                'name' => $districtLabel,
             ],
             'offers' => [
                 '@type' => 'Offer',
