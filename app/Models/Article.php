@@ -16,6 +16,15 @@ class Article extends Model
     public const CATEGORY_BRAND = 'Penguatan Brand';
     public const CATEGORY_PROMO = 'Promo Penawaran';
 
+    /**
+     * Slugs permanently redirected elsewhere (excluded from sitemaps, listings, and related widgets).
+     *
+     * @var array<int, string>
+     */
+    public const REDIRECTED_SLUGS = [
+        'jasa-saluran-pipa-mampet-depok-perbaikan-pelancaran-saluran-air-profesional-salin-judul',
+    ];
+
     public const CATEGORIES = [
         self::CATEGORY_EDUKASI,
         self::CATEGORY_BRAND,
@@ -516,11 +525,31 @@ HTML;
     }
 
     /**
-     * URL Silo SEO Friendly (e.g. /edukasi/{kategori}/{sub-kategori}/{slug-artikel}).
+     * Clean CMS copy/duplicate suffixes (-salin-judul, -salin, -copy, -duplikat) from generated slugs.
+     */
+    public static function sanitizeSlug(string $value): string
+    {
+        $slug = Str::slug($value);
+        $cleaned = preg_replace('/(?:-(?:salin-judul|salin|copy|duplikat)(?:-\d+)?)+$/i', '', $slug) ?? $slug;
+        $cleaned = trim($cleaned, '-');
+
+        return $cleaned !== '' ? $cleaned : $slug;
+    }
+
+    /**
+     * Single canonical article URL (/artikel/{slug}).
+     */
+    public function getCanonicalUrlAttribute(): string
+    {
+        return route('articles.show', ['slug' => $this->slug]);
+    }
+
+    /**
+     * Backward-compatible alias: all views and internal links resolve to canonical /artikel/{slug}.
      */
     public function getSiloUrlAttribute(): string
     {
-        return url("/edukasi/{$this->category_slug}/{$this->subcategory_slug}/{$this->slug}");
+        return $this->canonical_url;
     }
 
     /**
@@ -532,6 +561,18 @@ HTML;
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
+    }
+
+    /**
+     * Scope a query to only include published, indexable articles (excluding redirected cannibalization slugs).
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeIndexable($query)
+    {
+        return $query->where('is_published', true)
+            ->whereNotIn('slug', self::REDIRECTED_SLUGS);
     }
 
     /**

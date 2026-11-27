@@ -9,7 +9,7 @@
 @endphp
 
 @if($b2bProjects->isNotEmpty())
-<section id="portofolio-b2b" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-20 lg:scroll-mt-24 content-auto" 
+<section id="portofolio-b2b" class="py-16 lg:py-20 bg-slate-50 border-b border-slate-200 scroll-mt-20 lg:scroll-mt-24" 
          x-data="mobileCarousel({{ count($b2bProjects) }}, 4500, 3)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         

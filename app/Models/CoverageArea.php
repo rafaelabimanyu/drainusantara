@@ -43,6 +43,7 @@ class CoverageArea extends Model
         'comparison_data',
         'supporting_tags',
         'is_active',
+        'is_priority',
     ];
 
     /**
@@ -65,6 +66,7 @@ class CoverageArea extends Model
             'comparison_data' => 'array',
             'supporting_tags' => 'array',
             'is_active' => 'boolean',
+            'is_priority' => 'boolean',
         ];
     }
 
@@ -811,9 +813,14 @@ class CoverageArea extends Model
             return null;
         }
 
+        $districtSlug = Str::slug($this->district);
+        if (! RegionService::isIndexableDistrict($city['slug'], $districtSlug, $this)) {
+            return route('area.city', ['city' => $city['slug']]);
+        }
+
         return route('area.detail', [
             'city' => $city['slug'],
-            'district' => Str::slug($this->district),
+            'district' => $districtSlug,
         ]);
     }
 

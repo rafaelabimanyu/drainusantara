@@ -72,13 +72,20 @@
                     <div class="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-2xs hover:shadow-sm hover:border-sky-300 transition-all flex flex-col justify-between group">
                         <div>
                             <!-- Visual Banner -->
+                            @php
+                                $rawSvcImg = $item['image'] ?? 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp';
+                                $svcImgUrl = (str_starts_with($rawSvcImg, 'http://') || str_starts_with($rawSvcImg, 'https://'))
+                                    ? $rawSvcImg
+                                    : asset(ltrim($rawSvcImg, '/'));
+                            @endphp
                             <a href="{{ $detailUrl }}" class="block relative aspect-16/10 bg-slate-100 overflow-hidden">
-                                <img src="{{ asset($item['image'] ?? 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
+                                <img src="{{ $svcImgUrl }}" 
                                      alt="{{ $item['name'] }} - Teknisi Drainusantara" 
                                      width="600"
                                      height="375"
                                      loading="lazy" 
                                      decoding="async"
+                                     onerror="this.onerror=null; this.src='{{ asset('assets/placeholders/service.svg') }}';"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                 <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase bg-slate-950/80 text-white backdrop-blur-xs border border-white/10">
                                     {{ $item['badge'] }}

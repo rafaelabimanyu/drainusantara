@@ -100,12 +100,12 @@ class AreaController extends Controller
     {
         PageMetadata::title('Wilayah Jangkauan Teknisi Pipa Mampet');
         SEOMeta::setDescription('Daftar jangkauan posko siaga teknisi pipa mampet Drainusantara di Jabodetabek, Semarang, & Lampung. Siaga 24 jam respon cepat & garansi 30 hari.');
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical(route('area.index'));
 
         $areaImage = AreaImageResolver::resolveUrl(null, 'dki-jakarta');
 
         OpenGraph::setDescription('Armada siaga teknisi pelancar saluran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.');
-        OpenGraph::setUrl(url()->current());
+        OpenGraph::setUrl(route('area.index'));
         OpenGraph::addImage($areaImage);
 
         TwitterCard::setDescription('Armada siaga teknisi pelancar saluran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.');
@@ -133,11 +133,12 @@ class AreaController extends Controller
         $this->addBreadcrumb(['Area Layanan', route('area.index')]);
 
         $provinces = RegionService::all();
+        $nonPriorityDistrictKeys = $this->getNonPriorityDistrictKeys();
         $services = Cache::remember('services.all_active', 86400, function () {
             return Service::where('is_active', true)->orderBy('order')->get();
         });
 
-        return view('areas.index', compact('provinces', 'services'));
+        return view('areas.index', compact('provinces', 'services', 'nonPriorityDistrictKeys'));
     }
 
     /**
@@ -187,9 +188,10 @@ class AreaController extends Controller
 
         $description = $area->meta_description ?: "Layanan pelancaran pipa saluran mampet tanpa bongkar keramik di wilayah {$provinceData['name']}. Armada siaga di seluruh kota dengan garansi resmi 30 hari.";
 
+        $canonicalProvinceUrl = route('area.province', ['province' => $provinceData['slug']]);
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical($canonicalProvinceUrl);
         SEOMeta::addKeyword([
             "jasa saluran pipa mampet {$provinceData['name']}",
             "jasa saluran mampet {$provinceData['name']}",
@@ -204,7 +206,7 @@ class AreaController extends Controller
         $resolvedAreaImage = AreaImageResolver::resolveUrl($area, $provinceData['slug']);
 
         OpenGraph::setDescription($description);
-        OpenGraph::setUrl(url()->current());
+        OpenGraph::setUrl($canonicalProvinceUrl);
         OpenGraph::addImage($resolvedAreaImage);
 
         TwitterCard::setDescription($description);
@@ -217,10 +219,10 @@ class AreaController extends Controller
         JsonLdMulti::setDescription($description);
         JsonLdMulti::setType('Plumber');
         JsonLdMulti::addValues([
-            '@id' => route('area.province', ['province' => $province]) . '#localbusiness',
+            '@id' => $canonicalProvinceUrl . '#localbusiness',
             'name' => "Drainusantara Provinsi {$provinceData['name']} - Jasa Saluran Pipa Mampet",
             'legalName' => 'PT Jawa Jaya Rooter',
-            'url' => url()->current(),
+            'url' => $canonicalProvinceUrl,
             'image' => $resolvedAreaImage,
             'areaServed' => $provinceData['name'],
             'telephone' => $this->formatInternationalPhone(),
@@ -261,7 +263,6 @@ class AreaController extends Controller
                 '@type' => 'Offer',
                 'price' => (string) $area->resolved_price,
                 'priceCurrency' => 'IDR',
-                'availability' => 'https://schema.org/InStock',
                 'priceSpecification' => [
                     '@type' => 'PriceSpecification',
                     'price' => (string) $area->resolved_price,
@@ -314,10 +315,11 @@ class AreaController extends Controller
         $galleries = $this->mapGalleriesForLocation($galleries, $provinceData['name']);
         $articles = $this->getArticlesForLocation($provinceData['name'], 3);
 
+        $nonPriorityDistrictKeys = $this->getNonPriorityDistrictKeys();
         $contextualWaMsg = "Halo Tim Drainusantara, saya ingin konsultasi layanan saluran pipa mampet untuk wilayah {$provinceData['name']}.";
         $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
 
-        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries', 'area', 'faqs', 'equipments', 'articles', 'resolvedAreaImage', 'contextualWaMsg', 'contextualWaUrl'));
+        return view('areas.province', compact('provinceData', 'services', 'reviews', 'galleries', 'area', 'faqs', 'equipments', 'articles', 'resolvedAreaImage', 'nonPriorityDistrictKeys', 'contextualWaMsg', 'contextualWaUrl'));
     }
 
     /**
@@ -383,9 +385,10 @@ class AreaController extends Controller
 
         $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$cityData['name']} & tukang saluran mampet panggilan 24 jam. Ahli wastafel, WC kloset tersumbat & kuras grease trap tanpa bongkar keramik pakai spiral baja rotary. Garansi 30 hari!";
 
+        $canonicalCityUrl = route('area.city', ['city' => $cityData['slug']]);
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical($canonicalCityUrl);
         SEOMeta::addKeyword([
             "jasa saluran pipa mampet {$searchCityName}",
             "jasa saluran mampet {$searchCityName}",
@@ -408,7 +411,7 @@ class AreaController extends Controller
         $resolvedAreaImage = AreaImageResolver::resolveUrl($area, $cityData['province_slug'], $cityData['slug']);
 
         OpenGraph::setDescription($description);
-        OpenGraph::setUrl(url()->current());
+        OpenGraph::setUrl($canonicalCityUrl);
         OpenGraph::addImage($resolvedAreaImage);
 
         TwitterCard::setDescription($description);
@@ -476,7 +479,6 @@ class AreaController extends Controller
                 '@type' => 'Offer',
                 'price' => (string) $area->resolved_price,
                 'priceCurrency' => 'IDR',
-                'availability' => 'https://schema.org/InStock',
                 'priceSpecification' => [
                     '@type' => 'PriceSpecification',
                     'price' => (string) $area->resolved_price,
@@ -519,12 +521,20 @@ class AreaController extends Controller
             return Equipment::where('is_active', true)->orderBy('order')->get();
         });
 
+        $cityMatchTokens = $this->buildCityMatchTokens($cityData);
         $galleries = $area->getResolvedGalleries(3);
         if ($galleries->isEmpty()) {
-            $galleries = Cache::remember('galleries.city.' . Str::slug($cityData['name']), 86400, function () use ($cityData) {
+            $galleries = Cache::remember('galleries.city.v2.' . Str::slug($cityData['name']), 86400, function () use ($cityMatchTokens) {
                 $cityGalleries = Gallery::where('is_active', true)
+                    ->whereNotNull('slug')
                     ->with('service')
-                    ->where('location', 'like', "%{$cityData['name']}%")
+                    ->where(function ($q) use ($cityMatchTokens) {
+                        foreach ($cityMatchTokens as $token) {
+                            $q->orWhere('location', 'like', "%{$token}%")
+                              ->orWhere('title', 'like', "%{$token}%")
+                              ->orWhere('slug', 'like', '%' . Str::slug($token) . '%');
+                        }
+                    })
                     ->latest()
                     ->take(3)
                     ->get();
@@ -543,14 +553,15 @@ class AreaController extends Controller
                 return $cityGalleries;
             });
         }
-        $galleries = $this->mapGalleriesForLocation($galleries, $cityData['name']);
+        $galleries = $this->mapGalleriesForLocation($galleries, $cityData['name'], $cityMatchTokens);
         $articles = $this->getArticlesForLocation($cityData['name'], 3);
         $localReviews = $area->resolved_local_reviews;
+        $nonPriorityDistrictKeys = $this->getNonPriorityDistrictKeys();
 
         $contextualWaMsg = "Halo Tim Drainusantara, saya butuh penanganan saluran pipa mampet di wilayah {$cityData['name']}. Mohon info armada terdekat.";
         $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
 
-        return view('areas.city', compact('cityData', 'services', 'reviews', 'localReviews', 'area', 'faqs', 'equipments', 'galleries', 'articles', 'resolvedAreaImage', 'contextualWaMsg', 'contextualWaUrl'));
+        return view('areas.city', compact('cityData', 'services', 'reviews', 'localReviews', 'area', 'faqs', 'equipments', 'galleries', 'articles', 'resolvedAreaImage', 'nonPriorityDistrictKeys', 'contextualWaMsg', 'contextualWaUrl'));
     }
 
     /**
@@ -584,6 +595,11 @@ class AreaController extends Controller
 
         abort_if($area && ! $area->is_active, 404);
 
+        // Konsolidasi 7 slug kembar & kecamatan yang dinon-prioritaskan (is_priority=false) -> 301 ke hub /area/{kota}
+        if (! RegionService::isIndexableDistrict($cityData['slug'], $district, $area)) {
+            return redirect()->route('area.city', ['city' => $cityData['slug']], 301);
+        }
+
         if (! $area) {
             $area = new CoverageArea([
                 'slug' => $combinedSlug,
@@ -611,9 +627,10 @@ class AreaController extends Controller
 
         $description = $area->meta_description ?: "Jasa saluran pipa mampet di {$area->district}, {$area->city}. Tukang pipa & WC mampet terdekat pelancar wastafel serta saluran air tanpa bongkar keramik pakai spiral baja rotary. Siaga 24 jam & garansi 30 hari!";
 
+        $canonicalDistrictUrl = route('area.detail', ['city' => $cityData['slug'], 'district' => $district]);
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($description);
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical($canonicalDistrictUrl);
         $keywords = [
             "jasa saluran pipa mampet {$area->district}",
             "jasa saluran mampet {$area->district}",
@@ -642,7 +659,7 @@ class AreaController extends Controller
         $resolvedAreaImage = AreaImageResolver::resolveUrl($area, $cityData['province_slug'] ?? null, $cityData['slug'] ?? null, $area->district);
 
         OpenGraph::setDescription($description);
-        OpenGraph::setUrl(url()->current());
+        OpenGraph::setUrl($canonicalDistrictUrl);
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
         OpenGraph::addProperty('site_name', 'Drainusantara');
@@ -660,10 +677,10 @@ class AreaController extends Controller
         JsonLdMulti::setTitle("Drainusantara - Area {$area->district}, {$area->city}");
         JsonLdMulti::setDescription($description);
         $jsonLdValues = [
-            '@id' => route('area.detail', ['city' => $city, 'district' => $district]) . '#localbusiness',
+            '@id' => $canonicalDistrictUrl . '#localbusiness',
             'name' => "Drainusantara {$area->district} - Jasa Saluran Pipa Mampet",
             'legalName' => 'PT Jawa Jaya Rooter',
-            'url' => url()->current(),
+            'url' => $canonicalDistrictUrl,
             'image' => $resolvedAreaImage,
             'telephone' => $this->formatInternationalPhone(),
             'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
@@ -736,7 +753,6 @@ class AreaController extends Controller
                 '@type' => 'Offer',
                 'price' => (string) $area->resolved_price,
                 'priceCurrency' => 'IDR',
-                'availability' => 'https://schema.org/InStock',
                 'priceSpecification' => [
                     '@type' => 'PriceSpecification',
                     'price' => (string) $area->resolved_price,
@@ -809,33 +825,126 @@ class AreaController extends Controller
                 return $districtGalleries;
             });
         }
-        $galleries = $this->mapGalleriesForLocation($galleries, "{$area->district}, {$area->city}");
+        $galleries = $this->mapGalleriesForLocation($galleries, "{$area->district}, {$area->city}", [$area->district, $area->city]);
         $articles = $this->getArticlesForLocation($area->city, 3);
         $localReviews = $area->resolved_local_reviews;
+        $nonPriorityDistrictKeys = $this->getNonPriorityDistrictKeys();
 
         $contextualWaMsg = "Halo Tim Drainusantara, saya membutuhkan jasa pelancaran pipa mampet di area Kecamatan {$area->district}, {$area->city}. Mohon info estimasi biaya dan teknisi terdekat.";
         $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
 
-        return view('areas.district', compact('area', 'services', 'reviews', 'localReviews', 'cityData', 'equipments', 'galleries', 'articles', 'resolvedAreaImage', 'contextualWaMsg', 'contextualWaUrl'));
+        return view('areas.district', compact('area', 'services', 'reviews', 'localReviews', 'cityData', 'equipments', 'galleries', 'articles', 'resolvedAreaImage', 'nonPriorityDistrictKeys', 'contextualWaMsg', 'contextualWaUrl'));
+    }
+
+    /**
+     * Load map of "citySlug|districtSlug" keys explicitly set to is_priority = false in CMS.
+     *
+     * @return array<string, bool>
+     */
+    private function getNonPriorityDistrictKeys(): array
+    {
+        $map = [];
+        try {
+            $rows = CoverageArea::where('type', 'district')
+                ->where('is_priority', false)
+                ->get(['city', 'district']);
+
+            foreach ($rows as $row) {
+                $cData = RegionService::findCity((string) $row->city);
+                $cSlug = $cData['slug'] ?? Str::slug((string) $row->city);
+                $map[$cSlug . '|' . Str::slug((string) $row->district)] = true;
+            }
+        } catch (\Throwable) {
+            // Graceful fallback
+        }
+
+        return $map;
+    }
+
+    /**
+     * Build rich search tokens for a city hub (handles compound names, aliases, and districts).
+     *
+     * @param  array<string, mixed>  $cityData
+     * @return array<int, string>
+     */
+    private function buildCityMatchTokens(array $cityData): array
+    {
+        $tokens = [];
+        $cityName = (string) ($cityData['name'] ?? '');
+        $citySlug = (string) ($cityData['slug'] ?? '');
+
+        if ($cityName !== '') {
+            $tokens[] = $cityName;
+            $pure = trim((string) preg_replace('/^(?:Kota|Kabupaten)\s+/i', '', $cityName));
+            if ($pure !== '') {
+                $tokens[] = $pure;
+            }
+            foreach (preg_split('/\s*[&\/]\s*/', $pure) ?: [] as $part) {
+                $part = trim($part);
+                if (mb_strlen($part) >= 4) {
+                    $tokens[] = $part;
+                }
+            }
+        }
+
+        $aliasMap = [
+            'tangerang-selatan' => ['Tangsel', 'BSD', 'Serpong', 'Bintaro', 'Gading Serpong'],
+            'jakarta-selatan' => ['Jaksel', 'SCBD', 'Blok M', 'Senopati', 'Pejaten'],
+            'jakarta-utara' => ['Jakut', 'PIK', 'Kapuk', 'Kelapa Gading', 'Pademangan'],
+            'jakarta-timur' => ['Jaktim', 'Cibubur', 'Cawang', 'Condet'],
+            'jakarta-barat' => ['Jakbar', 'Tanjung Duren', 'Puri'],
+            'jakarta-pusat' => ['Jakpus', 'Cideng'],
+            'depok-cinere' => ['Depok', 'Cinere', 'Kelapa Dua'],
+            'bekasi-cikarang' => ['Bekasi', 'Cikarang', 'Jatisampurna'],
+            'bogor' => ['Bogor', 'Sentul', 'Gunung Putri'],
+        ];
+
+        foreach ($aliasMap[$citySlug] ?? [] as $alias) {
+            $tokens[] = $alias;
+        }
+
+        foreach ($cityData['districts'] ?? [] as $dist) {
+            if (mb_strlen((string) $dist) >= 4) {
+                $tokens[] = (string) $dist;
+            }
+        }
+
+        return array_values(array_unique(array_filter($tokens)));
     }
 
     /**
      * Map gallery items to ensure no geographic dissonance on non-local pages.
      *
      * @param  \Illuminate\Support\Collection<int, \App\Models\Gallery>  $galleries
+     * @param  array<int, string>  $matchTokens
      * @return \Illuminate\Support\Collection<int, \App\Models\Gallery>
      */
-    private function mapGalleriesForLocation(Collection $galleries, string $locationName): Collection
+    private function mapGalleriesForLocation(Collection $galleries, string $locationName, array $matchTokens = []): Collection
     {
         $pureLoc = strtolower(trim(str_ireplace(['kota', 'kabupaten', '[kota]', '[provinsi]'], '', $locationName)));
         $displayLoc = trim(str_ireplace(['[KOTA]', '[PROVINSI]'], '', $locationName)) ?: 'Nasional';
+        $lowerTokens = array_values(array_filter(array_map(
+            static fn (string $t): string => strtolower(trim($t)),
+            array_merge($pureLoc !== '' ? [$pureLoc] : [], $matchTokens)
+        )));
 
-        return $galleries->map(function ($g) use ($pureLoc, $displayLoc) {
-            $itemLocLower = strtolower($g->location ?? '');
-            $isLocal = ! empty($pureLoc) && str_contains($itemLocLower, $pureLoc);
+        return $galleries->map(function ($g) use ($lowerTokens, $displayLoc) {
+            $haystack = strtolower(trim(implode(' ', [
+                (string) ($g->location ?? ''),
+                (string) ($g->title ?? ''),
+                str_replace('-', ' ', (string) ($g->slug ?? '')),
+            ])));
+
+            $isLocal = false;
+            foreach ($lowerTokens as $tok) {
+                if (mb_strlen($tok) >= 3 && str_contains($haystack, $tok)) {
+                    $isLocal = true;
+                    break;
+                }
+            }
 
             if ($isLocal) {
-                $g->display_location = $g->location;
+                $g->display_location = $g->location ?: $displayLoc;
                 $g->display_title = $g->title;
             } else {
                 $g->display_location = "Standar Layanan Drainusantara {$displayLoc}";
@@ -861,7 +970,7 @@ class AreaController extends Controller
             $pureCity = trim(str_ireplace(['kota', 'kabupaten', '[kota]', '[provinsi]'], '', $cityName));
 
             // Prioritas 1: Artikel lokal yang relevan dengan kota aktif
-            $localArticles = Article::published()
+            $localArticles = Article::indexable()
                 ->with(['categoryRelation', 'subcategoryRelation'])
                 ->where(function ($q) use ($pureCity, $cityName) {
                     $q->where('title', 'like', "%{$pureCity}%")
@@ -893,7 +1002,7 @@ class AreaController extends Controller
                 }));
 
                 // Prioritas 2: Artikel edukasi umum yang TIDAK memuat nama kota lain di title/slug
-                $generalEducational = Article::published()
+                $generalEducational = Article::indexable()
                     ->with(['categoryRelation', 'subcategoryRelation'])
                     ->whereNotIn('id', $localArticles->pluck('id'))
                     ->where(function ($q) use ($excludeKeywords) {

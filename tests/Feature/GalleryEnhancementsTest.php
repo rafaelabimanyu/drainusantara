@@ -202,7 +202,8 @@ class GalleryEnhancementsTest extends TestCase
         $response->assertSee('Spiral Rotary Ridgid K-50');
         $response->assertSee('Floor Drain 2.5 Inch');
         $response->assertSee('Floor Drain Kamar Mandi');
-        $response->assertSee('/#layanan');
+        $response->assertSee(route('services.show', ['slug' => 'jasa-kamar-mandi-dan-floor-drain-mampet']));
+        $response->assertDontSee('/#layanan');
         $response->assertSee('Rp 300.000');
         $response->assertSee('30 Menit');
         $response->assertSee('BSD City, Tangerang Selatan');

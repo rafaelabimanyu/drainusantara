@@ -28,7 +28,7 @@
         </div>
     @endif
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap font-medium reveal-fade" aria-label="Breadcrumb">
+        <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap font-medium" aria-label="Breadcrumb">
             <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -40,19 +40,19 @@
         </nav>
 
         <div class="max-w-3xl space-y-4">
-            <p class="text-xs font-bold uppercase tracking-wider text-sky-800 reveal-fade">
-                Jaringan Armada Siaga &bull; Jabodetabek, Jawa Tengah, Lampung
+            <p class="text-xs font-bold uppercase tracking-wider text-sky-800">
+                Jaringan Armada Siaga &bull; Jabodetabek, Jawa Barat, Jawa Tengah, Lampung, Bali
             </p>
 
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight reveal-soft">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
                 Pusat Jangkauan Layanan Drainusantara
             </h1>
 
-            <p class="text-base text-slate-600 leading-relaxed reveal-soft delay-100">
+            <p class="text-base text-slate-600 leading-relaxed">
                 Pilih provinsi dan kota administrasi Anda di bawah untuk melihat posko siaga teknisi terdekat, daftar area yang dilayani, serta layanan respon cepat WhatsApp.
             </p>
 
-            <div class="pt-2 flex flex-wrap gap-2 reveal-soft delay-150">
+            <div class="pt-2 flex flex-wrap gap-2">
                 @foreach($provinces as $provSlug => $province)
                     <a href="#prov-{{ $provSlug }}" class="px-3.5 py-1.5 rounded-lg bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 text-xs font-semibold border border-slate-200 hover:border-sky-300 shadow-2xs transition-all flex items-center gap-1.5 btn-press">
                         <span>{{ $province['name'] }}</span>
@@ -151,10 +151,21 @@
                                         </span>
                                         <div class="flex flex-wrap gap-1.5 text-xs text-slate-600">
                                             @foreach(array_slice($city['districts'], 0, 5) as $district)
-                                                <a href="{{ route('area.detail', ['city' => $citySlug, 'district' => \Illuminate\Support\Str::slug($district)]) }}" 
-                                                   class="px-2 py-0.5 rounded-md bg-slate-50 hover:bg-sky-50 hover:text-sky-700 border border-slate-200 transition-colors text-[11px]">
-                                                    {{ $district }}
-                                                </a>
+                                                @php
+                                                    $distSlug = \Illuminate\Support\Str::slug($district);
+                                                    $isDistIndexable = empty(($nonPriorityDistrictKeys ?? [])[$citySlug . '|' . $distSlug])
+                                                        && \App\Services\RegionService::isIndexableDistrict($citySlug, $distSlug);
+                                                @endphp
+                                                @if($isDistIndexable)
+                                                    <a href="{{ route('area.detail', ['city' => $citySlug, 'district' => $distSlug]) }}" 
+                                                       class="px-2 py-0.5 rounded-md bg-slate-50 hover:bg-sky-50 hover:text-sky-700 border border-slate-200 transition-colors text-[11px]">
+                                                        {{ $district }}
+                                                    </a>
+                                                @else
+                                                    <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200 text-[11px]">
+                                                        {{ $district }}
+                                                    </span>
+                                                @endif
                                             @endforeach
                                             @if(count($city['districts']) > 5)
                                                 <a href="{{ route('area.city', ['city' => $citySlug]) }}" class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[11px] font-semibold hover:bg-slate-200 transition-colors">

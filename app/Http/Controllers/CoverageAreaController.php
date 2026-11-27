@@ -11,6 +11,7 @@ use App\Support\MediaLifecycle;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -150,6 +151,7 @@ class CoverageAreaController extends Controller
             'comparison_data' => ['nullable', 'array'],
             'supporting_tags' => ['nullable'],
             'is_active' => ['nullable', 'boolean'],
+            'is_priority' => ['nullable', 'boolean'],
         ]);
 
         if (($validated['type'] ?? 'district') === 'province') {
@@ -237,8 +239,13 @@ class CoverageAreaController extends Controller
                 'comparison_data' => !empty($comparisonData) ? $comparisonData : null,
                 'supporting_tags' => !empty($supportingTags) ? $supportingTags : null,
                 'is_active' => $request->boolean('is_active'),
+                'is_priority' => $request->has('is_priority') ? $request->boolean('is_priority') : true,
             ])->save();
         });
+
+        Cache::forget('sitemap_xml');
+        Cache::forget('sitemap.xml');
+        Cache::forget('sitemap.html_data');
 
         return redirect()->route('admin.coverage-areas.index')
             ->with('success', "Area '{$validated['district']}, {$validated['city']}' berhasil ditambahkan!");
@@ -313,6 +320,7 @@ class CoverageAreaController extends Controller
             'comparison_data' => ['nullable', 'array'],
             'supporting_tags' => ['nullable'],
             'is_active' => ['nullable', 'boolean'],
+            'is_priority' => ['nullable', 'boolean'],
         ]);
 
         $faqs = $this->cleanFaqs($validated['faqs'] ?? []);
@@ -375,8 +383,13 @@ class CoverageAreaController extends Controller
                 'comparison_data' => !empty($comparisonData) ? $comparisonData : null,
                 'supporting_tags' => !empty($supportingTags) ? $supportingTags : null,
                 'is_active' => $request->boolean('is_active'),
+                'is_priority' => $request->has('is_priority') ? $request->boolean('is_priority') : (bool) ($coverageArea->is_priority ?? true),
             ])->save();
         });
+
+        Cache::forget('sitemap_xml');
+        Cache::forget('sitemap.xml');
+        Cache::forget('sitemap.html_data');
 
         return redirect()->route('admin.coverage-areas.index')
             ->with('success', "Area '{$coverageArea->district}' berhasil diperbarui!");

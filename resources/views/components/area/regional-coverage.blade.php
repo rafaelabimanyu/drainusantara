@@ -20,6 +20,7 @@
                 ['name' => 'Depok & Cinere', 'slug' => 'depok-cinere', 'hub' => 'Posko Margonda & Cinere'],
                 ['name' => 'Bekasi & Cikarang', 'slug' => 'bekasi-cikarang', 'hub' => 'Posko Summarecon & Cikarang'],
             ],
+            'subregions' => ['Kebayoran', 'Kemang', 'PIK & Kelapa Gading', 'BSD Serpong', 'Bintaro', 'Margonda', 'Summarecon Bekasi', 'Cikarang'],
             'responseTime' => '30 - 45 Menit',
             'color' => 'sky',
         ],
@@ -52,13 +53,27 @@
         [
             'region' => 'Sumatera / Lampung',
             'badge' => 'HUB REGIONAL SUMATERA',
-            'desc' => 'Pelayanan pelancaran pipa mampet bergaransi pertama dengan standar mesin spiral baja modern di Gerbang Sumatera.',
+            'desc' => 'Pelayanan pelancaran pipa mampet bergaransi dengan standar mesin spiral baja modern di Bandar Lampung.',
             'cities' => [
                 ['name' => 'Bandar Lampung', 'slug' => 'bandar-lampung', 'hub' => 'Posko Tanjung Karang & Kedaton'],
             ],
             'subregions' => ['Kedaton', 'Rajabasa', 'Way Halim', 'Sukarame', 'Teluk Betung'],
             'responseTime' => '45 - 60 Menit',
             'color' => 'amber',
+        ],
+        [
+            'region' => 'Bali & Sekitarnya',
+            'badge' => 'HUB HOSPITALITY BALI',
+            'desc' => 'Armada teknisi siaga untuk villa, hotel, restoran, dan hunian di Denpasar, Badung, Gianyar, serta Tabanan.',
+            'cities' => [
+                ['name' => 'Kota Denpasar', 'slug' => 'kota-denpasar', 'hub' => 'Posko Denpasar & Sanur'],
+                ['name' => 'Kab. Badung', 'slug' => 'kabupaten-badung', 'hub' => 'Posko Kuta, Seminyak & Canggu'],
+                ['name' => 'Kab. Gianyar', 'slug' => 'kabupaten-gianyar', 'hub' => 'Posko Ubud & Sukawati'],
+                ['name' => 'Kab. Tabanan', 'slug' => 'kabupaten-tabanan', 'hub' => 'Posko Tabanan & Kediri'],
+            ],
+            'subregions' => ['Sanur', 'Kuta', 'Seminyak', 'Canggu', 'Ubud', 'Nusa Dua'],
+            'responseTime' => '30 - 60 Menit',
+            'color' => 'emerald',
         ],
     ];
 @endphp
@@ -71,13 +86,13 @@
             <div class="max-w-3xl">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-3">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Armada Siaga Tersebar di 4 Wilayah Strategis</span>
+                    <span>Armada Siaga Tersebar di 5 Wilayah Strategis</span>
                 </div>
                 <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Cakupan Daerah Operasional Drainusantara
                 </h2>
                 <p class="text-slate-600 text-xs sm:text-sm md:text-base mt-2 leading-relaxed">
-                    Mulai dari kawasan megapolitan Jabodetabek, koridor industri Jawa Barat, Jawa Tengah (Semarang), hingga Bandar Lampung. Teknisi standby di posko terdekat agar tiba di lokasi Anda dalam hitungan menit tanpa penundaan.
+                    Mulai dari kawasan Jabodetabek, koridor Bandung Raya, Jawa Tengah (Semarang dan Demak), Bandar Lampung, hingga Provinsi Bali. Teknisi siaga di posko terdekat untuk penanganan tanpa bongkar keramik.
                 </p>
             </div>
 
@@ -97,18 +112,21 @@
             <span>Geser untuk melihat wilayah regional lain</span>
         </div>
 
-        <!-- Grid 4 Wilayah Regional (Carousel di Mobile) -->
-        <div class="flex md:grid md:grid-cols-2 lg:grid-cols-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-6 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
+        <!-- Grid 5 Wilayah Regional (Carousel di Mobile) -->
+        <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-6 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
             @foreach($regions as $idx => $reg)
-            <div class="w-[84vw] max-w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 shadow-2xs p-5 sm:p-6 flex flex-col justify-between card-lift transition-all hover:border-sky-500">
+            @php
+                $isFeaturedHub = count($reg['cities']) > 4;
+            @endphp
+            <div class="w-[84vw] max-w-[340px] md:w-auto md:max-w-none {{ $isFeaturedHub ? 'md:col-span-2 lg:col-span-2' : '' }} shrink-0 snap-center bg-white rounded-xl border border-slate-200 shadow-2xs p-5 sm:p-6 flex flex-col justify-between card-lift transition-all hover:border-sky-500">
                 <div>
                     <!-- Header Card Wilayah -->
                     <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
-                        <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
+                        <span class="text-[10px] font-black uppercase tracking-wider leading-tight px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">
                             {{ $reg['badge'] }}
                         </span>
-                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 shrink-0 whitespace-nowrap">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
                             <span>Siaga 24 Jam</span>
                         </span>
                     </div>
@@ -125,24 +143,24 @@
                     <div class="space-y-2 mb-5">
                         <div class="flex items-center justify-between">
                             <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Pusat Layanan Kota:</p>
-                            <span class="text-[10px] text-slate-500 font-semibold">{{ count($reg['cities']) }} Kota/Kab</span>
+                            <span class="text-[10px] text-slate-500 font-semibold shrink-0 whitespace-nowrap">{{ count($reg['cities']) }} Kota/Kab</span>
                         </div>
                         
-                        <div class="{{ count($reg['cities']) > 3 ? 'grid grid-cols-2 gap-1.5' : 'flex flex-col gap-1.5' }}">
+                        <div class="{{ $isFeaturedHub ? 'grid grid-cols-1 md:grid-cols-3 gap-2' : 'flex flex-col gap-1.5' }}">
                             @foreach($reg['cities'] as $c)
                             @php
                                 $isCurrent = ($currentCity && (str_contains(strtolower($currentCity), strtolower($c['name'])) || $currentCity === $c['slug']));
                             @endphp
                             <a href="{{ route('area.city', ['city' => $c['slug']]) }}" 
-                               class="group/city flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs transition-colors {{ $isCurrent ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200' : 'bg-slate-50 hover:bg-sky-50 hover:text-sky-800 text-slate-700 border border-slate-100' }}">
-                                <span class="flex items-center gap-1.5 truncate">
+                               class="group/city flex items-center justify-between gap-2 px-3 py-2 rounded-md text-xs transition-colors {{ $isCurrent ? 'bg-sky-50 text-sky-800 font-bold border border-sky-200' : 'bg-slate-50 hover:bg-sky-50 hover:text-sky-800 text-slate-700 border border-slate-100' }}">
+                                <span class="flex items-center gap-1.5 min-w-0">
                                     <svg class="w-3.5 h-3.5 text-sky-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
-                                    <span class="truncate">{{ $c['name'] }}</span>
+                                    <span class="leading-snug">{{ $c['name'] }}</span>
                                 </span>
-                                <span class="text-[10px] text-slate-400 group-hover/city:text-sky-600 shrink-0 font-medium ml-1">&rarr;</span>
+                                <span class="text-[10px] text-slate-400 group-hover/city:text-sky-600 shrink-0 font-medium">&rarr;</span>
                             </a>
                             @endforeach
                         </div>

@@ -12,7 +12,7 @@
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 items-start">
-            <div class="lg:col-span-5 space-y-4 sm:space-y-5 reveal-soft">
+            <div class="lg:col-span-5 space-y-4 sm:space-y-5">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-900 border border-slate-700 text-slate-100 text-xs font-bold">
                     <x-customer-service.channel-icon channel="x" class="w-4 h-4 text-white" />
                     <span>Tautan Resmi Bio X (Twitter) {{ $channel['handle'] }}</span>
@@ -51,7 +51,7 @@
                 @endif
             </div>
 
-            <div class="lg:col-span-7 reveal-soft delay-100 min-w-0">
+            <div class="lg:col-span-7 min-w-0">
                 <x-customer-service.wa-area-builder
                     channel-code="x"
                     channel-slug="x"

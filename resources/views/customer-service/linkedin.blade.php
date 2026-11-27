@@ -34,7 +34,7 @@
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
-            <div class="lg:col-span-8 space-y-3.5 sm:space-y-4 reveal-soft">
+            <div class="lg:col-span-8 space-y-3.5 sm:space-y-4">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-sky-950/90 border border-sky-700/70 text-sky-200 text-xs font-bold">
                     <x-customer-service.channel-icon channel="linkedin" class="w-4 h-4" />
                     <span>Desk Korporat PT Jawa Jaya Rooter</span>
@@ -48,7 +48,7 @@
                 </p>
             </div>
 
-            <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-2.5 reveal-soft delay-100">
+            <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-2.5">
                 <a href="#form-penawaran-b2b"
                    class="min-h-12 inline-flex items-center justify-center px-4 py-3 rounded-md bg-sky-700 hover:bg-sky-800 text-white text-sm font-bold border border-sky-600 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400">
                     Ajukan Survei &amp; Penawaran B2B

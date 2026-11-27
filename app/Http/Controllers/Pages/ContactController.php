@@ -61,7 +61,6 @@ class ContactController extends Controller
         ]);
 
         $this->addBreadcrumb(
-            ['Beranda', route('home')],
             ['Kontak & Pemesanan', route('contact')]
         );
 

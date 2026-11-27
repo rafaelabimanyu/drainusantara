@@ -197,11 +197,15 @@ class ArticleStudioAndTaxonomyTest extends TestCase
         ]);
 
         $this->assertSame(
-            url('/edukasi/edukasi-mandiri/tips-wastafel-mampet/cara-membersihkan-wastafel-tanpa-soda-api'),
+            route('articles.show', ['slug' => 'cara-membersihkan-wastafel-tanpa-soda-api']),
             $article->silo_url
         );
 
-        $response = $this->get('/edukasi/edukasi-mandiri/tips-wastafel-mampet/cara-membersihkan-wastafel-tanpa-soda-api');
+        $siloRedirect = $this->get('/edukasi/edukasi-mandiri/tips-wastafel-mampet/cara-membersihkan-wastafel-tanpa-soda-api');
+        $siloRedirect->assertStatus(301);
+        $siloRedirect->assertRedirect($article->canonical_url);
+
+        $response = $this->get($article->canonical_url);
         $response->assertOk();
         $response->assertSee('Cara Membersihkan Wastafel Tanpa Soda Api');
         $response->assertSee('Gunakan metode mekanis spiral baja');

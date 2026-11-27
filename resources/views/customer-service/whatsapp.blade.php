@@ -23,7 +23,7 @@
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
-            <div class="lg:col-span-8 space-y-3.5 sm:space-y-4 reveal-soft">
+            <div class="lg:col-span-8 space-y-3.5 sm:space-y-4">
                 <div class="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-wider text-emerald-300">
                     <x-customer-service.channel-icon channel="whatsapp" class="w-4 h-4" />
                     <span>Jalur Dispatch Darurat 24 Jam</span>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-4 bg-slate-950/90 border border-slate-700 rounded-lg p-4 sm:p-5 space-y-2.5 reveal-soft delay-100">
+            <div class="lg:col-span-4 bg-slate-950/90 border border-slate-700 rounded-lg p-4 sm:p-5 space-y-2.5">
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-300 block">Telepon Langsung Posko</span>
                 <a href="tel:{{ preg_replace('/[^0-9]/', '', $whatsappNumber) }}"
                    data-track-location="cs_whatsapp_phone"

@@ -237,15 +237,22 @@
                         <div class="space-y-1">
                             <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Layanan yang Dipilih</span>
                             @if($caseStudy->service)
-                                <a href="{{ url('/#layanan') }}" 
+                                <a href="{{ route('services.show', ['slug' => $caseStudy->service->canonical_slug]) }}" 
                                    class="text-sm font-semibold text-sky-700 hover:text-sky-800 underline inline-flex items-center gap-1">
                                     <span>{{ $caseStudy->service->name }}</span>
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                                     </svg>
                                 </a>
+                            @elseif(!empty($relatedService['url']))
+                                <a href="{{ $relatedService['url'] }}" 
+                                   class="text-sm font-semibold text-sky-700 hover:text-sky-800 underline inline-flex items-center gap-1">
+                                    <span>{{ $relatedService['name'] }}</span>
+                                </a>
                             @else
-                                <p class="text-sm font-semibold text-slate-900">Spesialis Plumbing Pelancar Pipa</p>
+                                <a href="{{ route('services.index') }}" class="text-sm font-semibold text-sky-700 hover:text-sky-800 underline">
+                                    Spesialis Plumbing Pelancar Pipa
+                                </a>
                             @endif
                         </div>
 
@@ -268,9 +275,16 @@
                         <!-- 6. Titik & Area Kerja (Lokasi) -->
                         <div class="space-y-1">
                             <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Lokasi Pengerjaan</span>
-                            <p class="text-sm font-semibold text-slate-900">
-                                {{ $caseStudy->location ?: 'Area Layanan Terdaftar' }}
-                            </p>
+                            @if(!empty($relatedCityHub['city_url']))
+                                <a href="{{ $relatedCityHub['city_url'] }}"
+                                   class="text-sm font-semibold text-sky-700 hover:text-sky-800 underline inline-block">
+                                    {{ $caseStudy->location ?: $relatedCityHub['city_name'] }}
+                                </a>
+                            @else
+                                <p class="text-sm font-semibold text-slate-900">
+                                    {{ $caseStudy->location ?: 'Area Layanan Terdaftar' }}
+                                </p>
+                            @endif
                         </div>
 
                         <!-- 7. Tipe Sektor & Properti -->
@@ -361,6 +375,9 @@
                         </p>
                     @endif
                 </section>
+
+                <!-- 5.5 INTERNAL LINKING HUB KOTA & LAYANAN TERKAIT -->
+                <x-case-study.related-hubs :city-hub="$relatedCityHub ?? null" :service="$relatedService ?? null" />
 
             </div>
 

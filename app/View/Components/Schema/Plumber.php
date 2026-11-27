@@ -41,6 +41,8 @@ class Plumber extends Component
         public ?string $url = null,
         public ?string $image = null,
         public int|float|string|null $price = null,
+        public ?float $ratingValue = null,
+        public ?int $reviewCount = null,
     ) {
         $this->schema = $this->buildSchema();
     }
@@ -143,7 +145,7 @@ class Plumber extends Component
             $address['postalCode'] = $this->area->postal_code;
         }
 
-        return [
+        $schema = [
             '@context' => 'https://schema.org',
             '@type' => 'Plumber',
             'name' => $this->name,
@@ -160,13 +162,6 @@ class Plumber extends Component
                     'opens' => '00:00',
                     'closes' => '23:59',
                 ],
-            ],
-            'aggregateRating' => [
-                '@type' => 'AggregateRating',
-                'ratingValue' => '4.9',
-                'reviewCount' => 48,
-                'bestRating' => '5',
-                'worstRating' => '1',
             ],
             'geo' => [
                 '@type' => 'GeoCoordinates',
@@ -186,6 +181,18 @@ class Plumber extends Component
                 'url' => url('/'),
             ],
         ];
+
+        if ($this->ratingValue !== null && $this->reviewCount !== null && $this->reviewCount > 0) {
+            $schema['aggregateRating'] = [
+                '@type' => 'AggregateRating',
+                'ratingValue' => (string) $this->ratingValue,
+                'reviewCount' => $this->reviewCount,
+                'bestRating' => '5',
+                'worstRating' => '1',
+            ];
+        }
+
+        return $schema;
     }
 
     /**

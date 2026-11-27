@@ -21,7 +21,7 @@
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
-            <div class="lg:col-span-8 space-y-3.5 sm:space-y-4 reveal-soft">
+            <div class="lg:col-span-8 space-y-3.5 sm:space-y-4">
                 <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
                     Pusat Customer Service Resmi Drainusantara
                 </h1>
@@ -30,7 +30,7 @@
                 </p>
             </div>
 
-            <div class="lg:col-span-4 bg-slate-950/90 border border-slate-700 rounded-lg p-4 sm:p-5 space-y-2 reveal-soft delay-100">
+            <div class="lg:col-span-4 bg-slate-950/90 border border-slate-700 rounded-lg p-4 sm:p-5 space-y-2">
                 <span class="text-xs font-bold uppercase tracking-wider text-sky-300 block">Hotline Resmi 24 Jam</span>
                 <a href="tel:085609009009" class="min-h-11 inline-flex items-center text-2xl font-extrabold text-white hover:text-sky-300 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-sm">
                     0856-0900-9009

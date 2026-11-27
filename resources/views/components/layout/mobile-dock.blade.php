@@ -1,5 +1,6 @@
 @php
-    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*');
+    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('layanan*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*');
+    $isServices = request()->routeIs('services.*') || request()->is('layanan*');
     $isArea = request()->is('area*');
 @endphp
 <nav class="fixed bottom-3 inset-x-4 max-w-md mx-auto z-50 bg-slate-900/95 backdrop-blur-xs text-white rounded-2xl shadow-xl border border-slate-800 px-1.5 py-1 grid grid-cols-5 items-end lg:hidden mobile-nav-dock transition-all duration-300 ease-in-out"
@@ -24,9 +25,8 @@
     </a>
 
     <!-- 2. Layanan -->
-    <a href="{{ url('/#layanan') }}" 
-       @click="activeSection = 'layanan'"
-       class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center text-slate-300 hover:text-white transition-colors btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg"
+    <a href="{{ route('services.index') }}" 
+       class="flex flex-col items-center justify-end w-full min-h-[44px] pb-1 pt-1.5 text-center hover:text-white transition-colors btn-press active:scale-95 group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-400 rounded-lg {{ $isServices ? 'text-sky-400 font-bold' : 'text-slate-300' }}"
        @if($isHome)
        :class="{
            'text-sky-400 font-bold': activeSection === 'layanan',

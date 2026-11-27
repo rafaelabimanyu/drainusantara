@@ -8,12 +8,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\HasPageSeo;
 use App\Models\Gallery;
 use App\Models\Portfolio;
+use App\Support\CaseStudyLinking;
 use App\Support\PageMetadata;
 use Artesaos\SEOTools\Facades\JsonLdMulti;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -22,16 +24,31 @@ class ShowcaseController extends Controller
     use HasPageSeo;
 
     /**
+     * Map deleted legacy demo case study slugs (GallerySeeder) to their matching canonical service slug.
+     * Preserves GSC search impressions/clicks and guides visitors to relevant active service pages.
+     *
+     * @var array<string, string>
+     */
+    private const LEGACY_CASE_STUDY_SERVICE_MAP = [
+        'pelancaran-floor-drain-kamar-mandi-utama' => 'jasa-kamar-mandi-dan-floor-drain-mampet',
+        'ekstraksi-benda-asing-dari-kloset-duduk-hunian' => 'jasa-wc-dan-kloset-mampet',
+        'inspeksi-kamera-cctv-pipa-bawah-tanah-ruko-kantor' => 'jasa-inspeksi-kamera-cctv-pipa',
+        'kuras-grease-trap-dan-sedot-lemak-kafe-komersial' => 'jasa-hydro-jetting-dan-rooter-pipa',
+        'pelancaran-pipa-wastafel-dapur-restoran' => 'jasa-wastafel-dan-cucian-piring-mampet',
+        'pelancaran-pipa-talang-air-hujan-rooftop-hunian' => 'jasa-talang-air-dan-saluran-utama-mampet',
+    ];
+
+    /**
      * Display the Gallery & Portfolio page.
      */
     public function gallery(): View
     {
         PageMetadata::title('Dokumentasi Hasil Pengerjaan Pipa Mampet');
         SEOMeta::setDescription('Dokumentasi foto teknis pelancaran saluran pipa tersumbat sektor rumahan dan komersial B2B. Inspeksi visual kamera CCTV pipa 30 meter tanpa bongkar keramik.');
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical(route('gallery'));
 
         OpenGraph::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis berstandar profesional. Tanpa bongkar keramik dan bergaransi 30 hari.');
-        OpenGraph::setUrl(url()->current());
+        OpenGraph::setUrl(route('gallery'));
         OpenGraph::addImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
 
         TwitterCard::setDescription('Hasil nyata pelancaran pipa mampet dengan mesin spiral mekanis. Tanpa bongkar keramik, garansi nota 30 hari.');
@@ -56,14 +73,31 @@ class ShowcaseController extends Controller
     /**
      * Display a single Case Study (Studi Kasus) detail page.
      */
-    public function showCaseStudy(string $slug): View
+    public function showCaseStudy(string $slug): View|RedirectResponse
     {
-        $caseStudy = Cache::remember('case_study_'.$slug, 86400, function () use ($slug) {
-            return Gallery::where('slug', $slug)
+        $cacheKey = 'case_study_'.$slug;
+        $caseStudy = Cache::get($cacheKey);
+
+        if (! $caseStudy instanceof Gallery) {
+            $caseStudy = Gallery::where('slug', $slug)
                 ->where('is_active', true)
                 ->with(['service', 'equipment'])
-                ->firstOrFail();
-        });
+                ->first();
+
+            if ($caseStudy) {
+                Cache::put($cacheKey, $caseStudy, 86400);
+            }
+        }
+
+        if (! $caseStudy) {
+            $serviceSlug = self::LEGACY_CASE_STUDY_SERVICE_MAP[$slug] ?? null;
+
+            if ($serviceSlug) {
+                return redirect()->route('services.show', ['slug' => $serviceSlug], 301);
+            }
+
+            abort(404);
+        }
 
         $relatedCaseStudies = Gallery::where('is_active', true)
             ->where('id', '!=', $caseStudy->id)
@@ -82,21 +116,27 @@ class ShowcaseController extends Controller
             $relatedCaseStudies = $relatedCaseStudies->concat($extra);
         }
 
-        $summary = Str::limit(strip_tags((string) ($caseStudy->description ?? $caseStudy->content ?? '')), 160);
+        $seoTitle = CaseStudyLinking::buildSeoTitle($caseStudy);
+        $summary = CaseStudyLinking::buildMetaDescription($caseStudy);
+        $relatedCityHub = CaseStudyLinking::resolveCityHub($caseStudy);
+        $relatedService = CaseStudyLinking::resolveService($caseStudy);
+        $canonicalUrl = route('case-study.show', $slug);
 
-        PageMetadata::title($caseStudy->title.' | Studi Kasus');
+        SEOMeta::setTitle($seoTitle, false);
         SEOMeta::setDescription($summary);
-        SEOMeta::setCanonical(route('case-study.show', $slug));
+        SEOMeta::setCanonical($canonicalUrl);
 
         $rawImage = $caseStudy->before_image ?: ($caseStudy->image ?: ($caseStudy->after_image ?: $caseStudy->main_image));
         $imageUrl = $rawImage
             ? (filter_var($rawImage, FILTER_VALIDATE_URL) ? $rawImage : asset($rawImage))
             : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
 
+        OpenGraph::setTitle($seoTitle);
         OpenGraph::setDescription($summary);
-        OpenGraph::setUrl(route('case-study.show', $slug));
+        OpenGraph::setUrl($canonicalUrl);
         OpenGraph::addImage($imageUrl);
 
+        TwitterCard::setTitle($seoTitle);
         TwitterCard::setDescription($summary);
         TwitterCard::setImage($imageUrl);
 
@@ -122,7 +162,7 @@ class ShowcaseController extends Controller
             ],
             'mainEntityOfPage' => [
                 '@type' => 'WebPage',
-                '@id' => route('case-study.show', $slug),
+                '@id' => $canonicalUrl,
             ],
         ];
         if (! empty($equipmentNames)) {
@@ -136,17 +176,17 @@ class ShowcaseController extends Controller
             ];
         }
 
-        JsonLdMulti::setTitle($caseStudy->title.' | Studi Kasus Drainusantara');
+        JsonLdMulti::setTitle($seoTitle);
         JsonLdMulti::setDescription($summary);
         JsonLdMulti::setType('Article');
         JsonLdMulti::addValues($articleSchemaValues);
 
-        $this->addBreadcrumb(['Studi Kasus', route('gallery')], [$caseStudy->title, route('case-study.show', $slug)]);
+        $this->addBreadcrumb(['Studi Kasus', route('gallery')], [$caseStudy->title, $canonicalUrl]);
 
         $contextualWaMsg = "Halo Tim Drainusantara, saya melihat dokumentasi '{$caseStudy->title}' dan ingin tanya estimasi untuk penanganan serupa.";
         $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
 
-        return view('studi-kasus.show', compact('caseStudy', 'relatedCaseStudies', 'contextualWaMsg', 'contextualWaUrl'));
+        return view('studi-kasus.show', compact('caseStudy', 'relatedCaseStudies', 'relatedCityHub', 'relatedService', 'contextualWaMsg', 'contextualWaUrl'));
     }
 
     /**

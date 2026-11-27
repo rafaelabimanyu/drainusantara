@@ -151,6 +151,32 @@
                                         Nonaktif
                                     </span>
                                 @endif
+
+                                @if($area->type === 'district')
+                                    @php
+                                        $citySlugForBadge = \App\Services\RegionService::resolveCitySlug($area->city);
+                                        $districtSlugForBadge = \Illuminate\Support\Str::slug((string) $area->district);
+                                        $isForcedDup = $citySlugForBadge && \App\Services\RegionService::isForcedCityRedirect($citySlugForBadge, $districtSlugForBadge);
+                                        $isIndexableRow = $citySlugForBadge && \App\Services\RegionService::isIndexableDistrict($citySlugForBadge, $districtSlugForBadge, $area);
+                                        $isRecommendedGsc = $citySlugForBadge && \App\Services\RegionService::isRecommendedPriorityDistrict($citySlugForBadge, $districtSlugForBadge);
+                                    @endphp
+                                    <div class="mt-1 flex flex-wrap items-center gap-1">
+                                        @if($isForcedDup || !$isIndexableRow)
+                                            <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
+                                                Konsolidasi 301 &rarr; Kota
+                                            </span>
+                                        @else
+                                            <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-sky-50 text-sky-800 border border-sky-200">
+                                                Mandiri (200 OK)
+                                            </span>
+                                        @endif
+                                        @if($isRecommendedGsc)
+                                            <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                                Prioritas GSC
+                                            </span>
+                                        @endif
+                                    </div>
+                                @endif
                             </td>
                             <td class="px-5 py-3.5 whitespace-nowrap text-right text-xs font-medium space-x-1.5">
                                 @if($publicUrl)

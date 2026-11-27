@@ -42,10 +42,10 @@
             <span class="text-slate-300">/</span>
             <a href="{{ route('articles.index') }}" class="hover:text-sky-700 transition-colors shrink-0">Blog</a>
             <span class="text-slate-300">/</span>
-            <a href="{{ url('/edukasi/' . $article->category_slug) }}" class="hover:text-sky-700 transition-colors shrink-0">{{ $article->category_label }}</a>
+            <a href="{{ route('articles.index', ['category' => $article->category_slug]) }}" class="hover:text-sky-700 transition-colors shrink-0">{{ $article->category_label }}</a>
             @if($article->sub_category)
                 <span class="text-slate-300">/</span>
-                <a href="{{ url('/edukasi/' . $article->category_slug . '/' . $article->subcategory_slug) }}" class="hover:text-sky-700 transition-colors shrink-0">{{ $article->sub_category }}</a>
+                <a href="{{ route('articles.index', ['category' => $article->category_slug, 'sub' => $article->subcategory_slug]) }}" class="hover:text-sky-700 transition-colors shrink-0">{{ $article->sub_category }}</a>
             @endif
             <span class="text-slate-300">/</span>
             <span class="text-slate-800 truncate font-semibold">{{ $article->title }}</span>
@@ -239,7 +239,7 @@
                 </div>
 
                 <!-- Interkoneksi Silo Wilayah & Layanan (Internal Linking Contextual) -->
-                @if($article->service || !empty($article->city))
+                @if($article->service || !empty($article->city) || !empty($contextualAreaHub))
                     <div class="mt-10 p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-3">
                         <div class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
                             <svg class="w-4 h-4 text-sky-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
@@ -247,18 +247,23 @@
                         </div>
                         <div class="flex flex-wrap items-center gap-3">
                             @if($article->service)
-                                <a href="{{ url('/layanan') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-300 text-xs font-bold text-sky-800 hover:border-sky-400 transition-colors shadow-2xs">
+                                <a href="{{ route('services.show', ['slug' => $article->service->canonical_slug]) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-300 text-xs font-bold text-sky-800 hover:border-sky-400 transition-colors shadow-2xs">
                                     <span>Layanan Spesialis: {{ $article->service->name }}</span>
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </a>
                             @endif
 
-                            @if(!empty($article->city))
+                            @if(!empty($contextualAreaHub))
+                                <a href="{{ $contextualAreaHub['url'] }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-300 text-xs font-bold text-slate-800 hover:border-sky-400 transition-colors shadow-2xs">
+                                    <svg class="w-3.5 h-3.5 text-sky-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                                    <span>{{ $contextualAreaHub['label'] }}: {{ $contextualAreaHub['name'] }}</span>
+                                </a>
+                            @elseif(!empty($article->city))
                                 @php
                                     $citySlug = \Illuminate\Support\Str::slug($article->city);
                                 @endphp
-                                <a href="{{ url('/area/' . $citySlug) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-300 text-xs font-bold text-slate-800 hover:border-sky-400 transition-colors shadow-2xs">
-                                    <svg class="w-3.5 h-3.5 text-rose-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                                <a href="{{ route('area.city', ['city' => $citySlug]) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white border border-slate-300 text-xs font-bold text-slate-800 hover:border-sky-400 transition-colors shadow-2xs">
+                                    <svg class="w-3.5 h-3.5 text-sky-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
                                     <span>Area Siaga: {{ $article->city }}</span>
                                 </a>
                             @endif

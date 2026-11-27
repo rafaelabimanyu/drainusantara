@@ -35,17 +35,23 @@ class SeoSiloAndSchemaIntegrityTest extends TestCase
             'published_at' => now(),
         ]);
 
-        $expectedSiloUrl = url('/edukasi/tips-perawatan/wastafel-dapur/cara-mengatasi-saluran-wastafel-mampet');
-        $this->assertSame($expectedSiloUrl, $article->silo_url);
+        $expectedCanonicalUrl = route('articles.show', ['slug' => $article->slug]);
+        $this->assertSame($expectedCanonicalUrl, $article->canonical_url);
+        $this->assertSame($expectedCanonicalUrl, $article->silo_url);
 
-        // Access legacy /artikel/{slug}
-        $response = $this->get('/artikel/' . $article->slug);
-        $response->assertStatus(301);
-        $response->assertRedirect($expectedSiloUrl);
+        // Canonical /artikel/{slug} renders 200 OK
+        $canonicalResponse = $this->get('/artikel/' . $article->slug);
+        $canonicalResponse->assertOk();
 
-        // Access legacy /blog/{slug}
+        // Legacy /edukasi/{cat}/{sub}/{slug} redirects 301 to /artikel/{slug}
+        $siloResponse = $this->get('/edukasi/tips-perawatan/wastafel-dapur/' . $article->slug);
+        $siloResponse->assertStatus(301);
+        $siloResponse->assertRedirect($expectedCanonicalUrl);
+
+        // Legacy /blog/{slug} redirects 301 to /artikel/{slug}
         $blogResponse = $this->get('/blog/' . $article->slug);
         $blogResponse->assertStatus(301);
+        $blogResponse->assertRedirect($expectedCanonicalUrl);
     }
 
     public function test_silo_mismatched_slugs_redirect_301_to_canonical_silo_url(): void
@@ -62,14 +68,14 @@ class SeoSiloAndSchemaIntegrityTest extends TestCase
             'published_at' => now(),
         ]);
 
-        // Wrong category or subcategory in URL
+        // Wrong category or subcategory in legacy /edukasi URL redirects 301 to canonical /artikel/{slug}
         $wrongUrl = url('/edukasi/wrong-category/wrong-sub/panduan-perbaikan-kloset-mampet');
         $response = $this->get($wrongUrl);
         $response->assertStatus(301);
-        $response->assertRedirect($article->silo_url);
+        $response->assertRedirect($article->canonical_url);
 
-        // Correct silo URL renders 200 OK
-        $okResponse = $this->get($article->silo_url);
+        // Canonical /artikel/{slug} renders 200 OK
+        $okResponse = $this->get($article->canonical_url);
         $okResponse->assertStatus(200);
         $okResponse->assertSee('Panduan Perbaikan Kloset Mampet');
     }

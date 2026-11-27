@@ -102,7 +102,7 @@
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 items-start">
-            <div class="lg:col-span-5 space-y-4 sm:space-y-5 reveal-soft">
+            <div class="lg:col-span-5 space-y-4 sm:space-y-5">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-900 border border-cyan-500/40 text-cyan-300 text-xs font-bold">
                     <x-customer-service.channel-icon channel="tiktok" class="w-4 h-4" />
                     <span>Tautan Resmi Bio TikTok {{ $channel['handle'] }}</span>
@@ -144,7 +144,7 @@
                 @endif
             </div>
 
-            <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-lg p-4 sm:p-7 space-y-5 reveal-soft delay-100 min-w-0">
+            <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-lg p-4 sm:p-7 space-y-5 min-w-0">
                 <div class="space-y-1">
                     <h2 class="text-lg sm:text-xl font-extrabold text-white tracking-tight">
                         1. Pilih Gejala Masalah Saluran Anda

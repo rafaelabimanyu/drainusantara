@@ -36,6 +36,8 @@ Route::get('/proses-kerja', fn () => redirect()->route('how-it-works', [], 301))
 Route::get('/area', [Pages\AreaController::class, 'areasIndex'])->name('area.index');
 Route::get('/area/provinsi/{province}', [Pages\AreaController::class, 'province'])->name('area.province');
 Route::get('/area/{city}', [Pages\AreaController::class, 'city'])->name('area.city');
+// Konsolidasi slug kembar Demak -> hub Kabupaten Demak (1 hop, 301 permanen)
+Route::permanentRedirect('/area/demak/demak', '/area/demak');
 Route::get('/area/{city}/{district}', [Pages\AreaController::class, 'area'])->name('area.detail');
 
 // Galeri & Portofolio
@@ -67,6 +69,15 @@ Route::get('/blog', fn () => redirect()->route('articles.index', [], 301))->name
 Route::get('/artikel', fn () => redirect()->route('articles.index', [], 301))->name('articles.legacy');
 Route::get('/pengetahuan/{slug}', fn (string $slug) => redirect()->route('articles.show', ['slug' => $slug], 301));
 Route::get('/blog/{slug}', fn (string $slug) => redirect()->route('articles.show', ['slug' => $slug], 301));
+// Redirect 1-hop URL kanibalisasi Depok -salin-judul -> /area/depok-cinere
+Route::permanentRedirect(
+    '/artikel/jasa-saluran-pipa-mampet-depok-perbaikan-pelancaran-saluran-air-profesional-salin-judul',
+    '/area/depok-cinere'
+);
+Route::permanentRedirect(
+    '/edukasi/area-layanan/depok/jasa-saluran-pipa-mampet-depok-perbaikan-pelancaran-saluran-air-profesional-salin-judul',
+    '/area/depok-cinere'
+);
 Route::get('/edukasi', fn () => redirect()->route('articles.index', [], 301))->name('articles.silo.index');
 Route::get('/edukasi/{category}', function (string $category) {
     return redirect()->route('articles.index', ['category' => $category], 301);
@@ -74,7 +85,8 @@ Route::get('/edukasi/{category}', function (string $category) {
 Route::get('/edukasi/{category}/{subcategory}', function (string $category, string $subcategory) {
     return redirect()->route('articles.index', ['category' => $category, 'sub' => $subcategory], 301);
 })->name('articles.silo.subcategory');
-Route::get('/edukasi/{category}/{subcategory}/{slug}', [Pages\ArticleController::class, 'articleSiloDetail'])->name('articles.silo');
+// Seluruh varian /edukasi/{category}/{subcategory}/{slug} -> 301 ke kanonik tunggal /artikel/{slug}
+Route::get('/edukasi/{category}/{subcategory}/{slug}', [Pages\ArticleController::class, 'redirectSiloToCanonical'])->name('articles.silo');
 Route::get('/artikel/{slug}', [Pages\ArticleController::class, 'articleDetail'])->name('articles.show');
 
 // Human HTML Sitemap & Dynamic XML Sitemap
@@ -130,6 +142,10 @@ Route::get('/area-layanan', fn () => redirect('/#area', 301))->name('areas.ancho
 
 // Halaman Publik Layanan Dedicated (Anti-Cannibalization Silo)
 Route::get('/layanan', [Pages\ServicePageController::class, 'index'])->name('services.index');
+Route::permanentRedirect(
+    '/layanan/floor-drain-kamar-mandi',
+    '/layanan/jasa-kamar-mandi-dan-floor-drain-mampet'
+);
 Route::get('/layanan/{slug}', [Pages\ServicePageController::class, 'show'])->name('services.show');
 Route::get('/services/{slug}', fn ($slug) => redirect()->route('services.show', ['slug' => $slug], 301));
 

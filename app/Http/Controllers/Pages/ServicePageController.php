@@ -76,7 +76,7 @@ class ServicePageController extends Controller
 
         $this->addBreadcrumb(['Layanan', route('services.index')]);
 
-        $services = ServiceCatalogRegistry::all();
+        $services = $this->syncImagesFromDatabase(ServiceCatalogRegistry::all());
 
         $majorCities = Cache::remember('services.index.major_cities', 86400, function () {
             return CoverageArea::where('type', 'city')
@@ -87,7 +87,7 @@ class ServicePageController extends Controller
         });
 
         $featuredArticles = Cache::remember('services.index.articles', 86400, function () {
-            return Article::where('is_published', true)
+            return Article::indexable()
                 ->with(['categoryRelation', 'subcategoryRelation'])
                 ->latest('published_at')
                 ->take(3)
@@ -112,6 +112,10 @@ class ServicePageController extends Controller
         }
 
         $service = $resolution['service'];
+        $dbImageMap = $this->getDatabaseServiceImageMap();
+        if ($service && isset($dbImageMap[$service['slug']])) {
+            $service['image'] = $dbImageMap[$service['slug']];
+        }
 
         // Fallback: check database model if not in registry
         if (! $service) {
@@ -168,15 +172,33 @@ class ServicePageController extends Controller
             'drainusantara',
         ]));
 
+        $serviceImageUrl = $this->resolveImageUrl($service['image'] ?? null);
+
         OpenGraph::setTitle($service['meta_title']);
         OpenGraph::setDescription($service['meta_description']);
         OpenGraph::setUrl($canonicalUrl);
         OpenGraph::addProperty('type', 'website');
-        OpenGraph::addImage(asset($service['image'] ?? 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        OpenGraph::addImage($serviceImageUrl);
 
         TwitterCard::setTitle($service['meta_title']);
         TwitterCard::setDescription($service['meta_description']);
-        TwitterCard::setImage(asset($service['image'] ?? 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
+        TwitterCard::setImage($serviceImageUrl);
+
+        // Index 0: Complete Plumber provider schema (prevents empty default Plumber block leak)
+        JsonLdMulti::setType('Plumber');
+        JsonLdMulti::setTitle($service['meta_title']);
+        JsonLdMulti::setDescription($service['meta_description']);
+        JsonLdMulti::addValues([
+            '@id' => url('/#organization'),
+            'name' => 'Drainusantara',
+            'legalName' => 'PT Jawa Jaya Rooter',
+            'url' => url('/'),
+            'image' => $serviceImageUrl,
+            'telephone' => $this->formatInternationalPhone(),
+            'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
+            'address' => $this->getHeadquartersAddress(),
+            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
+        ]);
 
         // Schema JSON-LD Service
         $serviceJsonLd = JsonLdMulti::newJsonLd();
@@ -187,19 +209,13 @@ class ServicePageController extends Controller
             'serviceType' => 'Plumbing Service',
             'description' => $service['meta_description'],
             'provider' => [
-                '@type' => 'Plumber',
-                'name' => 'Drainusantara',
-                'legalName' => 'PT Jawa Jaya Rooter',
-                'url' => url('/'),
-                'telephone' => $this->formatInternationalPhone(),
-                'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
-                'address' => $this->getHeadquartersAddress(),
+                '@id' => url('/#organization'),
             ],
+            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
             'offers' => [
                 '@type' => 'Offer',
                 'price' => (string) $service['price_starting_from'],
                 'priceCurrency' => 'IDR',
-                'availability' => 'https://schema.org/InStock',
                 'priceSpecification' => [
                     '@type' => 'PriceSpecification',
                     'price' => (string) $service['price_starting_from'],
@@ -239,16 +255,86 @@ class ServicePageController extends Controller
         });
 
         $relatedArticles = Cache::remember('services.show.articles.' . $service['slug'], 86400, function () {
-            return Article::where('is_published', true)
+            return Article::indexable()
                 ->with(['categoryRelation', 'subcategoryRelation'])
                 ->latest('published_at')
                 ->take(3)
                 ->get();
         });
 
-        $allServices = ServiceCatalogRegistry::all();
+        $allServices = $this->syncImagesFromDatabase(ServiceCatalogRegistry::all());
         $otherServices = array_filter($allServices, fn ($s) => $s['slug'] !== $service['slug']);
 
         return view('services.show', compact('service', 'contextualWaMsg', 'contextualWaUrl', 'majorCities', 'relatedArticles', 'otherServices'));
+    }
+
+    /**
+     * Overlay active CMS service images from the database onto registry definitions
+     * so /layanan and /layanan/{slug} stay synchronized with home and /area/* cards.
+     *
+     * @param  array<string, array<string, mixed>>  $services
+     * @return array<string, array<string, mixed>>
+     */
+    private function syncImagesFromDatabase(array $services): array
+    {
+        $dbImageMap = $this->getDatabaseServiceImageMap();
+
+        foreach ($services as $slug => &$service) {
+            if (isset($dbImageMap[$slug])) {
+                $service['image'] = $dbImageMap[$slug];
+            }
+        }
+        unset($service);
+
+        return $services;
+    }
+
+    /**
+     * Build a canonical_slug => image path map from active database Service records.
+     *
+     * @return array<string, string>
+     */
+    private function getDatabaseServiceImageMap(): array
+    {
+        try {
+            $map = [];
+            $dbServices = Service::where('is_active', true)
+                ->orderBy('order')
+                ->orderBy('id')
+                ->get(['slug', 'image']);
+
+            foreach ($dbServices as $svc) {
+                $image = trim((string) ($svc->image ?? ''));
+                if ($image === '' || str_contains($image, 'placehold.co') || str_contains($image, 'unsplash.com')) {
+                    continue;
+                }
+
+                $canonicalSlug = $svc->canonical_slug;
+                if (! isset($map[$canonicalSlug])) {
+                    $map[$canonicalSlug] = $image;
+                }
+            }
+
+            return $map;
+        } catch (\Throwable) {
+            return [];
+        }
+    }
+
+    /**
+     * Resolve a local asset path or absolute image URL safely for meta tags and schemas.
+     */
+    private function resolveImageUrl(?string $image): string
+    {
+        $raw = trim((string) ($image ?? ''));
+        if ($raw === '' || str_contains($raw, 'placehold.co') || str_contains($raw, 'unsplash.com')) {
+            return asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
+        }
+
+        if (str_starts_with($raw, 'http://') || str_starts_with($raw, 'https://')) {
+            return $raw;
+        }
+
+        return asset(ltrim($raw, '/'));
     }
 }

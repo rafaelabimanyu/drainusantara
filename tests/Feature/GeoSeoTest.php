@@ -190,7 +190,11 @@ class GeoSeoTest extends TestCase
 
     public function test_schema_plumber_component_renders_complete_local_business_data(): void
     {
-        $rendered = Blade::render('<x-schema.plumber city-slug="bandung" district="dago" />');
+        // Default component omits hardcoded aggregateRating unless explicit verified values are supplied
+        $renderedDefault = Blade::render('<x-schema.plumber city-slug="bandung" district="dago" />');
+        $this->assertStringNotContainsString('aggregateRating', $renderedDefault);
+
+        $rendered = Blade::render('<x-schema.plumber city-slug="bandung" district="dago" rating-value="4.9" review-count="48" />');
 
         $this->assertStringContainsString('<script type="application/ld+json">', $rendered);
         $this->assertStringContainsString('PT JAWA JAYA ROOTER', $rendered);

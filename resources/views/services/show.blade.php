@@ -69,16 +69,23 @@
                 </div>
 
                 <!-- Visual Foto Banner Pengerjaan -->
+                @php
+                    $rawHeroImg = $service['image'] ?? 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp';
+                    $heroImgUrl = (str_starts_with($rawHeroImg, 'http://') || str_starts_with($rawHeroImg, 'https://'))
+                        ? $rawHeroImg
+                        : asset(ltrim($rawHeroImg, '/'));
+                @endphp
                 <div class="lg:col-span-5">
                     <div class="bg-white rounded-xl p-3 sm:p-4 border border-slate-200 shadow-xs space-y-3">
                         <div class="relative rounded-lg overflow-hidden aspect-4/3 bg-slate-900 border border-slate-200">
-                            <img src="{{ asset($service['image'] ?? 'images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp') }}" 
+                            <img src="{{ $heroImgUrl }}" 
                                  alt="{{ $service['h1'] }}" 
                                  width="700"
                                  height="525"
                                  loading="eager"
                                  fetchpriority="high"
                                  decoding="async"
+                                 onerror="this.onerror=null; this.src='{{ asset('assets/placeholders/service.svg') }}';"
                                  class="w-full h-full object-cover">
                             <div class="absolute bottom-2 left-2 right-2 bg-slate-950/85 backdrop-blur-xs px-3 py-1.5 rounded-md text-white text-[11px] flex items-center justify-between border border-white/10">
                                 <span>Armada Siaga Teknisi</span>

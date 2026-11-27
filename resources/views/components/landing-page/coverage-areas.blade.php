@@ -6,7 +6,7 @@
     $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6285609009009');
 @endphp
 
-<section id="area" class="bg-slate-50 border-b border-slate-200 py-16 lg:py-20" x-data="mobileCarousel(5, 4500)">
+<section id="area" class="bg-slate-50 border-b border-slate-200 py-16 lg:py-20" x-data="mobileCarousel(6, 4500)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-10 md:mb-12 reveal-soft">
@@ -19,7 +19,7 @@
                 </div>
                 <div>
                     <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">Wilayah Jangkauan Armada Drainusantara</h2>
-                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Posko teknisi siaga di seluruh Jabodetabek, Bandung Raya, Semarang Raya, Demak, dan Lampung dengan respon WhatsApp sigap &amp; cepat.</p>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Posko teknisi siaga di Jabodetabek, Bandung Raya, Semarang Raya, Demak, Bandar Lampung, dan Bali dengan respon WhatsApp sigap.</p>
                 </div>
             </div>
         </div>
@@ -369,6 +369,76 @@
                 </div>
             </div>
 
+            <!-- Card 6: BALI (DENPASAR, BADUNG, GIANYAR, TABANAN) -->
+            <div class="group/card relative overflow-hidden w-[85vw] sm:w-85 lg:w-auto shrink-0 snap-center bg-white rounded-xl p-6 sm:p-7 border border-slate-200/90 hover:border-sky-400 hover:shadow-md transition-all flex flex-col justify-between card-lift reveal-soft stagger-6">
+                <!-- Card Background Image Layer -->
+                <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <img src="{{ \App\Services\AreaImageResolver::resolveUrl(null, 'bali', 'kota-denpasar') }}"
+                         alt="Jasa Saluran Pipa Mampet Bali Denpasar Badung Gianyar Tabanan - Armada Drainusantara"
+                         loading="lazy"
+                         decoding="async"
+                         class="w-full h-full object-cover object-top opacity-15 sm:opacity-20 group-hover/card:opacity-30 group-hover/card:scale-105 transition-all duration-700 ease-out">
+                    <div class="absolute inset-0 bg-linear-to-b from-white/55 via-white/70 to-white/55"></div>
+                </div>
+
+                <div class="relative z-10">
+                    <div class="mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight mb-2">Bali</h3>
+
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
+                        Armada teknisi siaga melayani villa, hotel, restoran, dan hunian di Denpasar, Badung, Gianyar, hingga Tabanan tanpa bongkar keramik dan bergaransi 30 hari.
+                    </p>
+
+                    <div class="pt-4 border-t border-slate-100">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2.5">
+                            Area Layanan Utama:
+                        </span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="{{ route('area.city', ['city' => 'kota-denpasar']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kota Denpasar</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Sanur, Renon, Denpasar Selatan</div>
+                            </a>
+                            <a href="{{ route('area.city', ['city' => 'kabupaten-badung']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kab. Badung</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Kuta, Seminyak, Canggu, Nusa Dua</div>
+                            </a>
+                            <a href="{{ route('area.city', ['city' => 'kabupaten-gianyar']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kab. Gianyar</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Ubud, Sukawati, Blahbatuh</div>
+                            </a>
+                            <a href="{{ route('area.city', ['city' => 'kabupaten-tabanan']) }}" class="group p-2.5 rounded-lg bg-slate-50/90 backdrop-blur-[2px] hover:bg-white border border-slate-200/80 hover:border-sky-300 transition-colors flex flex-col justify-between">
+                                <div class="font-semibold text-xs text-slate-900 group-hover:text-sky-700 transition-colors truncate">Kab. Tabanan</div>
+                                <div class="text-[11px] text-slate-500 mt-1 line-clamp-1">Kediri, Tabanan Kota, Kerambitan</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <a href="{{ route('area.province', ['province' => 'bali']) }}" class="text-xs font-bold text-sky-700 hover:text-sky-800 hover:underline">
+                        Lihat Seluruh Bali &rarr;
+                    </a>
+                    @php
+                        $waBaliText = urlencode("Halo Drainusantara, saya butuh teknisi saluran mampet untuk area Bali. Mohon info jadwal kedatangan terdekat.");
+                    @endphp
+                    <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $waBaliText }}" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-colors shadow-2xs btn-press">
+                        <span>Panggil Teknisi</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
         </div>
 
         <!-- Mobile Slide Counter -->
@@ -380,10 +450,10 @@
                     aria-label="Wilayah sebelumnya">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <span>Wilayah <strong class="text-slate-900" x-text="active + 1">1</strong> dari 5</span>
-            <button type="button" @click="goTo(Math.min(4, active + 1))"
-                    :disabled="active === 4"
-                    :class="active === 4 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
+            <span>Wilayah <strong class="text-slate-900" x-text="active + 1">1</strong> dari 6</span>
+            <button type="button" @click="goTo(Math.min(5, active + 1))"
+                    :disabled="active === 5"
+                    :class="active === 5 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-slate-100 hover:text-slate-900 cursor-pointer'"
                     class="p-1.5 rounded-md border border-slate-200 transition-colors"
                     aria-label="Wilayah berikutnya">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>

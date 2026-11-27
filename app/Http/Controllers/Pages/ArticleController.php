@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Pages;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\HasPageSeo;
 use App\Models\Article;
+use App\Services\RegionService;
 use App\Support\PageMetadata;
 use Artesaos\SEOTools\Facades\JsonLdMulti;
 use Artesaos\SEOTools\Facades\OpenGraph;
@@ -22,20 +23,34 @@ class ArticleController extends Controller
     use HasPageSeo;
 
     /**
+     * Map deleted legacy article slugs (seeded demo articles returning 404)
+     * to their current topical replacement article slugs.
+     *
+     * @var array<string, string>
+     */
+    private const LEGACY_ARTICLE_SLUG_MAP = [
+        'panduan-perawatan-grease-trap-dapur-restoran' => 'standar-perawatan-grease-trap-restoran-kafe-cegah-lemak-membatu-di-pipa-utama',
+        '5-kebiasaan-penyebab-bak-cuci-piring-tersumbat' => 'kenapa-air-wastafel-sering-melambat-kenali-5-penyebab-utama-cara-mencegahnya',
+        'kapan-saluran-pipa-butuh-inspeksi-kamera-cctv' => 'pelacakan-presisi-tanpa-bongkar-standar-inspeksi-kamera-drainusantara',
+        'bahaya-menggunakan-soda-api-saluran-mampet' => 'solusi-tuntas-pipa-mampet-dapur-komersial-mengapa-mesin-spiral-baja-lebih-aman-dari-bahan-kimia',
+        'bahaya-kawat-manual-saluran-pipa-mampet' => 'mengenal-mesin-ridgid-fungsi-teknologi-dan-kegunaannya-untuk-mengatasi-saluran-pipa-mampet',
+    ];
+
+    /**
      * Display the Blog & Education listing page.
      */
     public function articles(Request $request): View
     {
-        $page = \Illuminate\Pagination\Paginator::resolveCurrentPage();
+        $page = max(1, (int) \Illuminate\Pagination\Paginator::resolveCurrentPage());
         $searchTerm = trim((string) ($request->input('q') ?: $request->input('search')));
 
-        if ($searchTerm !== '') {
-            $canonical = route('articles.index');
+        if ($searchTerm !== '' || $page >= 2) {
             SEOMeta::setRobots('noindex, follow');
-        } else {
-            $canonicalParams = $page > 1 ? ['page' => $page] : [];
-            $canonical = route('articles.index', $canonicalParams);
         }
+
+        $canonical = ($searchTerm === '' && $page > 1)
+            ? route('articles.index', ['page' => $page])
+            : route('articles.index');
 
         $pageTitle = $searchTerm !== ''
             ? "Pencarian '{$searchTerm}' - Panduan Perawatan Pipa"
@@ -53,7 +68,7 @@ class ArticleController extends Controller
         TwitterCard::setImage(asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp'));
         $this->addBreadcrumb(['Blog', route('articles.index')]);
 
-        $query = Article::where('is_published', true)->with(['categoryRelation', 'subcategoryRelation']);
+        $query = Article::indexable()->with(['categoryRelation', 'subcategoryRelation']);
         if ($searchTerm !== '') {
             $like = '%' . $searchTerm . '%';
             $query->where(function ($q) use ($like) {
@@ -90,7 +105,7 @@ class ArticleController extends Controller
 
         $featuredArticle = ($searchTerm !== '' || ($request->filled('category') && strtolower((string) $request->input('category')) !== 'all') || ($request->filled('sub') && strtolower((string) $request->input('sub')) !== 'all'))
             ? null
-            : Article::where('is_published', true)
+            : Article::indexable()
                 ->with(['categoryRelation', 'subcategoryRelation'])
                 ->latest('published_at')
                 ->first();
@@ -123,34 +138,50 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the Article Detail page via URL Silo structure: /edukasi/{category}/{subcategory}/{slug}
+     * Redirect legacy /edukasi/{category}/{subcategory}/{slug} silo URLs (301) to canonical /artikel/{slug}
+     * (or 1-hop to /area/depok-cinere for cannibalized Depok -salin-judul slug).
      */
-    public function articleSiloDetail(string $category, string $subcategory, string $slug): View|RedirectResponse
+    public function redirectSiloToCanonical(string $category, string $subcategory, string $slug): RedirectResponse
     {
-        $article = Article::where('slug', $slug)
-            ->where('is_published', true)
-            ->with(['categoryRelation', 'subcategoryRelation'])
-            ->firstOrFail();
-
-        // Enforce strict category and subcategory slug match. If mismatched, 301 redirect to canonical silo URL
-        if ($category !== $article->category_slug || $subcategory !== $article->subcategory_slug) {
-            return redirect()->to($article->silo_url, 301);
+        if (in_array($slug, Article::REDIRECTED_SLUGS, true)) {
+            return redirect()->route('area.city', ['city' => 'depok-cinere'], 301);
         }
 
-        return $this->renderArticleView($article);
+        $targetSlug = $slug;
+        if (! Article::where('slug', $slug)->where('is_published', true)->exists()) {
+            $replacementSlug = self::LEGACY_ARTICLE_SLUG_MAP[$slug] ?? null;
+            if ($replacementSlug && Article::where('slug', $replacementSlug)->where('is_published', true)->exists()) {
+                $targetSlug = $replacementSlug;
+            }
+        }
+
+        return redirect()->route('articles.show', ['slug' => $targetSlug], 301);
     }
 
     /**
-     * Legacy article detail route (/artikel/{slug}): 301 Permanent Redirect to official Silo URL.
+     * Canonical article detail route (/artikel/{slug}).
      */
-    public function articleDetail(string $slug): RedirectResponse
+    public function articleDetail(string $slug): View|RedirectResponse
     {
+        if (in_array($slug, Article::REDIRECTED_SLUGS, true)) {
+            return redirect()->route('area.city', ['city' => 'depok-cinere'], 301);
+        }
+
         $article = Article::where('slug', $slug)
             ->where('is_published', true)
             ->with(['categoryRelation', 'subcategoryRelation'])
-            ->firstOrFail();
+            ->first();
 
-        return redirect()->to($article->silo_url, 301);
+        if (! $article) {
+            $replacementSlug = self::LEGACY_ARTICLE_SLUG_MAP[$slug] ?? null;
+            if ($replacementSlug && Article::where('slug', $replacementSlug)->where('is_published', true)->exists()) {
+                return redirect()->route('articles.show', ['slug' => $replacementSlug], 301);
+            }
+
+            abort(404);
+        }
+
+        return $this->renderArticleView($article);
     }
 
     /**
@@ -164,6 +195,7 @@ class ArticleController extends Controller
             session()->put($sessionKey, true);
         }
 
+        $canonicalUrl = $article->canonical_url;
         $rawTitle = $article->meta_title ?: $article->title;
         $cleanTitle = PageMetadata::cleanTitle($rawTitle);
         $metaDescription = $article->meta_description ?: ($article->excerpt ?: Str::limit(strip_tags($article->content), 150));
@@ -171,10 +203,10 @@ class ArticleController extends Controller
 
         PageMetadata::title($cleanTitle);
         SEOMeta::setDescription($metaDescription);
-        SEOMeta::setCanonical($article->silo_url);
+        SEOMeta::setCanonical($canonicalUrl);
 
         OpenGraph::setDescription($metaDescription);
-        OpenGraph::setUrl($article->silo_url);
+        OpenGraph::setUrl($canonicalUrl);
         OpenGraph::addProperty('type', 'article');
         OpenGraph::addImage($thumbnailUrl);
 
@@ -207,14 +239,14 @@ class ArticleController extends Controller
             'inLanguage' => 'id-ID',
             'mainEntityOfPage' => [
                 '@type' => 'WebPage',
-                '@id' => $article->silo_url,
+                '@id' => $canonicalUrl,
             ],
         ]);
 
         $breadcrumbElements = [
             ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
             ['@type' => 'ListItem', 'position' => 2, 'name' => 'Edukasi', 'item' => route('articles.index')],
-            ['@type' => 'ListItem', 'position' => 3, 'name' => $article->category_label, 'item' => url('/edukasi/' . $article->category_slug)],
+            ['@type' => 'ListItem', 'position' => 3, 'name' => $article->category_label, 'item' => route('articles.index', ['category' => $article->category_slug])],
         ];
 
         if (!empty($article->sub_category)) {
@@ -222,20 +254,20 @@ class ArticleController extends Controller
                 '@type' => 'ListItem',
                 'position' => 4,
                 'name' => $article->sub_category,
-                'item' => url('/edukasi/' . $article->category_slug . '/' . $article->subcategory_slug),
+                'item' => route('articles.index', ['category' => $article->category_slug, 'sub' => $article->subcategory_slug]),
             ];
             $breadcrumbElements[] = [
                 '@type' => 'ListItem',
                 'position' => 5,
                 'name' => $article->title,
-                'item' => $article->silo_url,
+                'item' => $canonicalUrl,
             ];
         } else {
             $breadcrumbElements[] = [
                 '@type' => 'ListItem',
                 'position' => 4,
                 'name' => $article->title,
-                'item' => $article->silo_url,
+                'item' => $canonicalUrl,
             ];
         }
 
@@ -245,20 +277,20 @@ class ArticleController extends Controller
             'itemListElement' => $breadcrumbElements,
         ]);
 
-        $prevArticle = Article::where('is_published', true)
+        $prevArticle = Article::indexable()
             ->where('published_at', '<', $article->published_at ?? $article->created_at)
             ->with(['categoryRelation', 'subcategoryRelation'])
             ->orderByDesc('published_at')
             ->first();
 
-        $nextArticle = Article::where('is_published', true)
+        $nextArticle = Article::indexable()
             ->where('published_at', '>', $article->published_at ?? $article->created_at)
             ->with(['categoryRelation', 'subcategoryRelation'])
             ->orderBy('published_at')
             ->first();
 
         // 1. Sidebar: Panduan Lainnya (Artikel terbaru kecuali artikel aktif)
-        $recentArticles = Article::where('is_published', true)
+        $recentArticles = Article::indexable()
             ->where('id', '!=', $article->id)
             ->with(['categoryRelation', 'subcategoryRelation'])
             ->latest('published_at')
@@ -268,7 +300,7 @@ class ArticleController extends Controller
         // 2. Bottom Section: Rekomendasi Terkait (Kategori sama, wajib berbeda dari sidebar & artikel aktif)
         $excludedIds = $recentArticles->pluck('id')->push($article->id)->all();
 
-        $relatedArticles = Article::where('is_published', true)
+        $relatedArticles = Article::indexable()
             ->whereNotIn('id', $excludedIds)
             ->when($article->category_id, fn ($q) => $q->where('category_id', $article->category_id))
             ->when(!$article->category_id && $article->category, fn ($q) => $q->where('category', $article->category))
@@ -280,7 +312,7 @@ class ArticleController extends Controller
         if ($relatedArticles->count() < 3) {
             $needed = 3 - $relatedArticles->count();
             $combinedExcluded = array_merge($excludedIds, $relatedArticles->pluck('id')->all());
-            $fallback = Article::where('is_published', true)
+            $fallback = Article::indexable()
                 ->whereNotIn('id', $combinedExcluded)
                 ->with(['categoryRelation', 'subcategoryRelation'])
                 ->latest('published_at')
@@ -289,10 +321,77 @@ class ArticleController extends Controller
             $relatedArticles = $relatedArticles->concat($fallback);
         }
 
+        $contextualAreaHub = $this->resolveContextualAreaHub($article);
+
         $contextualWaMsg = "Halo Tim Drainusantara, saya sedang membaca artikel '{$article->title}' dan ingin konsultasi penanganan saluran pipa di tempat saya.";
         $contextualWaUrl = 'https://wa.me/' . (config('app.whatsapp_number') ?: '6285609009009') . '?text=' . rawurlencode($contextualWaMsg);
 
-        return view('articles.show', compact('article', 'recentArticles', 'relatedArticles', 'prevArticle', 'nextArticle', 'contextualWaMsg', 'contextualWaUrl'));
+        return view('articles.show', compact('article', 'recentArticles', 'relatedArticles', 'prevArticle', 'nextArticle', 'contextualAreaHub', 'contextualWaMsg', 'contextualWaUrl'));
+    }
+
+    /**
+     * Resolve contextual area hub link for city/province-targeted articles (e.g., Semarang, Bali).
+     *
+     * @return array{label: string, name: string, url: string}|null
+     */
+    protected function resolveContextualAreaHub(Article $article): ?array
+    {
+        if (! empty($article->city)) {
+            $cityData = RegionService::findCity((string) $article->city);
+            if ($cityData) {
+                return [
+                    'label' => 'Halaman Area Layanan Resmi',
+                    'name' => $cityData['name'],
+                    'url' => route('area.city', ['city' => $cityData['slug']]),
+                ];
+            }
+        }
+
+        $haystack = strtolower($article->title . ' ' . str_replace('-', ' ', (string) $article->slug));
+
+        $cityKeywords = [
+            'semarang' => 'semarang',
+            'depok' => 'depok-cinere',
+            'bekasi' => 'bekasi-cikarang',
+            'cikarang' => 'bekasi-cikarang',
+            'bogor' => 'bogor',
+            'bandung' => 'bandung',
+            'tangerang selatan' => 'tangerang-selatan',
+            'tangsel' => 'tangerang-selatan',
+            'tangerang' => 'tangerang-kota',
+            'jakarta timur' => 'jakarta-timur',
+            'jakarta selatan' => 'jakarta-selatan',
+            'jakarta barat' => 'jakarta-barat',
+            'jakarta utara' => 'jakarta-utara',
+            'jakarta pusat' => 'jakarta-pusat',
+            'demak' => 'demak',
+            'lampung' => 'bandar-lampung',
+            'denpasar' => 'kota-denpasar',
+            'badung' => 'kabupaten-badung',
+        ];
+
+        foreach ($cityKeywords as $keyword => $citySlug) {
+            if (preg_match('/\b' . preg_quote($keyword, '/') . '\b/i', $haystack)) {
+                $cityData = RegionService::findCity($citySlug);
+                if ($cityData) {
+                    return [
+                        'label' => 'Halaman Area Layanan Resmi',
+                        'name' => $cityData['name'],
+                        'url' => route('area.city', ['city' => $cityData['slug']]),
+                    ];
+                }
+            }
+        }
+
+        if (preg_match('/\bbali\b/i', $haystack)) {
+            return [
+                'label' => 'Halaman Area Provinsi Resmi',
+                'name' => 'Provinsi Bali',
+                'url' => route('area.province', ['province' => 'bali']),
+            ];
+        }
+
+        return null;
     }
 }
 

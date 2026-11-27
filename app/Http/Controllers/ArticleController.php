@@ -54,7 +54,7 @@ class ArticleController extends Controller
         $record = new Article;
         $media = new MediaLifecycle;
         $media->run($record, function () use ($request, $validated, $media, $record): void {
-            $slug = substr(Str::slug($validated['title']), 0, 255);
+            $slug = substr(Article::sanitizeSlug($validated['title']), 0, 255);
             $baseSlug = $slug;
             $counter = 1;
             while (Article::where('slug', $slug)->exists()) {

@@ -33,20 +33,36 @@ class SitemapController extends Controller
     {
         PageMetadata::title('Peta Situs Resmi | Navigasi Lengkap Drainusantara');
         SEOMeta::setDescription('Peta situs resmi Drainusantara: panduan navigasi lengkap menuju katalog layanan pelancar pipa mampet, cakupan wilayah, portofolio, dan artikel edukasi.');
-        SEOMeta::setCanonical(url('/sitemap'));
+        SEOMeta::setCanonical(route('sitemap.html'));
+        SEOMeta::setRobots('noindex, follow');
 
         OpenGraph::setTitle('Peta Situs Resmi | Navigasi Lengkap Drainusantara');
         OpenGraph::setDescription('Peta situs resmi Drainusantara: panduan navigasi lengkap menuju katalog layanan pelancar pipa mampet, cakupan wilayah, portofolio, dan artikel edukasi.');
-        OpenGraph::setUrl(url('/sitemap'));
+        OpenGraph::setUrl(route('sitemap.html'));
 
-        $this->addBreadcrumb(['Peta Situs', url('/sitemap')]);
+        $this->addBreadcrumb(['Peta Situs', route('sitemap.html')]);
 
         $data = Cache::remember('sitemap.html_data', 86400, function () {
+            $nonPriorityDistrictKeys = [];
+            try {
+                $nonPriorityRows = CoverageArea::where('type', 'district')
+                    ->where('is_priority', false)
+                    ->get(['city', 'district']);
+                foreach ($nonPriorityRows as $row) {
+                    $cData = RegionService::findCity((string) $row->city);
+                    $cSlug = $cData['slug'] ?? Str::slug((string) $row->city);
+                    $nonPriorityDistrictKeys[$cSlug . '|' . Str::slug((string) $row->district)] = true;
+                }
+            } catch (\Throwable) {
+                // Graceful fallback
+            }
+
             return [
                 'services' => Service::where('is_active', true)->orderBy('order')->get(),
                 'provinces' => RegionService::all(),
                 'coverageAreas' => CoverageArea::where('is_active', true)->orderBy('district')->get(),
-                'articles' => Article::where('is_published', true)->latest('published_at')->limit(12)->get(),
+                'nonPriorityDistrictKeys' => $nonPriorityDistrictKeys,
+                'articles' => Article::indexable()->latest('published_at')->limit(12)->get(),
                 'caseStudies' => Gallery::where('is_active', true)->whereNotNull('slug')->latest()->limit(8)->get(),
                 'partnerships' => Portfolio::where('is_active', true)->whereNotNull('slug')->latest()->limit(8)->get(),
                 'equipments' => Equipment::where('is_active', true)->whereNotNull('slug')->orderBy('order')->get(),
@@ -206,7 +222,6 @@ class SitemapController extends Controller
         $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => $getCompanyMod('portofolio'), 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('about.warranty'), 'lastmod' => $getCompanyMod('garansi'), 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('about.faq'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
         $urls[] = ['loc' => route('legal.terms'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
         $urls[] = ['loc' => route('customer-service.index'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
         foreach (array_keys(config('customer_service.channels', [])) as $csSlug) {
@@ -263,6 +278,10 @@ class SitemapController extends Controller
                     }
 
                     $districtSlug = Str::slug($district);
+                    if (! RegionService::isIndexableDistrict($citySlug, $districtSlug, $area)) {
+                        continue;
+                    }
+
                     $districtLastmod = ($area?->updated_at ?? $area?->created_at)?->toAtomString() ?: $areaLastmod;
                     $urls[] = [
                         'loc' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
@@ -274,14 +293,13 @@ class SitemapController extends Controller
             }
         }
 
-        // Published knowledge articles (Silo Structure)
+        // Published indexable knowledge articles (Canonical /artikel/{slug})
         try {
-            $articles = Article::where('is_published', true)
-                ->with(['categoryRelation', 'subcategoryRelation'])
-                ->get();
+            $articles = Article::indexable()
+                ->get(['slug', 'updated_at', 'created_at']);
             foreach ($articles as $article) {
                 $urls[] = [
-                    'loc' => $article->silo_url,
+                    'loc' => route('articles.show', ['slug' => $article->slug]),
                     'lastmod' => ($article->updated_at ?? $article->created_at)?->toAtomString(),
                     'changefreq' => 'monthly',
                     'priority' => '0.7',
@@ -291,20 +309,8 @@ class SitemapController extends Controller
             \Illuminate\Support\Facades\Log::warning('Sitemap articles query error: ' . $e->getMessage());
         }
 
-        // Educational Categories Silo Landing Pages
-        try {
-            $categories = \App\Models\ArticleCategory::orderBy('sort_order')->get();
-            foreach ($categories as $cat) {
-                $urls[] = [
-                    'loc' => url("/edukasi/{$cat->slug}"),
-                    'lastmod' => ($cat->updated_at ?? $cat->created_at)?->toAtomString() ?: $articleLastmod,
-                    'changefreq' => 'weekly',
-                    'priority' => '0.8',
-                ];
-            }
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::warning('Sitemap categories query error: ' . $e->getMessage());
-        }
+        // Note: /edukasi/{category} routes 301 redirect to /pengetahuan?category=... (non-canonical),
+        // so category redirect URLs are intentionally excluded from sitemap.xml.
 
         // Case Studies (Studi Kasus)
         try {
@@ -371,6 +377,15 @@ class SitemapController extends Controller
 
         // Core static pages
         $urls[] = ['loc' => url('/'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'daily', 'priority' => '1.0'];
+        $urls[] = ['loc' => url('/layanan'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
+        foreach (\App\Services\ServiceCatalogRegistry::all() as $svc) {
+            $urls[] = [
+                'loc' => url('/layanan/' . $svc['slug']),
+                'lastmod' => $fallbackLastmod,
+                'changefreq' => 'weekly',
+                'priority' => '0.85',
+            ];
+        }
         $urls[] = ['loc' => route('contact'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
         $urls[] = ['loc' => url('/area'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.9'];
         $urls[] = ['loc' => url('/pengetahuan'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'daily', 'priority' => '0.8'];
@@ -383,7 +398,6 @@ class SitemapController extends Controller
         $urls[] = ['loc' => route('about.portfolio'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('about.warranty'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
         $urls[] = ['loc' => route('about.faq'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
-        $urls[] = ['loc' => route('legal.privacy'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
         $urls[] = ['loc' => route('legal.terms'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'monthly', 'priority' => '0.5'];
         $urls[] = ['loc' => route('customer-service.index'), 'lastmod' => $fallbackLastmod, 'changefreq' => 'weekly', 'priority' => '0.8'];
         foreach (array_keys(config('customer_service.channels', [])) as $csSlug) {
@@ -414,6 +428,10 @@ class SitemapController extends Controller
 
                 foreach ($city['districts'] as $district) {
                     $districtSlug = Str::slug($district);
+                    if (! RegionService::isIndexableDistrict($citySlug, $districtSlug)) {
+                        continue;
+                    }
+
                     $urls[] = [
                         'loc' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
                         'lastmod' => $fallbackLastmod,

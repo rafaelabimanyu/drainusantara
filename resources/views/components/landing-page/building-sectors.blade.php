@@ -98,7 +98,7 @@
         <!-- Grid 6 Sektor (Responsive Carousel on Mobile) -->
         <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 sm:gap-6 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
             @foreach($sectors as $sec)
-            <div class="w-[85vw] max-w-[340px] md:w-auto shrink-0 snap-center bg-slate-50 rounded-xl border border-slate-200 shadow-2xs p-5 sm:p-6 flex flex-col justify-between card-lift transition-all hover:border-sky-400 hover:bg-white">
+            <div class="w-[85vw] max-w-[340px] md:w-auto md:max-w-none shrink-0 snap-center bg-slate-50 rounded-xl border border-slate-200 shadow-2xs p-5 sm:p-6 flex flex-col justify-between card-lift transition-all hover:border-sky-400 hover:bg-white">
                 <div>
                     <!-- Badge & Icon -->
                     <div class="flex items-center justify-between gap-3 mb-4">

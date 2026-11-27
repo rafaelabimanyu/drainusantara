@@ -21,7 +21,8 @@ class LegalController extends Controller
 
         PageMetadata::title('Kebijakan Privasi (Privacy Policy)');
         SEOMeta::setDescription($description);
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical(route('legal.privacy'));
+        SEOMeta::setRobots('noindex, follow');
         JsonLdMulti::setTitle('Kebijakan Privasi (Privacy Policy) - Drainusantara');
         JsonLdMulti::setDescription($description);
         JsonLdMulti::setType('WebPage');
@@ -38,7 +39,7 @@ class LegalController extends Controller
 
         PageMetadata::title('Syarat & Ketentuan Layanan (Terms of Service)');
         SEOMeta::setDescription($description);
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical(route('legal.terms'));
         JsonLdMulti::setTitle('Syarat & Ketentuan Layanan (Terms of Service) - Drainusantara');
         JsonLdMulti::setDescription($description);
         JsonLdMulti::setType('WebPage');

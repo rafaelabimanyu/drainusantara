@@ -714,12 +714,86 @@ class RegionService
     }
 
     /**
+     * Resolve a city name or alias to its canonical city slug.
+     */
+    public static function resolveCitySlug(?string $city): ?string
+    {
+        if (! is_string($city) || trim($city) === '') {
+            return null;
+        }
+
+        $cityData = self::findCity($city);
+
+        return $cityData['slug'] ?? null;
+    }
+
+    /**
+     * Check whether a city/district slug pair is one of the duplicate slugs forced to 301 to its city hub.
+     */
+    public static function isForcedCityRedirect(string $citySlug, string $districtSlug): bool
+    {
+        $forced = config('area_priority.forced_city_redirects', []);
+        $normalizedCity = Str::slug($citySlug);
+        $normalizedDistrict = Str::slug($districtSlug);
+
+        return in_array($normalizedDistrict, $forced[$normalizedCity] ?? [], true);
+    }
+
+    /**
+     * Check whether a city/district slug pair is in the 53 GSC/case-study recommended priority list.
+     */
+    public static function isRecommendedPriorityDistrict(string $citySlug, string $districtSlug): bool
+    {
+        $recommended = config('area_priority.recommended_priority_districts', []);
+        $normalizedCity = Str::slug($citySlug);
+        $normalizedDistrict = Str::slug($districtSlug);
+
+        return in_array($normalizedDistrict, $recommended[$normalizedCity] ?? [], true);
+    }
+
+    /**
+     * Determine whether a district page should render 200 OK & appear in sitemap.xml (true)
+     * or consolidate via 301 redirect to its parent city hub (false).
+     */
+    public static function isIndexableDistrict(string $citySlug, string $districtSlug, ?\App\Models\CoverageArea $record = null): bool
+    {
+        if (self::isForcedCityRedirect($citySlug, $districtSlug)) {
+            return false;
+        }
+
+        if ($record !== null && $record->is_priority === false) {
+            return false;
+        }
+
+        if ((bool) config('area_priority.prune_non_priority', false)) {
+            return self::isRecommendedPriorityDistrict($citySlug, $districtSlug);
+        }
+
+        return true;
+    }
+
+    /**
      * Flatten searchable items for Alpine.js Quick Area Finder.
      * Orders: Provinces first, then Cities, then Districts.
      */
     public static function getSearchableItems(): array
     {
         $items = [];
+        $nonPriorityMap = [];
+
+        try {
+            $nonPriorityAreas = \App\Models\CoverageArea::where('type', 'district')
+                ->where('is_priority', false)
+                ->get(['city', 'district']);
+
+            foreach ($nonPriorityAreas as $np) {
+                $cityData = self::findCity((string) $np->city);
+                $cSlug = $cityData['slug'] ?? Str::slug((string) $np->city);
+                $nonPriorityMap[$cSlug . '|' . Str::slug((string) $np->district)] = true;
+            }
+        } catch (\Throwable) {
+            // Graceful fallback during zero-DB renders
+        }
 
         foreach (self::all() as $provSlug => $prov) {
             $items[] = [
@@ -747,13 +821,18 @@ class RegionService
 
                 foreach ($city['districts'] as $district) {
                     $districtSlug = Str::slug($district);
+                    $isConsolidated = isset($nonPriorityMap[$citySlug . '|' . $districtSlug])
+                        || ! self::isIndexableDistrict($citySlug, $districtSlug);
+
                     $items[] = [
                         'type' => self::districtType($city, $district),
                         'badge' => strtoupper(self::districtType($city, $district)),
                         'name' => $district,
                         'short_name' => $district,
                         'subtitle' => $city['name'] . ', ' . $prov['name'],
-                        'url' => route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
+                        'url' => $isConsolidated
+                            ? route('area.city', ['city' => $citySlug])
+                            : route('area.detail', ['city' => $citySlug, 'district' => $districtSlug]),
                         'eta' => 'Respon Cepat',
                         'search' => strtolower($district),
                     ];

@@ -1,7 +1,8 @@
 @props(['navServices' => null])
 @php
     $navRegions = \App\Services\RegionService::all();
-    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*') && !request()->is('customer-service*');
+    $isHome = request()->routeIs('home') && !request()->is('galeri*') && !request()->is('artikel*') && !request()->is('pengetahuan*') && !request()->is('blog*') && !request()->is('area*') && !request()->is('layanan*') && !request()->is('tentang-kami*') && !request()->is('cara-kerja*') && !request()->is('proses-kerja*') && !request()->is('studi-kasus*') && !request()->is('kemitraan*') && !request()->is('customer-service*');
+    $isServices = request()->routeIs('services.*') || request()->is('layanan*');
     $isAbout = request()->is('tentang-kami*') || request()->routeIs('about*') || request()->routeIs('how-it-works') || request()->is('cara-kerja*') || request()->is('proses-kerja*') || request()->routeIs('equipment.show') || request()->is('kemitraan*') || request()->routeIs('partnership.show');
     $isGallery = request()->is('galeri*') || request()->routeIs('gallery') || request()->is('studi-kasus*') || request()->routeIs('case-study*');
     $isArea = request()->is('area*') || request()->routeIs('area*');
@@ -122,10 +123,9 @@
                     </div>
                 </div>
 
-                <!-- 3. Layanan (Hybrid Compact Popover) -->
-                <a href="{{ url('/#layanan') }}" 
-                   @click="activeSection = 'layanan'"
-                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent"
+                <!-- 3. Layanan (Dedicated Index Route) -->
+                <a href="{{ route('services.index') }}" 
+                   class="px-2.5 xl:px-3 py-1.5 xl:py-2 rounded-lg border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500 {{ $isServices ? 'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80' : 'text-slate-300 hover:text-white hover:bg-slate-800/60 border-transparent' }}"
                    @if($isHome)
                    :class="{
                        'text-sky-400 font-bold bg-slate-800/90 border-slate-700/80': activeSection === 'layanan',
@@ -243,7 +243,7 @@
                                     Jateng &amp; Lampung
                                 </div>
                                 <div class="space-y-0.5 mb-2">
-                                    @foreach (['semarang' => 'jawa-tengah', 'kabupaten-demak' => 'jawa-tengah', 'bandar-lampung' => 'lampung'] as $slug => $province)
+                                    @foreach (['semarang' => 'jawa-tengah', 'kabupaten-semarang' => 'jawa-tengah', 'demak' => 'jawa-tengah', 'bandar-lampung' => 'lampung'] as $slug => $province)
                                         @if(isset($navRegions[$province]['cities'][$slug]))
                                             @php
                                                 $city = $navRegions[$province]['cities'][$slug];

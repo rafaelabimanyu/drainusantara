@@ -33,7 +33,7 @@ return [
         'site_verification' => env('GOOGLE_SITE_VERIFICATION'),
     ],
     'gtm' => [
-        'id' => env('GTM_CONTAINER_ID'),
+        'id' => env('GTM_CONTAINER_ID') ?: 'GTM-5C655FNM',
     ],
     'social' => [
         'instagram' => env('SOCIAL_INSTAGRAM', 'https://www.instagram.com/drainusantara'),

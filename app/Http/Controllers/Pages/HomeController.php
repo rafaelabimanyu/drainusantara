@@ -30,7 +30,7 @@ class HomeController extends Controller
     {
         PageMetadata::title('Jasa Saluran Pipa Mampet Tanpa Bongkar');
         SEOMeta::setDescription('Jasa saluran pipa mampet wastafel & WC kloset tanpa bongkar keramik di Jabodetabek, Bandung Raya, Semarang, Lampung & Bali. Tukang pipa tersumbat profesional, mesin spiral baja Ridgid, garansi 30 hari.');
-        SEOMeta::setCanonical(url()->current());
+        SEOMeta::setCanonical(route('home'));
         SEOMeta::addKeyword([
             'jasa saluran pipa mampet',
             'jasa saluran mampet',
@@ -62,7 +62,7 @@ class HomeController extends Controller
         ]);
 
         OpenGraph::setDescription('Layanan pelancar pipa mampet wastafel & kloset pakai mesin spiral baja tanpa bongkar keramik di Jabodetabek, Bandung, Semarang, Lampung & Bali, garansi nota 30 hari.');
-        OpenGraph::setUrl(url()->current());
+        OpenGraph::setUrl(route('home'));
         OpenGraph::addProperty('type', 'website');
         OpenGraph::addProperty('locale', 'id_ID');
         OpenGraph::addProperty('site_name', 'Drainusantara');
@@ -125,7 +125,6 @@ class HomeController extends Controller
                 '@type' => 'Offer',
                 'price' => '400000',
                 'priceCurrency' => 'IDR',
-                'availability' => 'https://schema.org/InStock',
                 'priceSpecification' => [
                     '@type' => 'PriceSpecification',
                     'price' => '400000',
@@ -169,7 +168,7 @@ class HomeController extends Controller
         });
 
         $articles = Cache::remember('landing.articles', 86400, function () {
-            return Article::where('is_published', true)
+            return Article::indexable()
                 ->with(['categoryRelation', 'subcategoryRelation'])
                 ->latest('published_at')
                 ->take(3)

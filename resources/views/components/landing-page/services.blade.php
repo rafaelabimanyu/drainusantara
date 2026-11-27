@@ -8,7 +8,7 @@
     $whatsappNumber = $whatsappNumber ?: (config('app.whatsapp_number') ?: '6285609009009');
     $itemsLayanan = (isset($services) && $services->isNotEmpty()) ? $services : collect($problemCatalogs);
 @endphp
-<section id="layanan" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200 content-auto" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4000)">
+<section id="layanan" class="py-16 lg:py-24 bg-slate-50 border-b border-slate-200" x-data="mobileCarousel({{ count($itemsLayanan) }}, 4000)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-3xl mx-auto mb-10 md:mb-14 reveal-soft">
@@ -39,7 +39,7 @@
                 @php
                     $isModel = $catalog instanceof \App\Models\Service;
                     $title = $isModel ? $catalog->name : $catalog['title'];
-                    $slug = $isModel ? $catalog->slug : \Illuminate\Support\Str::slug($catalog['title']);
+                    $slug = $isModel ? $catalog->canonical_slug : \App\Services\ServiceCatalogRegistry::canonicalSlug($catalog['slug'] ?? \Illuminate\Support\Str::slug($catalog['title']));
                     $desc = $isModel ? ($catalog->short_description ?: ($catalog->description ?: 'Pelancaran saluran mampet tanpa bongkar keramik.')) : $catalog['problem_desc'];
                     $price = $isModel ? $catalog->price_starting_from : $catalog['price'];
                     $features = $isModel ? ($catalog->features ?: []) : ($catalog['specs'] ?? []);
@@ -112,23 +112,23 @@
                         @endif
                     </div>
 
-                    <div class="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <div class="pt-4 mt-5 border-t border-slate-100 flex flex-col gap-3">
                         <div>
                             <span class="text-xs text-slate-500 block leading-tight mb-0.5">Estimasi Biaya:</span>
-                            <div class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+                            <div class="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight leading-snug">
                                 {{ $price > 0 ? 'Mulai Rp '.number_format($price, 0, ',', '.') : 'Hubungi untuk harga' }}
                             </div>
-                            <span class="text-[10px] text-emerald-700 font-semibold block leading-tight mt-0.5">No Cure No Pay • Garansi 30 Hari</span>
-                            <span class="text-[10px] text-slate-500 block mt-0.5">Hemat s/d 70% vs bongkar keramik</span>
+                            <span class="text-[11px] text-emerald-700 font-semibold block leading-tight mt-0.5">No Cure No Pay &bull; Garansi 30 Hari</span>
+                            <span class="text-[11px] text-slate-500 block mt-0.5">Hemat s/d 70% vs bongkar keramik</span>
                         </div>
 
-                        <div class="flex items-center gap-1.5 shrink-0">
+                        <div class="grid grid-cols-2 gap-2">
                             <a href="{{ route('services.show', ['slug' => $slug]) }}" 
                                class="inline-flex items-center justify-center text-xs font-bold px-3 py-2.5 rounded-md bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 transition-colors min-h-11">
                                 <span>Detail</span>
                             </a>
                             <a href="{{ $specificWaUrl }}" target="_blank" rel="noopener noreferrer" 
-                               class="btn-press inline-flex items-center justify-center gap-1 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm px-3 sm:px-3.5 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-11"
+                               class="btn-press inline-flex items-center justify-center gap-1 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white font-bold text-xs sm:text-sm px-3 py-2.5 rounded-md shadow-xs transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-11"
                                aria-label="Konsultasi detail tarif penanganan {{ $title }} via WhatsApp">
                                 <span>Konsultasi WA</span>
                             </a>

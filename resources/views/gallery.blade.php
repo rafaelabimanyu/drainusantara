@@ -21,7 +21,7 @@
     <!-- 1. HERO SECTION INFORMATIF -->
     <section class="relative bg-slate-50 border-b border-slate-200 pt-8 pb-12 lg:pt-12 lg:pb-16 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-4 font-medium reveal-fade" aria-label="Breadcrumb">
+            <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-4 font-medium" aria-label="Breadcrumb">
                 <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -32,18 +32,18 @@
                 <span class="text-sky-700 font-bold">Galeri Hasil Pengerjaan</span>
             </nav>
 
-            <span class="text-xs font-bold uppercase tracking-widest text-sky-800 block mb-2 reveal-fade">
+            <span class="text-xs font-bold uppercase tracking-widest text-sky-800 block mb-2">
                 Dokumentasi Teknis &amp; Studi Kasus Lapangan
             </span>
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto leading-tight reveal-soft">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto leading-tight">
                 Galeri Hasil Pengerjaan <span class="text-sky-700">Saluran Pipa Mampet</span>
             </h1>
-            <p class="mt-3.5 text-slate-600 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed reveal-soft delay-100">
+            <p class="mt-3.5 text-slate-600 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
                 Dokumentasi autentik pekerjaan pelancaran saluran pipa tersumbat di berbagai sektor properti—mulai dari residensial hunian, restoran &amp; kafe (FnB), perkantoran, hingga ruko dan fasilitas industri. Ditangani langsung menggunakan mesin spiral baja rotary Ridgid mekanis dan kamera endoskopi digital IP68 tanpa merusak lantai keramik serta bebas bahan kimia korosif.
             </p>
 
             <!-- 4 Keunggulan Teknis Nyata -->
-            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto text-left reveal-soft delay-150">
+            <div class="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto text-left">
                 <div class="p-3.5 bg-white rounded-lg border border-slate-200 shadow-2xs">
                     <div class="flex items-center gap-2 mb-1.5">
                         <span class="w-5 h-5 rounded-sm bg-slate-100 text-slate-700 font-mono text-[10px] font-bold flex items-center justify-center border border-slate-200 shrink-0">01</span>

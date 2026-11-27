@@ -55,7 +55,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm">
                         @foreach($services as $serv)
-                            <a href="{{ route('services.show', ['slug' => $serv->slug]) }}" 
+                            <a href="{{ route('services.show', ['slug' => $serv->canonical_slug]) }}" 
                                class="p-2.5 rounded-lg border border-slate-100 hover:border-sky-300 hover:bg-sky-50/40 text-slate-700 hover:text-sky-800 transition-all font-medium flex items-center justify-between group">
                                 <span class="truncate">{{ $serv->name }}</span>
                                 <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-sky-700 shrink-0 ml-1.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -105,10 +105,21 @@
                                             @if(!empty($city['districts']))
                                                 <div class="flex flex-wrap gap-1 text-[11px]">
                                                     @foreach($city['districts'] as $dist)
-                                                        <a href="{{ route('area.detail', ['city' => $citySlug, 'district' => \Illuminate\Support\Str::slug($dist)]) }}" 
-                                                           class="px-2 py-0.5 rounded bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-800 border border-slate-200 hover:border-sky-300 transition-colors">
-                                                            {{ $dist }}
-                                                        </a>
+                                                        @php
+                                                            $distSlug = \Illuminate\Support\Str::slug($dist);
+                                                            $isDistIndexable = empty(($nonPriorityDistrictKeys ?? [])[$citySlug . '|' . $distSlug])
+                                                                && \App\Services\RegionService::isIndexableDistrict($citySlug, $distSlug);
+                                                        @endphp
+                                                        @if($isDistIndexable)
+                                                            <a href="{{ route('area.detail', ['city' => $citySlug, 'district' => $distSlug]) }}" 
+                                                               class="px-2 py-0.5 rounded bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-800 border border-slate-200 hover:border-sky-300 transition-colors">
+                                                                {{ $dist }}
+                                                            </a>
+                                                        @else
+                                                            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                                                                {{ $dist }}
+                                                            </span>
+                                                        @endif
                                                     @endforeach
                                                 </div>
                                             @endif

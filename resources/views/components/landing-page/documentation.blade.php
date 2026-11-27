@@ -7,7 +7,7 @@
     $countTotal = $displayGalleries->count();
 @endphp
 
-<section id="dokumentasi" class="relative py-16 lg:py-20 bg-slate-50 border-b border-slate-200 content-auto" @if($countTotal > 0) x-data="mobileCarousel({{ $countTotal }}, 4500)" @endif>
+<section id="dokumentasi" class="relative py-16 lg:py-20 bg-slate-50 border-b border-slate-200" @if($countTotal > 0) x-data="mobileCarousel({{ $countTotal }}, 4500)" @endif>
     <div id="galeri-before-after" class="absolute -top-16"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         

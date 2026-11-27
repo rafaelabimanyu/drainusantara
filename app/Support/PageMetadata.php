@@ -12,7 +12,10 @@ final class PageMetadata
     {
         $brand = preg_quote(config('seotools.meta.defaults.title'), '/');
 
-        return trim(preg_replace('/(?:\s*[-|]\s*'.$brand.'(?: Bergaransi)?)+\s*$/i', '', $title));
+        $cleaned = preg_replace('/(?:\s*[-|]\s*'.$brand.'(?: Bergaransi)?)+\s*$/i', '', $title) ?? $title;
+        $cleaned = preg_replace('/(?:\s+oleh\s+'.$brand.'){2,}\s*$/i', ' oleh '.config('seotools.meta.defaults.title'), $cleaned) ?? $cleaned;
+
+        return trim($cleaned);
     }
 
     public static function title(string $title): void

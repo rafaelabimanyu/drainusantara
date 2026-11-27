@@ -249,7 +249,7 @@ class SeoContentRegressionTest extends TestCase
         ]);
 
         foreach ([
-            route('equipment.show', $equipment->slug) => 'Product',
+            route('equipment.show', $equipment->slug) => 'Service',
             route('legal.privacy') => 'WebPage',
             route('legal.terms') => 'WebPage',
         ] as $url => $expectedType) {
@@ -266,6 +266,9 @@ class SeoContentRegressionTest extends TestCase
 
             $this->assertContains($expectedType, $types, $url);
             $this->assertNotContains('PlumbingService', $types, $url);
+            if ($url === route('equipment.show', $equipment->slug)) {
+                $this->assertNotContains('Product', $types, $url);
+            }
         }
 
         app()->forgetInstance('seotools.json-ld-multi');

@@ -23,7 +23,7 @@
         </nav>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 items-center">
-            <div class="lg:col-span-7 space-y-4 sm:space-y-5 reveal-soft min-w-0">
+            <div class="lg:col-span-7 space-y-4 sm:space-y-5 min-w-0">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-950/80 border border-red-700/70 text-red-200 text-xs font-bold">
                     <x-customer-service.channel-icon channel="youtube" class="w-4 h-4" />
                     <span>Channel YouTube Resmi {{ $channel['handle'] }}</span>
@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-5 reveal-soft delay-100">
+            <div class="lg:col-span-5">
                 <div class="bg-slate-900 border border-slate-700 rounded-lg p-3 space-y-2.5 sm:space-y-3">
                     <div class="aspect-[16/10] rounded-md overflow-hidden bg-slate-950 border border-slate-800">
                         <img src="{{ asset('assets/TOOLKIT/inspeksi-cctv-set-lengkap-drainusantara.webp') }}"

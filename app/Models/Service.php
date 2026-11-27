@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Services\ServiceCatalogRegistry;
 use App\Traits\HasAutoOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,5 +51,13 @@ class Service extends Model
     public function portfolios(): BelongsToMany
     {
         return $this->belongsToMany(Portfolio::class, 'partnership_service')->withTimestamps();
+    }
+
+    /**
+     * Always resolve service slug to its canonical silo slug to eliminate internal 301 links.
+     */
+    public function getCanonicalSlugAttribute(): string
+    {
+        return ServiceCatalogRegistry::canonicalSlug((string) $this->slug);
     }
 }

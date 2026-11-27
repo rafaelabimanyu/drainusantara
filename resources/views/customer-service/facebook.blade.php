@@ -9,7 +9,7 @@
         ]" />
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 lg:gap-10 items-center">
-            <div class="lg:col-span-7 space-y-4 sm:space-y-5 reveal-soft">
+            <div class="lg:col-span-7 space-y-4 sm:space-y-5">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold">
                     <x-customer-service.channel-icon channel="facebook" class="w-4 h-4" />
                     <span>Halaman Facebook Resmi {{ $channel['handle'] }}</span>
@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-5 reveal-soft delay-100">
+            <div class="lg:col-span-5">
                 <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 space-y-3">
                     <div class="aspect-[16/11] rounded-md overflow-hidden bg-slate-900 border border-slate-200">
                         <img src="{{ asset('assets/banner/hero-k3-drainusantara.webp') }}"

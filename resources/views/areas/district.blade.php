@@ -50,7 +50,7 @@
 @push('styles')
 <style>
     .area-detail-page .area-hero { background: #f8fafc; border-bottom-color: #cbd5e1; }
-    .area-detail-page .area-hero h1 { max-width: 15ch; letter-spacing: -0.045em; }
+    .area-detail-page .area-hero h1 { max-width: 22ch; letter-spacing: -0.045em; }
     .area-detail-page .hero-proof { border-left: 3px solid #0369a1; padding-left: 1rem; }
     .area-detail-page .service-card { border-radius: 0.5rem; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -124,26 +124,37 @@
                     </p>
 
                     <!-- 4-Grid Feature Badges -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 max-w-2xl pt-1">
-                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
-                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Estimasi Biaya</div>
-                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">Mulai {{ $startingPriceFormatted }}</div>
-                            <div class="text-[9px] sm:text-[10px] text-emerald-700 font-bold mt-0.5 leading-tight">No Cure No Pay</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-1">
+                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col justify-between gap-1 text-left">
+                            <div class="text-[11px] text-slate-500 font-semibold leading-tight">Estimasi Biaya</div>
+                            <div>
+                                <div class="text-xs sm:text-sm font-extrabold text-sky-900 leading-snug">Mulai {{ $startingPriceFormatted }}</div>
+                                <div class="text-[11px] text-emerald-700 font-bold mt-0.5 leading-tight">No Cure No Pay</div>
+                            </div>
                         </div>
 
-                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
-                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Respon Armada</div>
-                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">Siaga 24 Jam</div>
+                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col justify-between gap-1 text-left">
+                            <div class="text-[11px] text-slate-500 font-semibold leading-tight">Respon Armada</div>
+                            <div>
+                                <div class="text-xs sm:text-sm font-extrabold text-emerald-800 leading-snug">Siaga 24 Jam</div>
+                                <div class="text-[11px] text-slate-500 font-medium mt-0.5 leading-tight">Respon Cepat</div>
+                            </div>
                         </div>
 
-                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
-                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Perlindungan</div>
-                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">Garansi 30 Hari</div>
+                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col justify-between gap-1 text-left">
+                            <div class="text-[11px] text-slate-500 font-semibold leading-tight">Perlindungan</div>
+                            <div>
+                                <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug">Garansi 30 Hari</div>
+                                <div class="text-[11px] text-slate-500 font-medium mt-0.5 leading-tight">Nota Resmi</div>
+                            </div>
                         </div>
 
-                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs text-center sm:text-left">
-                            <div class="text-[10px] sm:text-[11px] text-slate-500 font-medium">Metode Kerja</div>
-                            <div class="text-xs sm:text-sm font-extrabold text-slate-900">Metode Tanpa Bongkar</div>
+                        <div class="bg-white p-3 sm:p-3.5 rounded-lg border border-slate-200 shadow-2xs flex flex-col justify-between gap-1 text-left">
+                            <div class="text-[11px] text-slate-500 font-semibold leading-tight">Metode Kerja</div>
+                            <div>
+                                <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug">Metode Tanpa Bongkar</div>
+                                <div class="text-[11px] text-slate-500 font-medium mt-0.5 leading-tight">Mesin Spiral Baja</div>
+                            </div>
                         </div>
                     </div>
 
@@ -283,7 +294,7 @@
 
                     <!-- 3 Highlight Points (Carousel di Mobile, Grid di Desktop) -->
                     <div class="flex sm:grid sm:grid-cols-3 overflow-x-auto sm:overflow-visible snap-x snap-mandatory no-scrollbar gap-3 pt-2 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-                        <div class="w-[78vw] max-w-[280px] sm:w-auto shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
+                        <div class="w-[78vw] max-w-[280px] sm:w-auto sm:max-w-none shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
                             <div>
                                 <div class="w-7 h-7 rounded-md bg-sky-100 text-sky-800 flex items-center justify-center font-bold text-xs mb-1.5">
                                     01
@@ -293,7 +304,7 @@
                             </div>
                         </div>
 
-                        <div class="w-[78vw] max-w-[280px] sm:w-auto shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
+                        <div class="w-[78vw] max-w-[280px] sm:w-auto sm:max-w-none shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
                             <div>
                                 <div class="w-7 h-7 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs mb-1.5">
                                     02
@@ -303,7 +314,7 @@
                             </div>
                         </div>
 
-                        <div class="w-[78vw] max-w-[280px] sm:w-auto shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
+                        <div class="w-[78vw] max-w-[280px] sm:w-auto sm:max-w-none shrink-0 snap-center bg-slate-50 p-3.5 rounded-lg border border-slate-200 space-y-1.5 flex flex-col justify-between">
                             <div>
                                 <div class="w-7 h-7 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs mb-1.5">
                                     03
@@ -331,7 +342,7 @@
         $defaultServices = [
             [
                 'name' => 'Kloset & WC Tersumbat',
-                'slug' => 'kloset-wc',
+                'slug' => 'jasa-wc-dan-kloset-mampet',
                 'category' => 'TOILET & KLOSET',
                 'short_description' => "Atasi toilet duduk atau jongkok tersumbat pembalut atau tisu tanpa mencabut kloset dan tanpa merusak keramik di {$area->district}.",
                 'price_starting_from' => $area->resolved_price,
@@ -339,7 +350,7 @@
             ],
             [
                 'name' => 'Wastafel & Kitchen Sink',
-                'slug' => 'wastafel-cuci-piring',
+                'slug' => 'jasa-wastafel-dan-cucian-piring-mampet',
                 'category' => 'DAPUR & RESIDENSIAL',
                 'short_description' => "Pembersihan kerak minyak dan endapan lemak beku pada bak cuci piring rumah atau dapur resto di {$area->district}.",
                 'price_starting_from' => $area->resolved_price,
@@ -347,7 +358,7 @@
             ],
             [
                 'name' => 'Floor Drain & Got Mandi',
-                'slug' => 'floor-drain-kamar-mandi',
+                'slug' => 'jasa-kamar-mandi-dan-floor-drain-mampet',
                 'category' => 'SALURAN LANTAI',
                 'short_description' => "Menuntaskan sumbatan rambut dan residu sabun yang memicu luapan air kotor pada saluran pembuangan kamar mandi Anda.",
                 'price_starting_from' => $area->resolved_price,
@@ -355,7 +366,7 @@
             ],
             [
                 'name' => 'Inspeksi CCTV 30M',
-                'slug' => 'inspeksi-cctv-30m',
+                'slug' => 'jasa-inspeksi-kamera-cctv-pipa',
                 'category' => 'DIAGNOSTIK DIGITAL',
                 'short_description' => "Mendeteksi titik pipa patah, sambungan lepas, atau intrusi akar di bawah cor dengan monitor resolusi tinggi berjarak hingga 30 meter.",
                 'price_starting_from' => $area->resolved_price,
@@ -483,7 +494,7 @@
 
             <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar gap-4 md:gap-5 pb-3 pt-1 px-4 -mx-4 md:mx-0 md:px-0">
                 @foreach($advantages as $idx => $adv)
-                    <div class="w-[84vw] max-w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-xl border border-slate-200 border-t-2 border-t-sky-700 p-5 sm:p-6 shadow-2xs hover:border-sky-500 transition-all card-lift flex flex-col justify-between">
+                    <div class="w-[84vw] max-w-[340px] md:w-auto md:max-w-none shrink-0 snap-center bg-white rounded-xl border border-slate-200 border-t-2 border-t-sky-700 p-5 sm:p-6 shadow-2xs hover:border-sky-500 transition-all card-lift flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <span class="px-2.5 py-1 rounded-md bg-sky-50 border border-sky-200 text-sky-800 font-extrabold text-[11px] flex items-center gap-1.5 font-mono">
@@ -577,7 +588,7 @@
                             ],
                         };
                     @endphp
-                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center bg-white rounded-lg border border-slate-200 p-5 space-y-3 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
+                    <div class="w-[82vw] max-w-[340px] md:w-auto md:max-w-none shrink-0 snap-center bg-white rounded-lg border border-slate-200 p-5 space-y-3 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
                         <div>
                             <div class="flex items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-200/70">
                                 <div class="flex items-center gap-2.5">
@@ -658,7 +669,7 @@
                             $galleryPhoto = !empty($galleryItem->image) ? asset($galleryItem->image) : asset('assets/placeholders/service.svg');
                             $hasComparison = !empty($galleryItem->before_image) && !empty($galleryItem->after_image);
                         @endphp
-                        <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-slate-50 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
+                        <div class="w-[82vw] max-w-[340px] md:w-auto md:max-w-none shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-slate-50 shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between">
                             <div>
                                 <div class="relative aspect-16/10 bg-slate-900 overflow-hidden">
                                     <img src="{{ $galleryPhoto }}" 
@@ -808,7 +819,7 @@
                             : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
                         $catBadge = $post->category_label ?? $post->category ?? 'Edukasi';
                     @endphp
-                    <div class="w-[82vw] max-w-[340px] md:w-auto shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-white shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
+                    <div class="w-[82vw] max-w-[340px] md:w-auto md:max-w-none shrink-0 snap-center rounded-lg border border-slate-200 overflow-hidden bg-white shadow-2xs hover:border-sky-300 transition-colors flex flex-col justify-between group">
                         <div>
                             <div class="relative aspect-16/10 bg-slate-100 overflow-hidden">
                                 <img src="{{ $coverImg }}" 
@@ -963,12 +974,20 @@
                             @foreach($neighboringDistricts as $neighbor)
                                 @php
                                     $neighborSlug = \Illuminate\Support\Str::slug($neighbor);
+                                    $isNeighborIndexable = empty(($nonPriorityDistrictKeys ?? [])[$currentCitySlug . '|' . $neighborSlug])
+                                        && \App\Services\RegionService::isIndexableDistrict($currentCitySlug, $neighborSlug);
                                 @endphp
-                                <a href="{{ route('area.detail', ['city' => $currentCitySlug, 'district' => $neighborSlug]) }}" 
-                                   title="Tukang Saluran Pipa Mampet {{ $neighbor }}"
-                                   class="px-3 py-2 rounded-md bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center gap-1.5">
-                                    <span>{{ $neighbor }}</span>
-                                </a>
+                                @if($isNeighborIndexable)
+                                    <a href="{{ route('area.detail', ['city' => $currentCitySlug, 'district' => $neighborSlug]) }}" 
+                                       title="Tukang Saluran Pipa Mampet {{ $neighbor }}"
+                                       class="px-3 py-2 rounded-md bg-white hover:bg-sky-50 text-slate-800 hover:text-sky-700 font-semibold border border-slate-200 hover:border-sky-300 transition-all flex items-center gap-1.5">
+                                        <span>{{ $neighbor }}</span>
+                                    </a>
+                                @else
+                                    <span class="px-3 py-2 rounded-md bg-slate-100 text-slate-600 font-medium border border-slate-200 flex items-center gap-1.5">
+                                        <span>{{ $neighbor }}</span>
+                                    </span>
+                                @endif
                             @endforeach
                         </div>
                     @else
@@ -987,10 +1006,7 @@
                     <div class="flex flex-wrap gap-2 text-xs">
                         @foreach($otherCities->take(10) as $otherCity)
                             @php
-                                $firstDistrict = $otherCity['districts'][0] ?? null;
-                                $targetUrl = $firstDistrict 
-                                    ? route('area.detail', ['city' => $otherCity['slug'], 'district' => \Illuminate\Support\Str::slug($firstDistrict)])
-                                    : route('area.city', ['city' => $otherCity['slug']]);
+                                $targetUrl = route('area.city', ['city' => $otherCity['slug']]);
                             @endphp
                             <a href="{{ $targetUrl }}" 
                                title="Jasa Saluran Pipa Mampet {{ $otherCity['name'] }}"

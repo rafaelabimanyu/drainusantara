@@ -112,11 +112,14 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Gentle & Accessible Animation Tokens */
+/* Gentle & Accessible Animation Tokens (Progressive Enhancement: visible by default without JS) */
 .reveal-soft, .fade-up {
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.js-reveal-ready .reveal-soft:not(.is-visible),
+.js-reveal-ready .fade-up:not(.is-visible) {
     opacity: 0;
     transform: translateY(16px);
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
 }
 .reveal-soft.is-visible, .fade-up.is-visible {
@@ -125,8 +128,11 @@
 }
 
 .reveal-fade, .fade-in {
-    opacity: 0;
     transition: opacity 0.4s ease-out;
+}
+.js-reveal-ready .reveal-fade:not(.is-visible),
+.js-reveal-ready .fade-in:not(.is-visible) {
+    opacity: 0;
     will-change: opacity;
 }
 .reveal-fade.is-visible, .fade-in.is-visible {
@@ -134,9 +140,12 @@
 }
 
 .reveal-scale, .zoom-in {
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.js-reveal-ready .reveal-scale:not(.is-visible),
+.js-reveal-ready .zoom-in:not(.is-visible) {
     opacity: 0;
     transform: scale(0.97);
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
 }
 .reveal-scale.is-visible, .zoom-in.is-visible {

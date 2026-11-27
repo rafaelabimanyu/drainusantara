@@ -45,7 +45,7 @@ class ServiceCatalogRegistry
                 'price_starting_from' => 400000,
                 'badge' => 'Dapur & Kitchen Sink',
                 'icon' => 'sink',
-                'image' => '/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp',
+                'image' => '/images/services/drainusantara-jasa-perbaikan-saluran-wastafel-cuci-piring-mampet.webp',
                 'target_keywords' => ['jasa wastafel mampet', 'bak cuci piring mampet', 'lemak beku dapur', 'pelancar wastafel dapur', 'saluran kitchen sink mampet', 'tukang wastafel mampet'],
                 'hero_excerpt' => 'Spesialis pelancaran saluran pipa kitchen sink wastafel dapur yang tersumbat gumpalan minyak beku, sisa makanan, dan kerak lemak membatu tanpa zat kimia berbahaya dan tanpa merusak lantai keramik.',
                 'symptoms' => [
@@ -94,7 +94,7 @@ class ServiceCatalogRegistry
                 'price_starting_from' => 450000,
                 'badge' => 'Toilet & Kloset',
                 'icon' => 'toilet',
-                'image' => '/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp',
+                'image' => '/images/services/drainusantara-jasa-perbaikan-saluran-kloset-wc-toilet-mampet.webp',
                 'target_keywords' => ['jasa wc mampet', 'kloset mampet tanpa bongkar', 'jasa wc mampet tanpa sedot', 'toilet duduk mampet', 'kloset jongkok meluap', 'pelancar wc tersumbat'],
                 'hero_excerpt' => 'Solusi tuntas kloset duduk dan WC jongkok tersumbat benda asing, pembalut, tisu basah, atau mainan tanpa merusak porselen dan tanpa perlu sedot septic tank.',
                 'symptoms' => [
@@ -139,7 +139,7 @@ class ServiceCatalogRegistry
                 'price_starting_from' => 400000,
                 'badge' => 'Kamar Mandi & Lantai',
                 'icon' => 'shower',
-                'image' => '/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp',
+                'image' => '/images/services/drainusantara-jasa-perbaikan-saluran-floor-drain-kamar-mandi-mampet.webp',
                 'target_keywords' => ['saluran pembuangan kamar mandi mampet', 'floor drain menggenang', 'jasa kamar mandi mampet', 'tukang saluran air mandi', 'rambut mampet floor drain'],
                 'hero_excerpt' => 'Atasi genangan air sabun di lantai kamar mandi akibat jalinan serat rambut, buih sabun membatu, dan kotoran di leher angsa pipa pembuangan 2 inch.',
                 'symptoms' => [
@@ -184,7 +184,7 @@ class ServiceCatalogRegistry
                 'price_starting_from' => 650000,
                 'badge' => 'Komersial B2B & Heavy Duty',
                 'icon' => 'jet',
-                'image' => '/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp',
+                'image' => '/images/services/drainusantara-jasa-perbaikan-kuras-grease-trap-lemak-restoran.webp',
                 'target_keywords' => ['jasa hydro jetting pipa', 'mesin spiral rooter', 'kuras kerak pipa b2b', 'pembersihan pipa restoran', 'cuci pipa tekanan tinggi', 'hydro jetting jakarta'],
                 'hero_excerpt' => 'Teknologi semburan air ultra bertekanan tinggi (Hydro Jetting) hingga 300 bar dan mesin rooter spiral baja industri untuk mengikis kerak lemak jenuh, semen, dan sedimen pipa komersial.',
                 'symptoms' => [
@@ -229,7 +229,7 @@ class ServiceCatalogRegistry
                 'price_starting_from' => 500000,
                 'badge' => 'Diagnostik Digital IP68',
                 'icon' => 'camera',
-                'image' => '/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp',
+                'image' => '/images/services/drainusantara-jasa-inspeksi-kamera-cctv-saluran-pipa-endoskopi.webp',
                 'target_keywords' => ['inspeksi kamera pipa cctv ip68', 'deteksi pipa bocor mampet', 'kamera endoskopi pipa', 'jasa cctv saluran pipa', 'cek pipa mampet dengan kamera'],
                 'hero_excerpt' => 'Pemeriksaan visual real-time kondisi dalam pipa menggunakan kamera endoskopi tahan air IP68 berlampu LED super terang. Menemukan titik masalah perpipaan secara presisi tanpa membobok sembarangan.',
                 'symptoms' => [
@@ -274,7 +274,7 @@ class ServiceCatalogRegistry
                 'price_starting_from' => 450000,
                 'badge' => 'Talang Atap & Bak Kontrol',
                 'icon' => 'roof',
-                'image' => '/images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp',
+                'image' => '/images/services/drainusantara-jasa-perbaikan-saluran-talang-rooftop-pipa-atap-mampet.webp',
                 'target_keywords' => ['jasa talang air mampet', 'bak kontrol got mampet', 'saluran utama mampet', 'talang rooftop tersumbat', 'pipa vertikal talang air', 'pelancar talang hujan'],
                 'hero_excerpt' => 'Cegah luapan air hujan dari plafon dan genangan air kotor di halaman dengan pembersihan tuntas talang rooftop, bak kontrol pembuangan, dan got utama dari daun, lumut, dan sedimen.',
                 'symptoms' => [
@@ -311,6 +311,16 @@ class ServiceCatalogRegistry
                 ],
             ],
         ];
+    }
+
+    /**
+     * Resolve any legacy alias slug to its canonical service slug.
+     */
+    public static function canonicalSlug(string $slug): string
+    {
+        $normalized = strtolower(trim($slug));
+
+        return self::SLUG_ALIASES[$normalized] ?? $slug;
     }
 
     /**

@@ -164,33 +164,50 @@
 
     @stack('scripts')
 
-    <!-- Scroll Visibility Observer (Smooth & Dynamic Entrance) -->
+    <!-- Scroll Visibility Observer (Progressive Enhancement & Safe Fallback) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.reveal-soft, .reveal-fade, .reveal-scale, .fade-up, .fade-in, .zoom-in');
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries, obs) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                            obs.unobserve(entry.target);
-                        }
-                    });
-                }, {
-                    root: null,
-                    rootMargin: '0px 0px -30px 0px',
-                    threshold: 0.05
-                });
+            const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-                // Frame tick ensures browser renders initial state then smoothly transitions in-view elements
-                requestAnimationFrame(() => {
-                    setTimeout(() => {
-                        animatedElements.forEach(el => observer.observe(el));
-                    }, 40);
-                });
-            } else {
+            if (prefersReduced || !('IntersectionObserver' in window) || animatedElements.length === 0) {
                 animatedElements.forEach(el => el.classList.add('is-visible'));
+                return;
             }
+
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 900;
+            animatedElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < viewportHeight * 0.95) {
+                    el.classList.add('is-visible');
+                }
+            });
+
+            document.documentElement.classList.add('js-reveal-ready');
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -20px 0px',
+                threshold: 0.01
+            });
+
+            animatedElements.forEach(el => {
+                if (!el.classList.contains('is-visible')) {
+                    observer.observe(el);
+                }
+            });
+
+            // Safety fallback so automated crawlers and fast scrollers never get stuck invisible
+            setTimeout(() => {
+                animatedElements.forEach(el => el.classList.add('is-visible'));
+            }, 1500);
         });
     </script>
 </body>

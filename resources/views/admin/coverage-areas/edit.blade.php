@@ -730,10 +730,34 @@
         </div>
 
         <!-- SECTION 10: STATUS AKTIF & SIMPAN -->
-        <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="flex items-center gap-2.5">
-                <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $coverageArea->is_active) ? 'checked' : '' }} class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
-                <label for="is_active" class="text-xs sm:text-sm font-semibold text-slate-800 cursor-pointer">Publikasikan halaman landing page area ini</label>
+        <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+            <div class="space-y-2.5">
+                <div class="flex items-center gap-2.5">
+                    <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $coverageArea->is_active) ? 'checked' : '' }} class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
+                    <label for="is_active" class="text-xs sm:text-sm font-semibold text-slate-800 cursor-pointer">Publikasikan halaman landing page area ini</label>
+                </div>
+
+                @if($coverageArea->isDistrict())
+                    @php
+                        $editCitySlug = \App\Services\RegionService::resolveCitySlug($coverageArea->city);
+                        $editDistrictSlug = \Illuminate\Support\Str::slug((string) $coverageArea->district);
+                        $isForcedDuplicateSlug = $editCitySlug && \App\Services\RegionService::isForcedCityRedirect($editCitySlug, $editDistrictSlug);
+                    @endphp
+                    <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+                        <div class="flex items-center gap-2.5">
+                            <input type="hidden" name="is_priority" value="0">
+                            <input type="checkbox" name="is_priority" id="is_priority" value="1" {{ old('is_priority', $coverageArea->is_priority ?? true) ? 'checked' : '' }} class="w-4 h-4 text-sky-700 rounded-sm border-slate-300 focus:ring-sky-700">
+                            <label for="is_priority" class="text-xs sm:text-sm font-semibold text-slate-800 cursor-pointer">
+                                Tampilkan Halaman Kecamatan Mandiri (Jika dimatikan: 301 ke Halaman Kota)
+                            </label>
+                        </div>
+                        @if($isForcedDuplicateSlug)
+                            <p class="text-[11px] text-amber-800 pl-6">
+                                Catatan: Slug kecamatan ini duplikat dengan halaman induk kota sehingga sistem selalu mengarahkan 301 ke halaman kota untuk mencegah kanibalisasi SEO.
+                            </p>
+                        @endif
+                    </div>
+                @endif
             </div>
 
             <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">

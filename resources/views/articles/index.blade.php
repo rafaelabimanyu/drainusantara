@@ -22,7 +22,7 @@
     <section class="relative bg-white border-b border-slate-200 pt-8 pb-10 sm:pt-12 sm:pb-16 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Breadcrumbs -->
-            <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-4 font-medium reveal-fade" aria-label="Breadcrumb">
+            <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-4 font-medium" aria-label="Breadcrumb">
                 <a href="{{ url('/') }}" class="hover:text-sky-700 transition-colors flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -34,21 +34,21 @@
             </nav>
 
             <div class="text-center max-w-3xl mx-auto">
-                <p class="text-xs font-bold text-sky-700 tracking-wider uppercase mb-2 reveal-fade">
+                <p class="text-xs font-bold text-sky-700 tracking-wider uppercase mb-2">
                     Blog Resmi &amp; Publikasi Edukasi Drainusantara
                 </p>
 
-                <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 reveal-soft">
+                <h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900">
                     Panduan Perawatan &amp; Tips Saluran Pipa
                 </h1>
 
-                <p class="mt-3 text-xs sm:text-base text-slate-600 leading-relaxed reveal-soft delay-100">
+                <p class="mt-3 text-xs sm:text-base text-slate-600 leading-relaxed">
                   Pahami risiko fatal penggunaan bahan kimia korosif seperti soda api yang bisa merusak struktur pipa, lihat bagaimana teknologi modern dari Drainusantara bekerja secara profesional, lalu amankan paket promo pemeliharaan berkala kami sebelum penawaran terbatas ini berakhir.
                 </p>
             </div>
 
             <!-- 3 Pilar Informasi Blog (Informatif, Terarah, Bebas Badge Slop) -->
-            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto reveal-soft delay-150">
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
                 <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
                     <div class="text-sky-800 font-bold text-xs uppercase tracking-wider mb-1.5">
                         <span>01. Edukasi Residensial</span>
@@ -78,7 +78,7 @@
             </div>
 
             <!-- Search Bar Interaktif (Minimalis Berkontras Tinggi) -->
-            <div class="mt-8 max-w-xl mx-auto relative reveal-soft delay-200">
+            <div class="mt-8 max-w-xl mx-auto relative">
                 <div class="relative flex items-center">
                     <input type="text"
                            x-model="searchQuery"

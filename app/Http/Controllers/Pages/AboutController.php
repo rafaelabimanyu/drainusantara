@@ -145,18 +145,50 @@ class AboutController extends Controller
     }
 
     /**
+     * Map legacy equipment slugs (seeded/historical URLs) to current canonical equipment slugs.
+     *
+     * @var array<string, string>
+     */
+    private const LEGACY_EQUIPMENT_SLUG_MAP = [
+        'kamera-cctv-endoskopi-pipa-ip68-30-meter' => 'kamera-inspeksi-saluran-pipa',
+        'mesin-drain-rooter-spiral-baja-rotary-ridgid-k-50-k-60' => 'mesin-drain-cleaner-spiral-rotary',
+        'set-4-jenis-mata-pemotong-spiral-baja-modular' => 'set-mata-bor-pisau-spiral-drain-cleaner',
+        'unit-pembersih-saluran-high-pressure-hydro-jetting' => 'mesin-hydro-jetting-tekanan-tinggi',
+        'mesin-rooter-ridgid-k-50-cable-spiral' => 'mesin-drain-cleaner-spiral-rotary',
+        'inspeksi-kamera-cctv-pipa-saluran' => 'kamera-inspeksi-saluran-pipa',
+        'high-pressure-hydro-jetting-unit' => 'mesin-hydro-jetting-tekanan-tinggi',
+    ];
+
+    /**
      * Sub-Page: Detail Spesifikasi Mesin & Peralatan
      */
-    public function equipmentDetail(string $slug): View
+    public function equipmentDetail(string $slug): View|RedirectResponse
     {
-        $equipment = Cache::remember('equipment_'.$slug, 86400, function () use ($slug) {
-            return Equipment::where('slug', $slug)
+        $cacheKey = 'equipment_'.$slug;
+        $equipment = Cache::get($cacheKey);
+
+        if (! $equipment instanceof Equipment) {
+            $equipment = Equipment::where('slug', $slug)
                 ->where('is_active', true)
                 ->with(['galleries' => function ($query) {
                     $query->where('is_active', true);
                 }])
-                ->firstOrFail();
-        });
+                ->first();
+
+            if ($equipment) {
+                Cache::put($cacheKey, $equipment, 86400);
+            }
+        }
+
+        if (! $equipment) {
+            $canonicalSlug = self::LEGACY_EQUIPMENT_SLUG_MAP[$slug] ?? null;
+
+            if ($canonicalSlug && Equipment::where('slug', $canonicalSlug)->where('is_active', true)->exists()) {
+                return redirect()->route('equipment.show', ['slug' => $canonicalSlug], 301);
+            }
+
+            abort(404);
+        }
 
         $relatedEquipments = Equipment::where('is_active', true)
             ->where('id', '!=', $equipment->id)
@@ -164,6 +196,7 @@ class AboutController extends Controller
             ->take(3)
             ->get();
 
+        $canonicalUrl = route('equipment.show', $slug);
         $pageTitle = $equipment->name.' | Spesifikasi & Teknologi';
         $metaDescription = $equipment->short_description 
             ?: Str::limit(strip_tags((string) ($equipment->description ?? '')), 160)
@@ -171,45 +204,52 @@ class AboutController extends Controller
 
         PageMetadata::title($pageTitle);
         SEOMeta::setDescription($metaDescription);
-        SEOMeta::setCanonical(route('equipment.show', $slug));
+        SEOMeta::setCanonical($canonicalUrl);
 
         $imageUrl = $equipment->image ? asset($equipment->image) : asset('images/drainusantara-jasa-saluran-pipa-mampet-teknisi-profesional.webp');
 
         OpenGraph::setTitle($pageTitle.' Drainusantara');
         OpenGraph::setDescription($metaDescription);
-        OpenGraph::setUrl(route('equipment.show', $slug));
-        OpenGraph::addProperty('type', 'product');
+        OpenGraph::setUrl($canonicalUrl);
+        OpenGraph::addProperty('type', 'website');
         OpenGraph::addImage($imageUrl);
 
         TwitterCard::setTitle($pageTitle.' Drainusantara');
         TwitterCard::setDescription($metaDescription);
         TwitterCard::setImage($imageUrl);
 
-        JsonLdMulti::setTitle($equipment->name);
+        JsonLdMulti::setType('Plumber');
+        JsonLdMulti::setTitle('Drainusantara - '.$equipment->name);
         JsonLdMulti::setDescription($metaDescription);
-        JsonLdMulti::setType('Product');
         JsonLdMulti::addValues([
-            'name' => $equipment->name,
-            'description' => $metaDescription,
+            '@id' => url('/#organization'),
+            'name' => 'Drainusantara',
+            'legalName' => 'PT Jawa Jaya Rooter',
+            'url' => url('/'),
             'image' => $imageUrl,
-            'category' => $equipment->category ?? 'Drain Cleaning Equipment',
-            'brand' => [
-                '@type' => 'Brand',
-                'name' => 'Drainusantara',
-            ],
-            'offers' => [
-                '@type' => 'AggregateOffer',
-                'priceCurrency' => 'IDR',
-                'lowPrice' => '400000',
-                'price' => '400000',
-                'availability' => 'https://schema.org/InStock',
-            ],
+            'telephone' => $this->formatInternationalPhone(),
+            'email' => (string) config('services.company.email', 'drainusantara@gmail.com'),
+            'address' => $this->getHeadquartersAddress(),
+            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
+        ]);
+
+        $serviceJsonLd = JsonLdMulti::newJsonLd();
+        $serviceJsonLd->setType('Service');
+        $serviceJsonLd->addValues([
+            '@id' => $canonicalUrl.'#service',
+            'name' => "Layanan Pelancaran Pipa dengan {$equipment->name}",
+            'serviceType' => 'Plumbing Service',
+            'description' => $metaDescription,
+            'url' => $canonicalUrl,
+            'image' => $imageUrl,
+            'provider' => ['@id' => url('/#organization')],
+            'areaServed' => ['DKI Jakarta', 'Jawa Barat', 'Banten', 'Jawa Tengah', 'Lampung', 'Bali'],
         ]);
 
         $this->addBreadcrumb(
             ['Tentang Kami', route('about.profile')],
             ['Peralatan & Teknologi', route('about.equipment')],
-            [$equipment->name, route('equipment.show', $slug)]
+            [$equipment->name, $canonicalUrl]
         );
 
         return view('about.equipment-detail', compact('equipment', 'relatedEquipments'));
